@@ -1,198 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>2ndShift – A Better Tomorrow Begins with a Second Income</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2ndShift — Safe, legal after-work & weekend income</title>
+  <meta name="description" content="India’s first platform for safe, legal, after-work and weekend income opportunities for professionals, students, and skilled talent." />
+  <link rel="icon" href="/logo.png" />
 
-    <style>
-        body {
-            margin: 0;
-            font-family: "Inter", sans-serif;
-            background-color: #0d1117;
-            color: #ffffff;
-        }
+  <style>
+    :root{
+      --bg:#0d1117;
+      --card:#161b22;
+      --muted:#9da5b4;
+      --accent1:#1dd1a1;
+      --accent2:#10ac84;
+      --text:#e6eef1;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+    .container{max-width:1100px;margin:0 auto;padding:30px}
+    header{display:flex;align-items:center;justify-content:space-between;padding:24px 16px}
+    .logo img{height:54px}
+    .nav a{color:var(--muted);text-decoration:none;margin-left:18px;font-weight:600}
+    .hero{padding:80px 16px;text-align:center}
+    .hero h1{font-size:40px;margin:0 0 12px;line-height:1.15}
+    .lead{color:var(--muted);font-size:18px;margin-bottom:20px}
+    .btn-primary{display:inline-block;background:linear-gradient(90deg,var(--accent1),var(--accent2));padding:14px 26px;border-radius:10px;color:#07211a;text-decoration:none;font-weight:700;border:none;cursor:pointer}
+    .trust-line{color:var(--muted);margin-top:14px;font-size:14px}
 
-        header {
-            max-width: 1100px;
-            margin: auto;
-            padding: 30px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .section{padding:48px 16px}
+    h2{font-size:28px;margin:0 0 12px}
+    p.muted{color:var(--muted);line-height:1.6}
 
-        .logo img {
-            height: 55px;
-        }
+    .grid{display:grid;gap:18px}
+    .cards{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .card{background:var(--card);padding:22px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+    .steps{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .jobs{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+    .job{background:var(--card);padding:12px;border-radius:8px;text-align:center;border:1px solid rgba(255,255,255,0.02)}
 
-        .hero {
-            text-align: center;
-            padding: 100px 20px;
-            max-width: 900px;
-            margin: auto;
-        }
+    .cta-section{text-align:center;padding:64px 16px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00))}
+    footer{padding:28px 16px;text-align:center;color:var(--muted);border-top:1px solid rgba(255,255,255,0.02)}
 
-        .hero h1 {
-            font-size: 45px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
+    input, select, textarea {
+      border: 1px solid rgba(255,255,255,0.03);
+      background: #0b0f12;
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 15px;
+      width: 100%;
+    }
+    label { display:block; margin-bottom:6px; color:var(--muted); font-size:13px; }
 
-        .hero p {
-            font-size: 18px;
-            color: #c9d1d9;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
+    .form-row { display:flex; gap:12px; }
+    .form-row > * { flex:1; }
 
-        .btn-primary {
-            background: linear-gradient(to right, #1dd1a1, #10ac84);
-            padding: 16px 30px;
-            border-radius: 8px;
-            font-size: 18px;
-            text-decoration: none;
-            color: #fff;
-            display: inline-block;
-            margin-bottom: 20px;
-        }
+    .status { margin-top:10px; font-size:14px; color:var(--muted); }
 
-        .trust {
-            font-size: 14px;
-            color: #9da5b4;
-            margin-top: 20px;
-        }
-
-        .section {
-            max-width: 1100px;
-            margin: 80px auto;
-            padding: 20px;
-        }
-
-        .section h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-
-        .section p {
-            font-size: 18px;
-            color: #c9d1d9;
-            margin-bottom: 40px;
-            line-height: 1.6;
-        }
-
-        .features,
-        .steps,
-        .personas {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
-        }
-
-        .card {
-            background: #161b22;
-            padding: 25px;
-            border-radius: 10px;
-            border: 1px solid #21262d;
-        }
-
-        .card h3 {
-            margin-top: 0;
-            margin-bottom: 12px;
-        }
-
-        .cta-section {
-            text-align: center;
-            padding: 80px 20px;
-            background: #161b22;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            color: #939aa5;
-            border-top: 1px solid #21262d;
-            margin-top: 60px;
-        }
-
-        @media (max-width: 600px) {
-            .hero h1 {
-                font-size: 32px;
-            }
-            .hero p {
-                font-size: 16px;
-            }
-        }
-    </style>
+    @media (max-width:600px){
+      .hero h1{font-size:28px}
+      header{padding:14px}
+      .form-row { flex-direction: column; }
+    }
+  </style>
 </head>
-
 <body>
 
-<header>
+  <header class="container" role="banner">
     <div class="logo">
-        <!-- Replace with your PNG logo -->
-        <img src="logo.png" alt="2ndShift Logo">
+      <img src="/logo.png" alt="2ndShift logo" />
     </div>
-</header>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#why">Why</a>
+      <a href="#how">How</a>
+      <a href="#sample">Samples</a>
+      <a href="#waitlist" class="btn-primary" style="padding:8px 14px;font-size:14px;border-radius:8px">Join Waitlist</a>
+    </nav>
+  </header>
 
-<section class="hero">
-    <h1>A better tomorrow begins with a second income.</h1>
-    <p>India’s first platform for safe, legal, after-work and weekend income opportunities for professionals, students, and skilled talent.</p>
-    <a class="btn-primary" href="#waitlist">Join the Waitlist</a>
+  <main>
+    <section class="hero" role="main">
+      <div class="container">
+        <h1>India’s first platform for safe, legal after-work and weekend income.</h1>
+        <p class="lead">Earn more without risking your job. Every opportunity is verified, legally compliant, and built for evenings, nights, and weekends.</p>
+        <a class="btn-primary" href="#waitlist">Join the Waitlist</a>
+        <div class="trust-line">✔ Legal & Safe &nbsp;&nbsp; ✔ Verified Clients &nbsp;&nbsp; ✔ Work After Office Hours &nbsp;&nbsp; ✔ Guaranteed Payments</div>
+      </div>
+    </section>
 
-    <div class="trust">
-        ✔ Legal & Safe Opportunities • ✔ Verified Clients • ✔ Work After Office Hours
+    <section id="why" class="section" aria-labelledby="why-heading">
+      <div class="container">
+        <h2 id="why-heading">Why 2ndShift?</h2>
+        <p class="muted">Extra income shouldn't cost your job security. 2ndShift is India’s first verified ecosystem for after-work income built specifically for professionals, students, and skilled workers. We screen every client and only list non-conflicting projects that respect your current employment.</p>
+
+        <div class="grid cards" style="margin-top:20px">
+          <div class="card"><h3>Legal & Safe Work</h3><p class="muted">Only non-conflict projects that don't violate your job agreements.</p></div>
+          <div class="card"><h3>Work on Your Time</h3><p class="muted">Evenings, nights, weekends—your schedule, your terms.</p></div>
+          <div class="card"><h3>Verified Clients</h3><p class="muted">No fake projects or scam clients. Every client is screened.</p></div>
+          <div class="card"><h3>Guaranteed Payments</h3><p class="muted">Payments processed securely through 2ndShift—we protect freelancers and workers from delays and fraud.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="section" aria-labelledby="how-heading">
+      <div class="container">
+        <h2 id="how-heading">How 2ndShift Works</h2>
+        <div class="grid steps" style="margin-top:18px">
+          <div class="card"><strong>1. Join the Waitlist</strong><p class="muted">Sign up to get early access.</p></div>
+          <div class="card"><strong>2. Build Your Profile</strong><p class="muted">Add skills, experience, and after-work availability.</p></div>
+          <div class="card"><strong>3. Get Matched</strong><p class="muted">We manually match you with safe, verified opportunities based on your schedule.</p></div>
+          <div class="card"><strong>4. Work & Earn</strong><p class="muted">Deliver work. Get paid. No HR issues, no risk.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sample" class="section" aria-labelledby="sample-heading">
+      <div class="container">
+        <h2 id="sample-heading">Sample Opportunities</h2>
+        <p class="muted">Examples of after-work projects you can expect on 2ndShift.</p>
+
+        <div class="grid jobs" style="margin-top:18px">
+          <div class="job">Weekend Tech Support</div>
+          <div class="job">Evening Graphic Design</div>
+          <div class="job">Night-time Data Entry</div>
+          <div class="job">Cybersecurity Audit (micro)</div>
+          <div class="job">Video Editing</div>
+          <div class="job">Tutoring & Mentoring</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="legal" class="section" aria-labelledby="legal-heading">
+      <div class="container">
+        <h2 id="legal-heading">Is this legal?</h2>
+        <p class="muted">Yes. 2ndShift is designed to keep your primary job safe. We ensure listed projects do not conflict with standard employer policies: non-compete checks, confidentiality screening, and clear scope that fits after-work hours. You remain in control—accept only projects you approve.</p>
+      </div>
+    </section>
+
+    <section id="who" class="section" aria-labelledby="who-heading">
+      <div class="container">
+        <h2 id="who-heading">Who is this for?</h2>
+        <div class="grid cards" style="margin-top:18px">
+          <div class="card"><h3>Working Professionals</h3><p class="muted">Earn safely after job hours without violating policies.</p></div>
+          <div class="card"><h3>Students</h3><p class="muted">Gain experience and earn with short part-time projects.</p></div>
+          <div class="card"><h3>Freelancers</h3><p class="muted">Find serious, verified clients without competing with millions of global listings.</p></div>
+          <div class="card"><h3>Creators & Skilled Workers</h3><p class="muted">Writers, designers, editors—anyone can earn more, legally.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="waitlist" class="cta-section" aria-labelledby="waitlist-heading">
+      <div class="container">
+        <h2 id="waitlist-heading">Build Your Second Income Today</h2>
+        <p class="muted">Join Indians preparing for financial freedom through safe and legal side income.</p>
+
+        <!-- Inline waitlist form (submits to /api/waitlist) -->
+        <form id="waitlist-form" style="max-width:720px;margin:20px auto;display:flex;gap:10px;flex-direction:column;">
+          <label for="name">Full name (optional)</label>
+          <input name="full_name" id="name" placeholder="Your full name" />
+
+          <label for="email">Email <span style="color:#c9d1d9">*</span></label>
+          <input name="email" id="email" type="email" placeholder="email@example.com" required />
+
+          <div class="form-row">
+            <div>
+              <label for="role">Role</label>
+              <input name="role" id="role" placeholder="e.g., Student, Developer, Designer" />
+            </div>
+            <div>
+              <label for="availability">Availability</label>
+              <select name="availability" id="availability">
+                <option value="">Select availability</option>
+                <option value="Weeknights">Weeknights</option>
+                <option value="Weekends">Weekends</option>
+                <option value="Both">Both</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="notes">Notes (optional)</label>
+          <textarea name="notes" id="notes" rows="3" placeholder="Anything we should know?"></textarea>
+
+          <button type="submit" id="submit-waitlist" class="btn-primary" style="width:220px;align-self:center">Join Waitlist</button>
+          <div id="waitlist-status" class="status" role="status" aria-live="polite"></div>
+        </form>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      2ndShift — A better tomorrow begins with a second income. <br />
+      Terms • Privacy • support@2ndshift.in
     </div>
-</section>
+  </footer>
 
-<section class="section">
-    <h2>Why 2ndShift?</h2>
-    <p>Indians deserve a safe and legal way to earn extra income without moonlighting risk, scams, or job insecurity. 2ndShift provides a verified ecosystem for working professionals and skilled individuals to earn more—after work hours or on weekends.</p>
-
-    <div class="features">
-        <div class="card"><h3>Legal & Safe Work</h3><p>Only non-conflict projects that don't violate your job agreements.</p></div>
-        <div class="card"><h3>Work on Your Time</h3><p>Evenings, nights, weekends—your schedule, your terms.</p></div>
-        <div class="card"><h3>Verified Clients</h3><p>No fake projects or scam clients. Every client is screened.</p></div>
-        <div class="card"><h3>Guaranteed Payments</h3><p>We process payments securely using 2ndShift’s agency model.</p></div>
-    </div>
-</section>
-
-<section class="section">
-    <h2>How 2ndShift Works</h2>
-    <div class="steps">
-        <div class="card"><h3>1. Join the Waitlist</h3><p>Sign up to get early access.</p></div>
-        <div class="card"><h3>2. Build Your Profile</h3><p>Add your skills, experience, and availability.</p></div>
-        <div class="card"><h3>3. Get Matched</h3><p>We manually match you to verified, safe opportunities.</p></div>
-        <div class="card"><h3>4. Work & Earn</h3><p>Deliver work. Get paid. No HR issues, no risk.</p></div>
-    </div>
-</section>
-
-<section class="section">
-    <h2>Who Is This For?</h2>
-    <div class="personas">
-        <div class="card"><h3>Working Professionals</h3><p>Earn safely after job hours without violating policies.</p></div>
-        <div class="card"><h3>Students</h3><p>Gain experience and earn with part-time projects.</p></div>
-        <div class="card"><h3>Freelancers</h3><p>Get serious clients without competing with millions.</p></div>
-        <div class="card"><h3>Creators & Skilled Workers</h3><p>Writers, designers, editors — anyone can earn more.</p></div>
-    </div>
-</section>
-
-<section class="cta-section" id="waitlist">
-    <h2>Build Your Second Income Today</h2>
-    <p>Join Indians preparing for financial freedom through safe and legal side income.</p>
-    <a class="btn-primary" 
-   href="https://docs.google.com/forms/d/e/1FAIpQLScP6pJ7WweONGPxazJ-cRnlpJnj84bsbUJt28ryYA4Vf8YC5Q/viewform?usp=dialog" 
-   target="_blank" 
-   rel="noopener noreferrer">
-   Join the Waitlist
-</a>
-
-
-<footer>
-    2ndShift — A better tomorrow begins with a second income. <br>
-    Terms • Privacy • support@2ndshift.in
-</footer>
-
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>
