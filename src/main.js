@@ -1,6 +1,3 @@
-// src/main.js
-console.log("2ndShift client loaded");
-
 const form = document.getElementById("waitlist-form");
 const statusEl = document.getElementById("waitlist-status");
 
@@ -26,18 +23,16 @@ if (form) {
 
       const data = await resp.json();
       if (resp.ok && data.success) {
-        statusEl.style.color = "#9adfcd";
-        statusEl.textContent = "Thanks — you’ve been added to the waitlist.";
+        statusEl.style.color = "#80ffcc";
+        statusEl.textContent = "You're on the waitlist!";
         form.reset();
       } else {
-        statusEl.style.color = "#f39c9c";
-        statusEl.textContent = data.error || "Submission failed. Try again.";
-        console.error("waitlist error", data);
+        statusEl.style.color = "#ff8080";
+        statusEl.textContent = data.error || "Failed. Try again.";
       }
     } catch (err) {
-      statusEl.style.color = "#f39c9c";
-      statusEl.textContent = "Network error. Try again.";
-      console.error(err);
+      statusEl.style.color = "#ff8080";
+      statusEl.textContent = "Network error.";
     }
   });
 }
