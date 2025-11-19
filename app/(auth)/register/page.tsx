@@ -19,18 +19,44 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
 
+  // Sanitize input to prevent XSS
+  const sanitizeInput = (input: string): string => {
+    return input.trim().replace(/<[^>]*>/g, '')
+  }
+
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
     
-    if (!formData.fullName) newErrors.fullName = 'Full name is required'
-    if (!formData.email) newErrors.email = 'Email is required'
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    // Sanitize inputs
+    const sanitizedName = sanitizeInput(formData.fullName)
+    const sanitizedEmail = formData.email.trim().toLowerCase()
+    
+    // Name validation
+    if (!sanitizedName) {
+      newErrors.fullName = 'Full name is required'
+    } else if (sanitizedName.length < 2) {
+      newErrors.fullName = 'Name must be at least 2 characters'
+    } else if (sanitizedName.length > 100) {
+      newErrors.fullName = 'Name is too long'
+    }
+    
+    // Email validation
+    if (!sanitizedEmail) {
+      newErrors.email = 'Email is required'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sanitizedEmail)) {
       newErrors.email = 'Invalid email format'
     }
-    if (!formData.password) newErrors.password = 'Password is required'
-    else if (formData.password.length < 8) {
+    
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = 'Password is required'
+    } else if (formData.password.length < 8) {
       newErrors.password = 'Password must be at least 8 characters'
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
+      newErrors.password = 'Password must contain uppercase, lowercase, and number'
     }
+    
+    // Confirm password
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match'
     }
@@ -46,41 +72,59 @@ export default function RegisterPage() {
     setIsLoading(true)
     setMessage('')
     
-    const { data, error } = await supabase.auth.signUp({
-      email: formData.email,
-      password: formData.password,
-      options: {
-        data: {
-          full_name: formData.fullName,
-          user_type: formData.userType
+    try {
+      // Sanitize inputs
+      const sanitizedName = sanitizeInput(formData.fullName)
+      const sanitizedEmail = formData.email.trim().toLowerCase()
+      
+      // Sign up with Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
+        email: sanitizedEmail,
+        password: formData.password,
+        options: {
+          data: {
+            full_name: sanitizedName,
+            user_type: formData.userType
+          },
+          emailRedirectTo: `${window.location.origin}/auth/callback`
+        }
+      })
+      
+      if (error) throw error
+      
+      if (data.user) {
+        // Wait a bit for auth user to be created
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
+        // Create user profile in public.users table
+        const { error: profileError } = await supabase
+          .from('users')
+          .insert({
+            id: data.user.id,
+            email: sanitizedEmail,
+            full_name: sanitizedName,
+            user_type: formData.userType,
+            profile_visibility: 'public',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          })
+        
+        if (profileError) {
+          console.error('Profile creation error:', profileError)
+          // If profile creation fails, show error but don't block
+          setMessage('Account created but profile setup incomplete. Please contact support.')
+        } else {
+          setMessage('Registration successful! Redirecting to login...')
+          setTimeout(() => {
+            router.push('/login')
+          }, 2000)
         }
       }
-    })
-    
-    if (data.user && !error) {
-      // Create user profile in public.users table
-      const { error: profileError } = await supabase
-        .from('users')
-        .insert({
-          id: data.user.id,
-          email: data.user.email,
-          full_name: formData.fullName,
-          user_type: formData.userType,
-          profile_visibility: 'public'
-        })
-      
-      if (profileError) console.error('Profile creation error:', profileError)
-    }
-    
-    setIsLoading(false)
-    
-    if (error) {
-      setMessage(error.message)
-    } else {
-      setMessage('Registration successful! Check your email to verify.')
-      setTimeout(() => {
-        router.push('/login')
-      }, 2000)
+    } catch (error: any) {
+      console.error('Registration error:', error)
+      setMessage(error.message || 'Registration failed. Please try again.')
+    } finally {
+      setIsLoading(false)
     }
   }
 

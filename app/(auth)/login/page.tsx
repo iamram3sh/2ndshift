@@ -36,31 +36,51 @@ export default function LoginPage() {
     setIsLoading(true)
     setMessage('')
     
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: formData.email,
-      password: formData.password
-    })
-    
-    setIsLoading(false)
-    
-    if (error) {
-      setMessage(error.message)
-    } else if (data.user) {
-      const { data: profile } = await supabase
-        .from('users')
-        .select('user_type')
-        .eq('id', data.user.id)
-        .single()
+    try {
+      // Sanitize email input
+      const sanitizedEmail = formData.email.trim().toLowerCase()
       
-      if (profile) {
-        if (profile.user_type === 'worker') {
-          router.push('/worker')
-        } else if (profile.user_type === 'client') {
-          router.push('/client')
-        } else if (profile.user_type === 'admin') {
-          router.push('/admin')
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: sanitizedEmail,
+        password: formData.password
+      })
+      
+      if (error) throw error
+      
+      if (data.user) {
+        // Fetch user profile to determine dashboard
+        const { data: profile, error: profileError } = await supabase
+          .from('users')
+          .select('user_type, full_name')
+          .eq('id', data.user.id)
+          .single()
+        
+        if (profileError) {
+          console.error('Profile fetch error:', profileError)
+          setMessage('Login successful but profile not found. Please contact support.')
+          return
+        }
+        
+        if (profile) {
+          // Redirect based on user type
+          if (profile.user_type === 'worker') {
+            router.push('/worker')
+          } else if (profile.user_type === 'client') {
+            router.push('/client')
+          } else if (profile.user_type === 'admin') {
+            router.push('/admin')
+          } else {
+            setMessage('Invalid user type. Please contact support.')
+          }
+        } else {
+          setMessage('Profile not found. Please complete registration.')
         }
       }
+    } catch (error: any) {
+      console.error('Login error:', error)
+      setMessage(error.message || 'Login failed. Please check your credentials.')
+    } finally {
+      setIsLoading(false)
     }
   }
 
