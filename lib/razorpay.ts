@@ -1,8 +1,11 @@
 import Razorpay from 'razorpay'
 
+const razorpayKeyId = process.env.RAZORPAY_KEY_ID || 'placeholder-key'
+const razorpaySecret = process.env.RAZORPAY_SECRET || 'placeholder-secret'
+
 export const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_SECRET!,
+  key_id: razorpayKeyId,
+  key_secret: razorpaySecret,
 })
 
 export interface PaymentBreakdown {

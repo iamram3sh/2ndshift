@@ -22,7 +22,7 @@ export interface WorkerProfile {
   skills: string[]
   experience_years: number
   hourly_rate: number
-  availability_hours: Record<string, any>
+  availability_hours: Record<string, unknown>
   portfolio_url?: string
   resume_url?: string
   bio?: string

@@ -11,7 +11,7 @@ export default function Home() {
             Welcome to <span className="text-indigo-600">2ndShift</span>
           </h1>
           <p className="text-2xl text-gray-600 mb-8">
-            India's First Legal, Tax-Compliant Freelance Platform
+            India&apos;s First Legal, Tax-Compliant Freelance Platform
           </p>
           <p className="text-lg text-gray-500 mb-12 max-w-3xl mx-auto">
             Earn extra income through part-time contract work while staying 100% compliant 
