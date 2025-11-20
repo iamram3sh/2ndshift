@@ -122,10 +122,11 @@ export default function EditWorkerProfilePage() {
 
       if (userError) throw userError
 
-      // Update worker_profiles table
+      // Upsert worker_profiles table (insert or update)
       const { error: profileError } = await supabase
         .from('worker_profiles')
-        .update({
+        .upsert({
+          user_id: user.id,
           profession: formData.profession,
           tagline: formData.tagline,
           bio: formData.bio,
@@ -138,8 +139,9 @@ export default function EditWorkerProfilePage() {
           linkedin_url: formData.linkedin_url,
           github_url: formData.github_url,
           website_url: formData.website_url
+        }, {
+          onConflict: 'user_id'
         })
-        .eq('user_id', user.id)
 
       if (profileError) throw profileError
 
