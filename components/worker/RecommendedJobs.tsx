@@ -6,7 +6,14 @@ import { supabase } from '@/lib/supabase/client'
 import { Sparkles, TrendingUp, Clock, DollarSign, Calendar, Bookmark, ExternalLink } from 'lucide-react'
 import type { Project } from '@/types/database.types'
 
-interface RecommendedProject extends Project {
+interface RecommendedProject {
+  project_id: string
+  title: string
+  description: string
+  budget: number
+  required_skills: string[]
+  duration_hours: number
+  deadline: string | null
   match_score: number
   match_reasons: string[]
 }
