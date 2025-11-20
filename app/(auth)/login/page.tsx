@@ -69,74 +69,46 @@ export default function LoginPage() {
       if (error) throw error
       
       if (data.user) {
-        // Fetch user profile to determine dashboard
-        const { data: profile, error: profileError } = await supabase
-          .from('users')
-          .select('user_type, full_name')
-          .eq('id', data.user.id)
-          .single()
+        // Try to fetch profile multiple times with delays
+        let profile = null
+        let attempts = 0
+        const maxAttempts = 3
         
-        if (profileError) {
-          console.error('Profile fetch error:', profileError)
-          // Profile might not exist yet, try to create it
-          const { error: createError } = await supabase
+        while (attempts < maxAttempts && !profile) {
+          attempts++
+          
+          if (attempts > 1) {
+            // Wait before retrying
+            await new Promise(resolve => setTimeout(resolve, 1000))
+          }
+          
+          const { data: fetchedProfile, error: profileError } = await supabase
             .from('users')
-            .insert({
+            .select('user_type, full_name')
+            .eq('id', data.user.id)
+            .single()
+          
+          if (fetchedProfile) {
+            profile = fetchedProfile
+            break
+          }
+          
+          // Only try to create on first attempt
+          if (attempts === 1 && profileError) {
+            await supabase.from('users').insert({
               id: data.user.id,
               email: data.user.email!,
               full_name: data.user.user_metadata?.full_name || data.user.email?.split('@')[0] || 'User',
               user_type: data.user.user_metadata?.user_type || 'worker',
               profile_visibility: 'public'
             })
-          
-          if (createError) {
-            console.error('Profile creation error:', createError)
-            
-            // If it's a duplicate key error, profile already exists - just fetch it
-            if (createError.code === '23505' || createError.message?.includes('duplicate')) {
-              console.log('Profile already exists, fetching...')
-              await new Promise(resolve => setTimeout(resolve, 500))
-              
-              const { data: retryProfile, error: retryError } = await supabase
-                .from('users')
-                .select('user_type, full_name')
-                .eq('id', data.user.id)
-                .single()
-              
-              if (retryProfile) {
-                console.log('Profile found, redirecting...')
-                redirectBasedOnUserType(retryProfile.user_type)
-                setIsLoading(false)
-                return
-              }
-              
-              console.error('Retry fetch failed:', retryError)
-            }
-            
-            setMessage('Login successful but profile setup failed. Please try again.')
-            setIsLoading(false)
-            return
           }
-          
-          // Retry fetching profile
-          const { data: newProfile } = await supabase
-            .from('users')
-            .select('user_type, full_name')
-            .eq('id', data.user.id)
-            .single()
-          
-          if (newProfile) {
-            redirectBasedOnUserType(newProfile.user_type)
-          } else {
-            setMessage('Profile setup failed. Please contact support.')
-          }
-          return
         }
         
         if (profile) {
           redirectBasedOnUserType(profile.user_type)
         } else {
-          setMessage('Profile not found. Please contact support.')
+          setMessage('Unable to load your profile. Please contact support.')
         }
       }
     } catch (error: any) {
