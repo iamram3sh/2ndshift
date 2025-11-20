@@ -11,6 +11,9 @@ import {
 } from 'lucide-react'
 import type { User as UserType, Project, Contract, WorkerProfile } from '@/types/database.types'
 import { StatsCard } from '@/components/dashboard/StatsCard'
+import ProfileCompletionWidget from '@/components/profile/ProfileCompletionWidget'
+import VerificationBadges from '@/components/profile/VerificationBadges'
+import OnlineStatusIndicator, { StatusToggle } from '@/components/profile/OnlineStatusIndicator'
 
 interface Application {
   id: string
@@ -295,38 +298,50 @@ export default function WorkerDashboard() {
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Profile Completion Alert */}
-        {stats.profileCompletion < 100 && (
-          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 mb-6 flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5" />
-            <div className="flex-1">
-              <h4 className="font-semibold text-amber-900 dark:text-amber-200">Complete Your Profile</h4>
-              <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">
-                Your profile is {stats.profileCompletion}% complete. Complete your profile to increase your chances of getting hired!
-              </p>
-              <button 
-                onClick={() => router.push('/profile')}
-                className="mt-2 text-sm font-medium text-amber-700 dark:text-amber-300 hover:text-amber-900 dark:hover:text-amber-100 flex items-center gap-1"
-              >
-                Complete Profile <ArrowUpRight className="w-4 h-4" />
-              </button>
-            </div>
+        {/* Profile Completion Widget */}
+        {user && (
+          <div className="mb-6">
+            <ProfileCompletionWidget userId={user.id} userType="worker" />
           </div>
         )}
 
         {/* Welcome Section */}
         <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-8 text-white mb-8 shadow-lg">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-start">
             <div className="flex-1">
-              <h2 className="text-3xl font-bold mb-2">Welcome back, {user?.full_name}! 👋</h2>
+              <div className="flex items-center gap-3 mb-2">
+                <h2 className="text-3xl font-bold">Welcome back, {user?.full_name}! 👋</h2>
+                {user && (
+                  <OnlineStatusIndicator
+                    userId={user.id}
+                    size="lg"
+                    showLabel={true}
+                  />
+                )}
+              </div>
+              {user && (
+                <div className="mb-4">
+                  <VerificationBadges
+                    verificationLevel={3}
+                    isVerified={user.verification_status === 'verified'}
+                    emailVerified={user.email_verified || false}
+                    phoneVerified={user.phone_verified || false}
+                  />
+                </div>
+              )}
               <p className="text-indigo-100 mb-4">Ready to find your next project?</p>
-              <button
-                onClick={() => router.push('/worker/discover')}
-                className="px-6 py-3 bg-white text-indigo-600 rounded-lg hover:bg-indigo-50 transition font-semibold flex items-center gap-2"
-              >
-                <Zap className="w-5 h-5" />
-                Discover Jobs with AI
-              </button>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => router.push('/worker/discover')}
+                  className="px-6 py-3 bg-white text-indigo-600 rounded-lg hover:bg-indigo-50 transition font-semibold flex items-center gap-2"
+                >
+                  <Zap className="w-5 h-5" />
+                  Discover Jobs with AI
+                </button>
+                {user && (
+                  <StatusToggle userId={user.id} currentStatus={user.availability_status || 'offline'} />
+                )}
+              </div>
             </div>
             <div className="hidden md:block">
               <div className="text-right">
