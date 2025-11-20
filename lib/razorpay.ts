@@ -1,11 +1,27 @@
 import Razorpay from 'razorpay'
 
-const razorpayKeyId = process.env.RAZORPAY_KEY_ID || 'placeholder-key'
-const razorpaySecret = process.env.RAZORPAY_SECRET || 'placeholder-secret'
+// Lazy-initialize Razorpay client only when needed to avoid build-time errors
+let razorpayInstance: Razorpay | null = null
 
-export const razorpay = new Razorpay({
-  key_id: razorpayKeyId,
-  key_secret: razorpaySecret,
+function getRazorpayClient(): Razorpay {
+  if (!razorpayInstance) {
+    const razorpayKeyId = process.env.RAZORPAY_KEY_ID || 'placeholder-key'
+    const razorpaySecret = process.env.RAZORPAY_SECRET || 'placeholder-secret'
+    
+    razorpayInstance = new Razorpay({
+      key_id: razorpayKeyId,
+      key_secret: razorpaySecret,
+    })
+  }
+  return razorpayInstance
+}
+
+// Export for backward compatibility
+export const razorpay = new Proxy({} as Razorpay, {
+  get: (target, prop) => {
+    const client = getRazorpayClient()
+    return client[prop as keyof Razorpay]
+  }
 })
 
 export interface PaymentBreakdown {
