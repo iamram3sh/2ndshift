@@ -47,7 +47,7 @@ ALTER TABLE worker_profiles ADD COLUMN IF NOT EXISTS languages TEXT[] DEFAULT '{
 ALTER TABLE worker_profiles ADD COLUMN IF NOT EXISTS education TEXT;
 ALTER TABLE worker_profiles ADD COLUMN IF NOT EXISTS certifications JSONB DEFAULT '[]';
 ALTER TABLE worker_profiles ADD COLUMN IF NOT EXISTS work_samples JSONB DEFAULT '[]';
-ALTER TABLE worker_profiles ADD COLUMN IF NOT EXISTS references JSONB DEFAULT '[]';
+ALTER TABLE worker_profiles ADD COLUMN IF NOT EXISTS worker_references JSONB DEFAULT '[]';
 ALTER TABLE worker_profiles ADD COLUMN IF NOT EXISTS linkedin_url TEXT;
 ALTER TABLE worker_profiles ADD COLUMN IF NOT EXISTS github_url TEXT;
 ALTER TABLE worker_profiles ADD COLUMN IF NOT EXISTS website_url TEXT;
