@@ -69,46 +69,24 @@ export default function LoginPage() {
       if (error) throw error
       
       if (data.user) {
-        // Try to fetch profile multiple times with delays
-        let profile = null
-        let attempts = 0
-        const maxAttempts = 3
-        
-        while (attempts < maxAttempts && !profile) {
-          attempts++
+        // Call API route to get profile (bypasses RLS)
+        try {
+          const response = await fetch('/api/auth/get-profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: data.user.id })
+          })
           
-          if (attempts > 1) {
-            // Wait before retrying
-            await new Promise(resolve => setTimeout(resolve, 1000))
+          const result = await response.json()
+          
+          if (result.profile) {
+            redirectBasedOnUserType(result.profile.user_type)
+          } else {
+            setMessage('Unable to load your profile. Please contact support.')
           }
-          
-          const { data: fetchedProfile, error: profileError } = await supabase
-            .from('users')
-            .select('user_type, full_name')
-            .eq('id', data.user.id)
-            .single()
-          
-          if (fetchedProfile) {
-            profile = fetchedProfile
-            break
-          }
-          
-          // Only try to create on first attempt
-          if (attempts === 1 && profileError) {
-            await supabase.from('users').insert({
-              id: data.user.id,
-              email: data.user.email!,
-              full_name: data.user.user_metadata?.full_name || data.user.email?.split('@')[0] || 'User',
-              user_type: data.user.user_metadata?.user_type || 'worker',
-              profile_visibility: 'public'
-            })
-          }
-        }
-        
-        if (profile) {
-          redirectBasedOnUserType(profile.user_type)
-        } else {
-          setMessage('Unable to load your profile. Please contact support.')
+        } catch (error) {
+          console.error('Profile fetch error:', error)
+          setMessage('Unable to load your profile. Please try again.')
         }
       }
     } catch (error: any) {
