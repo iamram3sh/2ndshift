@@ -135,13 +135,6 @@ export default function LoginPage() {
     } else {
       setMessage('Invalid user type. Please contact support.')
     }
-      }
-    } catch (error: any) {
-      console.error('Login error:', error)
-      setMessage(error.message || 'Login failed. Please check your credentials.')
-    } finally {
-      setIsLoading(false)
-    }
   }
 
   return (
@@ -331,4 +324,3 @@ export default function LoginPage() {
     </div>
   )
 }
-import React from 'react'
