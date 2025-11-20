@@ -92,7 +92,7 @@ BEGIN
   RAISE NOTICE '✅ Applications created';
 
   -- =====================================================
-  -- 4. COMPLETED CONTRACT (platform_fee is auto-calculated)
+  -- 4. COMPLETED CONTRACT (generated columns auto-calculated)
   -- =====================================================
   INSERT INTO contracts (
     project_id, 
@@ -100,7 +100,6 @@ BEGIN
     contract_amount, 
     platform_fee_percentage, 
     tds_percentage, 
-    tds_amount, 
     worker_payout,
     nda_signed, 
     conflict_declaration_signed, 
@@ -113,7 +112,6 @@ BEGIN
     15000,
     10, 
     2, 
-    300, 
     13200,
     true, 
     true, 
