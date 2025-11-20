@@ -711,16 +711,23 @@ export default function HomePage() {
           </div>
 
           {/* Bottom Bar */}
-          <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-slate-400">
-              © 2024 2ndShift Technologies Pvt Ltd. All rights reserved.
-            </p>
-            <div className="flex items-center gap-2 text-xs text-slate-500">
-              <Lock className="w-4 h-4" />
-              <span>256-bit SSL Encrypted</span>
-              <span className="mx-2">•</span>
-              <Shield className="w-4 h-4" />
-              <span>ISO 27001 Certified</span>
+          <div className="border-t border-slate-800 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-3">
+              <p className="text-sm text-slate-400">
+                © 2025 2ndShift India Private Limited. All rights reserved.
+              </p>
+              <div className="flex items-center gap-2 text-xs text-slate-500">
+                <Lock className="w-4 h-4" />
+                <span>256-bit SSL Encrypted</span>
+                <span className="mx-2">•</span>
+                <Shield className="w-4 h-4" />
+                <span>ISO 27001 Certified</span>
+              </div>
+            </div>
+            <div className="text-center">
+              <p className="text-xs text-slate-500 italic">
+                Developed with passion by an Indisciplined Financial person to build financial freedom for all
+              </p>
             </div>
           </div>
         </div>

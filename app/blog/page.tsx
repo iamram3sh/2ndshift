@@ -9,7 +9,7 @@ const blogPosts = [
     title: 'Understanding TDS for Freelancers: A Complete Guide',
     excerpt: 'Learn everything about TDS deduction, Form 16A, and how to claim it during ITR filing. Complete guide for Indian freelancers.',
     author: 'Priya Sharma',
-    date: '2024-01-15',
+    date: '2025-01-15',
     readTime: '8 min read',
     category: 'Tax & Compliance',
     image: '/blog/tds-guide.jpg',
@@ -19,7 +19,7 @@ const blogPosts = [
     title: 'How to Build a Successful Freelance Profile in 2024',
     excerpt: 'Expert tips on creating a compelling profile that attracts high-paying clients. Portfolio, rates, and communication strategies.',
     author: 'Rahul Verma',
-    date: '2024-01-12',
+    date: '2025-01-12',
     readTime: '6 min read',
     category: 'Career Tips',
     image: '/blog/profile-building.jpg',
@@ -29,7 +29,7 @@ const blogPosts = [
     title: 'Freelancing from Hyderabad: Riding the Tech Hub Wave',
     excerpt: 'How Hyderabad\'s booming tech ecosystem creates unprecedented opportunities for freelance professionals in India.',
     author: 'Sanjay Reddy',
-    date: '2024-01-11',
+    date: '2025-01-11',
     readTime: '7 min read',
     category: 'Career Tips',
     image: '/blog/hyderabad-tech.jpg',
@@ -39,7 +39,7 @@ const blogPosts = [
     title: 'Top 10 Mistakes Freelancers Make (And How to Avoid Them)',
     excerpt: 'From underpricing to poor communication, learn the common pitfalls and how to navigate them successfully.',
     author: 'Anjali Desai',
-    date: '2024-01-10',
+    date: '2025-01-10',
     readTime: '7 min read',
     category: 'Best Practices',
     image: '/blog/mistakes.jpg',
@@ -49,7 +49,7 @@ const blogPosts = [
     title: 'GST for Freelancers: When Do You Need to Register?',
     excerpt: 'Understand GST threshold, registration process, and invoicing requirements for freelance professionals in India.',
     author: 'Amit Kumar',
-    date: '2024-01-08',
+    date: '2025-01-08',
     readTime: '10 min read',
     category: 'Tax & Compliance',
     image: '/blog/gst-guide.jpg',
@@ -59,7 +59,7 @@ const blogPosts = [
     title: 'Why Every Freelancer Needs a Legal Contract',
     excerpt: 'Protect yourself with proper contracts. Understanding NDAs, IP rights, payment terms, and dispute resolution clauses.',
     author: 'Adv. Meera Krishnan',
-    date: '2024-01-07',
+    date: '2025-01-07',
     readTime: '9 min read',
     category: 'Legal',
     image: '/blog/contracts.jpg',
@@ -69,7 +69,7 @@ const blogPosts = [
     title: 'The Art of Negotiating Rates with Clients',
     excerpt: 'Proven strategies to command higher rates without losing clients. Learn to communicate your value effectively.',
     author: 'Sneha Patel',
-    date: '2024-01-05',
+    date: '2025-01-05',
     readTime: '5 min read',
     category: 'Business',
     image: '/blog/negotiation.jpg',
@@ -79,7 +79,7 @@ const blogPosts = [
     title: 'Building a Portfolio That Actually Converts',
     excerpt: 'Case studies, testimonials, and showcasing results that matter. How to create a portfolio that wins high-ticket clients.',
     author: 'Karthik Menon',
-    date: '2024-01-04',
+    date: '2025-01-04',
     readTime: '8 min read',
     category: 'Career Tips',
     image: '/blog/portfolio.jpg',
@@ -89,7 +89,7 @@ const blogPosts = [
     title: 'Maintaining Work-Life Balance as a Freelancer',
     excerpt: 'Practical tips to avoid burnout, set boundaries, and create a sustainable freelance career you love.',
     author: 'Vikram Singh',
-    date: '2024-01-03',
+    date: '2025-01-03',
     readTime: '6 min read',
     category: 'Wellness',
     image: '/blog/work-life.jpg',
@@ -99,7 +99,7 @@ const blogPosts = [
     title: 'How to Handle Payment Delays: A Freelancer\'s Guide',
     excerpt: 'Practical strategies for dealing with late payments, escrow protection, and legal remedies available in India.',
     author: 'Arjun Nair',
-    date: '2024-01-02',
+    date: '2025-01-02',
     readTime: '7 min read',
     category: 'Business',
     image: '/blog/payments.jpg',
@@ -300,7 +300,8 @@ export default function BlogPage() {
       {/* Footer */}
       <footer className="bg-slate-900 text-slate-300 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <p className="text-sm text-slate-400">© 2024 2ndShift. All rights reserved.</p>
+          <p className="text-sm text-slate-400">© 2025 2ndShift India Private Limited. All rights reserved.</p>
+          <p className="text-xs text-slate-500 mt-2 italic">Developed with passion by an Indisciplined Financial person to build financial freedom for all</p>
         </div>
       </footer>
     </div>

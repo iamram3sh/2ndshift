@@ -8,7 +8,7 @@ export default function CareersPage() {
     {
       title: 'Senior Full Stack Developer',
       department: 'Engineering',
-      location: 'Bangalore / Remote',
+      location: 'Hyderabad / Remote',
       type: 'Full-time',
       salary: '₹15-25 LPA',
       description: 'Build scalable features for our platform using Next.js, Node.js, and Supabase'
@@ -16,7 +16,7 @@ export default function CareersPage() {
     {
       title: 'Product Designer',
       department: 'Design',
-      location: 'Bangalore / Remote',
+      location: 'Hyderabad / Remote',
       type: 'Full-time',
       salary: '₹12-20 LPA',
       description: 'Create beautiful, user-friendly interfaces for workers and employers'
@@ -24,7 +24,7 @@ export default function CareersPage() {
     {
       title: 'Growth Marketing Manager',
       department: 'Marketing',
-      location: 'Bangalore',
+      location: 'Hyderabad',
       type: 'Full-time',
       salary: '₹10-18 LPA',
       description: 'Drive user acquisition and engagement through data-driven campaigns'
@@ -32,7 +32,7 @@ export default function CareersPage() {
     {
       title: 'Compliance & Legal Associate',
       department: 'Legal',
-      location: 'Bangalore',
+      location: 'Hyderabad',
       type: 'Full-time',
       salary: '₹8-15 LPA',
       description: 'Ensure platform compliance with Indian tax and labor laws'
@@ -119,7 +119,7 @@ export default function CareersPage() {
               {
                 icon: MapPin,
                 title: 'Remote Friendly',
-                description: 'Work from anywhere in India. Office in Bangalore for those who prefer it',
+                description: 'Work from anywhere in India. Office in Hyderabad for those who prefer it',
                 color: 'from-blue-500 to-indigo-500'
               },
               {
@@ -238,7 +238,8 @@ export default function CareersPage() {
       {/* Footer */}
       <footer className="bg-slate-900 text-slate-300 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <p className="text-sm text-slate-400">© 2024 2ndShift. All rights reserved.</p>
+          <p className="text-sm text-slate-400">© 2025 2ndShift India Private Limited. All rights reserved.</p>
+          <p className="text-xs text-slate-500 mt-2 italic">Developed with passion by an Indisciplined Financial person to build financial freedom for all</p>
         </div>
       </footer>
     </div>

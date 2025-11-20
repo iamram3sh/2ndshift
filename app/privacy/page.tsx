@@ -41,7 +41,7 @@ export default function PrivacyPolicyPage() {
             Privacy Policy
           </h1>
           <p className="text-xl text-slate-600 leading-relaxed">
-            Last Updated: January 15, 2024
+            Last Updated: January 15, 2025
           </p>
         </div>
       </section>
@@ -469,7 +469,8 @@ export default function PrivacyPolicyPage() {
       {/* Footer */}
       <footer className="bg-slate-900 text-slate-300 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <p className="text-sm text-slate-400">© 2024 2ndShift. All rights reserved.</p>
+          <p className="text-sm text-slate-400">© 2025 2ndShift India Private Limited. All rights reserved.</p>
+          <p className="text-xs text-slate-500 mt-2 italic">Developed with passion by an Indisciplined Financial person to build financial freedom for all</p>
         </div>
       </footer>
     </div>

@@ -41,7 +41,7 @@ export default function TermsOfServicePage() {
             Terms of Service
           </h1>
           <p className="text-xl text-slate-600 leading-relaxed">
-            Last Updated: January 15, 2024
+            Last Updated: January 15, 2025
           </p>
         </div>
       </section>
@@ -401,7 +401,7 @@ export default function TermsOfServicePage() {
             {/* Legal Footer */}
             <div className="bg-slate-900 text-white p-8 rounded-2xl mt-12">
               <p className="text-sm leading-relaxed">
-                These Terms of Service are effective as of January 15, 2024. By using 2ndShift, you acknowledge that you have read, understood, and agree to be bound by these Terms. If you do not agree, please do not use our Platform.
+                These Terms of Service are effective as of January 15, 2025. By using 2ndShift, you acknowledge that you have read, understood, and agree to be bound by these Terms. If you do not agree, please do not use our Platform.
               </p>
             </div>
 
@@ -436,7 +436,8 @@ export default function TermsOfServicePage() {
       {/* Footer */}
       <footer className="bg-slate-900 text-slate-300 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <p className="text-sm text-slate-400">© 2024 2ndShift. All rights reserved.</p>
+          <p className="text-sm text-slate-400">© 2025 2ndShift India Private Limited. All rights reserved.</p>
+          <p className="text-xs text-slate-500 mt-2 italic">Developed with passion by an Indisciplined Financial person to build financial freedom for all</p>
         </div>
       </footer>
     </div>

@@ -308,7 +308,10 @@ export default function AboutPage() {
 
           <div className="border-t border-slate-800 pt-8 text-center">
             <p className="text-sm text-slate-400">
-              © 2024 2ndShift. All rights reserved.
+              © 2025 2ndShift India Private Limited. All rights reserved.
+            </p>
+            <p className="text-xs text-slate-500 mt-2 italic">
+              Developed with passion by an Indisciplined Financial person to build financial freedom for all
             </p>
           </div>
         </div>
