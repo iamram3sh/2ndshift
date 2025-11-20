@@ -141,17 +141,6 @@ export const emailTemplates = {
   }),
 }
 
-// Email sending function (to be implemented with actual email service)
-export async function sendEmail(
-  to: string,
-  template: { subject: string; html: string; text: string }
-) {
-  // TODO: Implement with Resend, SendGrid, or SMTP
-  console.log('Sending email to:', to)
-  console.log('Subject:', template.subject)
-  
-  // For now, just log. In production, use:
-  // await resend.emails.send({ from, to, subject, html, text })
-  
-  return { success: true }
-}
+// Email sending function is now in lib/email.ts
+// Import and use: import { sendEmail } from '@/lib/email'
+// This file only contains email templates

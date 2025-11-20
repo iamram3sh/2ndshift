@@ -521,22 +521,73 @@ ALTER TABLE applications ADD COLUMN IF NOT EXISTS rejection_reason TEXT;
 -- 12. INDEXES FOR NEW TABLES
 -- =====================================================
 
-CREATE INDEX IF NOT EXISTS idx_client_profiles_user_id ON client_profiles(user_id);
-CREATE INDEX IF NOT EXISTS idx_certifications_user_id ON certifications(user_id);
-CREATE INDEX IF NOT EXISTS idx_certifications_verified ON certifications(is_verified);
-CREATE INDEX IF NOT EXISTS idx_reviews_reviewee_id ON reviews(reviewee_id);
-CREATE INDEX IF NOT EXISTS idx_reviews_reviewer_id ON reviews(reviewer_id);
-CREATE INDEX IF NOT EXISTS idx_reviews_contract_id ON reviews(contract_id);
-CREATE INDEX IF NOT EXISTS idx_verification_requests_user_id ON verification_requests(user_id);
-CREATE INDEX IF NOT EXISTS idx_verification_requests_status ON verification_requests(status);
-CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications(user_id);
-CREATE INDEX IF NOT EXISTS idx_notifications_read ON notifications(is_read);
-CREATE INDEX IF NOT EXISTS idx_messages_conversation ON messages(conversation_id);
-CREATE INDEX IF NOT EXISTS idx_messages_sender ON messages(sender_id);
-CREATE INDEX IF NOT EXISTS idx_messages_recipient ON messages(recipient_id);
-CREATE INDEX IF NOT EXISTS idx_user_activity_user_id ON user_activity_log(user_id);
-CREATE INDEX IF NOT EXISTS idx_users_online_status ON users(is_online);
-CREATE INDEX IF NOT EXISTS idx_users_verification_status ON users(verification_status);
+-- Indexes with IF NOT EXISTS are safe, but let's be extra cautious
+DO $$ 
+BEGIN
+  -- Client profiles indexes
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_client_profiles_user_id') THEN
+    CREATE INDEX idx_client_profiles_user_id ON client_profiles(user_id);
+  END IF;
+  
+  -- Certifications indexes
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_certifications_user_id') THEN
+    CREATE INDEX idx_certifications_user_id ON certifications(user_id);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_certifications_verified') THEN
+    CREATE INDEX idx_certifications_verified ON certifications(is_verified);
+  END IF;
+  
+  -- Reviews indexes
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_reviews_reviewee_id') THEN
+    CREATE INDEX idx_reviews_reviewee_id ON reviews(reviewee_id);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_reviews_reviewer_id') THEN
+    CREATE INDEX idx_reviews_reviewer_id ON reviews(reviewer_id);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_reviews_contract_id') THEN
+    CREATE INDEX idx_reviews_contract_id ON reviews(contract_id);
+  END IF;
+  
+  -- Verification requests indexes
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_verification_requests_user_id') THEN
+    CREATE INDEX idx_verification_requests_user_id ON verification_requests(user_id);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_verification_requests_status') THEN
+    CREATE INDEX idx_verification_requests_status ON verification_requests(status);
+  END IF;
+  
+  -- Notifications indexes
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_notifications_user_id') THEN
+    CREATE INDEX idx_notifications_user_id ON notifications(user_id);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_notifications_read') THEN
+    CREATE INDEX idx_notifications_read ON notifications(is_read);
+  END IF;
+  
+  -- Messages indexes
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_messages_conversation') THEN
+    CREATE INDEX idx_messages_conversation ON messages(conversation_id);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_messages_sender') THEN
+    CREATE INDEX idx_messages_sender ON messages(sender_id);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_messages_recipient') THEN
+    CREATE INDEX idx_messages_recipient ON messages(recipient_id);
+  END IF;
+  
+  -- User activity indexes
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_user_activity_user_id') THEN
+    CREATE INDEX idx_user_activity_user_id ON user_activity_log(user_id);
+  END IF;
+  
+  -- Users table indexes
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_users_online_status') THEN
+    CREATE INDEX idx_users_online_status ON users(is_online);
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_indexes WHERE indexname = 'idx_users_verification_status') THEN
+    CREATE INDEX idx_users_verification_status ON users(verification_status);
+  END IF;
+END $$;
 
 -- =====================================================
 -- 13. TRIGGERS FOR UPDATED_AT
@@ -677,21 +728,21 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Trigger on users table
-DROP TRIGGER IF EXISTS trigger_update_profile_completion ON users;
+DROP TRIGGER IF EXISTS trigger_update_profile_completion ON users CASCADE;
 CREATE TRIGGER trigger_update_profile_completion
   AFTER INSERT OR UPDATE ON users
   FOR EACH ROW
   EXECUTE FUNCTION update_profile_completion();
 
 -- Trigger on worker_profiles table
-DROP TRIGGER IF EXISTS trigger_update_worker_profile_completion ON worker_profiles;
+DROP TRIGGER IF EXISTS trigger_update_worker_profile_completion ON worker_profiles CASCADE;
 CREATE TRIGGER trigger_update_worker_profile_completion
   AFTER INSERT OR UPDATE ON worker_profiles
   FOR EACH ROW
   EXECUTE FUNCTION update_profile_completion();
 
 -- Trigger on client_profiles table
-DROP TRIGGER IF EXISTS trigger_update_client_profile_completion ON client_profiles;
+DROP TRIGGER IF EXISTS trigger_update_client_profile_completion ON client_profiles CASCADE;
 CREATE TRIGGER trigger_update_client_profile_completion
   AFTER INSERT OR UPDATE ON client_profiles
   FOR EACH ROW
@@ -717,6 +768,7 @@ $$ LANGUAGE plpgsql;
 -- 17. ADMIN ANALYTICS VIEWS
 -- =====================================================
 
+DROP VIEW IF EXISTS verification_queue CASCADE;
 CREATE OR REPLACE VIEW verification_queue AS
 SELECT 
   vr.id,
@@ -733,6 +785,7 @@ JOIN users u ON u.id = vr.user_id
 WHERE vr.status IN ('pending', 'in_review')
 ORDER BY vr.created_at ASC;
 
+DROP VIEW IF EXISTS user_engagement_stats CASCADE;
 CREATE OR REPLACE VIEW user_engagement_stats AS
 SELECT
   u.id as user_id,
