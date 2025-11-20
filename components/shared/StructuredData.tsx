@@ -9,8 +9,8 @@ export default function StructuredData() {
     description: 'India\'s first legal, tax-compliant freelance platform for part-time work',
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'Mumbai',
-      addressRegion: 'Maharashtra',
+      addressLocality: 'Hyderabad',
+      addressRegion: 'Telangana',
       addressCountry: 'IN',
     },
     contactPoint: {

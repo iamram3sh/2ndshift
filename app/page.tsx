@@ -704,30 +704,23 @@ export default function HomePage() {
                 <MapPin className="w-5 h-5 text-indigo-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <div className="font-semibold text-white mb-1">Address</div>
-                  <p className="text-slate-400">Mumbai, Maharashtra, India</p>
+                  <p className="text-slate-400">Hyderabad, Telangana, India</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Bottom Bar */}
-          <div className="border-t border-slate-800 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-3">
-              <p className="text-sm text-slate-400">
-                © 2025 2ndShift India Private Limited. All rights reserved.
-              </p>
-              <div className="flex items-center gap-2 text-xs text-slate-500">
-                <Lock className="w-4 h-4" />
-                <span>256-bit SSL Encrypted</span>
-                <span className="mx-2">•</span>
-                <Shield className="w-4 h-4" />
-                <span>ISO 27001 Certified</span>
-              </div>
-            </div>
-            <div className="text-center">
-              <p className="text-xs text-slate-500 italic">
-                Developed with passion by an Indisciplined Financial person to build financial freedom for all
-              </p>
+          <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-sm text-slate-400">
+              © 2025 2ndShift India Private Limited. All rights reserved.
+            </p>
+            <div className="flex items-center gap-2 text-xs text-slate-500">
+              <Lock className="w-4 h-4" />
+              <span>256-bit SSL Encrypted</span>
+              <span className="mx-2">•</span>
+              <Shield className="w-4 h-4" />
+              <span>ISO 27001 Certified</span>
             </div>
           </div>
         </div>
