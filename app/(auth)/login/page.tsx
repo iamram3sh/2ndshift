@@ -79,17 +79,26 @@ export default function LoginPage() {
           
           console.log('API Response status:', response.status)
           
+          if (!response.ok) {
+            const errorText = await response.text()
+            console.error('API Error Response:', errorText)
+            throw new Error(`Failed to load profile: ${response.status} - ${errorText}`)
+          }
+          
           const result = await response.json()
           console.log('API Result:', result)
           
-          if (result.profile) {
+          if (result.profile && result.profile.user_type) {
+            // Profile loaded successfully, redirect to dashboard
             redirectBasedOnUserType(result.profile.user_type)
           } else {
-            setMessage('Unable to load your profile: ' + (result.error || 'Unknown error'))
+            // Profile is missing or invalid
+            console.error('Invalid profile data:', result)
+            setMessage('Login successful but profile setup failed. Please contact support or try registering again.')
           }
         } catch (error: any) {
           console.error('Profile fetch error:', error)
-          setMessage('Error: ' + error.message)
+          setMessage('Login successful but profile setup failed: ' + error.message)
         }
       }
     } catch (error: any) {

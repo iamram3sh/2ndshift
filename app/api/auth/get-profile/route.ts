@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
+import { supabaseAdmin } from '@/lib/supabase/admin'
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,16 +27,18 @@ export async function POST(request: NextRequest) {
       )
     }
     
-    // Fetch profile (this uses the authenticated session, bypassing RLS issues)
-    const { data: profile, error } = await supabase
+    // Use admin client to bypass RLS and fetch profile
+    const { data: profile, error } = await supabaseAdmin
       .from('users')
       .select('user_type, full_name, email')
       .eq('id', userId)
       .single()
     
     if (error || !profile) {
-      // Try to create profile if it doesn't exist
-      const { error: insertError } = await supabase
+      console.log('Profile not found, creating new profile for user:', userId)
+      
+      // Try to create profile if it doesn't exist using admin client
+      const { data: newProfile, error: insertError } = await supabaseAdmin
         .from('users')
         .insert({
           id: userId,
@@ -44,33 +47,46 @@ export async function POST(request: NextRequest) {
           user_type: user.user_metadata?.user_type || 'worker',
           profile_visibility: 'public'
         })
-      
-      if (insertError && !insertError.message?.includes('duplicate')) {
-        console.error('Profile creation error:', insertError)
-      }
-      
-      // Retry fetch
-      const { data: retryProfile } = await supabase
-        .from('users')
         .select('user_type, full_name, email')
-        .eq('id', userId)
         .single()
       
-      if (retryProfile) {
-        return NextResponse.json({ profile: retryProfile })
+      if (insertError) {
+        console.error('Profile creation error:', insertError)
+        
+        // If duplicate, try to fetch again
+        if (insertError.message?.includes('duplicate')) {
+          const { data: retryProfile } = await supabaseAdmin
+            .from('users')
+            .select('user_type, full_name, email')
+            .eq('id', userId)
+            .single()
+          
+          if (retryProfile) {
+            return NextResponse.json({ profile: retryProfile })
+          }
+        }
+        
+        return NextResponse.json(
+          { error: 'Failed to create profile: ' + insertError.message },
+          { status: 500 }
+        )
+      }
+      
+      if (newProfile) {
+        return NextResponse.json({ profile: newProfile })
       }
       
       return NextResponse.json(
-        { error: 'Profile not found' },
-        { status: 404 }
+        { error: 'Profile creation failed' },
+        { status: 500 }
       )
     }
     
     return NextResponse.json({ profile })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Get profile error:', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error: ' + (error.message || 'Unknown error') },
       { status: 500 }
     )
   }
