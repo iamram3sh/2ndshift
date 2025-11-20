@@ -84,14 +84,29 @@ export default function LoginPage() {
             .insert({
               id: data.user.id,
               email: data.user.email!,
-              full_name: data.user.user_metadata?.full_name || 'User',
+              full_name: data.user.user_metadata?.full_name || data.user.email?.split('@')[0] || 'User',
               user_type: data.user.user_metadata?.user_type || 'worker',
               profile_visibility: 'public'
             })
           
           if (createError) {
-            setMessage('Login successful but profile setup failed. Please contact support.')
             console.error('Profile creation error:', createError)
+            
+            // If it's a duplicate key error, try to fetch again
+            if (createError.code === '23505' || createError.message?.includes('duplicate')) {
+              const { data: retryProfile } = await supabase
+                .from('users')
+                .select('user_type, full_name')
+                .eq('id', data.user.id)
+                .single()
+              
+              if (retryProfile) {
+                redirectBasedOnUserType(retryProfile.user_type)
+                return
+              }
+            }
+            
+            setMessage('Login successful but profile setup failed. Please contact support: ' + createError.message)
             return
           }
           
