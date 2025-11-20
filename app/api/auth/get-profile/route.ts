@@ -14,8 +14,9 @@ export async function POST(request: NextRequest) {
       )
     }
     
-    // Create supabase client with auth
-    const supabase = createRouteHandlerClient({ cookies })
+    // Create supabase client with auth - await cookies in Next.js 15+
+    const cookieStore = await cookies()
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
     
     // Verify the requesting user
     const { data: { user } } = await supabase.auth.getUser()
