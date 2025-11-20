@@ -65,10 +65,54 @@ export default function ProjectDetailPage() {
       return
     }
 
+    if (currentUser.user_type !== 'worker') {
+      alert('Only workers can apply to projects')
+      return
+    }
+
+    if (!project) {
+      alert('Project not found')
+      return
+    }
+
     setApplying(true)
-    // TODO: Implement application logic
-    alert('Application feature coming soon!')
-    setApplying(false)
+    
+    try {
+      // Check if already applied
+      const { data: existingApplication } = await supabase
+        .from('applications')
+        .select('id')
+        .eq('project_id', params.id)
+        .eq('worker_id', currentUser.id)
+        .single()
+
+      if (existingApplication) {
+        alert('You have already applied to this project')
+        setApplying(false)
+        return
+      }
+
+      // Create application
+      const { error } = await supabase
+        .from('applications')
+        .insert({
+          project_id: params.id,
+          worker_id: currentUser.id,
+          status: 'pending',
+          cover_letter: '', // Could add a modal for cover letter
+          proposed_rate: project.budget
+        })
+
+      if (error) throw error
+
+      alert('Application submitted successfully!')
+      router.push('/worker')
+    } catch (error: any) {
+      console.error('Application error:', error)
+      alert(error.message || 'Failed to submit application. Please try again.')
+    } finally {
+      setApplying(false)
+    }
   }
 
   if (isLoading) {

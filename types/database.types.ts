@@ -71,6 +71,17 @@ export interface Project {
   updated_at: string
 }
 
+export interface Application {
+  id: string
+  project_id: string
+  worker_id: string
+  cover_letter: string
+  proposed_rate: number
+  status: 'pending' | 'accepted' | 'rejected' | 'withdrawn'
+  created_at: string
+  updated_at: string
+}
+
 export interface Contract {
   id: string
   project_id: string
