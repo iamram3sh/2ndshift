@@ -77,16 +77,19 @@ export default function LoginPage() {
             body: JSON.stringify({ userId: data.user.id })
           })
           
+          console.log('API Response status:', response.status)
+          
           const result = await response.json()
+          console.log('API Result:', result)
           
           if (result.profile) {
             redirectBasedOnUserType(result.profile.user_type)
           } else {
-            setMessage('Unable to load your profile. Please contact support.')
+            setMessage('Unable to load your profile: ' + (result.error || 'Unknown error'))
           }
-        } catch (error) {
+        } catch (error: any) {
           console.error('Profile fetch error:', error)
-          setMessage('Unable to load your profile. Please try again.')
+          setMessage('Error: ' + error.message)
         }
       }
     } catch (error: any) {
