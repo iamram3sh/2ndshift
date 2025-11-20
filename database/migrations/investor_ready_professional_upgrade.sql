@@ -542,15 +542,19 @@ CREATE INDEX IF NOT EXISTS idx_users_verification_status ON users(verification_s
 -- 13. TRIGGERS FOR UPDATED_AT
 -- =====================================================
 
+DROP TRIGGER IF EXISTS update_client_profiles_updated_at ON client_profiles;
 CREATE TRIGGER update_client_profiles_updated_at BEFORE UPDATE ON client_profiles
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_certifications_updated_at ON certifications;
 CREATE TRIGGER update_certifications_updated_at BEFORE UPDATE ON certifications
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_reviews_updated_at ON reviews;
 CREATE TRIGGER update_reviews_updated_at BEFORE UPDATE ON reviews
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_verification_requests_updated_at ON verification_requests;
 CREATE TRIGGER update_verification_requests_updated_at BEFORE UPDATE ON verification_requests
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
