@@ -117,18 +117,23 @@ CREATE TABLE IF NOT EXISTS client_profiles (
 -- RLS for client_profiles
 ALTER TABLE client_profiles ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Clients can view own profile" ON client_profiles;
 CREATE POLICY "Clients can view own profile" ON client_profiles
   FOR SELECT USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Clients can update own profile" ON client_profiles;
 CREATE POLICY "Clients can update own profile" ON client_profiles
   FOR UPDATE USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Clients can insert own profile" ON client_profiles;
 CREATE POLICY "Clients can insert own profile" ON client_profiles
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Public can view verified clients" ON client_profiles;
 CREATE POLICY "Public can view verified clients" ON client_profiles
   FOR SELECT USING (is_verified = true);
 
+DROP POLICY IF EXISTS "Admins can view all client profiles" ON client_profiles;
 CREATE POLICY "Admins can view all client profiles" ON client_profiles
   FOR SELECT USING (
     EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND user_type = 'admin')
@@ -229,9 +234,11 @@ CREATE TABLE IF NOT EXISTS reviews (
 -- RLS for reviews
 ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Anyone can view visible reviews" ON reviews;
 CREATE POLICY "Anyone can view visible reviews" ON reviews
   FOR SELECT USING (is_visible = true);
 
+DROP POLICY IF EXISTS "Users can create reviews for completed contracts" ON reviews;
 CREATE POLICY "Users can create reviews for completed contracts" ON reviews
   FOR INSERT WITH CHECK (
     auth.uid() = reviewer_id AND
@@ -244,6 +251,7 @@ CREATE POLICY "Users can create reviews for completed contracts" ON reviews
     )
   );
 
+DROP POLICY IF EXISTS "Reviewees can respond to reviews" ON reviews;
 CREATE POLICY "Reviewees can respond to reviews" ON reviews
   FOR UPDATE USING (auth.uid() = reviewee_id);
 
@@ -520,7 +528,7 @@ BEGIN
   -- Additional (20 points)
   IF profile_record.portfolio_url IS NOT NULL OR profile_record.website_url IS NOT NULL THEN completion := completion + 5; END IF;
   IF EXISTS (SELECT 1 FROM certifications WHERE user_id = user_uuid AND is_verified = true) THEN completion := completion + 10; END IF;
-  IF jsonb_array_length(profile_record.references) >= 2 THEN completion := completion + 5; END IF;
+  IF jsonb_array_length(profile_record.worker_references) >= 2 THEN completion := completion + 5; END IF;
   
   RETURN LEAST(completion, 100);
 END;
