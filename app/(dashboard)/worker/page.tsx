@@ -317,9 +317,16 @@ export default function WorkerDashboard() {
         {/* Welcome Section */}
         <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-8 text-white mb-8 shadow-lg">
           <div className="flex justify-between items-center">
-            <div>
+            <div className="flex-1">
               <h2 className="text-3xl font-bold mb-2">Welcome back, {user?.full_name}! 👋</h2>
-              <p className="text-indigo-100">Ready to find your next project?</p>
+              <p className="text-indigo-100 mb-4">Ready to find your next project?</p>
+              <button
+                onClick={() => router.push('/worker/discover')}
+                className="px-6 py-3 bg-white text-indigo-600 rounded-lg hover:bg-indigo-50 transition font-semibold flex items-center gap-2"
+              >
+                <Zap className="w-5 h-5" />
+                Discover Jobs with AI
+              </button>
             </div>
             <div className="hidden md:block">
               <div className="text-right">
