@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Documentation - ensure these are tracked
+!docs/
+!docs/**/*.md
+!database/
+!database/**/*.sql
+!database/**/*.md
+
+# Temporary test files created by Rovo Dev
+tmp_rovodev_*

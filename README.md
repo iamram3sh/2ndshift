@@ -260,6 +260,37 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - Consistent styling across all pages
 - Loading states and error handling
 
+## 📚 Documentation
+
+All project documentation has been organized in the `docs/` folder:
+
+- **[Documentation Index](./docs/README.md)** - Complete guide to all documentation
+- **[Project Structure](./PROJECT_STRUCTURE.md)** - Visual diagram of complete project organization
+- **[Before & After Comparison](./ORGANIZATION_BEFORE_AFTER.md)** - See the transformation
+- **[Architecture](./docs/architecture/)** - System design and architecture
+- **[Deployment](./docs/deployment/)** - Deployment guides and status
+- **[Security](./docs/security/)** - Security audits and implementation
+- **[Guides](./docs/guides/)** - Development, testing, and setup guides
+- **[Checklists](./docs/checklists/)** - Pre-launch and deployment checklists
+- **[Features](./docs/features/)** - Feature documentation and enhancements
+
+### Database Scripts
+
+All SQL scripts have been organized in the `database/` folder:
+
+- **[Database Documentation](./database/README.md)** - Database scripts overview
+- **[Schema](./database/schema/)** - Database schema and setup scripts (6 files)
+- **[Sample Data](./database/sample-data/)** - Test and sample data scripts (7 files)
+- **[Fixes](./database/fixes/)** - Maintenance and fix scripts (9 files)
+- **[Migrations](./database/migrations/)** - Database migration scripts (2 files)
+
+### Quick Links
+- [Quick Start Guide](./docs/guides/QUICKSTART.md)
+- [Development Guide](./docs/guides/DEVELOPMENT.md)
+- [Deployment Guide](./docs/deployment/DEPLOYMENT_GUIDE.md)
+- [Security Checklist](./docs/security/SECURITY_CHECKLIST.md)
+- [Database Setup](./database/README.md)
+
 ## 🔜 Next Steps
 
 ### High Priority
