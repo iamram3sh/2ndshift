@@ -1,0 +1,28 @@
+Contact: mailto:security@2ndshift.in
+Expires: 2025-12-31T23:59:59.000Z
+Preferred-Languages: en, hi
+Canonical: https://2ndshift.in/.well-known/security.txt
+
+# Security Policy for 2ndShift Platform
+
+If you discover a security vulnerability, please report it to us at security@2ndshift.in
+
+We take all security reports seriously and will respond within 48 hours.
+
+# Scope
+- Web application: https://2ndshift.in
+- API endpoints: https://2ndshift.in/api/*
+- Mobile applications (if applicable)
+
+# Out of Scope
+- Third-party services (Supabase, Razorpay, Google Analytics)
+- Social engineering attacks
+- Physical security issues
+
+# Safe Harbor
+We support responsible disclosure. Researchers who comply with this policy will not face legal action.
+
+# Acknowledgments
+We maintain a hall of fame for security researchers who help us improve our platform.
+
+Thank you for helping keep 2ndShift and our users safe!

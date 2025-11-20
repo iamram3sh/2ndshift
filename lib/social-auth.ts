@@ -130,14 +130,34 @@ export async function getUserInfo(
   throw new Error('Unsupported provider')
 }
 
-// Generate secure state parameter
+// Generate secure state parameter using cryptographically secure random
 export function generateState(): string {
-  return Math.random().toString(36).substring(2) + Date.now().toString(36)
+  if (typeof window !== 'undefined' && window.crypto && window.crypto.getRandomValues) {
+    // Browser environment - use Web Crypto API
+    const array = new Uint8Array(32)
+    window.crypto.getRandomValues(array)
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('')
+  } else if (typeof require !== 'undefined') {
+    // Node environment - use crypto module
+    const crypto = require('crypto')
+    return crypto.randomBytes(32).toString('hex')
+  }
+  throw new Error('No secure random number generator available')
 }
 
-// Verify state parameter
+// Verify state parameter using constant-time comparison to prevent timing attacks
 export function verifyState(state: string, storedState: string): boolean {
-  return state === storedState
+  if (state.length !== storedState.length) {
+    return false
+  }
+  
+  // Constant-time comparison
+  let result = 0
+  for (let i = 0; i < state.length; i++) {
+    result |= state.charCodeAt(i) ^ storedState.charCodeAt(i)
+  }
+  
+  return result === 0
 }
 
 // Social login button component props

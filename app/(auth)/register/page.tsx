@@ -21,7 +21,23 @@ export default function RegisterPage() {
 
   // Sanitize input to prevent XSS
   const sanitizeInput = (input: string): string => {
-    return input.trim().replace(/<[^>]*>/g, '')
+    return input
+      .trim()
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+      .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+      .replace(/<[^>]*>/g, '')
+      .replace(/javascript:/gi, '')
+      .replace(/on\w+\s*=/gi, '')
+  }
+
+  // Check for common passwords
+  const isCommonPassword = (password: string): boolean => {
+    const commonPasswords = [
+      'password', '12345678', 'qwerty123', 'abc123456', 'password123',
+      'admin123', 'welcome123', 'letmein123'
+    ]
+    const lowerPassword = password.toLowerCase()
+    return commonPasswords.some(common => lowerPassword.includes(common))
   }
 
   const validateForm = () => {
@@ -47,13 +63,17 @@ export default function RegisterPage() {
       newErrors.email = 'Invalid email format'
     }
     
-    // Password validation
+    // Enhanced password validation
     if (!formData.password) {
       newErrors.password = 'Password is required'
     } else if (formData.password.length < 8) {
       newErrors.password = 'Password must be at least 8 characters'
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = 'Password must contain uppercase, lowercase, and number'
+    } else if (formData.password.length > 128) {
+      newErrors.password = 'Password is too long'
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])/.test(formData.password)) {
+      newErrors.password = 'Password must contain uppercase, lowercase, number, and special character (@$!%*?&#)'
+    } else if (isCommonPassword(formData.password)) {
+      newErrors.password = 'This password is too common. Please choose a stronger password'
     }
     
     // Confirm password
@@ -86,7 +106,7 @@ export default function RegisterPage() {
             full_name: sanitizedName,
             user_type: formData.userType
           },
-          emailRedirectTo: `${window.location.origin}/auth/callback`
+          emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/auth/callback`
         }
       })
       

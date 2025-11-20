@@ -34,7 +34,8 @@ export default function AdminDashboard() {
       .single()
 
     if (profile) {
-      if (profile.user_type !== 'admin') {
+      // Allow both admin and superadmin to access
+      if (!['admin', 'superadmin'].includes(profile.user_type)) {
         router.push(`/${profile.user_type}`)
         return
       }
@@ -185,17 +186,27 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-xl shadow-sm p-6">
             <h3 className="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
             <div className="space-y-3">
-              <button className="w-full text-left px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
-                View All Users
+              <button 
+                onClick={() => router.push('/admin/users')}
+                className="w-full text-left px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition flex items-center justify-between"
+              >
+                <span>View All Users</span>
+                <Users className="w-4 h-4 text-gray-400" />
               </button>
-              <button className="w-full text-left px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
-                View All Projects
+              <button 
+                onClick={() => router.push('/admin/analytics')}
+                className="w-full text-left px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition flex items-center justify-between"
+              >
+                <span>Analytics Dashboard</span>
+                <TrendingUp className="w-4 h-4 text-gray-400" />
               </button>
-              <button className="w-full text-left px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
-                View Payments
+              <button className="w-full text-left px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition flex items-center justify-between">
+                <span>View All Projects</span>
+                <Briefcase className="w-4 h-4 text-gray-400" />
               </button>
-              <button className="w-full text-left px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition">
-                Generate Reports
+              <button className="w-full text-left px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition flex items-center justify-between">
+                <span>View Payments</span>
+                <DollarSign className="w-4 h-4 text-gray-400" />
               </button>
             </div>
           </div>

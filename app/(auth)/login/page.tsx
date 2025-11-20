@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase/client'
@@ -15,6 +15,27 @@ export default function LoginPage() {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
+
+  // Check for URL parameters on mount
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const verified = params.get('verified')
+      const error = params.get('error')
+      const msg = params.get('message')
+      
+      if (verified === 'true') {
+        setSuccessMessage('✅ Email verified successfully! You can now login.')
+      } else if (error === 'verification_failed') {
+        setMessage('Email verification failed. Please try again or contact support.')
+      } else if (msg === 'check_email') {
+        setSuccessMessage('📧 Please check your email to verify your account before logging in.')
+      } else if (msg === 'registration_success') {
+        setSuccessMessage('✅ Registration successful! You can now login.')
+      }
+    }
+  }, [])
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
@@ -57,24 +78,63 @@ export default function LoginPage() {
         
         if (profileError) {
           console.error('Profile fetch error:', profileError)
-          setMessage('Login successful but profile not found. Please contact support.')
+          // Profile might not exist yet, try to create it
+          const { error: createError } = await supabase
+            .from('users')
+            .insert({
+              id: data.user.id,
+              email: data.user.email!,
+              full_name: data.user.user_metadata?.full_name || 'User',
+              user_type: data.user.user_metadata?.user_type || 'worker',
+              profile_visibility: 'public'
+            })
+          
+          if (createError) {
+            setMessage('Login successful but profile setup failed. Please contact support.')
+            console.error('Profile creation error:', createError)
+            return
+          }
+          
+          // Retry fetching profile
+          const { data: newProfile } = await supabase
+            .from('users')
+            .select('user_type, full_name')
+            .eq('id', data.user.id)
+            .single()
+          
+          if (newProfile) {
+            redirectBasedOnUserType(newProfile.user_type)
+          } else {
+            setMessage('Profile setup failed. Please contact support.')
+          }
           return
         }
         
         if (profile) {
-          // Redirect based on user type
-          if (profile.user_type === 'worker') {
-            router.push('/worker')
-          } else if (profile.user_type === 'client') {
-            router.push('/client')
-          } else if (profile.user_type === 'admin') {
-            router.push('/admin')
-          } else {
-            setMessage('Invalid user type. Please contact support.')
-          }
+          redirectBasedOnUserType(profile.user_type)
         } else {
-          setMessage('Profile not found. Please complete registration.')
+          setMessage('Profile not found. Please contact support.')
         }
+      }
+    } catch (error: any) {
+      console.error('Login error:', error)
+      setMessage(error.message || 'Login failed. Please check your credentials.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const redirectBasedOnUserType = (userType: string) => {
+    // Redirect based on user type
+    if (userType === 'worker') {
+      router.push('/worker')
+    } else if (userType === 'client') {
+      router.push('/client')
+    } else if (userType === 'admin' || userType === 'superadmin') {
+      router.push('/admin')
+    } else {
+      setMessage('Invalid user type. Please contact support.')
+    }
       }
     } catch (error: any) {
       console.error('Login error:', error)
@@ -104,6 +164,16 @@ export default function LoginPage() {
             <h1 className="text-4xl font-bold text-slate-900 mb-3">Welcome back</h1>
             <p className="text-lg text-slate-600">Sign in to continue to your dashboard</p>
           </div>
+
+          {/* Success Message */}
+          {successMessage && (
+            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-800 text-sm flex items-start gap-3 animate-in slide-in-from-top">
+              <div className="w-5 h-5 bg-green-200 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <CheckCircle className="w-3 h-3 text-green-800" />
+              </div>
+              <span>{successMessage}</span>
+            </div>
+          )}
 
           {/* Error Message */}
           {message && (
@@ -261,3 +331,4 @@ export default function LoginPage() {
     </div>
   )
 }
+import React from 'react'
