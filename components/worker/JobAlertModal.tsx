@@ -80,7 +80,7 @@ export default function JobAlertModal({ isOpen, onClose, onSave, userId }: JobAl
 
   const handleSave = async () => {
     if (!alert.alert_name.trim()) {
-      alert('Please enter an alert name')
+      window.alert('Please enter an alert name')
       return
     }
 
@@ -113,7 +113,7 @@ export default function JobAlertModal({ isOpen, onClose, onSave, userId }: JobAl
       })
     } catch (error) {
       console.error('Error creating job alert:', error)
-      alert('Failed to create job alert')
+      window.alert('Failed to create job alert')
     } finally {
       setIsLoading(false)
     }
