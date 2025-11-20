@@ -112,7 +112,7 @@ export default function WorkerJobDiscoveryPage() {
         filteredData = filteredData.filter(project => 
           project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          project.required_skills.some(skill => 
+          project.required_skills.some((skill: string) => 
             skill.toLowerCase().includes(searchQuery.toLowerCase())
           )
         )
