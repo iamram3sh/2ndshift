@@ -92,21 +92,29 @@ export default function LoginPage() {
           if (createError) {
             console.error('Profile creation error:', createError)
             
-            // If it's a duplicate key error, try to fetch again
+            // If it's a duplicate key error, profile already exists - just fetch it
             if (createError.code === '23505' || createError.message?.includes('duplicate')) {
-              const { data: retryProfile } = await supabase
+              console.log('Profile already exists, fetching...')
+              await new Promise(resolve => setTimeout(resolve, 500))
+              
+              const { data: retryProfile, error: retryError } = await supabase
                 .from('users')
                 .select('user_type, full_name')
                 .eq('id', data.user.id)
                 .single()
               
               if (retryProfile) {
+                console.log('Profile found, redirecting...')
                 redirectBasedOnUserType(retryProfile.user_type)
+                setIsLoading(false)
                 return
               }
+              
+              console.error('Retry fetch failed:', retryError)
             }
             
-            setMessage('Login successful but profile setup failed. Please contact support: ' + createError.message)
+            setMessage('Login successful but profile setup failed. Please try again.')
+            setIsLoading(false)
             return
           }
           
