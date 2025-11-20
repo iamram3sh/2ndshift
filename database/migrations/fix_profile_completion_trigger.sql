@@ -1,9 +1,12 @@
 -- =====================================================
--- FIX: Profile Completion Trigger
+-- FIX: Profile Completion Trigger (NO INFINITE RECURSION)
 -- Fixes error when updating worker_profiles
 -- =====================================================
 
--- Drop and recreate the trigger function with proper logic
+-- DISABLE the trigger on users table to prevent recursion!
+DROP TRIGGER IF EXISTS trigger_update_profile_completion ON users;
+
+-- Drop and recreate the trigger function WITHOUT updating users from users trigger
 CREATE OR REPLACE FUNCTION update_profile_completion()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -11,15 +14,14 @@ DECLARE
   user_type_var TEXT;
   target_user_id UUID;
 BEGIN
-  -- Determine the user_id and user_type
+  -- ONLY run for worker_profiles and client_profiles, NOT users table
   IF TG_TABLE_NAME = 'users' THEN
-    target_user_id := NEW.id;
-    user_type_var := NEW.user_type;
-  ELSE
-    -- For worker_profiles or client_profiles tables
-    target_user_id := NEW.user_id;
-    SELECT user_type INTO user_type_var FROM users WHERE id = target_user_id;
+    RETURN NEW; -- Skip to prevent recursion
   END IF;
+
+  -- For worker_profiles or client_profiles tables
+  target_user_id := NEW.user_id;
+  SELECT user_type INTO user_type_var FROM users WHERE id = target_user_id;
 
   -- Calculate completion based on user type
   IF user_type_var = 'worker' THEN
@@ -27,10 +29,10 @@ BEGIN
   ELSIF user_type_var = 'client' THEN
     completion := calculate_client_profile_completion(target_user_id);
   ELSE
-    completion := 0;
+    RETURN NEW;
   END IF;
 
-  -- Update the users table
+  -- Update the users table (won't trigger recursion now)
   UPDATE users 
   SET profile_completion_percentage = completion
   WHERE id = target_user_id;
@@ -39,13 +41,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Ensure triggers are properly set up
-DROP TRIGGER IF EXISTS trigger_update_profile_completion ON users;
-CREATE TRIGGER trigger_update_profile_completion
-  AFTER INSERT OR UPDATE ON users
-  FOR EACH ROW
-  EXECUTE FUNCTION update_profile_completion();
-
+-- Only set triggers on profile tables, NOT on users table
 DROP TRIGGER IF EXISTS trigger_update_worker_profile_completion ON worker_profiles;
 CREATE TRIGGER trigger_update_worker_profile_completion
   AFTER INSERT OR UPDATE ON worker_profiles
