@@ -1,0 +1,17 @@
+# robots.txt for 2ndShift
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin
+Disallow: /superadmin
+Disallow: /api/
+Disallow: /_next/
+Disallow: /login
+Disallow: /register
+
+# Sitemap location
+Sitemap: https://2ndshift.com/sitemap.xml
+
+# Crawl-delay for bots
+Crawl-delay: 1

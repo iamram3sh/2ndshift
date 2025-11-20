@@ -37,10 +37,11 @@ vercel --prod
 Add these in Vercel dashboard (Settings → Environment Variables):
 
 ```env
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=https://jxlzyfwthzdnulwpukij.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4bHp5Znd0aHpkbnVsd3B1a2lqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM1ODA5MDMsImV4cCI6MjA3OTE1NjkwM30.2xGctLNmLjIhC3remB23didwxpwy-9xYT6qxLCBShPg
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4bHp5Znd0aHpkbnVsd3B1a2lqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzU4MDkwMywiZXhwIjoyMDc5MTU2OTAzfQ.8c6Y7tIh0KG2mklCYqaXNHgaNd7thnFoT517vDQl1ew
+# Supabase Configuration
+# Get these from: https://app.supabase.com/project/_/settings/api
+NEXT_PUBLIC_SUPABASE_URL=your-project-url.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
 
 # Optional (for future)
 # NEXT_PUBLIC_SITE_URL=https://your-domain.vercel.app
