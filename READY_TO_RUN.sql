@@ -94,16 +94,13 @@ BEGIN
   -- =====================================================
   -- 4. COMPLETED CONTRACT
   -- =====================================================
-  -- Calculate fees manually since they're NOT NULL
+  -- Only insert base fields, let DB calculate generated columns
   INSERT INTO contracts (
     project_id, 
     worker_id, 
     contract_amount, 
     platform_fee_percentage, 
-    platform_fee,
     tds_percentage, 
-    tds_amount,
-    worker_payout,
     nda_signed, 
     conflict_declaration_signed, 
     status, 
@@ -114,10 +111,7 @@ BEGIN
     v_worker_id, 
     15000,
     10,
-    1500,  -- 10% of 15000
     2,
-    300,   -- 2% of 15000
-    13200, -- 15000 - 1500 - 300
     true, 
     true, 
     'completed',
