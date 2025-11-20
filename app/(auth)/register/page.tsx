@@ -114,7 +114,7 @@ export default function RegisterPage() {
       
       if (data.user) {
         // Wait a bit for auth user to be created
-        await new Promise(resolve => setTimeout(resolve, 500))
+        await new Promise(resolve => setTimeout(resolve, 1000))
         
         // Create user profile in public.users table
         const { error: profileError } = await supabase
@@ -124,15 +124,26 @@ export default function RegisterPage() {
             email: sanitizedEmail,
             full_name: sanitizedName,
             user_type: formData.userType,
-            profile_visibility: 'public',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
+            profile_visibility: 'public'
           })
         
         if (profileError) {
           console.error('Profile creation error:', profileError)
-          // If profile creation fails, show error but don't block
-          setMessage('Account created but profile setup incomplete. Please contact support.')
+          
+          // Check if it's a duplicate key error (user already exists)
+          if (profileError.message?.includes('duplicate') || profileError.code === '23505') {
+            // Profile already exists, that's fine!
+            setMessage('Registration successful! Redirecting to login...')
+            setTimeout(() => {
+              router.push('/login')
+            }, 2000)
+          } else {
+            // Real error - but still let them try to login (login will create profile)
+            setMessage('Account created! Please try logging in.')
+            setTimeout(() => {
+              router.push('/login')
+            }, 2000)
+          }
         } else {
           setMessage('Registration successful! Redirecting to login...')
           setTimeout(() => {
