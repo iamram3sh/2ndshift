@@ -14,6 +14,32 @@ export interface User {
   profile_visibility: ProfileVisibility
   created_at: string
   updated_at: string
+  
+  // Enhanced fields for investor-ready features
+  profile_photo_url?: string
+  date_of_birth?: string
+  gender?: string
+  city?: string
+  state?: string
+  country?: string
+  pincode?: string
+  address?: string
+  phone_verified?: boolean
+  email_verified?: boolean
+  is_online?: boolean
+  last_seen?: string
+  availability_status?: 'online' | 'away' | 'offline' | 'busy' | 'available'
+  profile_completion_percentage?: number
+  government_id_type?: string
+  government_id_number?: string
+  government_id_url?: string
+  address_proof_url?: string
+  verification_status?: 'unverified' | 'pending' | 'verified' | 'rejected'
+  verification_notes?: string
+  verified_at?: string
+  verified_by?: string
+  trust_score?: number
+  badges?: any
 }
 
 export interface WorkerProfile {
