@@ -49,7 +49,11 @@ export async function withRateLimit(
   const result = checkRateLimit(request, config)
   
   if (!result.success) {
-    return createRateLimitResponse(result.resetTime)
+    const rateLimitResponse = createRateLimitResponse(result.resetTime)
+    return NextResponse.json(
+      { error: 'Rate limit exceeded', resetTime: result.resetTime },
+      { status: 429, headers: rateLimitResponse.headers }
+    )
   }
   
   const response = await handler(request)
