@@ -1,11 +1,18 @@
 // Email service using Resend
 import { Resend } from 'resend'
 
-// Initialize Resend with API key
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 // Default sender email
 const DEFAULT_FROM = process.env.EMAIL_FROM || 'noreply@2ndshift.in'
+
+// Lazy-initialize Resend client only when needed to avoid build-time errors
+let resend: Resend | null = null
+
+function getResendClient(): Resend {
+  if (!resend && process.env.RESEND_API_KEY) {
+    resend = new Resend(process.env.RESEND_API_KEY)
+  }
+  return resend as Resend
+}
 
 /**
  * Send email using Resend
@@ -32,7 +39,8 @@ export async function sendEmail(
     }
 
     // Send email using Resend
-    const { data, error } = await resend.emails.send({
+    const client = getResendClient()
+    const { data, error } = await client.emails.send({
       from: from || DEFAULT_FROM,
       to,
       subject: template.subject,
