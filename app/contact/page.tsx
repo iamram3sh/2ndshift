@@ -108,9 +108,11 @@ export default function ContactPage() {
                   <div>
                     <div className="font-semibold text-slate-900 mb-1">Visit Us</div>
                     <p className="text-slate-600">
-                      Bangalore, Karnataka
+                      2ndShift India Private Limited
                       <br />
-                      India - 560001
+                      Hyderabad, Telangana
+                      <br />
+                      India - 500001
                     </p>
                   </div>
                 </div>
