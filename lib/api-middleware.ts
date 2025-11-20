@@ -14,7 +14,7 @@ export async function withAuth(
   handler: (req: AuthenticatedRequest) => Promise<NextResponse>
 ): Promise<NextResponse> {
   try {
-    const supabase = await createServerSupabaseClient()
+    const supabase = createServerSupabaseClient()
     const { data: { user }, error } = await supabase.auth.getUser()
     
     if (error || !user) {

@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
         }
 
         const { contractId, amount } = parseResult.data!
-        const supabase = await createServerSupabaseClient()
+        const supabase = createServerSupabaseClient()
         
         // Verify contract exists and user is authorized
         const { data: contract, error: contractError } = await supabase
