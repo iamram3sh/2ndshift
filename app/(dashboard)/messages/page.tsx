@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
 import { ConversationList } from '@/components/messaging/ConversationList'
@@ -8,7 +8,7 @@ import { ChatInterface } from '@/components/messaging/ChatInterface'
 import { MessageSquare, ArrowLeft } from 'lucide-react'
 import type { User } from '@/types/database.types'
 
-export default function MessagesPage() {
+function MessagesContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [user, setUser] = useState<User | null>(null)
@@ -216,5 +216,17 @@ export default function MessagesPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function MessagesPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="text-lg text-gray-600 dark:text-gray-400">Loading messages...</div>
+      </div>
+    }>
+      <MessagesContent />
+    </Suspense>
   )
 }
