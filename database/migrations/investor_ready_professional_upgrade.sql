@@ -173,12 +173,15 @@ CREATE TABLE IF NOT EXISTS certifications (
 -- RLS for certifications
 ALTER TABLE certifications ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can manage own certifications" ON certifications;
 CREATE POLICY "Users can manage own certifications" ON certifications
   FOR ALL USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Public can view verified certifications" ON certifications;
 CREATE POLICY "Public can view verified certifications" ON certifications
   FOR SELECT USING (is_verified = true);
 
+DROP POLICY IF EXISTS "Admins can manage all certifications" ON certifications;
 CREATE POLICY "Admins can manage all certifications" ON certifications
   FOR ALL USING (
     EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND user_type = 'admin')
@@ -291,9 +294,11 @@ CREATE TABLE IF NOT EXISTS verification_requests (
 -- RLS for verification_requests
 ALTER TABLE verification_requests ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can manage own verification requests" ON verification_requests;
 CREATE POLICY "Users can manage own verification requests" ON verification_requests
   FOR ALL USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Admins can manage all verification requests" ON verification_requests;
 CREATE POLICY "Admins can manage all verification requests" ON verification_requests
   FOR ALL USING (
     EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND user_type = 'admin')
@@ -332,12 +337,15 @@ CREATE TABLE IF NOT EXISTS notifications (
 -- RLS for notifications
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own notifications" ON notifications;
 CREATE POLICY "Users can view own notifications" ON notifications
   FOR SELECT USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own notifications" ON notifications;
 CREATE POLICY "Users can update own notifications" ON notifications
   FOR UPDATE USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "System can create notifications" ON notifications;
 CREATE POLICY "System can create notifications" ON notifications
   FOR INSERT WITH CHECK (true);
 
@@ -364,9 +372,11 @@ CREATE TABLE IF NOT EXISTS user_activity_log (
 -- RLS for activity log
 ALTER TABLE user_activity_log ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view own activity" ON user_activity_log;
 CREATE POLICY "Users can view own activity" ON user_activity_log
   FOR SELECT USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Admins can view all activity" ON user_activity_log;
 CREATE POLICY "Admins can view all activity" ON user_activity_log
   FOR SELECT USING (
     EXISTS (SELECT 1 FROM users WHERE id = auth.uid() AND user_type = 'admin')
@@ -388,6 +398,7 @@ CREATE TABLE IF NOT EXISTS saved_projects (
 -- RLS for saved_projects
 ALTER TABLE saved_projects ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can manage own saved projects" ON saved_projects;
 CREATE POLICY "Users can manage own saved projects" ON saved_projects
   FOR ALL USING (auth.uid() = user_id);
 
@@ -395,44 +406,103 @@ CREATE POLICY "Users can manage own saved projects" ON saved_projects
 -- 10. MESSAGES TABLE (Anonymous Communication)
 -- =====================================================
 
-CREATE TABLE IF NOT EXISTS messages (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  conversation_id UUID NOT NULL,
-  sender_id UUID REFERENCES users(id) ON DELETE CASCADE,
-  recipient_id UUID REFERENCES users(id) ON DELETE CASCADE,
+-- Check if messages table exists and add missing columns
+DO $$ 
+BEGIN
+  -- Add recipient_id if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'messages' AND column_name = 'recipient_id'
+  ) THEN
+    ALTER TABLE messages ADD COLUMN recipient_id UUID REFERENCES users(id) ON DELETE CASCADE;
+  END IF;
   
-  -- Message content
-  message_text TEXT NOT NULL,
-  attachments JSONB DEFAULT '[]',
+  -- Add conversation_id if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'messages' AND column_name = 'conversation_id'
+  ) THEN
+    ALTER TABLE messages ADD COLUMN conversation_id UUID;
+  END IF;
   
-  -- Anonymous mode (before hiring)
-  is_anonymous BOOLEAN DEFAULT true,
-  sender_display_name TEXT, -- e.g., "Worker_12345" or "Client_67890"
+  -- Add attachments if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'messages' AND column_name = 'attachments'
+  ) THEN
+    ALTER TABLE messages ADD COLUMN attachments JSONB DEFAULT '[]';
+  END IF;
   
-  -- Status
-  is_read BOOLEAN DEFAULT false,
-  read_at TIMESTAMPTZ,
-  is_deleted_by_sender BOOLEAN DEFAULT false,
-  is_deleted_by_recipient BOOLEAN DEFAULT false,
+  -- Add is_anonymous if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'messages' AND column_name = 'is_anonymous'
+  ) THEN
+    ALTER TABLE messages ADD COLUMN is_anonymous BOOLEAN DEFAULT true;
+  END IF;
   
-  -- Moderation
-  is_flagged BOOLEAN DEFAULT false,
-  flag_reason TEXT,
+  -- Add sender_display_name if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'messages' AND column_name = 'sender_display_name'
+  ) THEN
+    ALTER TABLE messages ADD COLUMN sender_display_name TEXT;
+  END IF;
   
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
+  -- Add is_deleted_by_sender if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'messages' AND column_name = 'is_deleted_by_sender'
+  ) THEN
+    ALTER TABLE messages ADD COLUMN is_deleted_by_sender BOOLEAN DEFAULT false;
+  END IF;
+  
+  -- Add is_deleted_by_recipient if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'messages' AND column_name = 'is_deleted_by_recipient'
+  ) THEN
+    ALTER TABLE messages ADD COLUMN is_deleted_by_recipient BOOLEAN DEFAULT false;
+  END IF;
+  
+  -- Add is_flagged if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'messages' AND column_name = 'is_flagged'
+  ) THEN
+    ALTER TABLE messages ADD COLUMN is_flagged BOOLEAN DEFAULT false;
+  END IF;
+  
+  -- Add flag_reason if it doesn't exist
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'messages' AND column_name = 'flag_reason'
+  ) THEN
+    ALTER TABLE messages ADD COLUMN flag_reason TEXT;
+  END IF;
+END $$;
 
--- RLS for messages
+-- Ensure RLS is enabled
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 
+-- Drop and recreate policies
+DROP POLICY IF EXISTS "Users can view own messages" ON messages;
 CREATE POLICY "Users can view own messages" ON messages
-  FOR SELECT USING (auth.uid() = sender_id OR auth.uid() = recipient_id);
+  FOR SELECT USING (
+    auth.uid() = sender_id OR 
+    (recipient_id IS NOT NULL AND auth.uid() = recipient_id)
+  );
 
+DROP POLICY IF EXISTS "Users can send messages" ON messages;
 CREATE POLICY "Users can send messages" ON messages
   FOR INSERT WITH CHECK (auth.uid() = sender_id);
 
+DROP POLICY IF EXISTS "Users can update own messages" ON messages;
 CREATE POLICY "Users can update own messages" ON messages
-  FOR UPDATE USING (auth.uid() = sender_id OR auth.uid() = recipient_id);
+  FOR UPDATE USING (
+    auth.uid() = sender_id OR 
+    (recipient_id IS NOT NULL AND auth.uid() = recipient_id)
+  );
 
 -- =====================================================
 -- 11. ENHANCED APPLICATIONS TABLE
