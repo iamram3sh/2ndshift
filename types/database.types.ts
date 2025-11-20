@@ -80,3 +80,93 @@ export interface Payment {
   payment_date?: string
   created_at: string
 }
+
+export interface Review {
+  id: string
+  contract_id: string
+  reviewer_id: string
+  reviewee_id: string
+  rating: number
+  review_text?: string
+  response_text?: string
+  is_visible: boolean
+  is_flagged: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface Verification {
+  id: string
+  user_id: string
+  verification_type: 'email' | 'phone' | 'pan' | 'aadhar' | 'bank_account' | 'address'
+  status: 'pending' | 'verified' | 'rejected'
+  document_urls?: string[]
+  verification_data?: any
+  verified_by?: string
+  verified_at?: string
+  rejection_reason?: string
+  notes?: string
+  created_at: string
+  updated_at: string
+}
+
+export interface Message {
+  id: string
+  conversation_id: string
+  sender_id: string
+  receiver_id: string
+  project_id?: string
+  message_text: string
+  attachment_urls?: string[]
+  is_read: boolean
+  read_at?: string
+  is_flagged: boolean
+  created_at: string
+}
+
+export interface Notification {
+  id: string
+  user_id: string
+  type: 'application' | 'contract' | 'payment' | 'message' | 'review' | 'system' | 'verification'
+  title: string
+  message: string
+  link?: string
+  data?: any
+  is_read: boolean
+  read_at?: string
+  created_at: string
+}
+
+export interface Dispute {
+  id: string
+  contract_id: string
+  raised_by: string
+  against_user: string
+  reason: string
+  description: string
+  evidence_urls?: string[]
+  status: 'open' | 'under_review' | 'resolved' | 'closed'
+  priority: 'low' | 'medium' | 'high' | 'urgent'
+  resolution?: string
+  resolved_by?: string
+  resolved_at?: string
+  admin_notes?: string
+  created_at: string
+  updated_at: string
+}
+
+export interface Report {
+  id: string
+  reported_by: string
+  reported_user: string
+  report_type: 'user' | 'project' | 'message' | 'review' | 'profile'
+  reference_id: string
+  reason: string
+  description?: string
+  status: 'pending' | 'reviewed' | 'action_taken' | 'dismissed'
+  reviewed_by?: string
+  admin_notes?: string
+  action_taken?: string
+  created_at: string
+  updated_at: string
+}
