@@ -105,51 +105,91 @@ export default function EditWorkerProfilePage() {
   const handleSave = async () => {
     setSaving(true)
     try {
+      console.log('Starting profile save...')
+      
+      // Prepare user data - only include non-empty values
+      const userData: any = {
+        full_name: formData.full_name,
+      }
+      
+      // Add optional fields only if they have values
+      if (formData.phone) userData.phone = formData.phone
+      if (formData.date_of_birth) userData.date_of_birth = formData.date_of_birth
+      if (formData.gender) userData.gender = formData.gender
+      if (formData.city) userData.city = formData.city
+      if (formData.state) userData.state = formData.state
+      if (formData.country) userData.country = formData.country
+      if (formData.address) userData.address = formData.address
+      
+      console.log('Updating users table with data:', userData)
+      
       // Update users table
       const { error: userError } = await supabase
         .from('users')
-        .update({
-          full_name: formData.full_name,
-          phone: formData.phone,
-          date_of_birth: formData.date_of_birth,
-          gender: formData.gender,
-          city: formData.city,
-          state: formData.state,
-          country: formData.country,
-          address: formData.address
-        })
+        .update(userData)
         .eq('id', user.id)
 
-      if (userError) throw userError
+      if (userError) {
+        console.error('User update error:', userError)
+        throw new Error(`Failed to update user info: ${userError.message}`)
+      }
+
+      console.log('Users table updated successfully')
+
+      // Prepare worker profile data
+      const profileData: any = {
+        user_id: user.id,
+        // Always include arrays (even if empty) to avoid NOT NULL constraint issues
+        skills: formData.skills && formData.skills.length > 0 ? formData.skills : [],
+        languages: formData.languages && formData.languages.length > 0 ? formData.languages : [],
+      }
+      
+      // Add fields with proper type handling
+      if (formData.profession) profileData.profession = formData.profession
+      if (formData.tagline) profileData.tagline = formData.tagline
+      if (formData.bio) profileData.bio = formData.bio
+      
+      // Handle numeric fields - only set if valid number
+      if (formData.hourly_rate && formData.hourly_rate !== '') {
+        const rate = parseFloat(formData.hourly_rate)
+        if (!isNaN(rate) && rate >= 0) profileData.hourly_rate = rate
+      }
+      
+      if (formData.experience_years && formData.experience_years !== '') {
+        const years = parseInt(formData.experience_years)
+        if (!isNaN(years) && years >= 0) profileData.experience_years = years
+      }
+      
+      // URLs and text fields
+      if (formData.education) profileData.education = formData.education
+      if (formData.portfolio_url) profileData.portfolio_url = formData.portfolio_url
+      if (formData.linkedin_url) profileData.linkedin_url = formData.linkedin_url
+      if (formData.github_url) profileData.github_url = formData.github_url
+      if (formData.website_url) profileData.website_url = formData.website_url
+
+      console.log('Upserting worker_profiles with data:', profileData)
 
       // Upsert worker_profiles table (insert or update)
       const { error: profileError } = await supabase
         .from('worker_profiles')
-        .upsert({
-          user_id: user.id,
-          profession: formData.profession,
-          tagline: formData.tagline,
-          bio: formData.bio,
-          hourly_rate: parseFloat(formData.hourly_rate) || 0,
-          experience_years: parseInt(formData.experience_years) || 0,
-          skills: formData.skills,
-          languages: formData.languages,
-          education: formData.education,
-          portfolio_url: formData.portfolio_url,
-          linkedin_url: formData.linkedin_url,
-          github_url: formData.github_url,
-          website_url: formData.website_url
-        }, {
+        .upsert(profileData, {
           onConflict: 'user_id'
         })
 
-      if (profileError) throw profileError
+      if (profileError) {
+        console.error('Worker profile update error:', profileError)
+        throw new Error(`Failed to update worker profile: ${profileError.message}`)
+      }
 
+      console.log('Worker profile updated successfully')
       alert('Profile updated successfully!')
       router.push('/worker')
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving profile:', error)
-      alert('Failed to save profile')
+      
+      // Show detailed error message
+      const errorMessage = error?.message || 'Unknown error occurred'
+      alert(`Failed to save profile\n\nError: ${errorMessage}\n\nPlease check the browser console for more details.`)
     } finally {
       setSaving(false)
     }
