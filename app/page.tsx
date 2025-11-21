@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Briefcase, Shield, CheckCircle, Clock, Users, TrendingUp, Globe, Award, Star, Play, BarChart3, Zap, Lock, FileCheck, Headphones, ChevronRight, Mail, Phone, MapPin, Linkedin, Twitter, Facebook, Quote, X } from 'lucide-react'
+import { ArrowRight, Briefcase, Shield, CheckCircle, Clock, Users, TrendingUp, Globe, Award, Star, Play, BarChart3, Zap, Lock, FileCheck, Headphones, ChevronRight, Mail, Phone, MapPin, Linkedin, Twitter, Facebook, Quote, X, DollarSign } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import BackToTop from '@/components/shared/BackToTop'
 import StructuredData from '@/components/shared/StructuredData'
