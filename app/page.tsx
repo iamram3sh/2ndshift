@@ -179,10 +179,10 @@ export default function HomePage() {
               </h1>
               
               <p className="text-lg sm:text-xl text-slate-600 mb-8 sm:mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                <span className="text-xl sm:text-2xl font-bold text-slate-900 block mb-2">Earn ₹6,000-15,000 extra per month</span>
-                Work flexible shifts that fit your schedule.
+                <span className="text-xl sm:text-2xl font-bold text-slate-900 block mb-2">Earn ₹50,000-1,50,000 extra per month</span>
+                Use your professional skills. Work remotely. Set your schedule.
                 <br />
-                <span className="font-semibold text-slate-800">Get paid within 24 hours. Zero fees.</span>
+                <span className="font-semibold text-slate-800">Weekly payouts. Only 5% platform fee.</span>
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start items-stretch sm:items-center mb-8 sm:mb-10">
@@ -270,34 +270,34 @@ export default function HomePage() {
                 <Users className="w-4 h-4" />
                 For Workers
               </div>
-              <h3 className="text-3xl font-bold text-slate-900 mb-6">Earn ₹6,000-15,000/month extra</h3>
+              <h3 className="text-3xl font-bold text-slate-900 mb-6">Earn ₹50K-1.5L/month extra</h3>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-purple-600 flex-shrink-0 mt-1" />
                   <div>
-                    <div className="font-bold text-slate-900">Paid within 24 hours</div>
-                    <div className="text-slate-600 text-sm">Direct bank transfer after every shift</div>
+                    <div className="font-bold text-slate-900">Weekly payouts</div>
+                    <div className="text-slate-600 text-sm">Get paid every week via direct bank transfer</div>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-purple-600 flex-shrink-0 mt-1" />
                   <div>
-                    <div className="font-bold text-slate-900">Zero joining fees</div>
-                    <div className="text-slate-600 text-sm">100% free to sign up and start</div>
+                    <div className="font-bold text-slate-900">Only 5% platform fee</div>
+                    <div className="text-slate-600 text-sm">One of the lowest in India. You keep 95%</div>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-purple-600 flex-shrink-0 mt-1" />
                   <div>
-                    <div className="font-bold text-slate-900">Flexible timing</div>
-                    <div className="text-slate-600 text-sm">Choose shifts that fit your schedule</div>
+                    <div className="font-bold text-slate-900">100% remote work</div>
+                    <div className="text-slate-600 text-sm">Work from home on your own schedule</div>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-purple-600 flex-shrink-0 mt-1" />
                   <div>
-                    <div className="font-bold text-slate-900">Verified companies only</div>
-                    <div className="text-slate-600 text-sm">Safe, legal, and secure work</div>
+                    <div className="font-bold text-slate-900">Professional projects</div>
+                    <div className="text-slate-600 text-sm">Work with verified startups and companies</div>
                   </div>
                 </li>
               </ul>
@@ -313,34 +313,34 @@ export default function HomePage() {
                 <Briefcase className="w-4 h-4" />
                 For Companies
               </div>
-              <h3 className="text-3xl font-bold text-slate-900 mb-6">Fill shifts in under 1 hour</h3>
+              <h3 className="text-3xl font-bold text-slate-900 mb-6">Hire skilled professionals instantly</h3>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
                   <div>
-                    <div className="font-bold text-slate-900">Hire in 3 minutes</div>
-                    <div className="text-slate-600 text-sm">Post job → Review → Hire. That's it.</div>
+                    <div className="font-bold text-slate-900">Post and hire in minutes</div>
+                    <div className="text-slate-600 text-sm">Access 2,500+ verified professionals</div>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
                   <div>
-                    <div className="font-bold text-slate-900">Pay after work done</div>
-                    <div className="text-slate-600 text-sm">Only pay when shift is completed</div>
+                    <div className="font-bold text-slate-900">Pay only for hours worked</div>
+                    <div className="text-slate-600 text-sm">Flexible billing, no long-term contracts</div>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
                   <div>
-                    <div className="font-bold text-slate-900">Verified workers</div>
-                    <div className="text-slate-600 text-sm">Background checked, ID verified</div>
+                    <div className="font-bold text-slate-900">Pre-vetted talent</div>
+                    <div className="text-slate-600 text-sm">Developers, testers, DevOps, cloud experts</div>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
                   <div>
-                    <div className="font-bold text-slate-900">Replacement guarantee</div>
-                    <div className="text-slate-600 text-sm">Worker doesn't show? We send another</div>
+                    <div className="font-bold text-slate-900">60% cheaper than agencies</div>
+                    <div className="text-slate-600 text-sm">No recruitment fees or markups</div>
                   </div>
                 </li>
               </ul>
@@ -418,15 +418,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Sample Earnings Table */}
+      {/* Sample Earnings Table - Remote Professional Roles */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-pink-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4">
-              How much can you earn?
+              Earn with your skills. Work remotely.
             </h2>
             <p className="text-xl text-slate-600">
-              Real numbers from real shifts
+              Real earnings for professional remote work
             </p>
           </div>
 
@@ -435,33 +435,38 @@ export default function HomePage() {
               <table className="w-full">
                 <thead>
                   <tr className="bg-gradient-to-r from-purple-600 to-pink-600 text-white">
-                    <th className="px-6 py-4 text-left font-bold">Role</th>
-                    <th className="px-6 py-4 text-center font-bold">Per Shift</th>
-                    <th className="px-6 py-4 text-center font-bold">Duration</th>
-                    <th className="px-6 py-4 text-right font-bold">Monthly (8 shifts)</th>
+                    <th className="px-6 py-4 text-left font-bold">Remote Role</th>
+                    <th className="px-6 py-4 text-center font-bold">Per Hour</th>
+                    <th className="px-6 py-4 text-center font-bold">Work Type</th>
+                    <th className="px-6 py-4 text-right font-bold">Monthly (20 hrs/week)</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200">
                   {[
-                    { role: 'Delivery Partner', perShift: '₹500-700', duration: '6-8 hours', monthly: '₹4,000-5,600', icon: '🛵' },
-                    { role: 'Sales Executive', perShift: '₹600-900', duration: '4-6 hours', monthly: '₹4,800-7,200', icon: '📊' },
-                    { role: 'Customer Support', perShift: '₹400-600', duration: '4-6 hours', monthly: '₹3,200-4,800', icon: '🎧' },
-                    { role: 'Warehouse Helper', perShift: '₹500-700', duration: '6-8 hours', monthly: '₹4,000-5,600', icon: '📦' },
-                    { role: 'Data Entry', perShift: '₹300-500', duration: '4-6 hours', monthly: '₹2,400-4,000', icon: '💻' },
-                    { role: 'Event Staff', perShift: '₹800-1,200', duration: '6-8 hours', monthly: '₹6,400-9,600', icon: '🎉' }
+                    { role: 'Software Developer', perHour: '₹800-1,500', type: 'Project-based', monthly: '₹64,000-1,20,000', icon: '💻', desc: 'Backend, Frontend, Full-stack' },
+                    { role: 'QA/Test Engineer', perHour: '₹600-1,000', type: 'Remote', monthly: '₹48,000-80,000', icon: '🧪', desc: 'Manual & Automation testing' },
+                    { role: 'DevOps Engineer', perHour: '₹900-1,800', type: 'On-demand', monthly: '₹72,000-1,44,000', icon: '⚙️', desc: 'CI/CD, Cloud deployment' },
+                    { role: 'Cloud Architect', perHour: '₹1,200-2,000', type: 'Consulting', monthly: '₹96,000-1,60,000', icon: '☁️', desc: 'AWS, Azure, GCP' },
+                    { role: 'Security Auditor', perHour: '₹1,000-1,800', type: 'Project-based', monthly: '₹80,000-1,44,000', icon: '🔒', desc: 'Penetration testing, compliance' },
+                    { role: 'IT Consultant', perHour: '₹700-1,200', type: 'Hourly', monthly: '₹56,000-96,000', icon: '📊', desc: 'System design, optimization' },
+                    { role: 'Data Analyst', perHour: '₹600-1,100', type: 'Remote', monthly: '₹48,000-88,000', icon: '📈', desc: 'SQL, Python, visualization' },
+                    { role: 'Network Engineer', perHour: '₹700-1,300', type: 'On-demand', monthly: '₹56,000-1,04,000', icon: '🌐', desc: 'Setup, troubleshooting, security' }
                   ].map((item, index) => (
                     <tr key={index} className="hover:bg-purple-50 transition-colors">
                       <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-start gap-3">
                           <span className="text-2xl">{item.icon}</span>
-                          <span className="font-semibold text-slate-900">{item.role}</span>
+                          <div>
+                            <div className="font-semibold text-slate-900">{item.role}</div>
+                            <div className="text-xs text-slate-500 mt-1">{item.desc}</div>
+                          </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 text-center">
-                        <span className="font-bold text-purple-600">{item.perShift}</span>
+                        <span className="font-bold text-purple-600">{item.perHour}</span>
                       </td>
                       <td className="px-6 py-4 text-center text-slate-600 text-sm">
-                        {item.duration}
+                        {item.type}
                       </td>
                       <td className="px-6 py-4 text-right">
                         <span className="font-bold text-green-600 text-lg">{item.monthly}</span>
@@ -476,7 +481,7 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <CheckCircle className="w-6 h-6 text-green-600" />
-                  <span className="text-slate-700 font-medium">Based on 8 shifts per month (2 shifts per week)</span>
+                  <span className="text-slate-700 font-medium">Based on 20 hours per week (~5 hrs on weekends)</span>
                 </div>
                 <Link 
                   href="/register?type=worker"
@@ -491,20 +496,31 @@ export default function HomePage() {
           {/* Additional Info Cards */}
           <div className="grid md:grid-cols-3 gap-6 mt-12">
             <div className="bg-white p-6 rounded-2xl border-2 border-purple-200 text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">₹15,000+</div>
-              <div className="text-slate-700 font-medium">Top earners per month</div>
-              <div className="text-sm text-slate-500 mt-1">Working weekends only</div>
+              <div className="text-3xl font-bold text-purple-600 mb-2">₹1.5L+</div>
+              <div className="text-slate-700 font-medium">Top professionals earn</div>
+              <div className="text-sm text-slate-500 mt-1">Senior engineers working weekends</div>
             </div>
             <div className="bg-white p-6 rounded-2xl border-2 border-green-200 text-center">
-              <div className="text-3xl font-bold text-green-600 mb-2">24 hours</div>
-              <div className="text-slate-700 font-medium">Payment time</div>
-              <div className="text-sm text-slate-500 mt-1">After shift completion</div>
+              <div className="text-3xl font-bold text-green-600 mb-2">Weekly</div>
+              <div className="text-slate-700 font-medium">Payment frequency</div>
+              <div className="text-sm text-slate-500 mt-1">Get paid every week</div>
             </div>
             <div className="bg-white p-6 rounded-2xl border-2 border-blue-200 text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">0%</div>
-              <div className="text-slate-700 font-medium">Platform fees</div>
-              <div className="text-sm text-slate-500 mt-1">Keep everything you earn</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">5%</div>
+              <div className="text-slate-700 font-medium">Platform fee</div>
+              <div className="text-sm text-slate-500 mt-1">One of the lowest in India</div>
             </div>
+          </div>
+
+          {/* Work Remotely Badge */}
+          <div className="mt-12 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-8 border-2 border-indigo-200 text-center">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <span className="text-4xl">🏠</span>
+              <h3 className="text-2xl font-bold text-slate-900">100% Remote Work</h3>
+            </div>
+            <p className="text-slate-600 max-w-2xl mx-auto">
+              All roles can be done from home. No commute, no office politics. Just your skills, your schedule, and your earnings.
+            </p>
           </div>
         </div>
       </section>
@@ -611,7 +627,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Worker Testimonial 1 */}
+            {/* Professional Testimonial 1 */}
             <div className="bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl border-2 border-slate-200 hover:border-purple-300 hover:shadow-xl transition-all">
               <div className="flex items-center gap-1 mb-4">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -619,21 +635,21 @@ export default function HomePage() {
                 ))}
               </div>
               <p className="text-slate-700 mb-6 leading-relaxed">
-                "I earn ₹8,000 extra every month working weekends. Payments are always on time. Best decision I made this year."
+                "I work as a DevOps engineer on weekends and earn ₹80,000 extra per month. The 5% fee is the lowest I've seen. Payments are always on time."
               </p>
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
-                  RK
+                  AK
                 </div>
                 <div>
-                  <div className="font-bold text-slate-900">Rajesh Kumar</div>
-                  <div className="text-sm text-slate-600">Delivery Partner, Mumbai</div>
-                  <div className="text-xs text-green-600 font-semibold mt-1">Earned ₹24,000 in 3 months</div>
+                  <div className="font-bold text-slate-900">Amit Kumar</div>
+                  <div className="text-sm text-slate-600">DevOps Engineer, Bangalore</div>
+                  <div className="text-xs text-green-600 font-semibold mt-1">Earned ₹2,40,000 in 3 months</div>
                 </div>
               </div>
             </div>
 
-            {/* Worker Testimonial 2 */}
+            {/* Professional Testimonial 2 */}
             <div className="bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl border-2 border-slate-200 hover:border-purple-300 hover:shadow-xl transition-all">
               <div className="flex items-center gap-1 mb-4">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -641,16 +657,16 @@ export default function HomePage() {
                 ))}
               </div>
               <p className="text-slate-700 mb-6 leading-relaxed">
-                "Perfect for working moms like me. I work 4 hours daily and make ₹12,000 per month. Flexible and safe."
+                "As a QA engineer, I take on projects after work hours. Made ₹65,000 last month working just 20 hours per week. Perfect work-life balance."
               </p>
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
                   PS
                 </div>
                 <div>
-                  <div className="font-bold text-slate-900">Priya Sharma</div>
-                  <div className="text-sm text-slate-600">Sales Executive, Delhi</div>
-                  <div className="text-xs text-green-600 font-semibold mt-1">Earned ₹36,000 in 3 months</div>
+                  <div className="font-bold text-slate-900">Priya Singh</div>
+                  <div className="text-sm text-slate-600">QA Engineer, Pune</div>
+                  <div className="text-xs text-green-600 font-semibold mt-1">Earned ₹1,95,000 in 3 months</div>
                 </div>
               </div>
             </div>
@@ -663,16 +679,16 @@ export default function HomePage() {
                 ))}
               </div>
               <p className="text-slate-700 mb-6 leading-relaxed">
-                "We hired 5 workers in 2 hours for our warehouse. Saved 60% on staffing costs. Highly recommend!"
+                "We found a senior cloud architect in 2 hours. Saved ₹3 lakhs vs traditional recruitment. Quality of professionals is excellent."
               </p>
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold">
-                  TS
+                  FS
                 </div>
                 <div>
-                  <div className="font-bold text-slate-900">TechStart Solutions</div>
-                  <div className="text-sm text-slate-600">E-commerce Company, Bangalore</div>
-                  <div className="text-xs text-green-600 font-semibold mt-1">Hired 15 workers</div>
+                  <div className="font-bold text-slate-900">FinTech Startup</div>
+                  <div className="text-sm text-slate-600">SaaS Company, Hyderabad</div>
+                  <div className="text-xs text-green-600 font-semibold mt-1">Hired 8 professionals</div>
                 </div>
               </div>
             </div>

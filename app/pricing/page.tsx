@@ -26,35 +26,42 @@ export default function PricingPage() {
             No hidden fees. No subscriptions. Pay per shift.
           </p>
 
-          {/* For Workers - Always Free */}
+          {/* For Workers - Transparent Pricing */}
           <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-8 max-w-2xl mx-auto mb-16 border-2 border-purple-200">
             <div className="flex items-center justify-center gap-3 mb-4">
               <Users className="w-8 h-8 text-purple-600" />
-              <h3 className="text-2xl font-bold text-slate-900">For Workers</h3>
+              <h3 className="text-2xl font-bold text-slate-900">For Professionals</h3>
             </div>
             <div className="text-center">
-              <div className="text-5xl font-bold text-purple-600 mb-2">₹0</div>
-              <div className="text-slate-600 mb-6 text-lg">100% Free Forever</div>
+              <div className="text-5xl font-bold text-purple-600 mb-2">Keep 95%</div>
+              <div className="text-slate-600 mb-6 text-lg">Only 5% platform fee - One of India's lowest</div>
               <ul className="text-left space-y-3 max-w-md mx-auto">
                 <li className="flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  <span className="text-slate-700">No registration fees</span>
+                  <span className="text-slate-700">Zero registration fees</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  <span className="text-slate-700">No platform fees</span>
+                  <span className="text-slate-700">Only 5% on completed projects</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  <span className="text-slate-700">Keep 100% of your earnings</span>
+                  <span className="text-slate-700">Weekly payouts directly to your bank</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  <span className="text-slate-700">Get paid within 24 hours</span>
+                  <span className="text-slate-700">100% remote work opportunities</span>
                 </li>
               </ul>
+              <div className="mt-6 bg-white p-4 rounded-xl border-2 border-purple-300">
+                <div className="text-sm text-slate-600 mb-2">Example Earnings:</div>
+                <div className="text-lg font-bold text-slate-900">
+                  You bill ₹1,00,000 → You get ₹95,000
+                </div>
+                <div className="text-xs text-slate-500 mt-1">Platform fee: ₹5,000 (5%)</div>
+              </div>
               <Link href="/register?type=worker" className="mt-6 inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-xl font-semibold transition-all">
-                Join Free
+                Join as Professional
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
@@ -80,19 +87,19 @@ export default function PricingPage() {
                 <thead>
                   <tr className="bg-gradient-to-r from-green-600 to-emerald-600 text-white">
                     <th className="px-6 py-4 text-left font-bold">Role Type</th>
-                    <th className="px-6 py-4 text-center font-bold">Cost Per Shift</th>
-                    <th className="px-6 py-4 text-center font-bold">Shift Duration</th>
+                    <th className="px-6 py-4 text-center font-bold">Hourly Rate</th>
+                    <th className="px-6 py-4 text-center font-bold">Billing</th>
                     <th className="px-6 py-4 text-right font-bold">What's Included</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200">
                   {[
-                    { role: 'Delivery Partner', cost: '₹550-750', duration: '6-8 hours', icon: '🛵' },
-                    { role: 'Sales Executive', cost: '₹650-950', duration: '4-6 hours', icon: '📊' },
-                    { role: 'Customer Support', cost: '₹450-650', duration: '4-6 hours', icon: '🎧' },
-                    { role: 'Warehouse Helper', cost: '₹550-750', duration: '6-8 hours', icon: '📦' },
-                    { role: 'Data Entry', cost: '₹350-550', duration: '4-6 hours', icon: '💻' },
-                    { role: 'Event Staff', cost: '₹850-1,300', duration: '6-8 hours', icon: '🎉' }
+                    { role: 'Software Developer', cost: '₹900-1,600', duration: 'Per Hour', icon: '💻' },
+                    { role: 'QA/Test Engineer', cost: '₹700-1,100', duration: 'Per Hour', icon: '🧪' },
+                    { role: 'DevOps Engineer', cost: '₹1,000-1,900', duration: 'Per Hour', icon: '⚙️' },
+                    { role: 'Cloud Architect', cost: '₹1,300-2,100', duration: 'Per Hour', icon: '☁️' },
+                    { role: 'Security Auditor', cost: '₹1,100-1,900', duration: 'Per Hour', icon: '🔒' },
+                    { role: 'IT Consultant', cost: '₹800-1,300', duration: 'Per Hour', icon: '📊' }
                   ].map((item, index) => (
                     <tr key={index} className="hover:bg-green-50 transition-colors">
                       <td className="px-6 py-4">
@@ -174,35 +181,35 @@ export default function PricingPage() {
             </div>
           </div>
 
-          {/* Comparison with Traditional Staffing */}
+          {/* Comparison with Traditional Hiring */}
           <div className="bg-gradient-to-r from-slate-50 to-indigo-50 rounded-2xl p-8 mb-12 border-2 border-indigo-200">
-            <h3 className="text-2xl font-bold text-slate-900 mb-6 text-center">Save 60% vs Traditional Staffing</h3>
+            <h3 className="text-2xl font-bold text-slate-900 mb-6 text-center">60% Cheaper Than Traditional Recruitment</h3>
             <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <h4 className="font-bold text-red-600 mb-4 flex items-center gap-2">
                   <AlertCircle className="w-5 h-5" />
-                  Traditional Staffing Agency
+                  Traditional IT Recruitment
                 </h4>
                 <ul className="space-y-2 text-slate-600">
                   <li className="flex items-start gap-2">
                     <span className="text-red-500 font-bold">✗</span>
-                    <span>₹800-1,500 per worker per shift</span>
+                    <span>₹1,500-3,000 per hour (agency markup)</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-red-500 font-bold">✗</span>
-                    <span>Monthly contracts required</span>
+                    <span>Long-term contracts mandatory</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-red-500 font-bold">✗</span>
-                    <span>Pay upfront</span>
+                    <span>20-30% recruitment fees</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-red-500 font-bold">✗</span>
-                    <span>Limited replacement options</span>
+                    <span>Weeks to find talent</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-red-500 font-bold">✗</span>
-                    <span>Poor tracking systems</span>
+                    <span>Limited talent pool access</span>
                   </li>
                 </ul>
               </div>
@@ -214,23 +221,23 @@ export default function PricingPage() {
                 <ul className="space-y-2 text-slate-600">
                   <li className="flex items-start gap-2">
                     <span className="text-green-500 font-bold">✓</span>
-                    <span>₹300-800 per worker per shift</span>
+                    <span>₹700-2,000 per hour (no markup)</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-green-500 font-bold">✓</span>
-                    <span>No contracts, hire per shift</span>
+                    <span>Hire per hour/project, no contracts</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-green-500 font-bold">✓</span>
-                    <span>Pay after work done</span>
+                    <span>Zero recruitment fees</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-green-500 font-bold">✓</span>
-                    <span>Instant replacement guarantee</span>
+                    <span>Find talent in minutes</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-green-500 font-bold">✓</span>
-                    <span>Real-time attendance tracking</span>
+                    <span>Access 2,500+ verified professionals</span>
                   </li>
                 </ul>
               </div>
