@@ -418,6 +418,97 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Sample Earnings Table */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-pink-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4">
+              How much can you earn?
+            </h2>
+            <p className="text-xl text-slate-600">
+              Real numbers from real shifts
+            </p>
+          </div>
+
+          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-2 border-purple-200">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+                    <th className="px-6 py-4 text-left font-bold">Role</th>
+                    <th className="px-6 py-4 text-center font-bold">Per Shift</th>
+                    <th className="px-6 py-4 text-center font-bold">Duration</th>
+                    <th className="px-6 py-4 text-right font-bold">Monthly (8 shifts)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200">
+                  {[
+                    { role: 'Delivery Partner', perShift: '₹500-700', duration: '6-8 hours', monthly: '₹4,000-5,600', icon: '🛵' },
+                    { role: 'Sales Executive', perShift: '₹600-900', duration: '4-6 hours', monthly: '₹4,800-7,200', icon: '📊' },
+                    { role: 'Customer Support', perShift: '₹400-600', duration: '4-6 hours', monthly: '₹3,200-4,800', icon: '🎧' },
+                    { role: 'Warehouse Helper', perShift: '₹500-700', duration: '6-8 hours', monthly: '₹4,000-5,600', icon: '📦' },
+                    { role: 'Data Entry', perShift: '₹300-500', duration: '4-6 hours', monthly: '₹2,400-4,000', icon: '💻' },
+                    { role: 'Event Staff', perShift: '₹800-1,200', duration: '6-8 hours', monthly: '₹6,400-9,600', icon: '🎉' }
+                  ].map((item, index) => (
+                    <tr key={index} className="hover:bg-purple-50 transition-colors">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl">{item.icon}</span>
+                          <span className="font-semibold text-slate-900">{item.role}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <span className="font-bold text-purple-600">{item.perShift}</span>
+                      </td>
+                      <td className="px-6 py-4 text-center text-slate-600 text-sm">
+                        {item.duration}
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <span className="font-bold text-green-600 text-lg">{item.monthly}</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            
+            <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 border-t-2 border-purple-200">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <CheckCircle className="w-6 h-6 text-green-600" />
+                  <span className="text-slate-700 font-medium">Based on 8 shifts per month (2 shifts per week)</span>
+                </div>
+                <Link 
+                  href="/register?type=worker"
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-xl font-semibold transition-all hover:scale-105 shadow-lg"
+                >
+                  Start Earning Now
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Additional Info Cards */}
+          <div className="grid md:grid-cols-3 gap-6 mt-12">
+            <div className="bg-white p-6 rounded-2xl border-2 border-purple-200 text-center">
+              <div className="text-3xl font-bold text-purple-600 mb-2">₹15,000+</div>
+              <div className="text-slate-700 font-medium">Top earners per month</div>
+              <div className="text-sm text-slate-500 mt-1">Working weekends only</div>
+            </div>
+            <div className="bg-white p-6 rounded-2xl border-2 border-green-200 text-center">
+              <div className="text-3xl font-bold text-green-600 mb-2">24 hours</div>
+              <div className="text-slate-700 font-medium">Payment time</div>
+              <div className="text-sm text-slate-500 mt-1">After shift completion</div>
+            </div>
+            <div className="bg-white p-6 rounded-2xl border-2 border-blue-200 text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">0%</div>
+              <div className="text-slate-700 font-medium">Platform fees</div>
+              <div className="text-sm text-slate-500 mt-1">Keep everything you earn</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* How It Works */}
       <section id="how-it-works" className="py-24 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 px-4 sm:px-6 lg:px-8 relative overflow-hidden scroll-mt-20">
         <div className="absolute inset-0 bg-grid-white/10"></div>
