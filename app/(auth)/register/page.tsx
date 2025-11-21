@@ -1,13 +1,14 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase/client'
 import { Briefcase, Users, Mail, Lock, User, ArrowRight, Shield, CheckCircle, Zap } from 'lucide-react'
 
 export default function RegisterPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -18,6 +19,14 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
+
+  // Read user type from URL parameter
+  useEffect(() => {
+    const type = searchParams.get('type')
+    if (type === 'client' || type === 'worker') {
+      setFormData(prev => ({ ...prev, userType: type }))
+    }
+  }, [searchParams])
 
   // Sanitize input to prevent XSS
   const sanitizeInput = (input: string): string => {
