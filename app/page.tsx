@@ -171,16 +171,19 @@ export default function HomePage() {
               </div>
               
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-slate-900 mb-6 leading-[1.1]">
-                Your Second Shift,
+                Earn More.
                 <br />
                 <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent animate-gradient">
-                  Done Right
+                  Work Your Way.
                 </span>
               </h1>
               
               <p className="text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                Connect verified professionals with compliant, legal after-work opportunities. 
-                <span className="font-semibold text-slate-800"> Fully tax-compliant</span> with automatic TDS, GST, and professional contracts.
+                Turn your free time into real income.
+                <br />
+                Connect with companies who need your skills.
+                <br />
+                <span className="font-semibold text-slate-800">100% safe. 100% legal. 100% yours.</span>
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center mb-10">
@@ -188,14 +191,14 @@ export default function HomePage() {
                   href="/register?type=worker"
                   className="group bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2 w-full sm:w-auto justify-center shadow-lg"
                 >
-                  Find Work
+                  Start Earning
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
                   href="/register?type=client"
                   className="group bg-white text-slate-900 px-8 py-4 rounded-xl font-semibold text-lg border-2 border-slate-300 hover:border-indigo-600 hover:shadow-xl transition-all duration-300 flex items-center gap-2 w-full sm:w-auto justify-center"
                 >
-                  Hire Talent
+                  Hire in Minutes
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
@@ -257,106 +260,159 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-white border-y">
+      {/* Value Proposition - Two Blocks */}
+      <section className="py-20 bg-white border-y">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { icon: Users, label: 'Active Professionals', value: '2,500+', color: 'from-blue-600 to-cyan-600' },
-              { icon: Briefcase, label: 'Projects Completed', value: '5,000+', color: 'from-purple-600 to-pink-600' },
-              { icon: TrendingUp, label: 'Total Earnings', value: '₹5Cr+', color: 'from-green-600 to-emerald-600' },
-              { icon: Award, label: 'Client Satisfaction', value: '98%', color: 'from-orange-600 to-red-600' }
-            ].map((stat, i) => (
-              <div key={i} className="text-center group">
-                <div className={`w-16 h-16 mx-auto mb-4 bg-gradient-to-br ${stat.color} rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                  <stat.icon className="w-8 h-8 text-white" />
-                </div>
-                <div className={`text-4xl font-bold mb-2 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
-                  {stat.value}
-                </div>
-                <div className="text-sm text-slate-600 font-medium">{stat.label}</div>
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+            
+            {/* For Workers */}
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-10 border-2 border-purple-200 hover:shadow-xl transition-all">
+              <div className="inline-flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-6">
+                <Users className="w-4 h-4" />
+                For Workers
               </div>
-            ))}
+              <h3 className="text-3xl font-bold text-slate-900 mb-6">Your Skills. Your Schedule.</h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-purple-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-bold text-slate-900">Earn with your free time</div>
+                    <div className="text-slate-600 text-sm">Pick shifts that fit your life</div>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-purple-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-bold text-slate-900">Get paid fast</div>
+                    <div className="text-slate-600 text-sm">Daily or weekly payouts</div>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-purple-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-bold text-slate-900">Zero fees</div>
+                    <div className="text-slate-600 text-sm">Keep what you earn</div>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-purple-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-bold text-slate-900">Build your second income</div>
+                    <div className="text-slate-600 text-sm">Grow your earnings every month</div>
+                  </div>
+                </li>
+              </ul>
+              <Link href="/register?type=worker" className="mt-8 inline-flex items-center gap-2 bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-700 transition-all">
+                Start Earning
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
+
+            {/* For Companies */}
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-10 border-2 border-green-200 hover:shadow-xl transition-all">
+              <div className="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-6">
+                <Briefcase className="w-4 h-4" />
+                For Companies
+              </div>
+              <h3 className="text-3xl font-bold text-slate-900 mb-6">Hire Smart. Hire Fast.</h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-bold text-slate-900">Quick hiring</div>
+                    <div className="text-slate-600 text-sm">Post and hire in 24 hours</div>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-bold text-slate-900">Pre-verified workers</div>
+                    <div className="text-slate-600 text-sm">Background checked and skilled</div>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-bold text-slate-900">Affordable pricing</div>
+                    <div className="text-slate-600 text-sm">Pay only for completed work</div>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-bold text-slate-900">Simple process</div>
+                    <div className="text-slate-600 text-sm">No paperwork, no hassle</div>
+                  </div>
+                </li>
+              </ul>
+              <Link href="/register?type=client" className="mt-8 inline-flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 transition-all">
+                Hire in Minutes
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
+
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <div className="inline-block mb-4">
-              <span className="text-indigo-600 font-semibold text-sm uppercase tracking-wider">Features</span>
-            </div>
-            <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-6">
-              Why Choose 2ndShift?
+            <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4">
+              Why 2ndShift?
             </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              India&apos;s only platform that handles everything - from compliance to payments
+            <p className="text-xl text-slate-600">
+              Safe. Simple. Trusted.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
                 icon: Shield,
-                title: 'Fully Compliant',
-                description: 'Automatic TDS deduction, GST handling, and Form 16A generation. Stay 100% tax compliant.',
-                color: 'from-blue-500 to-indigo-500',
-                bgColor: 'from-blue-50 to-indigo-50'
+                title: '100% secure payments',
+                description: 'Your money is safe with bank-level security'
               },
               {
-                icon: Clock,
-                title: 'Quick Onboarding',
-                description: 'Get verified and start working in under 24 hours. No lengthy processes or paperwork.',
-                color: 'from-purple-500 to-pink-500',
-                bgColor: 'from-purple-50 to-pink-50'
+                icon: Headphones,
+                title: 'WhatsApp support',
+                description: 'Get help instantly on WhatsApp'
               },
               {
-                icon: Users,
-                title: 'Verified Talent',
-                description: 'Every professional is background-checked and skill-verified. Hire with confidence.',
-                color: 'from-green-500 to-emerald-500',
-                bgColor: 'from-green-50 to-emerald-50'
+                icon: CheckCircle,
+                title: 'Verified workers',
+                description: 'All workers are background-checked'
               },
               {
-                icon: TrendingUp,
-                title: 'Fair Compensation',
-                description: 'Transparent pricing with no hidden fees. Workers keep 90% of the contract value.',
-                color: 'from-orange-500 to-red-500',
-                bgColor: 'from-orange-50 to-red-50'
+                icon: Award,
+                title: 'Reliable employers',
+                description: 'Work with trusted companies only'
               },
               {
-                icon: FileCheck,
-                title: 'Legal Contracts',
-                description: 'Professional NDAs, conflict declarations, and work agreements for every project.',
-                color: 'from-cyan-500 to-blue-500',
-                bgColor: 'from-cyan-50 to-blue-50'
+                icon: DollarSign,
+                title: 'Transparent payouts',
+                description: 'See exactly what you earn'
               },
               {
-                icon: Zap,
-                title: 'Instant Payments',
-                description: 'Get paid immediately after work completion. No 30-day waiting periods.',
-                color: 'from-violet-500 to-purple-500',
-                bgColor: 'from-violet-50 to-purple-50'
+                icon: Lock,
+                title: 'Data protection',
+                description: 'Your information stays private'
               }
             ].map((feature, index) => (
               <div
                 key={index}
-                className="group relative bg-white p-8 rounded-2xl border-2 border-slate-200 hover:border-indigo-300 hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                className="bg-slate-50 p-6 rounded-2xl border border-slate-200 hover:border-indigo-300 hover:shadow-lg transition-all duration-300"
               >
-                <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${feature.bgColor} rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -mr-16 -mt-16`}></div>
-                <div className="relative z-10">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg`}>
-                    <feature.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors">
-                    {feature.title}
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed">
-                    {feature.description}
-                  </p>
+                <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center mb-4">
+                  <feature.icon className="w-6 h-6 text-white" />
                 </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-slate-600 text-sm">
+                  {feature.description}
+                </p>
               </div>
             ))}
           </div>
@@ -368,83 +424,82 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-grid-white/10"></div>
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16">
-            <div className="inline-block mb-4">
-              <span className="text-indigo-600 font-semibold text-sm uppercase tracking-wider">Process</span>
-            </div>
-            <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-6">
-              Get Started in Minutes
+            <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4">
+              How It Works
             </h2>
             <p className="text-xl text-slate-600">
-              Simple, fast, and completely transparent
+              Simple. Fast. Secure.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
             {/* For Workers */}
             <div className="bg-white p-8 lg:p-10 rounded-3xl shadow-2xl border border-purple-100 hover:shadow-3xl transition-shadow duration-300">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 px-5 py-2.5 rounded-full text-sm font-bold mb-8 border border-purple-200">
+              <div className="inline-flex items-center gap-2 bg-purple-600 text-white px-5 py-2.5 rounded-full text-sm font-bold mb-8">
                 <Users className="w-4 h-4" />
                 For Workers
               </div>
               <div className="space-y-6">
                 {[
-                  { step: '01', title: 'Sign Up', desc: 'Create your profile in 2 minutes', icon: '👤' },
-                  { step: '02', title: 'Get Verified', desc: 'Quick background and skill check', icon: '✓' },
-                  { step: '03', title: 'Browse Projects', desc: 'Find opportunities that match your skills', icon: '🔍' },
-                  { step: '04', title: 'Get Paid', desc: 'Receive payments instantly after completion', icon: '💰' }
+                  { step: '01', title: 'Sign up', desc: 'Quick registration', icon: '📝' },
+                  { step: '02', title: 'Complete profile', desc: 'Add your skills', icon: '✏️' },
+                  { step: '03', title: 'Get verified', desc: 'We check your background', icon: '✓' },
+                  { step: '04', title: 'Pick shifts', desc: 'Choose work you like', icon: '📋' },
+                  { step: '05', title: 'Get paid', desc: 'Money in your account', icon: '💰' }
                 ].map((item, i) => (
                   <div key={i} className="flex gap-5 group">
-                    <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                    <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:scale-110 transition-all duration-300">
                       {item.step}
                     </div>
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-2 mb-1">
                         <span className="text-2xl">{item.icon}</span>
                         <h4 className="font-bold text-slate-900 text-lg">{item.title}</h4>
                       </div>
-                      <p className="text-slate-600">{item.desc}</p>
+                      <p className="text-slate-600 text-sm">{item.desc}</p>
                     </div>
                   </div>
                 ))}
               </div>
               <div className="mt-8 pt-8 border-t border-slate-200">
                 <Link href="/register?type=worker" className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300">
-                  Start as a Worker
+                  Start Earning
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
             </div>
 
-            {/* For Employers */}
+            {/* For Companies */}
             <div className="bg-white p-8 lg:p-10 rounded-3xl shadow-2xl border border-green-100 hover:shadow-3xl transition-shadow duration-300">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 px-5 py-2.5 rounded-full text-sm font-bold mb-8 border border-green-200">
+              <div className="inline-flex items-center gap-2 bg-green-600 text-white px-5 py-2.5 rounded-full text-sm font-bold mb-8">
                 <Briefcase className="w-4 h-4" />
-                For Employers
+                For Companies
               </div>
               <div className="space-y-6">
                 {[
-                  { step: '01', title: 'Post a Job', desc: 'Describe your project requirements', icon: '📝' },
-                  { step: '02', title: 'Review Proposals', desc: 'Choose from verified professionals', icon: '👥' },
-                  { step: '03', title: 'Work Together', desc: 'Manage project with built-in tools', icon: '🤝' },
-                  { step: '04', title: 'Pay Securely', desc: 'Automatic TDS and tax compliance', icon: '🔒' }
+                  { step: '01', title: 'Create profile', desc: 'Set up company account', icon: '🏢' },
+                  { step: '02', title: 'Post a shift', desc: 'Tell us what you need', icon: '📝' },
+                  { step: '03', title: 'Select workers', desc: 'Pick from verified profiles', icon: '👥' },
+                  { step: '04', title: 'Track attendance', desc: 'Monitor work progress', icon: '📊' },
+                  { step: '05', title: 'Pay securely', desc: 'Automatic and safe', icon: '🔒' }
                 ].map((item, i) => (
                   <div key={i} className="flex gap-5 group">
-                    <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-green-500 via-emerald-500 to-green-600 rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                    <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:scale-110 transition-all duration-300">
                       {item.step}
                     </div>
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-2 mb-1">
                         <span className="text-2xl">{item.icon}</span>
                         <h4 className="font-bold text-slate-900 text-lg">{item.title}</h4>
                       </div>
-                      <p className="text-slate-600">{item.desc}</p>
+                      <p className="text-slate-600 text-sm">{item.desc}</p>
                     </div>
                   </div>
                 ))}
               </div>
               <div className="mt-8 pt-8 border-t border-slate-200">
                 <Link href="/register?type=client" className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300">
-                  Start Hiring
+                  Hire in Minutes
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -453,112 +508,57 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
+      {/* Trust Elements Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-indigo-50">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-block mb-4">
-              <span className="text-indigo-600 font-semibold text-sm uppercase tracking-wider">Testimonials</span>
-            </div>
-            <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-6">
-              Trusted by Professionals
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+              Trusted by thousands
             </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              See what our community has to say about their experience
+            <p className="text-lg text-slate-600">
+              Safe. Verified. Reliable.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'Priya Sharma',
-                role: 'Software Developer',
-                company: 'Tech Corp',
-                image: '👩‍💻',
-                quote: 'Finally, a platform that handles all the legal and tax compliance. I can focus on my work without worrying about paperwork.',
-                rating: 5
-              },
-              {
-                name: 'Rahul Verma',
-                role: 'Graphic Designer',
-                company: 'Creative Agency',
-                image: '👨‍🎨',
-                quote: 'The instant payment feature is a game-changer. No more waiting 30 days to get paid for my freelance work.',
-                rating: 5
-              },
-              {
-                name: 'Anjali Mehta',
-                role: 'Content Writer',
-                company: 'Media House',
-                image: '👩‍💼',
-                quote: 'Professional contracts and verified clients give me peace of mind. Best decision to join 2ndShift for my side projects.',
-                rating: 5
-              }
-            ].map((testimonial, i) => (
-              <div key={i} className="bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl border-2 border-slate-200 hover:border-indigo-300 hover:shadow-xl transition-all duration-300">
-                <div className="flex items-center gap-2 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-                <Quote className="w-10 h-10 text-indigo-200 mb-4" />
-                <p className="text-slate-700 mb-6 leading-relaxed italic">
-                  &quot;{testimonial.quote}&quot;
-                </p>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-2xl">
-                    {testimonial.image}
-                  </div>
-                  <div>
-                    <div className="font-bold text-slate-900">{testimonial.name}</div>
-                    <div className="text-sm text-slate-600">{testimonial.role}</div>
-                    <div className="text-xs text-slate-500">{testimonial.company}</div>
-                  </div>
-                </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-5xl mx-auto">
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center hover:shadow-lg transition-all">
+              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                <CheckCircle className="w-6 h-6 text-white" />
               </div>
-            ))}
+              <div className="font-bold text-slate-900 text-sm">100% secure payments</div>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center hover:shadow-lg transition-all">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Headphones className="w-6 h-6 text-white" />
+              </div>
+              <div className="font-bold text-slate-900 text-sm">WhatsApp support</div>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center hover:shadow-lg transition-all">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Users className="w-6 h-6 text-white" />
+              </div>
+              <div className="font-bold text-slate-900 text-sm">Verified workers</div>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center hover:shadow-lg transition-all">
+              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                <Award className="w-6 h-6 text-white" />
+              </div>
+              <div className="font-bold text-slate-900 text-sm">Reliable employers</div>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center hover:shadow-lg transition-all">
+              <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                <TrendingUp className="w-6 h-6 text-white" />
+              </div>
+              <div className="font-bold text-slate-900 text-sm">Transparent payouts</div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Newsletter Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-indigo-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-block mb-4">
-            <span className="text-indigo-600 font-semibold text-sm uppercase tracking-wider">Newsletter</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
-            Stay Updated
-          </h2>
-          <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
-            Get the latest updates on features, compliance news, and success stories
-          </p>
-          {newsletterSubmitted ? (
-            <div className="max-w-xl mx-auto bg-green-50 border-2 border-green-200 rounded-xl p-6 flex items-center justify-center gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600" />
-              <p className="text-green-800 font-semibold">Thank you for subscribing! Check your email.</p>
-            </div>
-          ) : (
-            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                required
-                className="flex-1 px-6 py-4 rounded-xl border-2 border-slate-300 focus:border-indigo-600 focus:outline-none text-slate-900 focus:ring-2 focus:ring-indigo-200 transition-all"
-              />
-              <button
-                type="submit"
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap"
-              >
-                Subscribe
-                <Mail className="w-5 h-5" />
-              </button>
-            </form>
-          )}
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-900">
@@ -570,46 +570,27 @@ export default function HomePage() {
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl"></div>
             
             <div className="relative z-10 text-center">
-              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                <Zap className="w-4 h-4" />
-                <span>Limited Time Offer</span>
-              </div>
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-                Ready to Start Your Second Shift?
+                Start earning today
               </h2>
               <p className="text-xl text-indigo-100 mb-10 max-w-2xl mx-auto leading-relaxed">
-                Join thousands of professionals earning extra income legally and safely. 
-                <span className="font-semibold text-white"> No fees for the first 3 months!</span>
+                Join workers and companies building better income together.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link
-                  href="/register"
+                  href="/register?type=worker"
                   className="group bg-white text-indigo-600 px-10 py-5 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
                 >
-                  Get Started Now
+                  Start Earning
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
-                  href="/contact"
+                  href="/register?type=client"
                   className="group bg-transparent text-white px-10 py-5 rounded-xl font-bold text-lg border-2 border-white/30 hover:bg-white/10 hover:border-white transition-all duration-300 flex items-center gap-2"
                 >
-                  Contact Sales
-                  <Headphones className="w-5 h-5" />
+                  Hire in Minutes
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
-              </div>
-              <div className="mt-10 flex items-center justify-center gap-8 text-sm">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5" />
-                  <span>Free for 3 months</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5" />
-                  <span>No credit card required</span>
-                </div>
-                <div className="flex items-center gap-2 hidden sm:flex">
-                  <CheckCircle className="w-5 h-5" />
-                  <span>Setup in minutes</span>
-                </div>
               </div>
             </div>
           </div>
@@ -619,109 +600,75 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="bg-slate-900 text-slate-300 py-16 px-4 sm:px-6 lg:px-8 border-t border-slate-800">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 mb-12">
             {/* Brand Column */}
             <div className="col-span-2">
-              <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg">
                   <Briefcase className="w-6 h-6 text-white" />
                 </div>
-                <div>
-                  <span className="text-white font-bold text-2xl">2ndShift</span>
-                  <div className="text-xs text-slate-500">Legal Freelance Platform</div>
-                </div>
+                <span className="text-white font-bold text-2xl">2ndShift</span>
               </div>
-              <p className="text-sm text-slate-400 mb-6 max-w-sm leading-relaxed">
-                India&apos;s first legal, tax-compliant freelance platform for part-time work. 
-                Empowering professionals to earn extra income safely and legally.
+              <p className="text-sm text-slate-400 mb-6 max-w-sm">
+                Work flexible. Earn more. Live better.
               </p>
-              <div className="flex gap-4">
-                <a href="#" className="w-10 h-10 bg-slate-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110">
-                  <Twitter className="w-5 h-5" />
+              <div className="flex gap-3">
+                <a href="#" className="w-9 h-9 bg-slate-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all">
+                  <Twitter className="w-4 h-4" />
                 </a>
-                <a href="#" className="w-10 h-10 bg-slate-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110">
-                  <Linkedin className="w-5 h-5" />
+                <a href="#" className="w-9 h-9 bg-slate-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all">
+                  <Linkedin className="w-4 h-4" />
                 </a>
-                <a href="#" className="w-10 h-10 bg-slate-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110">
-                  <Facebook className="w-5 h-5" />
+                <a href="#" className="w-9 h-9 bg-slate-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all">
+                  <Facebook className="w-4 h-4" />
                 </a>
               </div>
-            </div>
-
-            {/* Platform Column */}
-            <div>
-              <h4 className="text-white font-bold mb-4 text-sm uppercase tracking-wider">Platform</h4>
-              <ul className="space-y-3 text-sm">
-                <li><Link href="/how-it-works" className="hover:text-white transition-colors hover:translate-x-1 inline-block">How It Works</Link></li>
-                <li><Link href="/pricing" className="hover:text-white transition-colors hover:translate-x-1 inline-block">Pricing</Link></li>
-                <li><Link href="/workers" className="hover:text-white transition-colors hover:translate-x-1 inline-block">For Workers</Link></li>
-                <li><Link href="/employers" className="hover:text-white transition-colors hover:translate-x-1 inline-block">For Employers</Link></li>
-                <li><Link href="/faq" className="hover:text-white transition-colors hover:translate-x-1 inline-block">FAQ</Link></li>
-              </ul>
             </div>
 
             {/* Company Column */}
             <div>
-              <h4 className="text-white font-bold mb-4 text-sm uppercase tracking-wider">Company</h4>
-              <ul className="space-y-3 text-sm">
-                <li><Link href="/about" className="hover:text-white transition-colors hover:translate-x-1 inline-block">About Us</Link></li>
-                <li><Link href="/contact" className="hover:text-white transition-colors hover:translate-x-1 inline-block">Contact</Link></li>
-                <li><Link href="/careers" className="hover:text-white transition-colors hover:translate-x-1 inline-block">Careers</Link></li>
-                <li><Link href="/blog" className="hover:text-white transition-colors hover:translate-x-1 inline-block">Blog</Link></li>
+              <h4 className="text-white font-bold mb-4 text-sm">Company</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/about" className="hover:text-white transition">About</Link></li>
+                <li><Link href="/contact" className="hover:text-white transition">Contact</Link></li>
+                <li><Link href="/careers" className="hover:text-white transition">Careers</Link></li>
               </ul>
             </div>
 
             {/* Legal Column */}
             <div>
-              <h4 className="text-white font-bold mb-4 text-sm uppercase tracking-wider">Legal</h4>
-              <ul className="space-y-3 text-sm">
-                <li><Link href="/terms" className="hover:text-white transition-colors hover:translate-x-1 inline-block">Terms of Service</Link></li>
-                <li><Link href="/privacy" className="hover:text-white transition-colors hover:translate-x-1 inline-block">Privacy Policy</Link></li>
-                <li><Link href="/compliance" className="hover:text-white transition-colors hover:translate-x-1 inline-block">Compliance</Link></li>
-                <li><a href="/.well-known/security.txt" className="hover:text-white transition-colors hover:translate-x-1 inline-block">Security</a></li>
+              <h4 className="text-white font-bold mb-4 text-sm">Legal</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/terms" className="hover:text-white transition">Terms</Link></li>
+                <li><Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link></li>
+                <li><Link href="/security" className="hover:text-white transition">Security</Link></li>
               </ul>
             </div>
           </div>
 
           {/* Contact Info */}
           <div className="border-t border-slate-800 pt-8 pb-8">
-            <div className="grid md:grid-cols-3 gap-6 text-sm">
-              <div className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-indigo-400 flex-shrink-0 mt-0.5" />
-                <div>
-                  <div className="font-semibold text-white mb-1">Email</div>
-                  <a href="mailto:support@2ndshift.com" className="text-slate-400 hover:text-white transition">support@2ndshift.com</a>
-                </div>
+            <div className="grid sm:grid-cols-3 gap-6 text-sm">
+              <div className="flex items-center gap-3">
+                <Mail className="w-5 h-5 text-indigo-400" />
+                <a href="mailto:support@2ndshift.com" className="text-slate-400 hover:text-white transition">support@2ndshift.com</a>
               </div>
-              <div className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-indigo-400 flex-shrink-0 mt-0.5" />
-                <div>
-                  <div className="font-semibold text-white mb-1">Phone</div>
-                  <a href="tel:+911800123456" className="text-slate-400 hover:text-white transition">+91 1800 123 456</a>
-                </div>
+              <div className="flex items-center gap-3">
+                <Phone className="w-5 h-5 text-indigo-400" />
+                <a href="tel:+911800123456" className="text-slate-400 hover:text-white transition">+91 1800 123 456</a>
               </div>
-              <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-indigo-400 flex-shrink-0 mt-0.5" />
-                <div>
-                  <div className="font-semibold text-white mb-1">Address</div>
-                  <p className="text-slate-400">Hyderabad, Telangana, India</p>
-                </div>
+              <div className="flex items-center gap-3">
+                <MapPin className="w-5 h-5 text-indigo-400" />
+                <span className="text-slate-400">Hyderabad, India</span>
               </div>
             </div>
           </div>
 
           {/* Bottom Bar */}
-          <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="border-t border-slate-800 pt-8 text-center">
             <p className="text-sm text-slate-400">
-              © 2025 2ndShift India Private Limited. All rights reserved.
+              © 2025 2ndShift. All rights reserved.
             </p>
-            <div className="flex items-center gap-2 text-xs text-slate-500">
-              <Lock className="w-4 h-4" />
-              <span>256-bit SSL Encrypted</span>
-              <span className="mx-2">•</span>
-              <Shield className="w-4 h-4" />
-              <span>ISO 27001 Certified</span>
-            </div>
           </div>
         </div>
       </footer>
