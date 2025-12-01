@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, CSSProperties } from 'react'
 import { clsx } from 'clsx'
 
 interface CardProps {
@@ -8,6 +8,7 @@ interface CardProps {
   hover?: boolean
   interactive?: boolean
   onClick?: () => void
+  style?: CSSProperties
 }
 
 export function Card({ 
@@ -16,7 +17,8 @@ export function Card({
   variant = 'default',
   hover = false, 
   interactive = false,
-  onClick 
+  onClick,
+  style
 }: CardProps) {
   const variants = {
     default: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm',
@@ -36,6 +38,7 @@ export function Card({
         className
       )}
       onClick={onClick}
+      style={style}
     >
       {children}
     </div>
