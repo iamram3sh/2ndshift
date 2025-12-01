@@ -113,9 +113,13 @@ export function ChatInterface({ conversationId, currentUserId, otherUserId, onBa
         .single()
 
       if (error) throw error
+      const projectRelation = Array.isArray(data?.project)
+        ? data?.project?.[0]
+        : data?.project
+
       setConversationMeta({
         title: data?.title,
-        projectTitle: data?.project?.title ?? null,
+        projectTitle: projectRelation?.title ?? null,
         contractId: data?.contract_id ?? null
       })
     } catch (error) {
