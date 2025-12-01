@@ -149,9 +149,11 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.dark .glass-effect {
-  background: rgba(15, 23, 42, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+@media (prefers-color-scheme: dark) {
+  .glass-effect {
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
 }
 
 /* Gradient Text */
@@ -211,17 +213,14 @@ body {
 
 /* Card Base Styles */
 .card {
-  @apply bg-white rounded-2xl border border-slate-200 shadow-sm;
+  @apply bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm;
   @apply transition-all duration-200;
 }
 
 .card-interactive {
-  @apply card cursor-pointer;
+  @apply bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm;
+  @apply transition-all duration-200 cursor-pointer;
   @apply hover:shadow-xl hover:border-indigo-300 hover:-translate-y-1;
-}
-
-.dark .card {
-  @apply bg-slate-800 border-slate-700;
 }
 
 /* Badge Base Styles */
@@ -253,12 +252,9 @@ body {
 /* Skeleton Loading */
 .skeleton {
   @apply bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 rounded;
+  @apply dark:from-slate-700 dark:via-slate-600 dark:to-slate-700;
   @apply animate-pulse;
   background-size: 200% 100%;
-}
-
-.dark .skeleton {
-  @apply from-slate-700 via-slate-600 to-slate-700;
 }
 
 /* Empty State */
@@ -267,20 +263,12 @@ body {
 }
 
 .empty-state-icon {
-  @apply w-20 h-20 text-slate-300 mb-4;
-}
-
-.dark .empty-state-icon {
-  @apply text-slate-600;
+  @apply w-20 h-20 text-slate-300 dark:text-slate-600 mb-4;
 }
 
 /* Divider */
 .divider {
-  @apply border-t border-slate-200 my-6;
-}
-
-.dark .divider {
-  @apply border-slate-700;
+  @apply border-t border-slate-200 dark:border-slate-700 my-6;
 }
 
 @import './animations.css';
