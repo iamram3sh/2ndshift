@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
-import { Shield, CheckCircle, XCircle, Eye, ArrowLeft, Download, Search, Filter } from 'lucide-react'
+import { Shield, CheckCircle, XCircle, Eye, ArrowLeft, Download, Search, Filter, ShieldCheck, TrendingUp, Activity, RefreshCcw } from 'lucide-react'
 import type { Verification, User } from '@/types/database.types'
 
 interface VerificationWithUser extends Verification {
@@ -19,6 +19,13 @@ export default function AdminVerificationsPage() {
   const [selectedVerification, setSelectedVerification] = useState<VerificationWithUser | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
+  const [stats, setStats] = useState({
+    total: 0,
+    pending: 0,
+    verified: 0,
+    rejected: 0,
+    avgTurnaroundHours: 0
+  })
 
   useEffect(() => {
     checkAuth()
@@ -65,7 +72,32 @@ export default function AdminVerificationsPage() {
       return
     }
 
-    setVerifications(data as any)
+    const typed = (data as VerificationWithUser[]) || []
+    setVerifications(typed)
+
+    if (typed.length) {
+      const pending = typed.filter(v => v.status === 'pending').length
+      const verified = typed.filter(v => v.status === 'verified').length
+      const rejected = typed.filter(v => v.status === 'rejected').length
+      const turnaround = typed
+        .filter(v => v.status !== 'pending' && v.created_at && v.verified_at)
+        .map(v => {
+          const start = new Date(v.created_at).getTime()
+          const end = new Date(v.verified_at || v.updated_at || new Date()).getTime()
+          return (end - start) / (1000 * 60 * 60)
+        })
+      const avgTurnaroundHours = turnaround.length ? turnaround.reduce((a, b) => a + b, 0) / turnaround.length : 0
+
+      setStats({
+        total: typed.length,
+        pending,
+        verified,
+        rejected,
+        avgTurnaroundHours: Math.round(avgTurnaroundHours * 10) / 10
+      })
+    } else {
+      setStats({ total: 0, pending: 0, verified: 0, rejected: 0, avgTurnaroundHours: 0 })
+    }
   }
 
   const filterVerifications = () => {
@@ -216,22 +248,26 @@ export default function AdminVerificationsPage() {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
           <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 p-4">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Total</div>
-            <div className="text-2xl font-bold text-gray-900 dark:text-white">{verifications.length}</div>
+            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Total Cases</p>
+            <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.total}</p>
           </div>
           <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 p-4">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Pending</div>
-            <div className="text-2xl font-bold text-amber-600">{verifications.filter(v => v.status === 'pending').length}</div>
+            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Pending</p>
+            <p className="text-3xl font-bold text-amber-600">{stats.pending}</p>
           </div>
           <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 p-4">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Verified</div>
-            <div className="text-2xl font-bold text-green-600">{verifications.filter(v => v.status === 'verified').length}</div>
+            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Approved</p>
+            <p className="text-3xl font-bold text-green-600">{stats.verified}</p>
           </div>
           <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 p-4">
-            <div className="text-sm text-gray-600 dark:text-gray-400">Rejected</div>
-            <div className="text-2xl font-bold text-red-600">{verifications.filter(v => v.status === 'rejected').length}</div>
+            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Rejected</p>
+            <p className="text-3xl font-bold text-red-600">{stats.rejected}</p>
+          </div>
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 p-4">
+            <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Avg Turnaround</p>
+            <p className="text-3xl font-bold text-indigo-600">{stats.avgTurnaroundHours}h</p>
           </div>
         </div>
 

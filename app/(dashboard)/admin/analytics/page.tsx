@@ -3,14 +3,18 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
-import { 
-  TrendingUp, 
-  Users, 
-  Briefcase, 
-  DollarSign, 
+import {
+  TrendingUp,
+  Users,
+  Briefcase,
+  DollarSign,
   ArrowLeft,
   Calendar,
-  Download
+  Download,
+  Shield,
+  AlertTriangle,
+  RefreshCcw,
+  Loader2
 } from 'lucide-react'
 
 interface AnalyticsData {
@@ -29,6 +33,19 @@ interface AnalyticsData {
     projects: number
     revenue: number
   }
+}
+
+interface ComplianceStats {
+  kycPending: number
+  kycProcessing: number
+  kycVerified: number
+  riskEvents: Array<{
+    id: string
+    severity: string
+    event_type: string
+    details: Record<string, unknown> | null
+    created_at: string
+  }>
 }
 
 export default function AdminAnalyticsPage() {
@@ -52,6 +69,15 @@ export default function AdminAnalyticsPage() {
   })
   const [isLoading, setIsLoading] = useState(true)
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | 'all'>('30d')
+  const [compliance, setCompliance] = useState<ComplianceStats>({
+    kycPending: 0,
+    kycProcessing: 0,
+    kycVerified: 0,
+    riskEvents: []
+  })
+  const [recomputeProjectId, setRecomputeProjectId] = useState('')
+  const [isRecomputing, setIsRecomputing] = useState(false)
+  const [recomputeMessage, setRecomputeMessage] = useState<string | null>(null)
 
   useEffect(() => {
     checkAuthAndFetchAnalytics()
@@ -158,6 +184,27 @@ export default function AdminAnalyticsPage() {
 
       const recentRevenue = recentPayments?.reduce((sum, p) => sum + (p.platform_fee || 0), 0) || 0
 
+      const { count: kycPending } = await supabase
+        .from('kyc_verifications')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'pending')
+
+      const { count: kycProcessing } = await supabase
+        .from('kyc_verifications')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'processing')
+
+      const { count: kycVerified } = await supabase
+        .from('kyc_verifications')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'verified')
+
+      const { data: riskEvents } = await supabase
+        .from('risk_events')
+        .select('id, severity, event_type, details, created_at')
+        .order('created_at', { ascending: false })
+        .limit(5)
+
       setAnalytics({
         totalUsers: totalUsers || 0,
         totalWorkers: totalWorkers || 0,
@@ -174,6 +221,12 @@ export default function AdminAnalyticsPage() {
           projects: newProjects || 0,
           revenue: recentRevenue
         }
+      })
+      setCompliance({
+        kycPending: kycPending || 0,
+        kycProcessing: kycProcessing || 0,
+        kycVerified: kycVerified || 0,
+        riskEvents: riskEvents || []
       })
     } catch (error) {
       console.error('Error fetching analytics:', error)
@@ -205,6 +258,36 @@ export default function AdminAnalyticsPage() {
     a.href = url
     a.download = `analytics-report-${new Date().toISOString().split('T')[0]}.json`
     a.click()
+  }
+
+  const triggerRecommendationRefresh = async () => {
+    setRecomputeMessage(null)
+    setIsRecomputing(true)
+    try {
+      const response = await fetch('/api/ai/recommendations/recompute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          projectId: recomputeProjectId || undefined
+        })
+      })
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}))
+        throw new Error(data?.error || 'Unable to trigger refresh')
+      }
+
+      const data = await response.json()
+      setRecomputeMessage(
+        data.projectCount
+          ? `Started refresh for ${data.projectCount} project${data.projectCount > 1 ? 's' : ''}.`
+          : 'Refresh triggered.'
+      )
+    } catch (error: any) {
+      setRecomputeMessage(error.message || 'Failed to trigger refresh.')
+    } finally {
+      setIsRecomputing(false)
+    }
   }
 
   if (isLoading) {
@@ -329,6 +412,103 @@ export default function AdminAnalyticsPage() {
                 Paid to workers
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Compliance & AI */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
+                  <Shield className="w-6 h-6 text-emerald-600" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">KYC Pipeline</p>
+                  <p className="text-2xl font-bold text-gray-900">{compliance.kycPending + compliance.kycProcessing}</p>
+                </div>
+              </div>
+              <span className="text-xs font-semibold text-gray-500">Verified: {compliance.kycVerified}</span>
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">Pending review</span>
+                <span className="font-semibold text-amber-600">{compliance.kycPending}</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">Processing</span>
+                <span className="font-semibold text-blue-600">{compliance.kycProcessing}</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">Verified</span>
+                <span className="font-semibold text-green-600">{compliance.kycVerified}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <AlertTriangle className="w-10 h-10 text-red-500" />
+              <div>
+                <p className="text-sm text-gray-600">Latest Risk Events</p>
+                <p className="text-2xl font-bold text-gray-900">{compliance.riskEvents.length}</p>
+              </div>
+            </div>
+            <div className="space-y-3 max-h-40 overflow-y-auto pr-2">
+              {compliance.riskEvents.length === 0 ? (
+                <p className="text-sm text-gray-500">No active incidents</p>
+              ) : (
+                compliance.riskEvents.map((event) => (
+                  <div key={event.id} className="p-3 bg-gray-50 rounded-lg">
+                    <p className="text-sm font-semibold text-gray-900">{event.event_type}</p>
+                    <p className="text-xs text-gray-500 capitalize">Severity: {event.severity}</p>
+                    <p className="text-xs text-gray-400 mt-1">
+                      {new Date(event.created_at).toLocaleString()}
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <p className="text-sm text-gray-600">AI Recommendations</p>
+                <p className="text-lg font-semibold text-gray-900">Refresh Engine</p>
+              </div>
+              <RefreshCcw className="w-5 h-5 text-indigo-600" />
+            </div>
+            <p className="text-sm text-gray-600 mb-2">
+              Trigger recompute after onboarding new projects or major talent updates.
+            </p>
+            <input
+              type="text"
+              value={recomputeProjectId}
+              onChange={(e) => setRecomputeProjectId(e.target.value)}
+              placeholder="Project ID (optional)"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 mb-2"
+            />
+            <button
+              onClick={triggerRecommendationRefresh}
+              disabled={isRecomputing}
+              className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition"
+            >
+              {isRecomputing ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Recomputing...
+                </>
+              ) : (
+                <>
+                  <RefreshCcw className="w-4 h-4" />
+                  Refresh recommendations
+                </>
+              )}
+            </button>
+            {recomputeMessage && (
+              <p className="text-xs text-gray-500 mt-2">{recomputeMessage}</p>
+            )}
           </div>
         </div>
 

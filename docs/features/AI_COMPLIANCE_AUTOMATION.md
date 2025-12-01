@@ -20,6 +20,9 @@
 
 3. **TypeScript coverage (`/types/database.types.ts`)**
    - Strongly typed interfaces for every new table/status union, unlocking safer server actions and component props.
+4. **Operator tooling**
+   - Admin analytics now shows KYC backlog, risk-event feed, and provides a one-click “Refresh AI recommendations” action that hits `/api/ai/recommendations/recompute`.
+   - Verification queue displays turnaround KPIs plus reviewer controls so compliance staff can triage faster.
 
 ### Config & environment
 | Concern | Variables | Notes |
