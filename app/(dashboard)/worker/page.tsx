@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase/client'
+import { ShiftsModal } from '@/components/shifts/ShiftsModal'
 import { 
   Briefcase, Clock, DollarSign, User, LogOut, Search, 
   TrendingUp, FileText, CheckCircle, XCircle, AlertCircle,
@@ -60,6 +61,21 @@ export default function WorkerDashboard() {
   const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [showShiftsModal, setShowShiftsModal] = useState(false)
+  const [shiftsBalance, setShiftsBalance] = useState(0)
+
+  // Fetch Shifts balance
+  const fetchShiftsBalance = useCallback(async (userId: string) => {
+    try {
+      const response = await fetch(`/api/shifts/balance?userId=${userId}`)
+      const data = await response.json()
+      if (response.ok) {
+        setShiftsBalance(data.balance || 0)
+        setStats(prev => ({ ...prev, shiftsBalance: data.balance || 0 }))
+      }
+    } catch (err) {
+      console.error('Error fetching Shifts balance:', err)
+    }
+  }, [])
 
   const checkAuth = async () => {
     const { data: { user: authUser } } = await supabase.auth.getUser()
@@ -199,8 +215,9 @@ export default function WorkerDashboard() {
       fetchApplications()
       fetchContracts()
       fetchEarnings()
+      fetchShiftsBalance(user.id)
     }
-  }, [user])
+  }, [user, fetchShiftsBalance])
 
   const getSkillMatch = (projectSkills: string[]) => {
     if (!workerProfile?.skills?.length) return 0
@@ -263,7 +280,7 @@ export default function WorkerDashboard() {
                 className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg text-sm font-medium hover:from-amber-600 hover:to-orange-600 transition-all"
               >
                 <Zap className="w-4 h-4" />
-                <span>{stats.shiftsBalance} Shifts</span>
+                <span>{shiftsBalance} Shifts</span>
               </button>
 
               <button className="relative p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
@@ -666,91 +683,18 @@ export default function WorkerDashboard() {
       </div>
 
       {/* Shifts Modal */}
-      {showShiftsModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setShowShiftsModal(false)} />
-          <div className="relative bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-auto shadow-2xl">
-            <div className="p-6 border-b border-slate-200">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-amber-100 rounded-xl">
-                    <Zap className="w-6 h-6 text-amber-600" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-semibold text-slate-900">Get Shifts</h2>
-                    <p className="text-sm text-slate-500">Current balance: {stats.shiftsBalance} Shifts</p>
-                  </div>
-                </div>
-                <button onClick={() => setShowShiftsModal(false)} className="p-2 hover:bg-slate-100 rounded-lg">
-                  <XCircle className="w-5 h-5 text-slate-400" />
-                </button>
-              </div>
-            </div>
-            
-            <div className="p-6">
-              <div className="space-y-3 mb-6">
-                <h3 className="font-medium text-slate-900 mb-3">What you can do with Shifts:</h3>
-                <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
-                  <Rocket className="w-5 h-5 text-amber-500 mt-0.5" />
-                  <div>
-                    <div className="font-medium text-slate-900">Spotlight Application</div>
-                    <div className="text-sm text-slate-500">2 Shifts - Your application appears first</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
-                  <Crown className="w-5 h-5 text-amber-500 mt-0.5" />
-                  <div>
-                    <div className="font-medium text-slate-900">Profile Boost</div>
-                    <div className="text-sm text-slate-500">5 Shifts/week - Appear in featured professionals</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
-                  <MessageSquare className="w-5 h-5 text-amber-500 mt-0.5" />
-                  <div>
-                    <div className="font-medium text-slate-900">Direct Message</div>
-                    <div className="text-sm text-slate-500">1 Shift - Contact clients directly</div>
-                  </div>
-                </div>
-              </div>
-
-              <h3 className="font-medium text-slate-900 mb-3">Choose a package:</h3>
-              <div className="space-y-3">
-                {[
-                  { shifts: 10, price: 99, perShift: 9.9 },
-                  { shifts: 25, price: 199, perShift: 7.96, popular: true },
-                  { shifts: 50, price: 349, perShift: 6.98, save: '30%' },
-                  { shifts: 100, price: 599, perShift: 5.99, save: '40%' },
-                ].map((pkg) => (
-                  <button
-                    key={pkg.shifts}
-                    className={`w-full flex items-center justify-between p-4 border rounded-xl transition-all ${
-                      pkg.popular 
-                        ? 'border-amber-500 bg-amber-50' 
-                        : 'border-slate-200 hover:border-slate-300'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="text-2xl font-bold text-slate-900">{pkg.shifts}</div>
-                      <div className="text-left">
-                        <div className="font-medium text-slate-900">Shifts</div>
-                        <div className="text-xs text-slate-500">₹{pkg.perShift.toFixed(2)} per shift</div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-lg font-semibold text-slate-900">₹{pkg.price}</div>
-                      {pkg.save && (
-                        <div className="text-xs text-emerald-600 font-medium">Save {pkg.save}</div>
-                      )}
-                      {pkg.popular && (
-                        <div className="text-xs text-amber-600 font-medium">Most Popular</div>
-                      )}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+      {user && (
+        <ShiftsModal
+          isOpen={showShiftsModal}
+          onClose={() => setShowShiftsModal(false)}
+          userId={user.id}
+          userType="worker"
+          currentBalance={shiftsBalance}
+          onPurchaseComplete={(newBalance) => {
+            setShiftsBalance(newBalance)
+            setStats(prev => ({ ...prev, shiftsBalance: newBalance }))
+          }}
+        />
       )}
     </div>
   )
