@@ -110,6 +110,16 @@ export function ConversationList({ currentUserId, onSelectConversation }: Conver
           .in('conversation_id', conversationIds)
       ])
 
+      const { data: conversationMeta, error: conversationError } = await supabase
+        .from('conversations')
+        .select('id, title, project(title), updated_at')
+        .in('id', conversationIds)
+
+      if (conversationError) throw conversationError
+      const conversationMap = new Map(
+        (conversationMeta || []).map((row) => [row.id, row])
+      ])
+
       if (participantsRes.error) throw participantsRes.error
       if (messagesRes.error) throw messagesRes.error
       if (unreadRes.error) throw unreadRes.error
@@ -150,14 +160,16 @@ export function ConversationList({ currentUserId, onSelectConversation }: Conver
           ? membership.conversation?.project?.[0]
           : membership.conversation?.project
 
+        const conversationRecord = conversationMap.get(conversationId)
+
         acc.push({
           id: conversationId,
           otherUser,
           lastMessage,
           unreadCount: unreadMap.get(conversationId) || 0,
-          title: membership.conversation?.title,
+          title: conversationRecord?.title,
           projectTitle: projectRelation?.title ?? null,
-          updatedAt: membership.conversation?.updated_at ?? lastMessage?.timestamp ?? membership.joined_at
+          updatedAt: conversationRecord?.updated_at ?? lastMessage?.timestamp ?? membership.joined_at
         })
         return acc
       }, []).sort((a, b) => {
