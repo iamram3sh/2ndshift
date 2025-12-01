@@ -1,11 +1,20 @@
 import './globals.css'
-import { Inter } from 'next/font/google'
+import { Outfit, Sora } from 'next/font/google'
 import type { Metadata } from 'next'
 
-const inter = Inter({ 
+// Modern geometric sans-serif for body text
+const outfit = Outfit({ 
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-outfit',
+})
+
+// Bold modern font for headings
+const sora = Sora({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sora',
+  weight: ['400', '500', '600', '700', '800'],
 })
 
 export const metadata: Metadata = {
@@ -54,15 +63,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${outfit.variable} ${sora.variable}`}>
       <head>
         <link rel="manifest" href="/manifest.webmanifest" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/icon-192.png" />
-        <meta name="theme-color" content="#4f46e5" />
+        <meta name="theme-color" content="#05c8b1" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>
-      <body className={inter.className}>
+      <body className={`${outfit.className} antialiased`}>
         {children}
         <noscript>
           <div style={{ padding: '20px', textAlign: 'center', backgroundColor: '#fef3c7' }}>
