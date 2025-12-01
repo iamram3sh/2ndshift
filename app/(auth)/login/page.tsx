@@ -123,43 +123,50 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-50 flex">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-50 dark:bg-slate-900 flex animate-in fade-in">
       {/* Left Side - Form */}
       <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md animate-in slide-in-from-bottom delay-100">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 mb-8">
-            <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
-              <Briefcase className="w-6 h-6 text-white" />
+          <Link href="/" className="flex items-center gap-3 mb-8 group">
+            <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+              <Briefcase className="w-7 h-7 text-white" />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              2ndShift
-            </span>
+            <div className="flex flex-col">
+              <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent">
+                2ndShift
+              </span>
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 -mt-1 font-medium">Professional Platform</span>
+            </div>
           </Link>
 
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-slate-900 mb-3">Welcome back</h1>
-            <p className="text-lg text-slate-600">Sign in to continue to your dashboard</p>
+            <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-3 animate-in slide-in-from-left">
+              Welcome back 👋
+            </h1>
+            <p className="text-lg text-slate-600 dark:text-slate-400 animate-in slide-in-from-left delay-75">
+              Sign in to continue to your dashboard
+            </p>
           </div>
 
           {/* Success Message */}
           {successMessage && (
-            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-800 text-sm flex items-start gap-3 animate-in slide-in-from-top">
-              <div className="w-5 h-5 bg-green-200 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <CheckCircle className="w-3 h-3 text-green-800" />
+            <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-700 rounded-xl text-green-800 dark:text-green-300 text-sm flex items-start gap-3 animate-in slide-in-from-top shadow-sm">
+              <div className="w-6 h-6 bg-green-200 dark:bg-green-700 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <CheckCircle className="w-4 h-4 text-green-800 dark:text-green-300" />
               </div>
-              <span>{successMessage}</span>
+              <span className="flex-1">{successMessage}</span>
             </div>
           )}
 
           {/* Error Message */}
           {message && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm flex items-start gap-3 animate-in slide-in-from-top">
-              <div className="w-5 h-5 bg-red-200 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <span className="text-red-800 text-xs font-bold">!</span>
+            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-700 rounded-xl text-red-800 dark:text-red-300 text-sm flex items-start gap-3 animate-in slide-in-from-top shadow-sm">
+              <div className="w-6 h-6 bg-red-200 dark:bg-red-700 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span className="text-red-800 dark:text-red-300 text-xs font-bold">!</span>
               </div>
-              <span>{message}</span>
+              <span className="flex-1">{message}</span>
             </div>
           )}
 
@@ -235,74 +242,83 @@ export default function LoginPage() {
 
           {/* Footer */}
           <div className="mt-8 text-center">
-            <p className="text-slate-600">
+            <p className="text-slate-600 dark:text-slate-400">
               Don&apos;t have an account?{' '}
-              <Link href="/register" className="font-semibold text-indigo-600 hover:text-indigo-700 transition">
-                Create one now
+              <Link href="/register" className="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
+                Create one now →
               </Link>
             </p>
           </div>
 
-          <div className="mt-8 pt-8 border-t border-slate-200">
-            <p className="text-sm text-slate-500 text-center">
+          <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-700">
+            <p className="text-sm text-slate-500 dark:text-slate-400 text-center">
               By signing in, you agree to our{' '}
-              <Link href="/terms" className="text-indigo-600 hover:underline">Terms</Link>
+              <Link href="/terms" className="text-indigo-600 dark:text-indigo-400 hover:underline">Terms</Link>
               {' '}and{' '}
-              <Link href="/privacy" className="text-indigo-600 hover:underline">Privacy Policy</Link>
+              <Link href="/privacy" className="text-indigo-600 dark:text-indigo-400 hover:underline">Privacy Policy</Link>
             </p>
           </div>
         </div>
       </div>
 
       {/* Right Side - Benefits */}
-      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-indigo-600 to-purple-600 p-12 items-center justify-center relative overflow-hidden">
+      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 p-12 items-center justify-center relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute inset-0 bg-grid-white/10"></div>
-        <div className="absolute top-20 right-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 right-20 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
         
-        <div className="relative z-10 max-w-md">
-          <Shield className="w-16 h-16 text-white mb-6" />
-          <h2 className="text-4xl font-bold text-white mb-6">
+        <div className="relative z-10 max-w-md animate-in slide-in-from-right delay-200">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl mb-6 shadow-2xl">
+            <Shield className="w-12 h-12 text-white" />
+          </div>
+          <h2 className="text-4xl font-bold text-white mb-6 leading-tight">
             India&apos;s Most Trusted
             <br />
-            Freelance Platform
+            <span className="bg-gradient-to-r from-yellow-200 to-yellow-400 bg-clip-text text-transparent">Freelance Platform</span>
           </h2>
-          <p className="text-xl text-indigo-100 mb-8">
+          <p className="text-xl text-indigo-100 mb-8 leading-relaxed">
             Join thousands of professionals working safely and legally on 2ndShift
           </p>
 
-          <div className="space-y-4">
+          <div className="space-y-4 mb-10 stagger-animation">
             {[
-              'Automatic TDS & GST compliance',
-              'Instant payments after approval',
-              'Professional contracts & NDAs',
-              'Verified clients and workers'
+              { text: 'Automatic TDS & GST compliance', icon: '✓' },
+              { text: 'Instant payments after approval', icon: '⚡' },
+              { text: 'Professional contracts & NDAs', icon: '📄' },
+              { text: 'Verified clients and workers', icon: '🛡️' }
             ].map((benefit, i) => (
-              <div key={i} className="flex items-center gap-3 text-white">
-                <div className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <CheckCircle className="w-4 h-4" />
+              <div key={i} className="flex items-center gap-3 text-white hover:translate-x-2 transition-transform">
+                <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <span className="text-sm">{benefit.icon}</span>
                 </div>
-                <span className="text-lg">{benefit}</span>
+                <span className="text-lg font-medium">{benefit.text}</span>
               </div>
             ))}
           </div>
 
-          <div className="mt-12 p-6 bg-white/10 backdrop-blur border border-white/20 rounded-2xl">
-            <div className="flex items-center gap-4 mb-3">
-              <div className="flex -space-x-2">
+          <div className="p-6 glass-effect rounded-2xl shadow-2xl hover:shadow-3xl transition-shadow">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="flex -space-x-3">
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="w-10 h-10 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-full border-2 border-white"></div>
+                  <div key={i} className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full border-3 border-white shadow-lg">
+                    <div className="w-full h-full rounded-full bg-gradient-to-br from-indigo-400 to-purple-400"></div>
+                  </div>
                 ))}
               </div>
               <div className="text-white">
-                <div className="font-bold">5,000+</div>
-                <div className="text-sm text-indigo-100">Active Users</div>
+                <div className="text-2xl font-bold">5,000+</div>
+                <div className="text-sm text-indigo-100 font-medium">Active Users</div>
               </div>
             </div>
-            <p className="text-sm text-indigo-100">
+            <p className="text-sm text-white font-medium leading-relaxed">
               &quot;2ndShift made freelancing completely stress-free. No more tax worries!&quot;
             </p>
+            <div className="mt-3 flex items-center gap-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <div key={star} className="w-4 h-4 text-yellow-300">★</div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
