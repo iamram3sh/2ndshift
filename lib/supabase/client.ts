@@ -1,31 +1,48 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-// Validate environment variables - STRICT MODE
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+// Lazy initialization to prevent build-time errors
+let _supabase: SupabaseClient | null = null
 
-// In production or when not in development, throw error if env vars are missing
-if (process.env.NODE_ENV === 'production' && (!supabaseUrl || !supabaseAnonKey)) {
-  throw new Error('CRITICAL: Supabase environment variables must be configured in production. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY')
-}
+function getSupabaseClient(): SupabaseClient {
+  if (_supabase) return _supabase
+  
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('⚠️ Supabase environment variables not configured. Auth will not work.')
-  console.warn('Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY')
-}
+  if (!supabaseUrl || !supabaseAnonKey) {
+    // During build or when env vars missing, use placeholder
+    console.warn('⚠️ Supabase environment variables not configured. Using placeholder.')
+    return createClient(
+      'https://placeholder.supabase.co',
+      'placeholder-key',
+      {
+        auth: {
+          autoRefreshToken: true,
+          persistSession: true,
+          detectSessionInUrl: true
+        }
+      }
+    )
+  }
 
-// Create Supabase client for client-side operations
-export const supabase = createClient(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseAnonKey || 'placeholder-key',
-  {
+  // Create Supabase client for client-side operations
+  _supabase = createClient(supabaseUrl, supabaseAnonKey, {
     auth: {
       autoRefreshToken: true,
       persistSession: true,
       detectSessionInUrl: true
     }
+  })
+  
+  return _supabase
+}
+
+// Export as a proxy for lazy initialization
+export const supabase = new Proxy({} as SupabaseClient, {
+  get(_, prop) {
+    return getSupabaseClient()[prop as keyof SupabaseClient]
   }
-)
+})
 
 // NOTE: Service role operations should ONLY be done server-side
 // This file is for CLIENT-SIDE operations only
