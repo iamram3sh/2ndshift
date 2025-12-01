@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
-import { Camera, Mail, Phone, MapPin, Calendar, User, Briefcase, Award, Globe, Save, ArrowLeft } from 'lucide-react'
-import SkillAutocomplete from '@/components/shared/SkillAutocomplete'
+import { Camera, Mail, Phone, MapPin, Calendar, User, Briefcase, Award, Globe, Save, ArrowLeft, Building2 } from 'lucide-react'
+import { IndustrySelector } from '@/components/categories/IndustrySelector'
+import { SkillSelector } from '@/components/categories/SkillSelector'
+import { SuggestCategoryModal } from '@/components/categories/SuggestCategoryModal'
 
 export default function EditWorkerProfilePage() {
   const router = useRouter()
@@ -12,6 +14,8 @@ export default function EditWorkerProfilePage() {
   const [saving, setSaving] = useState(false)
   const [user, setUser] = useState<any>(null)
   const [profile, setProfile] = useState<any>(null)
+  const [showSuggestModal, setShowSuggestModal] = useState(false)
+  const [industries, setIndustries] = useState<any[]>([])
   
   const [formData, setFormData] = useState({
     full_name: '',
@@ -23,11 +27,13 @@ export default function EditWorkerProfilePage() {
     state: '',
     country: 'India',
     address: '',
+    industry_id: '',
     profession: '',
     tagline: '',
     bio: '',
     hourly_rate: '',
     experience_years: '',
+    years_in_industry: '',
     skills: [] as string[],
     languages: [] as string[],
     education: '',
@@ -39,7 +45,23 @@ export default function EditWorkerProfilePage() {
 
   useEffect(() => {
     fetchProfile()
+    fetchIndustries()
   }, [])
+
+  const fetchIndustries = async () => {
+    try {
+      const response = await fetch('/api/industries')
+      const data = await response.json()
+      setIndustries(data.industries || [])
+    } catch (error) {
+      console.error('Error fetching industries:', error)
+    }
+  }
+
+  const getSelectedIndustrySlug = () => {
+    const industry = industries.find(i => i.id === formData.industry_id)
+    return industry?.slug || undefined
+  }
 
   const fetchProfile = async () => {
     try {
@@ -81,11 +103,13 @@ export default function EditWorkerProfilePage() {
         setProfile(profileData)
         setFormData(prev => ({
           ...prev,
+          industry_id: profileData.industry_id || '',
           profession: profileData.profession || '',
           tagline: profileData.tagline || '',
           bio: profileData.bio || '',
           hourly_rate: profileData.hourly_rate || '',
           experience_years: profileData.experience_years || '',
+          years_in_industry: profileData.years_in_industry || '',
           skills: profileData.skills || [],
           languages: profileData.languages || [],
           education: profileData.education || '',
@@ -149,6 +173,9 @@ export default function EditWorkerProfilePage() {
       if (formData.tagline) profileData.tagline = formData.tagline
       if (formData.bio) profileData.bio = formData.bio
       
+      // Handle industry
+      if (formData.industry_id) profileData.industry_id = formData.industry_id
+      
       // Handle numeric fields - only set if valid number
       if (formData.hourly_rate && formData.hourly_rate !== '') {
         const rate = parseFloat(formData.hourly_rate)
@@ -158,6 +185,11 @@ export default function EditWorkerProfilePage() {
       if (formData.experience_years && formData.experience_years !== '') {
         const years = parseInt(formData.experience_years)
         if (!isNaN(years) && years >= 0) profileData.experience_years = years
+      }
+      
+      if (formData.years_in_industry && formData.years_in_industry !== '') {
+        const years = parseInt(formData.years_in_industry)
+        if (!isNaN(years) && years >= 0) profileData.years_in_industry = years
       }
       
       // URLs and text fields
@@ -385,6 +417,23 @@ export default function EditWorkerProfilePage() {
             </div>
           </div>
 
+          {/* Industry Selection */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <Building2 className="w-5 h-5" />
+              Industry *
+            </h3>
+            <IndustrySelector
+              selected={formData.industry_id}
+              onSelect={(id) => setFormData({...formData, industry_id: id || ''})}
+              onSuggestNew={() => setShowSuggestModal(true)}
+              showSuggestOption={true}
+            />
+            <p className="text-sm text-gray-500 mt-2">
+              Select your primary industry. This helps clients find you for relevant projects.
+            </p>
+          </div>
+
           {/* Professional Information */}
           <div>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -412,7 +461,7 @@ export default function EditWorkerProfilePage() {
                   className="w-full px-4 py-2 border rounded-lg dark:bg-slate-700"
                 />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div id="rate">
                   <label className="block text-sm font-medium mb-2">Hourly Rate (₹) *</label>
                   <input
@@ -424,12 +473,22 @@ export default function EditWorkerProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Years of Experience *</label>
+                  <label className="block text-sm font-medium mb-2">Total Experience (Years) *</label>
                   <input
                     type="number"
                     value={formData.experience_years}
                     onChange={(e) => setFormData({...formData, experience_years: e.target.value})}
                     placeholder="5"
+                    className="w-full px-4 py-2 border rounded-lg dark:bg-slate-700"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2">Years in This Industry</label>
+                  <input
+                    type="number"
+                    value={formData.years_in_industry}
+                    onChange={(e) => setFormData({...formData, years_in_industry: e.target.value})}
+                    placeholder="3"
                     className="w-full px-4 py-2 border rounded-lg dark:bg-slate-700"
                   />
                 </div>
@@ -443,12 +502,17 @@ export default function EditWorkerProfilePage() {
               <Award className="w-5 h-5" />
               Skills *
             </h3>
-            <SkillAutocomplete
+            <SkillSelector
               selectedSkills={formData.skills}
               onSkillsChange={(skills) => setFormData({...formData, skills})}
+              industrySlug={getSelectedIndustrySlug()}
               placeholder="Search or add skills..."
               maxSkills={20}
+              onSuggestNew={() => setShowSuggestModal(true)}
             />
+            <p className="text-sm text-gray-500 mt-2">
+              Skills are filtered based on your selected industry. Can't find a skill? Suggest it!
+            </p>
           </div>
 
           {/* Bio */}
@@ -535,6 +599,13 @@ export default function EditWorkerProfilePage() {
           </div>
         </div>
       </div>
+
+      {/* Suggest Category Modal */}
+      <SuggestCategoryModal
+        isOpen={showSuggestModal}
+        onClose={() => setShowSuggestModal(false)}
+        userId={user?.id || ''}
+      />
     </div>
   )
 }

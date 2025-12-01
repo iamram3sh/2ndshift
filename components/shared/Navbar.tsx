@@ -42,32 +42,49 @@ export function Navbar() {
             <Link href="/" className="text-2xl font-bold text-indigo-600">
               2ndShift
             </Link>
-            {user && (
-              <div className="hidden md:flex items-center gap-6">
-                <Link
-                  href={`/${user.user_type}`}
-                  className="text-gray-700 hover:text-indigo-600 font-medium"
-                >
-                  Dashboard
-                </Link>
-                {user.user_type === 'client' && (
+            <div className="hidden md:flex items-center gap-6">
+              {user ? (
+                <>
                   <Link
-                    href="/projects/create"
+                    href={`/${user.user_type}`}
                     className="text-gray-700 hover:text-indigo-600 font-medium"
                   >
-                    Post Project
+                    Dashboard
                   </Link>
-                )}
-                {user.user_type === 'worker' && (
+                  {user.user_type === 'client' && (
+                    <Link
+                      href="/projects/create"
+                      className="text-gray-700 hover:text-indigo-600 font-medium"
+                    >
+                      Post Project
+                    </Link>
+                  )}
+                  {user.user_type === 'worker' && (
+                    <Link
+                      href="/projects"
+                      className="text-gray-700 hover:text-indigo-600 font-medium"
+                    >
+                      Browse Projects
+                    </Link>
+                  )}
+                </>
+              ) : (
+                <>
                   <Link
-                    href="/projects"
+                    href="/industries"
                     className="text-gray-700 hover:text-indigo-600 font-medium"
                   >
-                    Browse Projects
+                    Browse Industries
                   </Link>
-                )}
-              </div>
-            )}
+                  <Link
+                    href="/workers"
+                    className="text-gray-700 hover:text-indigo-600 font-medium"
+                  >
+                    Find Talent
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center gap-4">

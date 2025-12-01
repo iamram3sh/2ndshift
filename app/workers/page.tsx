@@ -1,13 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { 
   Search, Filter, MapPin, Star, Clock, CheckCircle, BadgeCheck, 
   Briefcase, Users, ChevronDown, ArrowRight, Zap, Shield, Award,
   Code, Palette, Database, Cloud, Smartphone, TestTube, Lock,
-  TrendingUp, DollarSign, X, Layers, Menu, Play, MessageSquare
+  TrendingUp, DollarSign, X, Layers, Menu, Play, MessageSquare,
+  Building2, Monitor, Heart, Calculator, Wrench, Radio
 } from 'lucide-react'
+import type { Industry } from '@/types/categories'
 
 const SKILL_CATEGORIES = [
   { id: 'all', label: 'All Skills', icon: Users, count: 5247 },
@@ -18,6 +21,16 @@ const SKILL_CATEGORIES = [
   { id: 'mobile', label: 'Mobile', icon: Smartphone, count: 445 },
   { id: 'qa', label: 'QA & Testing', icon: TestTube, count: 389 },
 ]
+
+const INDUSTRY_ICONS: Record<string, any> = {
+  it: Monitor,
+  design: Palette,
+  marketing: TrendingUp,
+  finance: Calculator,
+  healthcare: Heart,
+  engineering: Wrench,
+  telecom: Radio,
+}
 
 const FEATURED_PROFESSIONALS = [
   {
@@ -137,11 +150,38 @@ const STATS = [
   { value: '₹15Cr+', label: 'Paid to Professionals' },
 ]
 
-export default function WorkersPage() {
+function WorkersPageContent() {
+  const searchParams = useSearchParams()
+  const industryFromUrl = searchParams.get('industry')
+  
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
+  const [selectedIndustry, setSelectedIndustry] = useState<string | null>(industryFromUrl)
+  const [industries, setIndustries] = useState<Industry[]>([])
   const [showFilters, setShowFilters] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  useEffect(() => {
+    fetchIndustries()
+  }, [])
+
+  useEffect(() => {
+    if (industryFromUrl) {
+      setSelectedIndustry(industryFromUrl)
+    }
+  }, [industryFromUrl])
+
+  const fetchIndustries = async () => {
+    try {
+      const response = await fetch('/api/industries')
+      const data = await response.json()
+      setIndustries(data.industries || [])
+    } catch (error) {
+      console.error('Error fetching industries:', error)
+    }
+  }
+
+  const selectedIndustryData = industries.find(i => i.slug === selectedIndustry)
 
   const filteredProfessionals = FEATURED_PROFESSIONALS.filter(pro => {
     const matchesSearch = pro.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -205,12 +245,35 @@ export default function WorkersPage() {
       <section className="bg-slate-900 py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-10">
-            <h1 className="text-3xl lg:text-4xl font-semibold text-white mb-4">
-              Find India&apos;s Top Tech Talent
-            </h1>
-            <p className="text-lg text-slate-400">
-              5,000+ verified professionals ready to work. All compliance handled.
-            </p>
+            {selectedIndustryData ? (
+              <>
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <Link 
+                    href="/workers"
+                    className="text-sm text-slate-400 hover:text-white transition-colors"
+                  >
+                    All Industries
+                  </Link>
+                  <span className="text-slate-500">/</span>
+                  <span className="text-sm text-sky-400">{selectedIndustryData.name}</span>
+                </div>
+                <h1 className="text-3xl lg:text-4xl font-semibold text-white mb-4">
+                  {selectedIndustryData.name} Professionals
+                </h1>
+                <p className="text-lg text-slate-400">
+                  {selectedIndustryData.description || `Find verified ${selectedIndustryData.name} professionals`}
+                </p>
+              </>
+            ) : (
+              <>
+                <h1 className="text-3xl lg:text-4xl font-semibold text-white mb-4">
+                  Find India&apos;s Top Talent
+                </h1>
+                <p className="text-lg text-slate-400">
+                  5,000+ verified professionals across 25+ industries. All compliance handled.
+                </p>
+              </>
+            )}
           </div>
 
           {/* Search Bar */}
@@ -251,27 +314,70 @@ export default function WorkersPage() {
           {/* Sidebar - Categories */}
           <aside className="lg:w-64 flex-shrink-0">
             <div className="bg-white rounded-xl border border-slate-200 p-4 sticky top-24">
-              <h3 className="font-semibold text-slate-900 mb-4">Categories</h3>
-              <div className="space-y-1">
-                {SKILL_CATEGORIES.map((cat) => (
+              {/* Industries */}
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-slate-900">Industries</h3>
+                  <Link href="/industries" className="text-xs text-sky-600 hover:underline">
+                    View all
+                  </Link>
+                </div>
+                <div className="space-y-1">
                   <button
-                    key={cat.id}
-                    onClick={() => setSelectedCategory(cat.id)}
-                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-all ${
-                      selectedCategory === cat.id
+                    onClick={() => setSelectedIndustry(null)}
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all ${
+                      !selectedIndustry
                         ? 'bg-slate-900 text-white'
                         : 'text-slate-600 hover:bg-slate-50'
                     }`}
                   >
-                    <div className="flex items-center gap-2">
-                      <cat.icon className="w-4 h-4" />
-                      <span className="font-medium">{cat.label}</span>
-                    </div>
-                    <span className={`text-xs ${selectedCategory === cat.id ? 'text-slate-300' : 'text-slate-400'}`}>
-                      {cat.count.toLocaleString()}
-                    </span>
+                    <Users className="w-4 h-4" />
+                    <span className="font-medium">All Industries</span>
                   </button>
-                ))}
+                  {industries.slice(0, 8).map((ind) => {
+                    const Icon = INDUSTRY_ICONS[ind.slug] || Building2
+                    return (
+                      <button
+                        key={ind.id}
+                        onClick={() => setSelectedIndustry(ind.slug)}
+                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all ${
+                          selectedIndustry === ind.slug
+                            ? 'bg-slate-900 text-white'
+                            : 'text-slate-600 hover:bg-slate-50'
+                        }`}
+                      >
+                        <Icon className="w-4 h-4" />
+                        <span className="font-medium">{ind.name}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Skill Categories */}
+              <div className="pt-6 border-t border-slate-200">
+                <h3 className="font-semibold text-slate-900 mb-4">Skill Categories</h3>
+                <div className="space-y-1">
+                  {SKILL_CATEGORIES.map((cat) => (
+                    <button
+                      key={cat.id}
+                      onClick={() => setSelectedCategory(cat.id)}
+                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-all ${
+                        selectedCategory === cat.id
+                          ? 'bg-slate-900 text-white'
+                          : 'text-slate-600 hover:bg-slate-50'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <cat.icon className="w-4 h-4" />
+                        <span className="font-medium">{cat.label}</span>
+                      </div>
+                      <span className={`text-xs ${selectedCategory === cat.id ? 'text-slate-300' : 'text-slate-400'}`}>
+                        {cat.count.toLocaleString()}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Quick Filters */}
@@ -500,5 +606,18 @@ export default function WorkersPage() {
         </div>
       </footer>
     </div>
+  )
+}
+
+// Wrap in Suspense for useSearchParams
+export default function WorkersPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-lg text-slate-600">Loading...</div>
+      </div>
+    }>
+      <WorkersPageContent />
+    </Suspense>
   )
 }
