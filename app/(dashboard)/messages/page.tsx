@@ -22,16 +22,17 @@ function MessagesContent() {
   useEffect(() => {
     checkAuth()
     checkMobile()
-    
-    // Handle URL parameters for starting new conversations
-    const withUserId = searchParams?.get('with')
-    if (withUserId && user) {
-      startConversation(withUserId)
-    }
-
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
+
+  useEffect(() => {
+    if (!user) return
+    const targetUserId = searchParams?.get('with')
+    if (targetUserId) {
+      startConversation(targetUserId)
+    }
+  }, [user, searchParams])
 
   const checkMobile = () => {
     setIsMobile(window.innerWidth < 1024)
@@ -61,27 +62,24 @@ function MessagesContent() {
     if (!user) return
 
     try {
-      // Check if conversation already exists
-      const { data: existingMessages } = await supabase
-        .from('messages')
-        .select('conversation_id')
-        .or(`and(sender_id.eq.${user.id},receiver_id.eq.${otherUserId}),and(sender_id.eq.${otherUserId},receiver_id.eq.${user.id})`)
-        .limit(1)
-        .single()
+      const response = await fetch('/api/messaging/conversations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ targetUserId: otherUserId })
+      })
 
-      if (existingMessages) {
-        setSelectedConversation({
-          id: existingMessages.conversation_id,
-          otherUserId: otherUserId
-        })
-      } else {
-        // Create new conversation ID
-        const newConversationId = `${[user.id, otherUserId].sort().join('_')}`
-        setSelectedConversation({
-          id: newConversationId,
-          otherUserId: otherUserId
-        })
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({}))
+        throw new Error(error?.error || 'Failed to start conversation')
       }
+
+      const data = await response.json()
+      setSelectedConversation({
+        id: data.conversationId,
+        otherUserId
+      })
     } catch (error) {
       console.error('Error starting conversation:', error)
     }
