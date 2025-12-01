@@ -156,11 +156,11 @@ export function ConversationList({ currentUserId, onSelectConversation }: Conver
         }
 
         const lastMessage = lastMessageMap.get(conversationId)
-        const projectRelation = Array.isArray(membership.conversation?.project)
-          ? membership.conversation?.project?.[0]
-          : membership.conversation?.project
-
         const conversationRecord = conversationMap.get(conversationId)
+        const projectRelationRaw = conversationRecord?.project
+        const projectRelation = Array.isArray(projectRelationRaw)
+          ? projectRelationRaw[0]
+          : projectRelationRaw
 
         acc.push({
           id: conversationId,
