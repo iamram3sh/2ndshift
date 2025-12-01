@@ -235,11 +235,11 @@ export default function LoginPage() {
                 ))}
               </div>
               <div>
-                <div className="font-semibold text-white">5,000+</div>
-                <div className="text-sm text-slate-400">Active professionals</div>
+                <div className="font-semibold text-white">Growing</div>
+                <div className="text-sm text-slate-300">Professional community</div>
               </div>
             </div>
-            <p className="text-sm text-slate-400 italic">
+            <p className="text-sm text-slate-300 italic">
               &ldquo;The platform that finally makes freelancing simple and compliant.&rdquo;
             </p>
           </div>

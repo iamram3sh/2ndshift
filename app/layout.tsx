@@ -11,7 +11,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: '2ndShift - Enterprise Talent Platform | Tax-Compliant Contract Workforce',
-  description: 'India\'s premier platform for compliant contract workforce. Access 5,000+ verified professionals. Automatic TDS, GST compliance, and professional contracts. Trusted by 500+ companies.',
+  description: 'India\'s premier platform for compliant contract workforce. Access verified professionals with automatic TDS, GST compliance, and professional contracts. Secure escrow payments.',
   keywords: 'contract workforce india, compliant freelancing, enterprise talent platform, TDS compliance, GST freelance, verified professionals, staff augmentation india',
   authors: [{ name: '2ndShift Technologies' }],
   creator: '2ndShift',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     url: 'https://2ndshift.com',
     title: '2ndShift - Enterprise Talent Platform',
-    description: 'India\'s premier platform for compliant contract workforce. Trusted by 500+ companies.',
+    description: 'India\'s premier platform for compliant contract workforce. Secure payments with full tax compliance.',
     siteName: '2ndShift',
     images: [
       {

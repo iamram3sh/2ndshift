@@ -8,10 +8,10 @@ import {
 } from 'lucide-react'
 
 const STATS = [
-  { value: '₹15Cr+', label: 'Paid to professionals' },
-  { value: '5,000+', label: 'Verified professionals' },
-  { value: '500+', label: 'Companies trust us' },
-  { value: '98%', label: 'Satisfaction rate' },
+  { value: '100%', label: 'Tax compliant' },
+  { value: 'Growing', label: 'Professional network' },
+  { value: 'Weekly', label: 'Payment cycles' },
+  { value: '24/7', label: 'Platform availability' },
 ]
 
 const VALUES = [
@@ -65,11 +65,11 @@ const TEAM = [
 ]
 
 const MILESTONES = [
-  { year: '2023', title: 'Founded', description: 'Started with a vision to make contract work compliant and simple.' },
-  { year: '2023', title: '1,000 professionals', description: 'Crossed our first major milestone of verified professionals.' },
-  { year: '2024', title: '₹5Cr processed', description: 'Processed over ₹5 crores in compliant payments.' },
-  { year: '2024', title: '500+ companies', description: 'Trusted by over 500 companies across India.' },
-  { year: '2025', title: '5,000+ professionals', description: 'Growing community of verified tech professionals.' },
+  { year: '2024', title: 'Founded', description: 'Started with a vision to make contract work compliant and simple.' },
+  { year: '2024', title: 'Platform Launch', description: 'Launched our beta platform with core features.' },
+  { year: '2025', title: 'Early Access', description: 'Opening platform to early adopters and building community.' },
+  { year: '2025', title: 'Growing Community', description: 'Building a network of verified professionals.' },
+  { year: 'Future', title: 'Pan-India Scale', description: 'Expanding to serve professionals and companies nationwide.' },
 ]
 
 export default function AboutPage() {

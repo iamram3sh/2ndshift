@@ -13,13 +13,13 @@ import {
 import type { Industry } from '@/types/categories'
 
 const SKILL_CATEGORIES = [
-  { id: 'all', label: 'All Skills', icon: Users, count: 5247 },
-  { id: 'development', label: 'Development', icon: Code, count: 2156 },
-  { id: 'design', label: 'Design', icon: Palette, count: 892 },
-  { id: 'data', label: 'Data & Analytics', icon: Database, count: 634 },
-  { id: 'devops', label: 'DevOps & Cloud', icon: Cloud, count: 521 },
-  { id: 'mobile', label: 'Mobile', icon: Smartphone, count: 445 },
-  { id: 'qa', label: 'QA & Testing', icon: TestTube, count: 389 },
+  { id: 'all', label: 'All Skills', icon: Users },
+  { id: 'development', label: 'Development', icon: Code },
+  { id: 'design', label: 'Design', icon: Palette },
+  { id: 'data', label: 'Data & Analytics', icon: Database },
+  { id: 'devops', label: 'DevOps & Cloud', icon: Cloud },
+  { id: 'mobile', label: 'Mobile', icon: Smartphone },
+  { id: 'qa', label: 'QA & Testing', icon: TestTube },
 ]
 
 const INDUSTRY_ICONS: Record<string, any> = {
@@ -303,17 +303,17 @@ function WorkersPageContent() {
                 <div className="flex items-center justify-center gap-2 mb-4">
                   <Link 
                     href="/workers"
-                    className="text-sm text-slate-400 hover:text-white transition-colors"
+                    className="text-sm text-slate-300 hover:text-white transition-colors"
                   >
                     All Industries
                   </Link>
-                  <span className="text-slate-500">/</span>
-                  <span className="text-sm text-sky-400">{selectedIndustryData.name}</span>
+                  <span className="text-slate-400">/</span>
+                  <span className="text-sm text-sky-400 font-medium">{selectedIndustryData.name}</span>
                 </div>
                 <h1 className="text-3xl lg:text-4xl font-semibold text-white mb-4">
                   {selectedIndustryData.name} Professionals
                 </h1>
-                <p className="text-lg text-slate-400">
+                <p className="text-lg text-slate-300">
                   {selectedIndustryData.description || `Find verified ${selectedIndustryData.name} professionals`}
                 </p>
               </>
@@ -322,8 +322,8 @@ function WorkersPageContent() {
                 <h1 className="text-3xl lg:text-4xl font-semibold text-white mb-4">
                   Find India&apos;s Top Talent
                 </h1>
-                <p className="text-lg text-slate-400">
-                  5,000+ verified professionals across 25+ industries. All compliance handled.
+                <p className="text-lg text-slate-300">
+                  Verified professionals across multiple industries. All compliance handled.
                 </p>
               </>
             )}
@@ -415,19 +415,14 @@ function WorkersPageContent() {
                     <button
                       key={cat.id}
                       onClick={() => setSelectedCategory(cat.id)}
-                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-all ${
+                      className={`w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm transition-all ${
                         selectedCategory === cat.id
                           ? 'bg-slate-900 text-white'
                           : 'text-slate-600 hover:bg-slate-50'
                       }`}
                     >
-                      <div className="flex items-center gap-2">
-                        <cat.icon className="w-4 h-4" />
-                        <span className="font-medium">{cat.label}</span>
-                      </div>
-                      <span className={`text-xs ${selectedCategory === cat.id ? 'text-slate-300' : 'text-slate-400'}`}>
-                        {cat.count.toLocaleString()}
-                      </span>
+                      <cat.icon className="w-4 h-4" />
+                      <span className="font-medium">{cat.label}</span>
                     </button>
                   ))}
                 </div>
@@ -623,7 +618,7 @@ function WorkersPageContent() {
           <h2 className="text-2xl lg:text-3xl font-semibold text-white mb-4">
             Ready to build your team?
           </h2>
-          <p className="text-slate-400 mb-8">
+          <p className="text-slate-300 mb-8">
             Post your project and get proposals from verified professionals within hours.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

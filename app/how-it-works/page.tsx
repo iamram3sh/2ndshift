@@ -349,9 +349,9 @@ export default function HowItWorksPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { value: '48hrs', label: 'Average time to first hire' },
-              { value: '5,000+', label: 'Verified professionals' },
-              { value: '98%', label: 'Client satisfaction rate' },
-              { value: '₹15Cr+', label: 'Paid to professionals' },
+              { value: '100%', label: 'Tax compliant' },
+              { value: '24/7', label: 'Platform availability' },
+              { value: 'Weekly', label: 'Payment cycles' },
             ].map((stat, i) => (
               <div key={i} className="text-center">
                 <div className="text-4xl font-bold text-slate-900 mb-2">{stat.value}</div>
@@ -369,7 +369,7 @@ export default function HowItWorksPage() {
             Ready to get started?
           </h2>
           <p className="text-lg text-slate-600 mb-8">
-            Join thousands of professionals and companies on 2ndShift.
+            Join professionals and companies building the future of work on 2ndShift.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

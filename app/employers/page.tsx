@@ -170,8 +170,8 @@ export default function EmployersPage() {
               Scale your team without the compliance headaches
             </h1>
             
-            <p className="text-xl text-slate-300 mb-8 leading-relaxed">
-              Access 5,000+ verified professionals. Automatic TDS, contracts, and payments. 
+            <p className="text-xl text-slate-200 mb-8 leading-relaxed">
+              Access verified professionals across India. Automatic TDS, contracts, and payments. 
               Focus on building — we handle everything else.
             </p>
 
@@ -218,7 +218,7 @@ export default function EmployersPage() {
       <section className="py-12 bg-slate-50 border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm font-medium text-slate-500 mb-8">
-            TRUSTED BY 500+ COMPANIES ACROSS INDIA
+            TRUSTED BY GROWING BUSINESSES ACROSS INDIA
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
             {LOGOS.map((company, i) => (
@@ -391,8 +391,8 @@ export default function EmployersPage() {
           <h2 className="text-3xl lg:text-4xl font-semibold text-white mb-4">
             Ready to scale your team?
           </h2>
-          <p className="text-lg text-slate-400 mb-10">
-            Join 500+ companies hiring compliant contract talent on 2ndShift.
+          <p className="text-lg text-slate-300 mb-10">
+            Join growing companies hiring compliant contract talent on 2ndShift.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

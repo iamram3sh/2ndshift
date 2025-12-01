@@ -292,13 +292,13 @@ export default function RegisterPage() {
 
           <div className="mt-12 grid grid-cols-3 gap-6">
             {[
-              { value: '₹50K+', label: 'Avg. Monthly' },
-              { value: '5,000+', label: 'Professionals' },
-              { value: '98%', label: 'Satisfaction' },
+              { value: '100%', label: 'Tax Compliant' },
+              { value: 'Weekly', label: 'Payments' },
+              { value: 'Secure', label: 'Escrow' },
             ].map((stat, i) => (
               <div key={i}>
                 <div className="text-2xl font-semibold text-white">{stat.value}</div>
-                <div className="text-sm text-slate-400">{stat.label}</div>
+                <div className="text-sm text-slate-300">{stat.label}</div>
               </div>
             ))}
           </div>
