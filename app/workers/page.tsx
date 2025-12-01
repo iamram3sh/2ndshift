@@ -1,298 +1,502 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, Briefcase, DollarSign, Shield, Clock, Award, TrendingUp, CheckCircle, Star, FileText } from 'lucide-react'
+import { 
+  Search, Filter, MapPin, Star, Clock, CheckCircle, BadgeCheck, 
+  Briefcase, Users, ChevronDown, ArrowRight, Zap, Shield, Award,
+  Code, Palette, Database, Cloud, Smartphone, TestTube, Lock,
+  TrendingUp, DollarSign, X, Layers, Menu, Play, MessageSquare
+} from 'lucide-react'
+
+const SKILL_CATEGORIES = [
+  { id: 'all', label: 'All Skills', icon: Users, count: 5247 },
+  { id: 'development', label: 'Development', icon: Code, count: 2156 },
+  { id: 'design', label: 'Design', icon: Palette, count: 892 },
+  { id: 'data', label: 'Data & Analytics', icon: Database, count: 634 },
+  { id: 'devops', label: 'DevOps & Cloud', icon: Cloud, count: 521 },
+  { id: 'mobile', label: 'Mobile', icon: Smartphone, count: 445 },
+  { id: 'qa', label: 'QA & Testing', icon: TestTube, count: 389 },
+]
+
+const FEATURED_PROFESSIONALS = [
+  {
+    id: 1,
+    name: 'Rahul Sharma',
+    title: 'Senior Full Stack Developer',
+    avatar: 'RS',
+    skills: ['React', 'Node.js', 'PostgreSQL', 'AWS'],
+    rating: 4.9,
+    reviews: 47,
+    hourlyRate: 1500,
+    completedProjects: 52,
+    responseTime: '< 2 hours',
+    location: 'Bangalore',
+    verified: true,
+    topRated: true,
+    available: true,
+    successRate: 98,
+    bio: 'Building scalable web applications for 8+ years. Ex-Amazon, Ex-Flipkart.',
+  },
+  {
+    id: 2,
+    name: 'Priya Patel',
+    title: 'UI/UX Designer',
+    avatar: 'PP',
+    skills: ['Figma', 'UI Design', 'Design Systems', 'Prototyping'],
+    rating: 4.8,
+    reviews: 38,
+    hourlyRate: 1200,
+    completedProjects: 41,
+    responseTime: '< 1 hour',
+    location: 'Mumbai',
+    verified: true,
+    topRated: true,
+    available: true,
+    successRate: 96,
+    bio: 'Crafting beautiful user experiences. Worked with 30+ startups.',
+  },
+  {
+    id: 3,
+    name: 'Amit Kumar',
+    title: 'DevOps Architect',
+    avatar: 'AK',
+    skills: ['Kubernetes', 'Terraform', 'AWS', 'CI/CD'],
+    rating: 4.9,
+    reviews: 29,
+    hourlyRate: 2000,
+    completedProjects: 34,
+    responseTime: '< 3 hours',
+    location: 'Hyderabad',
+    verified: true,
+    topRated: false,
+    available: true,
+    successRate: 100,
+    bio: 'Cloud infrastructure specialist. AWS Certified Solutions Architect.',
+  },
+  {
+    id: 4,
+    name: 'Sneha Reddy',
+    title: 'Data Scientist',
+    avatar: 'SR',
+    skills: ['Python', 'Machine Learning', 'TensorFlow', 'SQL'],
+    rating: 4.7,
+    reviews: 23,
+    hourlyRate: 1800,
+    completedProjects: 28,
+    responseTime: '< 4 hours',
+    location: 'Chennai',
+    verified: true,
+    topRated: false,
+    available: false,
+    successRate: 95,
+    bio: 'Data-driven solutions for business problems. PhD from IIT.',
+  },
+  {
+    id: 5,
+    name: 'Vikram Singh',
+    title: 'Mobile App Developer',
+    avatar: 'VS',
+    skills: ['React Native', 'iOS', 'Android', 'Firebase'],
+    rating: 4.8,
+    reviews: 31,
+    hourlyRate: 1400,
+    completedProjects: 36,
+    responseTime: '< 2 hours',
+    location: 'Delhi',
+    verified: true,
+    topRated: true,
+    available: true,
+    successRate: 97,
+    bio: 'Built 20+ apps with 1M+ downloads. Focus on performance.',
+  },
+  {
+    id: 6,
+    name: 'Deepa Menon',
+    title: 'QA Lead',
+    avatar: 'DM',
+    skills: ['Selenium', 'Cypress', 'API Testing', 'Performance Testing'],
+    rating: 4.9,
+    reviews: 42,
+    hourlyRate: 1100,
+    completedProjects: 48,
+    responseTime: '< 1 hour',
+    location: 'Pune',
+    verified: true,
+    topRated: true,
+    available: true,
+    successRate: 99,
+    bio: 'Quality advocate with 10+ years experience. ISTQB Certified.',
+  },
+]
+
+const STATS = [
+  { value: '5,000+', label: 'Verified Professionals' },
+  { value: '98%', label: 'Success Rate' },
+  { value: '48hr', label: 'Avg. Time to Hire' },
+  { value: '₹15Cr+', label: 'Paid to Professionals' },
+]
 
 export default function WorkersPage() {
-  return (
-    <div className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav className="border-b bg-white/80 backdrop-blur-lg fixed w-full z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
-                <Briefcase className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                2ndShift
-              </span>
-            </Link>
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [showFilters, setShowFilters] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-            <div className="hidden md:flex items-center gap-8">
-              <Link href="/about" className="text-slate-600 hover:text-indigo-600 font-medium transition">About</Link>
-              <Link href="/how-it-works" className="text-slate-600 hover:text-indigo-600 font-medium transition">How It Works</Link>
-              <Link href="/workers" className="text-indigo-600 font-semibold">For Workers</Link>
-              <Link href="/employers" className="text-slate-600 hover:text-indigo-600 font-medium transition">For Employers</Link>
-              <Link href="/pricing" className="text-slate-600 hover:text-indigo-600 font-medium transition">Pricing</Link>
+  const filteredProfessionals = FEATURED_PROFESSIONALS.filter(pro => {
+    const matchesSearch = pro.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         pro.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         pro.skills.some(s => s.toLowerCase().includes(searchQuery.toLowerCase()))
+    return matchesSearch
+  })
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+      {/* Navigation */}
+      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center gap-8">
+              <Link href="/" className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
+                  <Layers className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-lg font-semibold text-slate-900">2ndShift</span>
+              </Link>
+              
+              <div className="hidden lg:flex items-center gap-1">
+                <Link href="/jobs" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+                  Browse Jobs
+                </Link>
+                <Link href="/workers" className="px-3 py-2 text-sm font-medium text-slate-900 bg-slate-100 rounded-lg">
+                  Find Talent
+                </Link>
+                <Link href="/how-it-works" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+                  How It Works
+                </Link>
+                <Link href="/pricing" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+                  Pricing
+                </Link>
+              </div>
             </div>
 
-            <Link
-              href="/register?type=worker"
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition"
-            >
-              Join Waitlist
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link href="/login" className="hidden sm:block px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+                Sign in
+              </Link>
+              <Link 
+                href="/register?type=client" 
+                className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-all"
+              >
+                Post a Project
+              </Link>
+              <button 
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="lg:hidden p-2 text-slate-600"
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-pink-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-            <Star className="w-4 h-4" />
-            For Professionals
-          </div>
-          <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 mb-6">
-            Turn Your Skills Into
-            <br />
-            <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              Extra Income
-            </span>
-          </h1>
-          <p className="text-xl text-slate-600 leading-relaxed mb-10">
-            Find verified, legal part-time work that fits your schedule. Earn extra while staying 100% tax compliant.
-          </p>
-          <Link
-            href="/register?type=worker"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all"
-          >
-            Start Earning Today
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-
-          <div className="mt-12 grid grid-cols-3 gap-8 max-w-2xl mx-auto">
-            <div>
-              <div className="text-3xl font-bold text-slate-900">24h</div>
-              <div className="text-sm text-slate-600">Average Approval</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-slate-900">100%</div>
-              <div className="text-sm text-slate-600">Legal & Compliant</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-slate-900">90%</div>
-              <div className="text-sm text-slate-600">You Keep</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Why Workers Love 2ndShift</h2>
-            <p className="text-xl text-slate-600">Everything you need to succeed in freelance work</p>
+      {/* Hero Section */}
+      <section className="bg-slate-900 py-16 lg:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-10">
+            <h1 className="text-3xl lg:text-4xl font-semibold text-white mb-4">
+              Find India&apos;s Top Tech Talent
+            </h1>
+            <p className="text-lg text-slate-400">
+              5,000+ verified professionals ready to work. All compliance handled.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                icon: DollarSign,
-                title: 'Higher Earnings',
-                description: 'You keep 90% of project value. Only 10% platform fee + auto TDS deduction. No hidden charges.',
-                highlight: '₹20,000 take-home on ₹25,000 project'
-              },
-              {
-                icon: Shield,
-                title: 'Complete Tax Compliance',
-                description: 'Automatic TDS deduction, Form 16A generation, and proper invoicing. No tax notices, ever.',
-                highlight: 'Form 16A auto-generated'
-              },
-              {
-                icon: Clock,
-                title: 'Instant Payments',
-                description: 'Get paid immediately after project approval. No 30-day waiting. Money in your bank within hours.',
-                highlight: 'Same-day payments'
-              },
-              {
-                icon: FileText,
-                title: 'Legal Protection',
-                description: 'Every project comes with professional contracts, NDAs, and clear terms. You&apos;re legally protected.',
-                highlight: 'Signed digital contracts'
-              },
-              {
-                icon: Award,
-                title: 'Verified Clients Only',
-                description: 'Work with background-checked companies. No fraud, no scams. Every client is verified.',
-                highlight: '100% verified employers'
-              },
-              {
-                icon: TrendingUp,
-                title: 'Build Your Reputation',
-                description: 'Get ratings, reviews, and build a professional portfolio. Higher ratings = more opportunities.',
-                highlight: 'Rating & review system'
-              }
-            ].map((benefit, index) => (
-              <div key={index} className="bg-white p-8 rounded-2xl border border-slate-200 hover:border-purple-300 hover:shadow-xl transition-all group">
-                <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <benefit.icon className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{benefit.title}</h3>
-                <p className="text-slate-600 leading-relaxed mb-4">{benefit.description}</p>
-                <div className="inline-flex items-center gap-2 text-sm font-semibold text-purple-600 bg-purple-50 px-3 py-1.5 rounded-lg">
-                  <CheckCircle className="w-4 h-4" />
-                  {benefit.highlight}
-                </div>
+          {/* Search Bar */}
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white rounded-xl p-2 flex items-center gap-2 shadow-lg">
+              <div className="flex-1 relative">
+                <Search className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search by skill, role, or name..."
+                  className="w-full pl-10 pr-4 py-3 bg-transparent border-none focus:outline-none text-slate-900"
+                />
+              </div>
+              <button className="bg-slate-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
+                <Search className="w-4 h-4" />
+                Search
+              </button>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+            {STATS.map((stat, i) => (
+              <div key={i} className="text-center">
+                <div className="text-2xl lg:text-3xl font-semibold text-white">{stat.value}</div>
+                <div className="text-sm text-slate-400 mt-1">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Eligibility */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-50">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Who Can Join?</h2>
-            <p className="text-xl text-slate-600">Simple requirements to get started</p>
-          </div>
-
-          <div className="bg-white rounded-3xl p-10 shadow-lg">
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-xl font-bold text-slate-900 mb-6">You Must Have:</h3>
-                <ul className="space-y-4">
-                  {[
-                    'Valid PAN card (for tax compliance)',
-                    'Indian bank account',
-                    'Professional skills (tech, design, marketing, etc.)',
-                    'Portfolio or work samples',
-                    'Clean background verification'
-                  ].map((req, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-slate-700">{req}</span>
-                    </li>
-                  ))}
-                </ul>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Sidebar - Categories */}
+          <aside className="lg:w-64 flex-shrink-0">
+            <div className="bg-white rounded-xl border border-slate-200 p-4 sticky top-24">
+              <h3 className="font-semibold text-slate-900 mb-4">Categories</h3>
+              <div className="space-y-1">
+                {SKILL_CATEGORIES.map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setSelectedCategory(cat.id)}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-all ${
+                      selectedCategory === cat.id
+                        ? 'bg-slate-900 text-white'
+                        : 'text-slate-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <cat.icon className="w-4 h-4" />
+                      <span className="font-medium">{cat.label}</span>
+                    </div>
+                    <span className={`text-xs ${selectedCategory === cat.id ? 'text-slate-300' : 'text-slate-400'}`}>
+                      {cat.count.toLocaleString()}
+                    </span>
+                  </button>
+                ))}
               </div>
 
+              {/* Quick Filters */}
+              <div className="mt-6 pt-6 border-t border-slate-200">
+                <h3 className="font-semibold text-slate-900 mb-4">Quick Filters</h3>
+                <div className="space-y-3">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-500" />
+                    <span className="text-sm text-slate-600">Available Now</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-500" />
+                    <span className="text-sm text-slate-600">Top Rated</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-500" />
+                    <span className="text-sm text-slate-600">Verified Only</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Hourly Rate */}
+              <div className="mt-6 pt-6 border-t border-slate-200">
+                <h3 className="font-semibold text-slate-900 mb-4">Hourly Rate</h3>
+                <div className="space-y-2">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="rate" className="w-4 h-4 border-slate-300 text-slate-900 focus:ring-slate-500" />
+                    <span className="text-sm text-slate-600">Any rate</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="rate" className="w-4 h-4 border-slate-300 text-slate-900 focus:ring-slate-500" />
+                    <span className="text-sm text-slate-600">Under ₹1,000</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="rate" className="w-4 h-4 border-slate-300 text-slate-900 focus:ring-slate-500" />
+                    <span className="text-sm text-slate-600">₹1,000 - ₹1,500</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="rate" className="w-4 h-4 border-slate-300 text-slate-900 focus:ring-slate-500" />
+                    <span className="text-sm text-slate-600">₹1,500+</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          {/* Main Grid */}
+          <main className="flex-1">
+            {/* Results Header */}
+            <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-xl font-bold text-slate-900 mb-6">Perfect For:</h3>
-                <ul className="space-y-4">
-                  {[
-                    'Full-time employees wanting extra income',
-                    'Freelancers seeking legal protection',
-                    'Students with marketable skills',
-                    'Stay-at-home professionals',
-                    'Consultants & advisors'
-                  ].map((type, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <div className="w-6 h-6 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                <h2 className="text-lg font-semibold text-slate-900">
+                  {filteredProfessionals.length} professionals found
+                </h2>
+                <p className="text-sm text-slate-500">
+                  Showing verified professionals matching your criteria
+                </p>
+              </div>
+              <select className="px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-700">
+                <option>Best Match</option>
+                <option>Highest Rated</option>
+                <option>Most Experienced</option>
+                <option>Lowest Rate</option>
+              </select>
+            </div>
+
+            {/* Professional Cards */}
+            <div className="space-y-4">
+              {filteredProfessionals.map((pro) => (
+                <div
+                  key={pro.id}
+                  className="bg-white border border-slate-200 rounded-xl p-6 hover:border-slate-300 hover:shadow-lg transition-all group"
+                >
+                  <div className="flex flex-col lg:flex-row lg:items-start gap-6">
+                    {/* Avatar & Basic Info */}
+                    <div className="flex items-start gap-4 flex-1">
+                      <div className="relative">
+                        <div className="w-16 h-16 bg-slate-200 rounded-xl flex items-center justify-center text-xl font-semibold text-slate-600">
+                          {pro.avatar}
+                        </div>
+                        {pro.available && (
+                          <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center">
+                            <CheckCircle className="w-3 h-3 text-white" />
+                          </div>
+                        )}
                       </div>
-                      <span className="text-slate-700">{type}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                      
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h3 className="font-semibold text-slate-900 group-hover:text-sky-600 transition-colors">
+                            {pro.name}
+                          </h3>
+                          {pro.verified && (
+                            <span className="flex items-center gap-1 text-xs text-sky-600 bg-sky-50 px-2 py-0.5 rounded-full">
+                              <BadgeCheck className="w-3 h-3" />
+                              Verified
+                            </span>
+                          )}
+                          {pro.topRated && (
+                            <span className="flex items-center gap-1 text-xs text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
+                              <Award className="w-3 h-3" />
+                              Top Rated
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-slate-600 mt-1">{pro.title}</p>
+                        <p className="text-sm text-slate-500 mt-2 line-clamp-2">{pro.bio}</p>
+                        
+                        {/* Skills */}
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {pro.skills.map((skill) => (
+                            <span key={skill} className="px-2.5 py-1 text-xs font-medium text-slate-600 bg-slate-100 rounded-md">
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Stats & Actions */}
+                    <div className="lg:w-56 flex-shrink-0">
+                      <div className="flex items-center gap-4 lg:flex-col lg:items-end lg:gap-2">
+                        <div className="lg:text-right">
+                          <div className="text-2xl font-semibold text-slate-900">
+                            ₹{pro.hourlyRate.toLocaleString()}<span className="text-sm font-normal text-slate-500">/hr</span>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-3 lg:justify-end">
+                          <div className="flex items-center gap-1">
+                            <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                            <span className="font-medium text-slate-900">{pro.rating}</span>
+                            <span className="text-sm text-slate-500">({pro.reviews})</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-2 mt-4">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-slate-500">Success Rate</span>
+                          <span className="font-medium text-emerald-600">{pro.successRate}%</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-slate-500">Projects</span>
+                          <span className="font-medium text-slate-900">{pro.completedProjects}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-slate-500">Response</span>
+                          <span className="font-medium text-slate-900">{pro.responseTime}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2 mt-4">
+                        <Link
+                          href="/register?type=client"
+                          className="flex-1 bg-slate-900 text-white py-2.5 rounded-lg text-sm font-medium text-center hover:bg-slate-800 transition-all"
+                        >
+                          Invite to Project
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
+
+            {/* Load More */}
+            <div className="mt-8 text-center">
+              <Link
+                href="/register?type=client"
+                className="inline-flex items-center gap-2 bg-white text-slate-700 px-6 py-3 rounded-xl font-medium border border-slate-200 hover:bg-slate-50 transition-all"
+              >
+                <Lock className="w-4 h-4" />
+                Sign up to see all 5,000+ professionals
+              </Link>
+            </div>
+          </main>
         </div>
-      </section>
+      </div>
 
-      {/* Example Gigs */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Popular Project Categories</h2>
-            <p className="text-xl text-slate-600">Find work that matches your expertise</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { category: 'Software Development', examples: 'React, Python, Node.js', budget: '₹25,000 - ₹75,000', color: 'from-blue-500 to-indigo-500' },
-              { category: 'Design & Creative', examples: 'UI/UX, Graphics, Video', budget: '₹15,000 - ₹50,000', color: 'from-purple-500 to-pink-500' },
-              { category: 'Marketing & Sales', examples: 'SEO, Content, Ads', budget: '₹10,000 - ₹40,000', color: 'from-green-500 to-emerald-500' },
-              { category: 'Business Consulting', examples: 'Strategy, Finance, Legal', budget: '₹30,000 - ₹1,00,000', color: 'from-orange-500 to-red-500' },
-              { category: 'Data & Analytics', examples: 'SQL, Excel, Reports', budget: '₹20,000 - ₹60,000', color: 'from-cyan-500 to-blue-500' },
-              { category: 'Writing & Content', examples: 'Blogs, Copy, Technical', budget: '₹8,000 - ₹30,000', color: 'from-violet-500 to-purple-500' },
-              { category: 'Admin & Support', examples: 'VA, Data Entry, Support', budget: '₹5,000 - ₹20,000', color: 'from-yellow-500 to-orange-500' },
-              { category: 'Teaching & Training', examples: 'Coaching, Courses, Mentoring', budget: '₹10,000 - ₹50,000', color: 'from-rose-500 to-pink-500' }
-            ].map((gig, index) => (
-              <div key={index} className="bg-white p-6 rounded-2xl border border-slate-200 hover:shadow-lg transition-all group">
-                <div className={`w-12 h-12 bg-gradient-to-br ${gig.color} rounded-xl mb-4 group-hover:scale-110 transition-transform`}></div>
-                <h3 className="font-bold text-slate-900 mb-2">{gig.category}</h3>
-                <p className="text-sm text-slate-600 mb-3">{gig.examples}</p>
-                <div className="text-sm font-semibold text-green-600">{gig.budget}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-pink-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Success Stories</h2>
-            <p className="text-xl text-slate-600">Hear from workers earning on 2ndShift</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'Priya Sharma',
-                role: 'UI/UX Designer',
-                quote: 'I earn an extra ₹40,000/month while working my full-time job. The automatic tax compliance means no stress during filing season.',
-                earnings: '₹2.4L in 6 months'
-              },
-              {
-                name: 'Rahul Verma',
-                role: 'Software Developer',
-                quote: 'Finally, a platform that takes care of TDS and Form 16A. I can focus on coding instead of paperwork. Payments are instant too!',
-                earnings: '₹3.8L in 8 months'
-              },
-              {
-                name: 'Anjali Desai',
-                role: 'Content Writer',
-                quote: 'As a stay-at-home mom, 2ndShift lets me earn on my schedule. Professional contracts give me peace of mind on every project.',
-                earnings: '₹1.2L in 4 months'
-              }
-            ].map((testimonial, index) => (
-              <div key={index} className="bg-white p-8 rounded-2xl shadow-lg">
-                <div className="flex items-center gap-1 mb-4">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-                <p className="text-slate-700 leading-relaxed mb-6 italic">&quot;{testimonial.quote}&quot;</p>
-                <div className="border-t pt-4">
-                  <div className="font-bold text-slate-900">{testimonial.name}</div>
-                  <div className="text-sm text-slate-600">{testimonial.role}</div>
-                  <div className="text-sm font-semibold text-green-600 mt-2">{testimonial.earnings}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-slate-900 mb-6">Ready to Start Your Second Shift?</h2>
-          <p className="text-xl text-slate-600 mb-8">
-            Join thousands of professionals earning extra income legally and safely
+      {/* CTA Section */}
+      <section className="bg-slate-900 py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-2xl lg:text-3xl font-semibold text-white mb-4">
+            Ready to build your team?
+          </h2>
+          <p className="text-slate-400 mb-8">
+            Post your project and get proposals from verified professionals within hours.
           </p>
-          <Link
-            href="/register?type=worker"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-10 py-5 rounded-xl font-bold text-xl hover:shadow-2xl hover:scale-105 transition-all"
-          >
-            Join the Waitlist
-            <ArrowRight className="w-6 h-6" />
-          </Link>
-          <p className="mt-6 text-sm text-slate-500">Free to join • No credit card required • Get verified in 24 hours</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/register?type=client"
+              className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-6 py-3 rounded-xl font-medium hover:bg-slate-100 transition-all"
+            >
+              Post a Project
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/how-it-works"
+              className="inline-flex items-center justify-center gap-2 text-white px-6 py-3 rounded-xl font-medium border border-slate-700 hover:bg-slate-800 transition-all"
+            >
+              Learn How It Works
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-slate-300 py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <p className="text-sm text-slate-400">© 2025 2ndShift India Private Limited. All rights reserved.</p>
+      <footer className="bg-white border-t border-slate-200 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 bg-slate-900 rounded-lg flex items-center justify-center">
+                <Layers className="w-3.5 h-3.5 text-white" />
+              </div>
+              <span className="font-semibold text-slate-900">2ndShift</span>
+            </div>
+            <div className="flex items-center gap-6 text-sm text-slate-600">
+              <Link href="/about" className="hover:text-slate-900 transition-colors">About</Link>
+              <Link href="/terms" className="hover:text-slate-900 transition-colors">Terms</Link>
+              <Link href="/privacy" className="hover:text-slate-900 transition-colors">Privacy</Link>
+              <Link href="/contact" className="hover:text-slate-900 transition-colors">Contact</Link>
+            </div>
+            <p className="text-sm text-slate-500">© 2025 2ndShift</p>
+          </div>
         </div>
       </footer>
     </div>

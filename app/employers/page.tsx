@@ -1,343 +1,439 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Briefcase, Shield, Users, Clock, CheckCircle, TrendingUp, FileText, Award, Star } from 'lucide-react'
+import { 
+  ArrowRight, Shield, Clock, Users, CheckCircle, BadgeCheck, 
+  Zap, TrendingUp, FileText, DollarSign, Building2, Star,
+  Play, ChevronRight, Layers, Menu, X, Award, Target,
+  Briefcase, Lock, CreditCard, Headphones, BarChart3, Globe
+} from 'lucide-react'
+import { useState } from 'react'
+
+const CASE_STUDIES = [
+  {
+    company: 'TechScale Solutions',
+    logo: 'TS',
+    industry: 'FinTech',
+    challenge: 'Needed to scale engineering team from 5 to 25 in 3 months for a product launch.',
+    solution: 'Used 2ndShift to hire 20 verified developers with automatic compliance handling.',
+    results: [
+      { metric: '40%', label: 'Cost savings vs agencies' },
+      { metric: '2 weeks', label: 'Time to first hire' },
+      { metric: '100%', label: 'Compliance handled' },
+    ],
+    quote: '"2ndShift made scaling our team incredibly simple. No compliance headaches, just results."',
+    author: 'Vikram Mehta, CTO',
+  },
+  {
+    company: 'DataFirst Analytics',
+    logo: 'DF',
+    industry: 'Data & AI',
+    challenge: 'Required specialized data scientists for a 6-month project without permanent hiring.',
+    solution: 'Engaged 5 data scientists through 2ndShift with milestone-based contracts.',
+    results: [
+      { metric: '₹18L', label: 'Saved vs hiring' },
+      { metric: '5 experts', label: 'Onboarded in 10 days' },
+      { metric: '98%', label: 'Project success rate' },
+    ],
+    quote: '"The quality of professionals and the compliance automation exceeded our expectations."',
+    author: 'Priya Sharma, VP Engineering',
+  },
+  {
+    company: 'CloudNine SaaS',
+    logo: 'CN',
+    industry: 'Enterprise SaaS',
+    challenge: 'Needed DevOps expertise for cloud migration without long-term commitments.',
+    solution: 'Hired 3 DevOps architects through 2ndShift on 4-month contracts.',
+    results: [
+      { metric: '60%', label: 'Faster migration' },
+      { metric: 'Zero', label: 'Compliance issues' },
+      { metric: '₹25L', label: 'Infrastructure savings' },
+    ],
+    quote: '"Professional, compliant, and efficient. Exactly what enterprise clients need."',
+    author: 'Rahul Gupta, Head of Infrastructure',
+  },
+]
+
+const FEATURES = [
+  {
+    icon: BadgeCheck,
+    title: 'Pre-Vetted Professionals',
+    description: 'All professionals go through skill assessments, background checks, and identity verification.',
+  },
+  {
+    icon: Shield,
+    title: 'Full Compliance Handled',
+    description: 'Automatic TDS deduction, GST invoicing, contracts, and Form 16A. Zero paperwork for you.',
+  },
+  {
+    icon: Clock,
+    title: 'Hire in 48 Hours',
+    description: 'Post a project and receive proposals from verified professionals within hours.',
+  },
+  {
+    icon: CreditCard,
+    title: 'Secure Payments',
+    description: 'Escrow-protected payments. Pay only when milestones are completed to your satisfaction.',
+  },
+  {
+    icon: Headphones,
+    title: 'Dedicated Support',
+    description: 'Enterprise clients get a dedicated account manager for seamless hiring experience.',
+  },
+  {
+    icon: BarChart3,
+    title: 'Transparent Pricing',
+    description: 'No hidden fees. Clear breakdown of all costs including taxes and platform fees upfront.',
+  },
+]
+
+const COMPARISON = [
+  { feature: 'Time to hire', traditional: '4-6 weeks', agency: '2-3 weeks', '2ndshift': '48 hours' },
+  { feature: 'Compliance handling', traditional: 'Manual', agency: 'Partial', '2ndshift': 'Automatic' },
+  { feature: 'Cost', traditional: 'High salary + benefits', agency: '20-30% markup', '2ndshift': 'Pay per project' },
+  { feature: 'Flexibility', traditional: 'Long-term only', agency: 'Limited', '2ndshift': 'Fully flexible' },
+  { feature: 'Quality assurance', traditional: 'Interviews only', agency: 'Varies', '2ndshift': 'Verified + rated' },
+  { feature: 'Risk', traditional: 'High (bad hire)', agency: 'Medium', '2ndshift': 'Low (escrow + ratings)' },
+]
+
+const LOGOS = [
+  { name: 'TechCorp', initial: 'TC' },
+  { name: 'FinanceHub', initial: 'FH' },
+  { name: 'DataDriven', initial: 'DD' },
+  { name: 'CloudFirst', initial: 'CF' },
+  { name: 'SecureNet', initial: 'SN' },
+  { name: 'ScaleUp', initial: 'SU' },
+]
 
 export default function EmployersPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [selectedCase, setSelectedCase] = useState(0)
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="border-b bg-white/80 backdrop-blur-lg fixed w-full z-50">
+      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
-                <Briefcase className="w-6 h-6 text-white" />
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center gap-8">
+              <Link href="/" className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
+                  <Layers className="w-4 h-4 text-white" />
+                </div>
+                <span className="text-lg font-semibold text-slate-900">2ndShift</span>
+              </Link>
+              
+              <div className="hidden lg:flex items-center gap-1">
+                <Link href="/jobs" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+                  Browse Jobs
+                </Link>
+                <Link href="/workers" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+                  Find Talent
+                </Link>
+                <Link href="/employers" className="px-3 py-2 text-sm font-medium text-slate-900 bg-slate-100 rounded-lg">
+                  For Employers
+                </Link>
+                <Link href="/pricing" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+                  Pricing
+                </Link>
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                2ndShift
-              </span>
-            </Link>
-
-            <div className="hidden md:flex items-center gap-8">
-              <Link href="/about" className="text-slate-600 hover:text-indigo-600 font-medium transition">About</Link>
-              <Link href="/how-it-works" className="text-slate-600 hover:text-indigo-600 font-medium transition">How It Works</Link>
-              <Link href="/workers" className="text-slate-600 hover:text-indigo-600 font-medium transition">For Workers</Link>
-              <Link href="/employers" className="text-green-600 font-semibold">For Employers</Link>
-              <Link href="/pricing" className="text-slate-600 hover:text-indigo-600 font-medium transition">Pricing</Link>
             </div>
 
-            <Link
-              href="/register?type=client"
-              className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition"
-            >
-              Post a Job
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link href="/login" className="hidden sm:block px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+                Sign in
+              </Link>
+              <Link 
+                href="/register?type=client" 
+                className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-all"
+              >
+                Get Started
+              </Link>
+            </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-green-50 to-emerald-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-            <Award className="w-4 h-4" />
-            For Companies
-          </div>
-          <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 mb-6">
-            Hire Verified Talent,
-            <br />
-            <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-              Stay 100% Compliant
-            </span>
-          </h1>
-          <p className="text-xl text-slate-600 leading-relaxed mb-10">
-            Access India&apos;s top professionals for part-time work. We handle all tax compliance, contracts, and payments.
-          </p>
-          <Link
-            href="/register?type=client"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all"
-          >
-            Post Your First Job
-            <ArrowRight className="w-5 h-5" />
-          </Link>
+      {/* Hero Section */}
+      <section className="relative py-20 lg:py-28 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 text-white rounded-full text-sm font-medium mb-6">
+              <Building2 className="w-4 h-4" />
+              For Employers & Enterprises
+            </div>
+            
+            <h1 className="text-4xl lg:text-5xl font-semibold text-white mb-6 leading-tight">
+              Scale your team without the compliance headaches
+            </h1>
+            
+            <p className="text-xl text-slate-300 mb-8 leading-relaxed">
+              Access 5,000+ verified professionals. Automatic TDS, contracts, and payments. 
+              Focus on building — we handle everything else.
+            </p>
 
-          <div className="mt-12 grid grid-cols-3 gap-8 max-w-2xl mx-auto">
-            <div>
-              <div className="text-3xl font-bold text-slate-900">5000+</div>
-              <div className="text-sm text-slate-600">Verified Professionals</div>
+            <div className="flex flex-wrap gap-4 mb-12">
+              <Link
+                href="/register?type=client"
+                className="inline-flex items-center gap-2 bg-white text-slate-900 px-6 py-3.5 rounded-xl font-medium hover:bg-slate-100 transition-all"
+              >
+                Post Your First Project
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                href="/workers"
+                className="inline-flex items-center gap-2 text-white px-6 py-3.5 rounded-xl font-medium border border-slate-600 hover:bg-slate-800 transition-all"
+              >
+                Browse Talent
+              </Link>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-slate-900">100%</div>
-              <div className="text-sm text-slate-600">Tax Compliant</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-slate-900">24h</div>
-              <div className="text-sm text-slate-600">Average Matching</div>
+
+            {/* Trust Badges */}
+            <div className="flex flex-wrap gap-6 text-sm text-slate-400">
+              <span className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-emerald-400" />
+                100% Compliant
+              </span>
+              <span className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-emerald-400" />
+                Hire in 48hrs
+              </span>
+              <span className="flex items-center gap-2">
+                <BadgeCheck className="w-4 h-4 text-emerald-400" />
+                Verified Talent
+              </span>
+              <span className="flex items-center gap-2">
+                <Lock className="w-4 h-4 text-emerald-400" />
+                Secure Payments
+              </span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Benefits */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Why Top Companies Choose 2ndShift</h2>
-            <p className="text-xl text-slate-600">Everything you need to hire with confidence</p>
+      {/* Logo Bar */}
+      <section className="py-12 bg-slate-50 border-y border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-sm font-medium text-slate-500 mb-8">
+            TRUSTED BY 500+ COMPANIES ACROSS INDIA
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
+            {LOGOS.map((company, i) => (
+              <div key={i} className="flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors">
+                <div className="w-10 h-10 rounded-xl bg-slate-200 flex items-center justify-center text-sm font-semibold text-slate-600">
+                  {company.initial}
+                </div>
+                <span className="font-medium">{company.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl lg:text-4xl font-semibold text-slate-900 mb-4">
+              Everything you need to hire confidently
+            </h2>
+            <p className="text-lg text-slate-600">
+              We&apos;ve built the infrastructure so you can focus on what matters — your business.
+            </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Shield,
-                title: 'Zero Compliance Risk',
-                description: 'We handle TDS, GST, Form 16A, and all tax compliance automatically. Stay audit-ready without any effort.',
-                highlight: 'Automatic tax compliance'
-              },
-              {
-                icon: Users,
-                title: 'Pre-Verified Talent',
-                description: 'Every professional is background-checked, skill-verified, and rated by previous clients.',
-                highlight: '100% verified profiles'
-              },
-              {
-                icon: FileText,
-                title: 'Legal Protection',
-                description: 'Auto-generated contracts, NDAs, and conflict declarations for every hire. Legally binding digital signatures.',
-                highlight: 'Professional contracts'
-              },
-              {
-                icon: Clock,
-                title: 'Faster Hiring',
-                description: 'Post a job and receive proposals in hours. Review, interview, and hire within 48 hours.',
-                highlight: 'Hire in 2 days'
-              },
-              {
-                icon: TrendingUp,
-                title: 'Cost Effective',
-                description: 'Pay only when you hire. No subscription fees. Clear pricing with no hidden charges.',
-                highlight: 'Pay per hire'
-              },
-              {
-                icon: Award,
-                title: 'Quality Guaranteed',
-                description: 'Milestone-based payments and escrow protection. Pay only when satisfied with the work.',
-                highlight: 'Satisfaction guaranteed'
-              }
-            ].map((benefit, index) => (
-              <div key={index} className="bg-white p-8 rounded-2xl border border-slate-200 hover:border-green-300 hover:shadow-xl transition-all group">
-                <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <benefit.icon className="w-7 h-7 text-white" />
+            {FEATURES.map((feature, i) => (
+              <div key={i} className="p-6 bg-white rounded-2xl border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all">
+                <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-4">
+                  <feature.icon className="w-6 h-6 text-slate-700" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{benefit.title}</h3>
-                <p className="text-slate-600 leading-relaxed mb-4">{benefit.description}</p>
-                <div className="inline-flex items-center gap-2 text-sm font-semibold text-green-600 bg-green-50 px-3 py-1.5 rounded-lg">
-                  <CheckCircle className="w-4 h-4" />
-                  {benefit.highlight}
-                </div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">{feature.title}</h3>
+                <p className="text-slate-600">{feature.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Pricing Preview */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-50">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Simple, Transparent Pricing</h2>
-            <p className="text-xl text-slate-600">Pay only when you hire. No subscriptions.</p>
+      {/* Comparison Table */}
+      <section className="py-20 lg:py-28 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl lg:text-4xl font-semibold text-slate-900 mb-4">
+              Why companies choose 2ndShift
+            </h2>
+            <p className="text-lg text-slate-600">
+              Compare us with traditional hiring and staffing agencies.
+            </p>
           </div>
 
-          <div className="bg-white rounded-3xl p-10 shadow-xl border-2 border-green-200">
-            <div className="text-center mb-8">
-              <div className="text-5xl font-bold text-slate-900 mb-2">10% + GST</div>
-              <div className="text-slate-600">Platform fee on project value</div>
-            </div>
-
-            <div className="space-y-4 mb-8">
-              <h3 className="font-bold text-slate-900 text-lg">What&apos;s Included:</h3>
-              {[
-                'Unlimited job postings',
-                'Access to all verified professionals',
-                'Automatic TDS & GST handling',
-                'Digital contracts & NDAs',
-                'Form 16A auto-generation',
-                'Escrow payment protection',
-                'Dedicated support',
-                'Invoice generation'
-              ].map((feature, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span className="text-slate-700">{feature}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="bg-green-50 border border-green-200 rounded-2xl p-6">
-              <h4 className="font-bold text-slate-900 mb-3">Example Breakdown (₹25,000 project):</h4>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-slate-600">Project Value</span>
-                  <span className="font-semibold">₹25,000</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-600">Platform Fee (10%)</span>
-                  <span className="font-semibold">₹2,500</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-600">GST on Fee (18%)</span>
-                  <span className="font-semibold">₹450</span>
-                </div>
-                <div className="flex justify-between border-t border-green-300 pt-2 mt-2">
-                  <span className="text-slate-900 font-bold">Total You Pay</span>
-                  <span className="text-green-600 font-bold text-lg">₹27,950</span>
-                </div>
-              </div>
-              <p className="text-xs text-slate-500 mt-4">Worker receives ₹20,000 after TDS deduction. We handle all compliance.</p>
-            </div>
-
-            <Link
-              href="/pricing"
-              className="mt-8 block text-center text-green-600 font-semibold hover:text-green-700 transition"
-            >
-              View detailed pricing →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Use Cases */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Perfect For Every Business Need</h2>
-            <p className="text-xl text-slate-600">From startups to enterprises</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              {
-                title: 'Startups & SMEs',
-                description: 'Get expert help without full-time commitments. Scale your team flexibly.',
-                examples: ['MVP development', 'Marketing campaigns', 'Design projects', 'Content creation']
-              },
-              {
-                title: 'Large Enterprises',
-                description: 'Handle overflow work and special projects with vetted professionals.',
-                examples: ['Seasonal projects', 'Consultant hiring', 'Special initiatives', 'Compliance-ready hiring']
-              },
-              {
-                title: 'Agencies',
-                description: 'Expand capacity without permanent hires. Access specialists on-demand.',
-                examples: ['Client overflow', 'Specialized skills', 'Project-based work', 'Freelance management']
-              },
-              {
-                title: 'Product Companies',
-                description: 'Get specialized skills for specific features and releases.',
-                examples: ['Feature development', 'Design sprints', 'QA & testing', 'Documentation']
-              }
-            ].map((useCase, index) => (
-              <div key={index} className="bg-gradient-to-br from-white to-green-50 p-8 rounded-2xl border border-slate-200 hover:shadow-xl transition-all">
-                <h3 className="text-2xl font-bold text-slate-900 mb-3">{useCase.title}</h3>
-                <p className="text-slate-600 mb-6">{useCase.description}</p>
-                <div className="space-y-2">
-                  {useCase.examples.map((example, i) => (
-                    <div key={i} className="flex items-center gap-2 text-sm text-slate-700">
-                      <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
-                      {example}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+          <div className="overflow-x-auto">
+            <table className="w-full bg-white rounded-2xl border border-slate-200 overflow-hidden">
+              <thead>
+                <tr className="bg-slate-50">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-slate-900">Feature</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-slate-500">Traditional Hiring</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-slate-500">Staffing Agency</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-slate-900 bg-emerald-50">2ndShift</th>
+                </tr>
+              </thead>
+              <tbody>
+                {COMPARISON.map((row, i) => (
+                  <tr key={i} className="border-t border-slate-100">
+                    <td className="px-6 py-4 text-sm font-medium text-slate-900">{row.feature}</td>
+                    <td className="px-6 py-4 text-sm text-slate-600 text-center">{row.traditional}</td>
+                    <td className="px-6 py-4 text-sm text-slate-600 text-center">{row.agency}</td>
+                    <td className="px-6 py-4 text-sm font-medium text-emerald-600 text-center bg-emerald-50/50">
+                      {row['2ndshift']}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
 
       {/* Case Studies */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-green-50 to-emerald-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Success Stories</h2>
-            <p className="text-xl text-slate-600">See how companies are using 2ndShift</p>
+      <section className="py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl lg:text-4xl font-semibold text-slate-900 mb-4">
+              Success stories from our clients
+            </h2>
+            <p className="text-lg text-slate-600">
+              See how companies are scaling their teams with 2ndShift.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                company: 'Tech Startup',
-                industry: 'SaaS',
-                challenge: 'Needed React developers for MVP without full-time hiring',
-                result: 'Hired 3 developers, launched in 8 weeks, saved ₹12L in hiring costs',
-                savings: '70% cost savings'
-              },
-              {
-                company: 'Marketing Agency',
-                industry: 'Digital Marketing',
-                challenge: 'Client surge during festive season, needed extra hands',
-                result: 'Onboarded 5 content writers and 2 designers in 3 days. Delivered on time.',
-                savings: '48h turnaround'
-              },
-              {
-                company: 'Manufacturing Co.',
-                industry: 'Manufacturing',
-                challenge: 'Required compliance consultants for new project',
-                result: 'Found verified legal & tax consultants. All paperwork handled by platform.',
-                savings: '100% compliant'
-              }
-            ].map((study, index) => (
-              <div key={index} className="bg-white p-8 rounded-2xl shadow-lg">
-                <div className="flex items-center gap-1 mb-4">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star key={star} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  ))}
+          {/* Case Study Tabs */}
+          <div className="flex justify-center gap-4 mb-12">
+            {CASE_STUDIES.map((study, i) => (
+              <button
+                key={i}
+                onClick={() => setSelectedCase(i)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+                  selectedCase === i
+                    ? 'bg-slate-900 text-white'
+                    : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-300'
+                }`}
+              >
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-semibold ${
+                  selectedCase === i ? 'bg-white/20' : 'bg-slate-100'
+                }`}>
+                  {study.logo}
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">{study.company}</h3>
-                <div className="text-sm text-slate-500 mb-4">{study.industry}</div>
-                <div className="space-y-3 text-sm">
-                  <div>
-                    <div className="font-semibold text-slate-700">Challenge:</div>
-                    <div className="text-slate-600">{study.challenge}</div>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-slate-700">Result:</div>
-                    <div className="text-slate-600">{study.result}</div>
+                <div className="text-left">
+                  <div className="font-medium">{study.company}</div>
+                  <div className={`text-xs ${selectedCase === i ? 'text-slate-300' : 'text-slate-500'}`}>
+                    {study.industry}
                   </div>
                 </div>
-                <div className="mt-6 inline-flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-lg text-sm font-semibold">
-                  <CheckCircle className="w-4 h-4" />
-                  {study.savings}
+              </button>
+            ))}
+          </div>
+
+          {/* Selected Case Study */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-8 lg:p-12">
+            <div className="grid lg:grid-cols-2 gap-12">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-sm font-medium mb-6">
+                  Case Study
+                </div>
+                <h3 className="text-2xl font-semibold text-slate-900 mb-4">
+                  {CASE_STUDIES[selectedCase].challenge}
+                </h3>
+                <p className="text-slate-600 mb-6">
+                  <strong>Solution:</strong> {CASE_STUDIES[selectedCase].solution}
+                </p>
+                
+                <div className="p-6 bg-slate-50 rounded-xl border-l-4 border-slate-900 mb-6">
+                  <p className="text-slate-700 italic mb-4">
+                    {CASE_STUDIES[selectedCase].quote}
+                  </p>
+                  <p className="text-sm font-medium text-slate-900">
+                    — {CASE_STUDIES[selectedCase].author}
+                  </p>
                 </div>
               </div>
-            ))}
+
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-6">Results</h4>
+                <div className="grid gap-4">
+                  {CASE_STUDIES[selectedCase].results.map((result, i) => (
+                    <div key={i} className="flex items-center gap-4 p-4 bg-emerald-50 rounded-xl">
+                      <div className="text-3xl font-bold text-emerald-600">{result.metric}</div>
+                      <div className="text-slate-700">{result.label}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <Link
+                  href="/register?type=client"
+                  className="inline-flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-xl font-medium mt-8 hover:bg-slate-800 transition-all"
+                >
+                  Get Similar Results
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-slate-900 mb-6">Ready to Hire Top Talent?</h2>
-          <p className="text-xl text-slate-600 mb-8">
-            Post your first job and receive proposals from verified professionals
+      {/* CTA Section */}
+      <section className="py-20 lg:py-28 bg-slate-900">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl lg:text-4xl font-semibold text-white mb-4">
+            Ready to scale your team?
+          </h2>
+          <p className="text-lg text-slate-400 mb-10">
+            Join 500+ companies hiring compliant contract talent on 2ndShift.
           </p>
-          <Link
-            href="/register?type=client"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white px-10 py-5 rounded-xl font-bold text-xl hover:shadow-2xl hover:scale-105 transition-all"
-          >
-            Post a Job Now
-            <ArrowRight className="w-6 h-6" />
-          </Link>
-          <p className="mt-6 text-sm text-slate-500">Free to post • No subscription required • Pay only when you hire</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/register?type=client"
+              className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-xl font-medium hover:bg-slate-100 transition-all"
+            >
+              Post Your First Project - Free
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 text-white px-8 py-4 rounded-xl font-medium border border-slate-700 hover:bg-slate-800 transition-all"
+            >
+              Talk to Sales
+            </Link>
+          </div>
+          
+          <p className="mt-8 text-sm text-slate-500">
+            No credit card required. Post unlimited projects.
+          </p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-slate-300 py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <p className="text-sm text-slate-400">© 2025 2ndShift India Private Limited. All rights reserved.</p>
+      <footer className="bg-white border-t border-slate-200 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
+                <Layers className="w-4 h-4 text-white" />
+              </div>
+              <span className="text-lg font-semibold text-slate-900">2ndShift</span>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-600">
+              <Link href="/about" className="hover:text-slate-900 transition-colors">About</Link>
+              <Link href="/workers" className="hover:text-slate-900 transition-colors">For Professionals</Link>
+              <Link href="/pricing" className="hover:text-slate-900 transition-colors">Pricing</Link>
+              <Link href="/contact" className="hover:text-slate-900 transition-colors">Contact</Link>
+            </div>
+            <p className="text-sm text-slate-500">© 2025 2ndShift Technologies</p>
+          </div>
         </div>
       </footer>
     </div>
