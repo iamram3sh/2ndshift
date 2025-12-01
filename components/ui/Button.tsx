@@ -26,19 +26,19 @@ export function Button({
 }: ButtonProps) {
   const baseStyles = clsx(
     'inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-200',
-    'focus:outline-none focus:ring-4 focus:ring-opacity-50',
+    'focus:outline-none focus:ring-4',
     'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100',
     'active:scale-95',
     fullWidth && 'w-full'
   )
   
   const variants = {
-    primary: 'bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 text-white hover:shadow-2xl hover:scale-105 focus:ring-indigo-300 shadow-lg',
-    secondary: 'bg-white text-slate-900 border-2 border-slate-300 hover:border-indigo-600 hover:shadow-xl hover:scale-105 focus:ring-indigo-200',
-    outline: 'bg-transparent border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 hover:shadow-lg hover:scale-105 focus:ring-indigo-200',
-    danger: 'bg-gradient-to-r from-red-600 to-red-700 text-white hover:shadow-2xl hover:scale-105 focus:ring-red-300 shadow-lg',
-    ghost: 'bg-transparent text-slate-700 hover:bg-slate-100 hover:shadow-md focus:ring-slate-200',
-    success: 'bg-gradient-to-r from-green-600 to-emerald-600 text-white hover:shadow-2xl hover:scale-105 focus:ring-green-300 shadow-lg'
+    primary: 'bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 text-white hover:shadow-2xl hover:scale-105 focus:ring-indigo-300/50 shadow-lg',
+    secondary: 'bg-white text-slate-900 border-2 border-slate-300 hover:border-indigo-600 hover:shadow-xl hover:scale-105 focus:ring-indigo-200/50',
+    outline: 'bg-transparent border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 hover:shadow-lg hover:scale-105 focus:ring-indigo-200/50',
+    danger: 'bg-gradient-to-r from-red-600 to-red-700 text-white hover:shadow-2xl hover:scale-105 focus:ring-red-300/50 shadow-lg',
+    ghost: 'bg-transparent text-slate-700 hover:bg-slate-100 hover:shadow-md focus:ring-slate-200/50',
+    success: 'bg-gradient-to-r from-green-600 to-emerald-600 text-white hover:shadow-2xl hover:scale-105 focus:ring-green-300/50 shadow-lg'
   }
   
   const sizes = {
