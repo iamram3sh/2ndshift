@@ -144,10 +144,10 @@ const FEATURED_PROFESSIONALS = [
 ]
 
 const STATS = [
-  { value: '5,000+', label: 'Verified Professionals' },
-  { value: '98%', label: 'Success Rate' },
-  { value: '48hr', label: 'Avg. Time to Hire' },
-  { value: '₹15Cr+', label: 'Paid to Professionals' },
+  { value: '500+', label: 'Professionals' },
+  { value: '95%', label: 'Success Rate' },
+  { value: '24hr', label: 'Avg. Response' },
+  { value: 'Growing', label: 'Every Day' },
 ]
 
 function WorkersPageContent() {
@@ -160,9 +160,12 @@ function WorkersPageContent() {
   const [industries, setIndustries] = useState<Industry[]>([])
   const [showFilters, setShowFilters] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [userType, setUserType] = useState<string | null>(null)
 
   useEffect(() => {
     fetchIndustries()
+    checkAuth()
   }, [])
 
   useEffect(() => {
@@ -170,6 +173,19 @@ function WorkersPageContent() {
       setSelectedIndustry(industryFromUrl)
     }
   }, [industryFromUrl])
+
+  const checkAuth = async () => {
+    try {
+      const response = await fetch('/api/auth/get-profile')
+      const data = await response.json()
+      if (data.user) {
+        setIsLoggedIn(true)
+        setUserType(data.user.user_type)
+      }
+    } catch (error) {
+      console.error('Error checking auth:', error)
+    }
+  }
 
   const fetchIndustries = async () => {
     try {
@@ -179,6 +195,13 @@ function WorkersPageContent() {
     } catch (error) {
       console.error('Error fetching industries:', error)
     }
+  }
+
+  const getInviteLink = () => {
+    if (isLoggedIn && userType === 'client') {
+      return '/projects/create'
+    }
+    return '/register?type=client'
   }
 
   const selectedIndustryData = industries.find(i => i.slug === selectedIndustry)
@@ -205,31 +228,61 @@ function WorkersPageContent() {
               </Link>
               
               <div className="hidden lg:flex items-center gap-1">
-                <Link href="/jobs" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
-                  Browse Jobs
-                </Link>
-                <Link href="/workers" className="px-3 py-2 text-sm font-medium text-slate-900 bg-slate-100 rounded-lg">
-                  Find Talent
-                </Link>
-                <Link href="/how-it-works" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
-                  How It Works
-                </Link>
-                <Link href="/pricing" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
-                  Pricing
-                </Link>
+                {isLoggedIn ? (
+                  <>
+                    <Link 
+                      href={userType === 'client' ? '/client' : '/worker'} 
+                      className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg"
+                    >
+                      Dashboard
+                    </Link>
+                    <Link href="/workers" className="px-3 py-2 text-sm font-medium text-slate-900 bg-slate-100 rounded-lg">
+                      Find Talent
+                    </Link>
+                    <Link href="/messages" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg">
+                      Messages
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/industries" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg">
+                      Browse Industries
+                    </Link>
+                    <Link href="/workers" className="px-3 py-2 text-sm font-medium text-slate-900 bg-slate-100 rounded-lg">
+                      Find Talent
+                    </Link>
+                    <Link href="/how-it-works" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg">
+                      How It Works
+                    </Link>
+                    <Link href="/pricing" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg">
+                      Pricing
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <Link href="/login" className="hidden sm:block px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
-                Sign in
-              </Link>
-              <Link 
-                href="/register?type=client" 
-                className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-all"
-              >
-                Post a Project
-              </Link>
+              {isLoggedIn ? (
+                <Link 
+                  href={userType === 'client' ? '/projects/create' : '/worker/discover'} 
+                  className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-all"
+                >
+                  {userType === 'client' ? 'Post a Project' : 'Find Work'}
+                </Link>
+              ) : (
+                <>
+                  <Link href="/login" className="hidden sm:block px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+                    Sign in
+                  </Link>
+                  <Link 
+                    href="/register?type=client" 
+                    className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-all"
+                  >
+                    Post a Project
+                  </Link>
+                </>
+              )}
               <button 
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="lg:hidden p-2 text-slate-600"
@@ -532,10 +585,10 @@ function WorkersPageContent() {
 
                       <div className="flex gap-2 mt-4">
                         <Link
-                          href="/register?type=client"
+                          href={getInviteLink()}
                           className="flex-1 bg-slate-900 text-white py-2.5 rounded-lg text-sm font-medium text-center hover:bg-slate-800 transition-all"
                         >
-                          Invite to Project
+                          {isLoggedIn && userType === 'client' ? 'Create Project' : 'Invite to Project'}
                         </Link>
                       </div>
                     </div>
@@ -546,13 +599,19 @@ function WorkersPageContent() {
 
             {/* Load More */}
             <div className="mt-8 text-center">
-              <Link
-                href="/register?type=client"
-                className="inline-flex items-center gap-2 bg-white text-slate-700 px-6 py-3 rounded-xl font-medium border border-slate-200 hover:bg-slate-50 transition-all"
-              >
-                <Lock className="w-4 h-4" />
-                Sign up to see all 5,000+ professionals
-              </Link>
+              {isLoggedIn ? (
+                <button className="inline-flex items-center gap-2 bg-white text-slate-700 px-6 py-3 rounded-xl font-medium border border-slate-200 hover:bg-slate-50 transition-all">
+                  Load More Professionals
+                </button>
+              ) : (
+                <Link
+                  href="/register?type=client"
+                  className="inline-flex items-center gap-2 bg-white text-slate-700 px-6 py-3 rounded-xl font-medium border border-slate-200 hover:bg-slate-50 transition-all"
+                >
+                  <Lock className="w-4 h-4" />
+                  Sign up to see more professionals
+                </Link>
+              )}
             </div>
           </main>
         </div>
