@@ -116,8 +116,9 @@ export function ConversationList({ currentUserId, onSelectConversation }: Conver
 
       const participantMap = new Map<string, ConversationListItem['otherUser']>()
       participantsRes.data?.forEach((row) => {
-        if (row.users) {
-          participantMap.set(row.conversation_id, row.users)
+        const userRecord = Array.isArray(row.users) ? row.users[0] : row.users
+        if (userRecord) {
+          participantMap.set(row.conversation_id, userRecord as ConversationListItem['otherUser'])
         }
       })
 
