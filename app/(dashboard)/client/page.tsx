@@ -7,9 +7,15 @@ import {
   Briefcase, DollarSign, User, LogOut, Plus, Clock,
   Users, CheckCircle, TrendingUp, Eye, MessageSquare,
   Bell, Filter, Search, Calendar, Award, BarChart3,
-  FileText, Zap, Target, Activity
+  FileText, Zap, Target, Activity, Shield
 } from 'lucide-react'
-import type { User as UserType, Project, Contract } from '@/types/database.types'
+import type {
+  User as UserType,
+  Project,
+  Contract,
+  EscrowAccount,
+  ContractMilestone
+} from '@/types/database.types'
 import { StatsCard } from '@/components/dashboard/StatsCard'
 
 interface Application {
@@ -32,6 +38,8 @@ interface DashboardStats {
   totalWorkers: number
   avgProjectValue: number
   successRate: number
+  fundsInEscrow: number
+  milestonesPending: number
 }
 
 interface ProjectWithApplications extends Project {
@@ -52,11 +60,41 @@ export default function ClientDashboard() {
     pendingApplications: 0,
     totalWorkers: 0,
     avgProjectValue: 0,
-    successRate: 0
+    successRate: 0,
+    fundsInEscrow: 0,
+    milestonesPending: 0
   })
   const [isLoading, setIsLoading] = useState(true)
   const [filterStatus, setFilterStatus] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [escrowMap, setEscrowMap] = useState<Record<string, EscrowAccount>>({})
+  const [milestoneMap, setMilestoneMap] = useState<Record<string, ContractMilestone[]>>({})
+
+  const getMilestoneProgress = (milestones: ContractMilestone[]) => {
+    if (!milestones || milestones.length === 0) return 0
+    const released = milestones.filter(m => m.status === 'released' || m.status === 'approved').length
+    return Math.round((released / milestones.length) * 100)
+  }
+
+  const getNextMilestone = (milestones: ContractMilestone[]) => {
+    if (!milestones || milestones.length === 0) return null
+    return milestones.find(m => !['released', 'approved'].includes(m.status)) || null
+  }
+
+  const getEscrowStatusBadge = (status?: EscrowAccount['status']) => {
+    switch (status) {
+      case 'funded':
+        return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-200'
+      case 'locked':
+        return 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200'
+      case 'released':
+        return 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-200'
+      case 'closed':
+        return 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-200'
+      default:
+        return 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'
+    }
+  }
 
   const checkAuth = async () => {
     const { data: { user: authUser } } = await supabase.auth.getUser()
@@ -168,7 +206,50 @@ export default function ClientDashboard() {
           totalSpent: spent,
           totalWorkers: uniqueWorkers
         }))
+
+        const contractIds = data.map(contract => contract.id)
+        if (contractIds.length) {
+          await fetchFinancialSafety(contractIds)
+        }
       }
+    }
+  }
+
+  const fetchFinancialSafety = async (contractIds: string[]) => {
+    const [{ data: escrowData }, { data: milestoneData }] = await Promise.all([
+      supabase
+        .from('escrow_accounts')
+        .select('*')
+        .in('contract_id', contractIds),
+      supabase
+        .from('contract_milestones')
+        .select('*')
+        .in('contract_id', contractIds)
+        .order('order_index', { ascending: true })
+    ])
+
+    if (escrowData) {
+      const map: Record<string, EscrowAccount> = {}
+      let totalSecured = 0
+      escrowData.forEach((escrow) => {
+        map[escrow.contract_id] = escrow as EscrowAccount
+        totalSecured += escrow.balance || 0
+      })
+      setEscrowMap(map)
+      setStats(prev => ({ ...prev, fundsInEscrow: totalSecured }))
+    }
+
+    if (milestoneData) {
+      const map: Record<string, ContractMilestone[]> = {}
+      milestoneData.forEach((milestone) => {
+        if (!map[milestone.contract_id]) map[milestone.contract_id] = []
+        map[milestone.contract_id].push(milestone as ContractMilestone)
+      })
+      const pending = milestoneData.filter(
+        (milestone) => milestone.status !== 'released' && milestone.status !== 'approved'
+      ).length
+      setMilestoneMap(map)
+      setStats(prev => ({ ...prev, milestonesPending: pending }))
     }
   }
 
@@ -306,7 +387,7 @@ export default function ClientDashboard() {
         </div>
 
         {/* Secondary Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-8">
           <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
@@ -348,6 +429,28 @@ export default function ClientDashboard() {
               <div>
                 <div className="text-sm text-gray-600 dark:text-gray-400">Avg Project</div>
                 <div className="text-xl font-bold text-gray-900 dark:text-white">₹{Math.round(stats.avgProjectValue).toLocaleString()}</div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-emerald-100 dark:bg-emerald-900 rounded-lg">
+                <Shield className="w-5 h-5 text-emerald-600 dark:text-emerald-300" />
+              </div>
+              <div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Funds in Escrow</div>
+                <div className="text-xl font-bold text-gray-900 dark:text-white">₹{stats.fundsInEscrow.toLocaleString()}</div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-amber-100 dark:bg-amber-900 rounded-lg">
+                <Calendar className="w-5 h-5 text-amber-600 dark:text-amber-300" />
+              </div>
+              <div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Milestones Pending</div>
+                <div className="text-xl font-bold text-gray-900 dark:text-white">{stats.milestonesPending}</div>
               </div>
             </div>
           </div>
@@ -411,25 +514,69 @@ export default function ClientDashboard() {
               </div>
             ) : (
               <div className="space-y-4">
-                {contracts.filter(c => c.status === 'active' || c.status === 'pending').map((contract) => (
-                  <div key={contract.id} className="border border-gray-200 dark:border-slate-600 rounded-lg p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-white">Contract #{contract.id.slice(0, 8)}</h4>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Status: {contract.status}</p>
+                {contracts.filter(c => c.status === 'active' || c.status === 'pending').map((contract) => {
+                  const escrow = escrowMap[contract.id]
+                  const milestones = milestoneMap[contract.id] || []
+                  const milestoneProgress = getMilestoneProgress(milestones)
+                  const nextMilestone = getNextMilestone(milestones)
+
+                  return (
+                    <div key={contract.id} className="border border-gray-200 dark:border-slate-600 rounded-lg p-4">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 dark:text-white">Contract #{contract.id.slice(0, 8)}</h4>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">Status: {contract.status}</p>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-lg font-bold text-green-600">₹{contract.contract_amount.toLocaleString()}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">Contract amount</div>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <div className="text-lg font-bold text-green-600">₹{contract.contract_amount.toLocaleString()}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">Contract amount</div>
+                      {escrow && (
+                        <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
+                          <span className={`px-3 py-1 rounded-full font-medium ${getEscrowStatusBadge(escrow.status)}`}>
+                            Escrow {escrow.status?.replace('_', ' ')}
+                          </span>
+                          <span>₹{(escrow.balance || 0).toLocaleString()} secured</span>
+                          {escrow.last_funded_at && (
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-4 h-4" />
+                              Funded {new Date(escrow.last_funded_at).toLocaleDateString()}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                      {milestones.length > 0 && (
+                        <div className="mt-4">
+                          <div className="flex justify-between text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
+                            <span>Milestone Progress</span>
+                            <span>{milestoneProgress}%</span>
+                          </div>
+                          <div className="h-2 rounded-full bg-gray-100 dark:bg-slate-700">
+                            <div
+                              className="h-2 rounded-full bg-green-500"
+                              style={{ width: `${milestoneProgress}%` }}
+                            />
+                          </div>
+                          {nextMilestone && (
+                            <p className="mt-2 text-sm text-gray-600 dark:text-gray-300 flex items-center gap-2">
+                              <Calendar className="w-4 h-4" />
+                              Next: {nextMilestone.title} • due{' '}
+                              {nextMilestone.due_date
+                                ? new Date(nextMilestone.due_date).toLocaleDateString()
+                                : 'soon'}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                      <div className="mt-3 flex gap-2">
+                        <button className="px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                          View Details
+                        </button>
                       </div>
                     </div>
-                    <div className="mt-3 flex gap-2">
-                      <button className="px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
-                        View Details
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             )}
           </div>

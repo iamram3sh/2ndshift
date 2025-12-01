@@ -3,6 +3,14 @@ export type ProfileVisibility = 'public' | 'anonymous'
 export type ProjectStatus = 'open' | 'assigned' | 'in_progress' | 'completed' | 'cancelled'
 export type ContractStatus = 'pending' | 'active' | 'completed' | 'cancelled'
 export type PaymentStatus = 'pending' | 'processing' | 'completed' | 'failed' | 'refunded'
+export type KycVerificationStatus = 'pending' | 'processing' | 'verified' | 'rejected' | 'expired'
+export type KycVerificationType = 'pan' | 'aadhaar' | 'gst' | 'bank_account' | 'address' | 'identity'
+export type EscrowStatus = 'inactive' | 'funded' | 'locked' | 'released' | 'closed'
+export type EscrowTransactionType = 'fund' | 'release' | 'refund' | 'fee' | 'hold'
+export type EscrowTransactionStatus = 'pending' | 'processing' | 'completed' | 'failed'
+export type MilestoneStatus = 'pending' | 'in_review' | 'approved' | 'released' | 'blocked'
+export type NotificationType = 'application' | 'contract' | 'payment' | 'message' | 'review' | 'system' | 'verification' | 'kyc' | 'milestone' | 'risk'
+export type RiskSeverity = 'low' | 'medium' | 'high' | 'critical'
 
 export interface User {
   id: string
@@ -77,6 +85,14 @@ export interface Application {
   worker_id: string
   cover_letter: string
   proposed_rate: number
+  bid_type: 'fixed' | 'hourly' | 'milestone'
+  bid_amount?: number
+  hourly_rate?: number
+  estimated_hours?: number
+  milestone_plan?: Record<string, unknown>[]
+  availability_date?: string
+  pitch_strength?: number
+  auto_match_candidate?: boolean
   status: 'pending' | 'accepted' | 'rejected' | 'withdrawn'
   created_at: string
   updated_at: string
@@ -115,6 +131,76 @@ export interface Payment {
   status: PaymentStatus
   invoice_url?: string
   payment_date?: string
+  created_at: string
+}
+
+export interface KycVerification {
+  id: string
+  user_id: string
+  provider: string
+  verification_type: KycVerificationType
+  status: KycVerificationStatus
+  risk_score?: number
+  reference_id?: string
+  document_urls?: string[]
+  metadata?: Record<string, unknown>
+  verified_by?: string
+  verified_at?: string
+  rejection_reason?: string
+  notes?: string
+  created_at: string
+  updated_at: string
+}
+
+export interface EscrowAccount {
+  id: string
+  contract_id: string
+  balance: number
+  currency: string
+  status: EscrowStatus
+  last_funded_at?: string
+  last_released_at?: string
+  metadata?: Record<string, unknown>
+  created_at: string
+  updated_at: string
+}
+
+export interface EscrowTransaction {
+  id: string
+  escrow_account_id: string
+  initiated_by?: string
+  transaction_type: EscrowTransactionType
+  status: EscrowTransactionStatus
+  amount: number
+  razorpay_transfer_id?: string
+  notes?: string
+  metadata?: Record<string, unknown>
+  created_at: string
+  updated_at: string
+}
+
+export interface ContractMilestone {
+  id: string
+  contract_id: string
+  title: string
+  description?: string
+  due_date?: string
+  amount: number
+  status: MilestoneStatus
+  approval_notes?: string
+  order_index: number
+  created_at: string
+  updated_at: string
+}
+
+export interface ContractDocument {
+  id: string
+  contract_id: string
+  document_type: 'nda' | 'msa' | 'sow' | 'invoice' | 'form16a'
+  storage_path: string
+  signed: boolean
+  signed_at?: string
+  metadata?: Record<string, unknown>
   created_at: string
 }
 
@@ -158,19 +244,67 @@ export interface Message {
   is_read: boolean
   read_at?: string
   is_flagged: boolean
+  ai_summary?: string
+  metadata?: Record<string, unknown>
+  created_at: string
+}
+
+export interface Conversation {
+  id: string
+  project_id?: string
+  contract_id?: string
+  created_by?: string
+  title?: string
+  visibility: 'participants' | 'platform' | 'admin'
+  created_at: string
+  updated_at: string
+}
+
+export interface ConversationMember {
+  conversation_id: string
+  user_id: string
+  role: 'participant' | 'viewer' | 'admin'
+  joined_at: string
+}
+
+export interface SecureFile {
+  id: string
+  owner_id: string
+  project_id?: string
+  contract_id?: string
+  conversation_id?: string
+  storage_path: string
+  original_name: string
+  mime_type?: string
+  file_size?: number
+  checksum?: string
+  virus_scan_status: 'pending' | 'clean' | 'infected'
+  access_level: 'participants' | 'platform' | 'admin'
+  metadata?: Record<string, unknown>
   created_at: string
 }
 
 export interface Notification {
   id: string
   user_id: string
-  type: 'application' | 'contract' | 'payment' | 'message' | 'review' | 'system' | 'verification'
+  type: NotificationType
   title: string
   message: string
   link?: string
-  data?: any
+  data?: Record<string, unknown>
   is_read: boolean
   read_at?: string
+  created_at: string
+}
+
+export interface TalentRecommendation {
+  id: string
+  project_id: string
+  worker_id: string
+  score: number
+  explanation?: string
+  embedding?: number[]
+  metadata?: Record<string, unknown>
   created_at: string
 }
 
@@ -190,6 +324,26 @@ export interface Dispute {
   admin_notes?: string
   created_at: string
   updated_at: string
+}
+
+export interface RiskEvent {
+  id: string
+  contract_id: string
+  triggered_by?: string
+  severity: RiskSeverity
+  event_type: string
+  details?: Record<string, unknown>
+  resolved: boolean
+  resolved_at?: string
+  created_at: string
+}
+
+export interface SavedSearch {
+  id: string
+  user_id: string
+  name: string
+  query: Record<string, unknown>
+  created_at: string
 }
 
 export interface Report {
