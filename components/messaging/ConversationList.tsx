@@ -118,7 +118,7 @@ export function ConversationList({ currentUserId, onSelectConversation }: Conver
       if (conversationError) throw conversationError
       const conversationMap = new Map(
         (conversationMeta || []).map((row) => [row.id, row])
-      ])
+      )
 
       if (participantsRes.error) throw participantsRes.error
       if (messagesRes.error) throw messagesRes.error
