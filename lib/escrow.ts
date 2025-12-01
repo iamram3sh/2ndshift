@@ -10,6 +10,28 @@ import type {
 
 const DEFAULT_CURRENCY = 'INR'
 
+const formatTransferNotes = (metadata?: Record<string, unknown>): Record<string, string | number> => {
+  if (!metadata) return {}
+  return Object.entries(metadata).reduce<Record<string, string | number>>((acc, [key, value]) => {
+    if (typeof value === 'string' || typeof value === 'number') {
+      acc[key] = value
+      return acc
+    }
+    if (value === null || value === undefined) {
+      acc[key] = ''
+      return acc
+    }
+
+    try {
+      acc[key] = JSON.stringify(value)
+    } catch {
+      acc[key] = String(value)
+    }
+
+    return acc
+  }, {})
+}
+
 interface EscrowAccountOptions {
   contractId: string
   currency?: string
@@ -149,12 +171,13 @@ export async function releaseEscrowFunds(payload: ReleaseEscrowInput) {
   const reference = `escrow_release_${transaction.id}`
 
   try {
+    const transferNotes = formatTransferNotes(payload.metadata)
     await razorpay.transfers.create({
       account: payload.razorpayAccountId,
       amount: amountPaise,
       currency: account.currency || DEFAULT_CURRENCY,
       reference_id: reference,
-      notes: payload.metadata ?? {}
+      notes: transferNotes
     })
   } catch (error) {
     await supabaseAdmin
