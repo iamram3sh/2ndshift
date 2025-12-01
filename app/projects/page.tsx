@@ -28,6 +28,17 @@ interface ProjectInsight {
   pitchStrength?: number
 }
 
+type BidSample = Pick<Application,
+  | 'project_id'
+  | 'bid_type'
+  | 'bid_amount'
+  | 'hourly_rate'
+  | 'estimated_hours'
+  | 'milestone_plan'
+  | 'availability_date'
+  | 'pitch_strength'
+>
+
 export default function ProjectsPage() {
   const router = useRouter()
   const [projects, setProjects] = useState<Project[]>([])
@@ -74,10 +85,12 @@ export default function ProjectsPage() {
     }
 
     const projectIds = projectList.map((p) => p.id)
-    const { data: applications } = await supabase
+    const { data: applicationRows } = await supabase
       .from('applications')
       .select('project_id, bid_type, bid_amount, hourly_rate, estimated_hours, milestone_plan, availability_date, pitch_strength')
       .in('project_id', projectIds)
+
+    const applications = applicationRows as BidSample[] | null
 
     if (!applications) {
       setProjectInsights({})
@@ -86,7 +99,7 @@ export default function ProjectsPage() {
 
     const insights: Record<string, ProjectInsight> = {}
 
-    applications.forEach((app: Application) => {
+    applications.forEach((app) => {
       if (!insights[app.project_id]) {
         insights[app.project_id] = {
           bidCount: 0,
