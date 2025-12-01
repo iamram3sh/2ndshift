@@ -1,14 +1,12 @@
-import { ReactNode } from 'react'
+import { HTMLAttributes, ReactNode } from 'react'
 import { clsx } from 'clsx'
 
-interface CardProps {
+interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
-  className?: string
   hover?: boolean
-  onClick?: () => void
 }
 
-export function Card({ children, className, hover = false, onClick }: CardProps) {
+export function Card({ children, className, hover = false, ...rest }: CardProps) {
   return (
     <div
       className={clsx(
@@ -16,7 +14,7 @@ export function Card({ children, className, hover = false, onClick }: CardProps)
         hover && 'hover:shadow-md transition-shadow cursor-pointer',
         className
       )}
-      onClick={onClick}
+      {...rest}
     >
       {children}
     </div>
