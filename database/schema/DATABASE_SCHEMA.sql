@@ -123,6 +123,14 @@ CREATE TABLE IF NOT EXISTS applications (
   worker_id UUID REFERENCES users(id) ON DELETE CASCADE,
   cover_letter TEXT,
   proposed_rate NUMERIC(10,2),
+  bid_type TEXT DEFAULT 'fixed' CHECK (bid_type IN ('fixed', 'hourly', 'milestone')),
+  bid_amount NUMERIC(12,2),
+  hourly_rate NUMERIC(10,2),
+  estimated_hours NUMERIC(10,2),
+  milestone_plan JSONB DEFAULT '[]',
+  availability_date TIMESTAMPTZ,
+  pitch_strength NUMERIC(5,2),
+  auto_match_candidate BOOLEAN DEFAULT false,
   status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'accepted', 'rejected', 'withdrawn')),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
@@ -503,6 +511,20 @@ CREATE POLICY "Users read their notifications" ON notifications
 CREATE POLICY "System can insert notifications" ON notifications
   FOR INSERT WITH CHECK (true);
 
+CREATE TABLE IF NOT EXISTS saved_searches (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  query JSONB NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE saved_searches ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users manage own searches" ON saved_searches
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
+
 -- =====================================================
 -- AI MATCHING & RISK SIGNALS
 -- =====================================================
@@ -552,6 +574,7 @@ CREATE INDEX IF NOT EXISTS idx_projects_client_id ON projects(client_id);
 CREATE INDEX IF NOT EXISTS idx_projects_status ON projects(status);
 CREATE INDEX IF NOT EXISTS idx_applications_worker_id ON applications(worker_id);
 CREATE INDEX IF NOT EXISTS idx_applications_project_id ON applications(project_id);
+CREATE INDEX IF NOT EXISTS idx_applications_bid_type ON applications(bid_type);
 CREATE INDEX IF NOT EXISTS idx_contracts_worker_id ON contracts(worker_id);
 CREATE INDEX IF NOT EXISTS idx_contracts_project_id ON contracts(project_id);
 CREATE INDEX IF NOT EXISTS idx_payments_payment_from ON payments(payment_from);
@@ -569,6 +592,7 @@ CREATE INDEX IF NOT EXISTS idx_secure_files_owner_id ON secure_files(owner_id);
 CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications(user_id);
 CREATE INDEX IF NOT EXISTS idx_recommendations_project_id ON talent_recommendations(project_id);
 CREATE INDEX IF NOT EXISTS idx_risk_events_contract_id ON risk_events(contract_id);
+CREATE INDEX IF NOT EXISTS idx_saved_searches_user_id ON saved_searches(user_id);
 
 -- =====================================================
 -- TRIGGERS FOR UPDATED_AT

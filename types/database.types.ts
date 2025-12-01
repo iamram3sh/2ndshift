@@ -85,6 +85,14 @@ export interface Application {
   worker_id: string
   cover_letter: string
   proposed_rate: number
+  bid_type: 'fixed' | 'hourly' | 'milestone'
+  bid_amount?: number
+  hourly_rate?: number
+  estimated_hours?: number
+  milestone_plan?: Record<string, unknown>[]
+  availability_date?: string
+  pitch_strength?: number
+  auto_match_candidate?: boolean
   status: 'pending' | 'accepted' | 'rejected' | 'withdrawn'
   created_at: string
   updated_at: string
@@ -327,6 +335,14 @@ export interface RiskEvent {
   details?: Record<string, unknown>
   resolved: boolean
   resolved_at?: string
+  created_at: string
+}
+
+export interface SavedSearch {
+  id: string
+  user_id: string
+  name: string
+  query: Record<string, unknown>
   created_at: string
 }
 
