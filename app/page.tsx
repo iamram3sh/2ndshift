@@ -67,6 +67,7 @@ export default function HomePage() {
 
             <div className="hidden lg:flex items-center gap-1">
               {[
+                { label: 'Browse Jobs', href: '/jobs', highlight: true },
                 { label: 'About', href: '/about' },
                 { label: 'How It Works', action: () => scrollToSection('how-it-works') },
                 { label: 'For Workers', href: '/workers' },
@@ -74,7 +75,15 @@ export default function HomePage() {
                 { label: 'Pricing', href: '/pricing' },
               ].map((item, i) => (
                 item.href ? (
-                  <Link key={i} href={item.href} className="px-4 py-2 text-neutral-600 hover:text-neutral-900 font-medium transition-colors rounded-lg hover:bg-neutral-100">
+                  <Link 
+                    key={i} 
+                    href={item.href} 
+                    className={`px-4 py-2 font-medium transition-colors rounded-lg ${
+                      (item as any).highlight 
+                        ? 'text-[#05c8b1] hover:text-[#058076] hover:bg-[#05c8b1]/10' 
+                        : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
+                    }`}
+                  >
                     {item.label}
                   </Link>
                 ) : (
@@ -122,6 +131,7 @@ export default function HomePage() {
           <div className="lg:hidden border-t border-neutral-200/50 bg-white/95 backdrop-blur-xl shadow-xl animate-in slide-in-from-top">
             <div className="max-w-7xl mx-auto px-4 py-6 space-y-1">
               {[
+                { label: '🔥 Browse Jobs', href: '/jobs', highlight: true },
                 { label: 'About', href: '/about' },
                 { label: 'How It Works', action: () => scrollToSection('how-it-works') },
                 { label: 'For Workers', href: '/workers' },
@@ -129,7 +139,16 @@ export default function HomePage() {
                 { label: 'Pricing', href: '/pricing' },
               ].map((item, i) => (
                 item.href ? (
-                  <Link key={i} href={item.href} onClick={() => setMobileMenuOpen(false)} className="block text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100 font-medium py-3 px-4 rounded-xl transition-colors">
+                  <Link 
+                    key={i} 
+                    href={item.href} 
+                    onClick={() => setMobileMenuOpen(false)} 
+                    className={`block font-medium py-3 px-4 rounded-xl transition-colors ${
+                      (item as any).highlight
+                        ? 'text-[#05c8b1] bg-[#05c8b1]/10 hover:bg-[#05c8b1]/20'
+                        : 'text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100'
+                    }`}
+                  >
                     {item.label}
                   </Link>
                 ) : (
