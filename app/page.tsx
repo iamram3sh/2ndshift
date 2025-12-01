@@ -218,25 +218,30 @@ export default function HomePage() {
               </p>
 
               {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-stretch sm:items-center mb-10 animate-in slide-in-from-bottom delay-300">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-stretch sm:items-center mb-6 animate-in slide-in-from-bottom delay-300">
                 <Link
-                  href="/register?type=worker"
+                  href="/jobs"
                   className="group relative bg-[#05c8b1] text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-[#00a192] transition-all duration-300 flex items-center gap-3 justify-center shadow-xl shadow-[#05c8b1]/25 hover:shadow-2xl hover:shadow-[#05c8b1]/30 hover:-translate-y-0.5"
                 >
-                  <span>Start Earning</span>
+                  <span>Browse Jobs</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
                   href="/register?type=client"
                   className="group bg-white text-neutral-900 px-8 py-4 rounded-2xl font-semibold text-lg border-2 border-neutral-200 hover:border-neutral-300 hover:shadow-lg transition-all duration-300 flex items-center gap-3 justify-center"
                 >
-                  <span>Hire Talent</span>
+                  <span>Post a Job</span>
                   <ArrowUpRight className="w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </Link>
               </div>
+              
+              {/* Secondary CTA */}
+              <p className="text-center lg:text-left text-neutral-500 mb-10 animate-in slide-in-from-bottom delay-400">
+                Want to earn? <Link href="/register?type=worker" className="text-[#05c8b1] font-semibold hover:underline">Sign up free →</Link>
+              </p>
 
               {/* Trust Indicators */}
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 animate-in slide-in-from-bottom delay-400">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 animate-in slide-in-from-bottom delay-500">
                 {[
                   { icon: Shield, label: '100% Legal' },
                   { icon: FileCheck, label: 'Tax Compliant' },
@@ -318,6 +323,121 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Jobs Preview - NEW SECTION */}
+      <section className="py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-white border-b border-neutral-100">
+        <div className="max-w-7xl mx-auto">
+          {/* Section Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-[#ff6b6b]/10 border border-[#ff6b6b]/20 text-[#e51d1d] px-3 py-1.5 rounded-full text-sm font-semibold mb-3">
+                <Zap className="w-4 h-4" />
+                <span>Live Opportunities</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900">
+                Jobs Available <span className="text-[#05c8b1]">Right Now</span>
+              </h2>
+              <p className="text-neutral-600 mt-2">No signup required to browse. Apply after registration.</p>
+            </div>
+            <Link 
+              href="/jobs" 
+              className="group inline-flex items-center gap-2 bg-neutral-900 text-white px-6 py-3 rounded-xl font-semibold hover:bg-neutral-800 transition-all"
+            >
+              View All 156+ Jobs
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          {/* Jobs Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[
+              {
+                title: 'Senior React Developer',
+                skills: ['React', 'TypeScript', 'Node.js'],
+                pay: '₹1,200-1,800/hr',
+                type: 'Part-time',
+                posted: '2h ago',
+                applicants: 12,
+                urgent: true,
+              },
+              {
+                title: 'DevOps Engineer - AWS',
+                skills: ['AWS', 'Kubernetes', 'Docker'],
+                pay: '₹1,500-2,200/hr',
+                type: 'Ongoing',
+                posted: '5h ago',
+                applicants: 15,
+                urgent: true,
+              },
+              {
+                title: 'QA Automation Engineer',
+                skills: ['Selenium', 'Python', 'CI/CD'],
+                pay: '₹800-1,200/hr',
+                type: 'Project',
+                posted: '1d ago',
+                applicants: 8,
+                urgent: false,
+              },
+            ].map((job, i) => (
+              <Link 
+                key={i} 
+                href="/jobs"
+                className="group bg-neutral-50 hover:bg-white border border-neutral-200 hover:border-[#05c8b1]/30 rounded-2xl p-6 transition-all hover:shadow-xl hover:shadow-[#05c8b1]/5"
+              >
+                {/* Header */}
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 className="font-bold text-neutral-900 group-hover:text-[#05c8b1] transition-colors">
+                      {job.title}
+                    </h3>
+                    <div className="flex items-center gap-2 mt-1 text-sm text-neutral-500">
+                      <Lock className="w-3.5 h-3.5" />
+                      <span className="bg-neutral-200 text-transparent rounded px-6">Company</span>
+                    </div>
+                  </div>
+                  {job.urgent && (
+                    <span className="flex items-center gap-1 bg-red-50 text-red-600 text-xs font-bold px-2 py-1 rounded-lg">
+                      🔥 Urgent
+                    </span>
+                  )}
+                </div>
+
+                {/* Skills */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {job.skills.map((skill) => (
+                    <span key={skill} className="bg-white border border-neutral-200 text-neutral-600 text-xs font-medium px-2.5 py-1 rounded-lg">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Footer */}
+                <div className="flex items-center justify-between pt-4 border-t border-neutral-200">
+                  <div>
+                    <div className="text-lg font-bold text-[#05c8b1]">{job.pay}</div>
+                    <div className="text-xs text-neutral-500">{job.type} • {job.posted}</div>
+                  </div>
+                  <div className="flex items-center gap-1 text-sm text-neutral-500">
+                    <Users className="w-4 h-4" />
+                    {job.applicants}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="mt-10 text-center">
+            <Link 
+              href="/jobs"
+              className="inline-flex items-center gap-3 text-[#05c8b1] hover:text-[#058076] font-semibold text-lg group"
+            >
+              <span>Browse all jobs without signing up</span>
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
         </div>
       </section>
