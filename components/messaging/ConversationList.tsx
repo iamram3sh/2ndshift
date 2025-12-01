@@ -138,33 +138,33 @@ export function ConversationList({ currentUserId, onSelectConversation }: Conver
         unreadMap.set(row.conversation_id, (unreadMap.get(row.conversation_id) || 0) + 1)
       })
 
-      const formatted = (memberships ?? [])
-        .map((membership) => {
-          const conversationId = membership.conversation_id
-          const otherUser = participantMap.get(conversationId)
-          if (!otherUser) return null
+      const formatted: ConversationListItem[] = (memberships ?? []).reduce((acc: ConversationListItem[], membership) => {
+        const conversationId = membership.conversation_id
+        const otherUser = participantMap.get(conversationId)
+        if (!otherUser) {
+          return acc
+        }
 
-          const lastMessage = lastMessageMap.get(conversationId)
-          const projectRelation = Array.isArray(membership.conversation?.project)
-            ? membership.conversation?.project?.[0]
-            : membership.conversation?.project
+        const lastMessage = lastMessageMap.get(conversationId)
+        const projectRelation = Array.isArray(membership.conversation?.project)
+          ? membership.conversation?.project?.[0]
+          : membership.conversation?.project
 
-          return {
-            id: conversationId,
-            otherUser,
-            lastMessage,
-            unreadCount: unreadMap.get(conversationId) || 0,
-            title: membership.conversation?.title,
-            projectTitle: projectRelation?.title ?? null,
-            updatedAt: membership.conversation?.updated_at ?? lastMessage?.timestamp ?? membership.joined_at
-          }
+        acc.push({
+          id: conversationId,
+          otherUser,
+          lastMessage,
+          unreadCount: unreadMap.get(conversationId) || 0,
+          title: membership.conversation?.title,
+          projectTitle: projectRelation?.title ?? null,
+          updatedAt: membership.conversation?.updated_at ?? lastMessage?.timestamp ?? membership.joined_at
         })
-        .filter((item): item is ConversationListItem => item !== null)
-        .sort((a, b) => {
-          const aTime = a.updatedAt ? new Date(a.updatedAt).getTime() : 0
-          const bTime = b.updatedAt ? new Date(b.updatedAt).getTime() : 0
-          return bTime - aTime
-        })
+        return acc
+      }, []).sort((a, b) => {
+        const aTime = a.updatedAt ? new Date(a.updatedAt).getTime() : 0
+        const bTime = b.updatedAt ? new Date(b.updatedAt).getTime() : 0
+        return bTime - aTime
+      })
 
       setConversations(formatted)
     } catch (error) {
