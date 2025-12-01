@@ -169,24 +169,31 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-50 flex">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-50 dark:bg-slate-900 flex animate-in fade-in">
       {/* Left Side - Form */}
       <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md animate-in slide-in-from-bottom delay-100">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 mb-8">
-            <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
-              <Briefcase className="w-6 h-6 text-white" />
+          <Link href="/" className="flex items-center gap-3 mb-8 group">
+            <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+              <Briefcase className="w-7 h-7 text-white" />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              2ndShift
-            </span>
+            <div className="flex flex-col">
+              <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent">
+                2ndShift
+              </span>
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 -mt-1 font-medium">Professional Platform</span>
+            </div>
           </Link>
 
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-slate-900 mb-3">Get started free</h1>
-            <p className="text-lg text-slate-600">Join thousands earning legally on 2ndShift</p>
+            <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-3 animate-in slide-in-from-left">
+              Get started free ✨
+            </h1>
+            <p className="text-lg text-slate-600 dark:text-slate-400 animate-in slide-in-from-left delay-75">
+              Join thousands earning legally on 2ndShift
+            </p>
           </div>
 
           {/* Message */}
@@ -373,77 +380,84 @@ export default function RegisterPage() {
 
           {/* Footer */}
           <div className="mt-8 text-center">
-            <p className="text-slate-600">
+            <p className="text-slate-600 dark:text-slate-400">
               Already have an account?{' '}
-              <Link href="/login" className="font-semibold text-indigo-600 hover:text-indigo-700 transition">
-                Sign in
+              <Link href="/login" className="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
+                Sign in →
               </Link>
             </p>
           </div>
 
-          <div className="mt-8 pt-8 border-t border-slate-200">
-            <p className="text-sm text-slate-500 text-center">
+          <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-700">
+            <p className="text-sm text-slate-500 dark:text-slate-400 text-center">
               By creating an account, you agree to our{' '}
-              <Link href="/terms" className="text-indigo-600 hover:underline">Terms</Link>
+              <Link href="/terms" className="text-indigo-600 dark:text-indigo-400 hover:underline">Terms</Link>
               {' '}and{' '}
-              <Link href="/privacy" className="text-indigo-600 hover:underline">Privacy Policy</Link>
+              <Link href="/privacy" className="text-indigo-600 dark:text-indigo-400 hover:underline">Privacy Policy</Link>
             </p>
           </div>
         </div>
       </div>
 
       {/* Right Side - Benefits */}
-      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-green-600 to-emerald-600 p-12 items-center justify-center relative overflow-hidden">
+      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-green-600 via-emerald-600 to-green-700 p-12 items-center justify-center relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute inset-0 bg-grid-white/10"></div>
-        <div className="absolute top-20 right-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-20 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 right-20 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 left-20 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
         
-        <div className="relative z-10 max-w-md">
-          <Zap className="w-16 h-16 text-white mb-6" />
-          <h2 className="text-4xl font-bold text-white mb-6">
+        <div className="relative z-10 max-w-md animate-in slide-in-from-right delay-200">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl mb-6 shadow-2xl">
+            <Zap className="w-12 h-12 text-white" />
+          </div>
+          <h2 className="text-4xl font-bold text-white mb-6 leading-tight">
             Start Earning in
             <br />
-            Less Than 24 Hours
+            <span className="bg-gradient-to-r from-yellow-200 to-yellow-400 bg-clip-text text-transparent">Less Than 24 Hours</span>
           </h2>
-          <p className="text-xl text-green-100 mb-8">
+          <p className="text-xl text-green-100 mb-8 leading-relaxed">
             Join India&apos;s fastest-growing platform for legal, compliant freelance work
           </p>
 
-          <div className="space-y-4">
+          <div className="space-y-4 mb-10 stagger-animation">
             {[
-              { icon: Shield, text: '100% tax compliant - TDS & Form 16A included' },
-              { icon: CheckCircle, text: 'Get verified in 24 hours, start earning immediately' },
-              { icon: Zap, text: 'Instant payments - no 30-day waiting' },
-              { icon: Briefcase, text: 'Access to verified, high-paying projects' }
+              { icon: '🛡️', text: '100% tax compliant - TDS & Form 16A included' },
+              { icon: '✓', text: 'Get verified in 24 hours, start earning immediately' },
+              { icon: '⚡', text: 'Instant payments - no 30-day waiting' },
+              { icon: '💼', text: 'Access to verified, high-paying projects' }
             ].map((benefit, i) => (
-              <div key={i} className="flex items-center gap-3 text-white">
-                <div className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <benefit.icon className="w-4 h-4" />
+              <div key={i} className="flex items-center gap-3 text-white hover:translate-x-2 transition-transform">
+                <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <span className="text-sm">{benefit.icon}</span>
                 </div>
-                <span className="text-lg">{benefit.text}</span>
+                <span className="text-lg font-medium">{benefit.text}</span>
               </div>
             ))}
           </div>
 
-          <div className="mt-12 p-6 bg-white/10 backdrop-blur border border-white/20 rounded-2xl">
+          <div className="p-6 glass-effect rounded-2xl shadow-2xl hover:shadow-3xl transition-shadow">
             <div className="grid grid-cols-3 gap-6 mb-4">
               <div>
                 <div className="text-3xl font-bold text-white">₹20K+</div>
-                <div className="text-sm text-green-100">Avg. Monthly</div>
+                <div className="text-sm text-green-100 font-medium">Avg. Monthly</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-white">5K+</div>
-                <div className="text-sm text-green-100">Active Users</div>
+                <div className="text-sm text-green-100 font-medium">Active Users</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-white">98%</div>
-                <div className="text-sm text-green-100">Satisfaction</div>
+                <div className="text-sm text-green-100 font-medium">Satisfaction</div>
               </div>
             </div>
-            <p className="text-sm text-green-100">
+            <p className="text-sm text-white font-medium leading-relaxed mb-3">
               &quot;Best platform for part-time work. Finally, something that&apos;s completely legal!&quot;
             </p>
+            <div className="flex items-center gap-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <div key={star} className="w-4 h-4 text-yellow-300">★</div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
