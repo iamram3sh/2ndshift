@@ -6,6 +6,7 @@ import {
   Shield, DollarSign, Star, Send, RefreshCw, AlertTriangle,
   ChevronDown, ChevronUp, Loader2, IndianRupee
 } from 'lucide-react'
+import { AutoReleaseTimer } from './AutoReleaseTimer'
 
 type EscrowStatus = 
   | 'pending' 
@@ -403,6 +404,15 @@ export function PaymentEscrow({
 
             {escrow.status === 'work_submitted' && (
               <div className="space-y-4">
+                {/* Auto-release timer */}
+                {escrow.workSubmittedAt && (
+                  <AutoReleaseTimer
+                    submittedAt={escrow.workSubmittedAt}
+                    autoReleaseDays={7}
+                    userType={userType}
+                  />
+                )}
+
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
                     Rate the work *
@@ -514,7 +524,17 @@ export function PaymentEscrow({
               </button>
             )}
 
-            {escrow.status === 'work_submitted' && (
+            {escrow.status === 'work_submitted' && escrow.workSubmittedAt && (
+              <div className="space-y-4">
+                <AutoReleaseTimer
+                  submittedAt={escrow.workSubmittedAt}
+                  autoReleaseDays={7}
+                  userType={userType}
+                />
+              </div>
+            )}
+
+            {escrow.status === 'work_submitted' && !escrow.workSubmittedAt && (
               <div className="text-center py-4">
                 <Clock className="w-12 h-12 text-purple-400 mx-auto mb-3" />
                 <p className="text-slate-600 font-medium">Awaiting client review</p>
