@@ -145,6 +145,9 @@ export function ConversationList({ currentUserId, onSelectConversation }: Conver
           if (!otherUser) return null
 
           const lastMessage = lastMessageMap.get(conversationId)
+          const projectRelation = Array.isArray(membership.conversation?.project)
+            ? membership.conversation?.project?.[0]
+            : membership.conversation?.project
 
           return {
             id: conversationId,
@@ -152,7 +155,7 @@ export function ConversationList({ currentUserId, onSelectConversation }: Conver
             lastMessage,
             unreadCount: unreadMap.get(conversationId) || 0,
             title: membership.conversation?.title,
-            projectTitle: membership.conversation?.project?.title ?? null,
+            projectTitle: projectRelation?.title ?? null,
             updatedAt: membership.conversation?.updated_at ?? lastMessage?.timestamp ?? membership.joined_at
           }
         })
