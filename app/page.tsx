@@ -86,17 +86,14 @@ export default function HomePage() {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-1">
-              <Link href="/jobs" className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
-                Find Work
+              <Link href="/for-workers" className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
+                For Professionals
               </Link>
-              <Link href="/workers" className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
-                Hire Talent
-              </Link>
-              <Link href="/how-it-works" className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
-                How It Works
+              <Link href="/employers" className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
+                For Employers
               </Link>
               <Link href="/features" className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
-                Features
+                How It Works
               </Link>
               <Link href="/pricing" className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
                 Pricing
@@ -129,10 +126,10 @@ export default function HomePage() {
           <div className="lg:hidden bg-white border-t border-slate-200 shadow-lg">
             <div className="px-4 py-4 space-y-1">
               {[
-                { label: 'Find Work', href: '/jobs' },
-                { label: 'Hire Talent', href: '/workers' },
-                { label: 'How It Works', href: '/how-it-works' },
-                { label: 'Features', href: '/features' },
+                { label: 'For Professionals', href: '/for-workers' },
+                { label: 'For Employers', href: '/employers' },
+                { label: 'How It Works', href: '/features' },
+                { label: 'Find Talent', href: '/workers' },
                 { label: 'Pricing', href: '/pricing' },
               ].map((item) => (
                 <Link 
@@ -647,22 +644,22 @@ export default function HomePage() {
 
             {/* Links */}
             <div>
-              <h4 className="font-semibold text-slate-900 mb-4">Platform</h4>
+              <h4 className="font-semibold text-slate-900 mb-4">For Professionals</h4>
               <ul className="space-y-3 text-sm">
-                <li><Link href="/jobs" className="text-slate-600 hover:text-slate-900 transition-colors">Find Work</Link></li>
-                <li><Link href="/workers" className="text-slate-600 hover:text-slate-900 transition-colors">Hire Talent</Link></li>
-                <li><Link href="/how-it-works" className="text-slate-600 hover:text-slate-900 transition-colors">How It Works</Link></li>
+                <li><Link href="/for-workers" className="text-slate-600 hover:text-slate-900 transition-colors">Why 2ndShift</Link></li>
+                <li><Link href="/worker/discover" className="text-slate-600 hover:text-slate-900 transition-colors">Find Work</Link></li>
+                <li><Link href="/features" className="text-slate-600 hover:text-slate-900 transition-colors">How Shifts Work</Link></li>
                 <li><Link href="/pricing" className="text-slate-600 hover:text-slate-900 transition-colors">Pricing</Link></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold text-slate-900 mb-4">Resources</h4>
+              <h4 className="font-semibold text-slate-900 mb-4">For Employers</h4>
               <ul className="space-y-3 text-sm">
-                <li><Link href="/features" className="text-slate-600 hover:text-slate-900 transition-colors">Features</Link></li>
-                <li><Link href="/faq" className="text-slate-600 hover:text-slate-900 transition-colors">FAQ</Link></li>
-                <li><Link href="/blog" className="text-slate-600 hover:text-slate-900 transition-colors">Blog</Link></li>
-                <li><Link href="/about" className="text-slate-600 hover:text-slate-900 transition-colors">About</Link></li>
+                <li><Link href="/employers" className="text-slate-600 hover:text-slate-900 transition-colors">Why 2ndShift</Link></li>
+                <li><Link href="/workers" className="text-slate-600 hover:text-slate-900 transition-colors">Find Talent</Link></li>
+                <li><Link href="/features" className="text-slate-600 hover:text-slate-900 transition-colors">How It Works</Link></li>
+                <li><Link href="/about" className="text-slate-600 hover:text-slate-900 transition-colors">About Us</Link></li>
               </ul>
             </div>
 
