@@ -108,7 +108,7 @@ export function ChatInterface({ conversationId, currentUserId, otherUserId, onBa
     try {
       const { data, error } = await supabase
         .from('conversations')
-        .select(`id, title, project:projects(title), contract_id`)
+        .select('id, title, project(title), contract_id')
         .eq('id', conversationId)
         .single()
 
