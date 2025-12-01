@@ -4,20 +4,17 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase/client'
-import { Mail, Lock, ArrowRight, Briefcase, Shield, CheckCircle } from 'lucide-react'
+import { Mail, Lock, ArrowRight, Layers, Shield, CheckCircle, Eye, EyeOff } from 'lucide-react'
 
 export default function LoginPage() {
   const router = useRouter()
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  })
+  const [formData, setFormData] = useState({ email: '', password: '' })
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
-  // Check for URL parameters on mount
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search)
@@ -26,26 +23,22 @@ export default function LoginPage() {
       const msg = params.get('message')
       
       if (verified === 'true') {
-        setSuccessMessage('✅ Email verified successfully! You can now login.')
+        setSuccessMessage('Email verified successfully. You can now sign in.')
       } else if (error === 'verification_failed') {
-        setMessage('Email verification failed. Please try again or contact support.')
+        setMessage('Email verification failed. Please try again.')
       } else if (msg === 'check_email') {
-        setSuccessMessage('📧 Please check your email to verify your account before logging in.')
+        setSuccessMessage('Please check your email to verify your account.')
       } else if (msg === 'registration_success') {
-        setSuccessMessage('✅ Registration successful! You can now login.')
+        setSuccessMessage('Account created successfully. You can now sign in.')
       }
     }
   }, [])
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
-    
     if (!formData.email) newErrors.email = 'Email is required'
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Invalid email format'
-    }
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email'
     if (!formData.password) newErrors.password = 'Password is required'
-    
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -58,250 +51,196 @@ export default function LoginPage() {
     setMessage('')
     
     try {
-      // Sanitize email input
-      const sanitizedEmail = formData.email.trim().toLowerCase()
-      
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: sanitizedEmail,
+        email: formData.email.trim().toLowerCase(),
         password: formData.password
       })
       
       if (error) throw error
       
       if (data.user) {
-        // Call API route to get profile (bypasses RLS)
-        try {
-          const response = await fetch('/api/auth/get-profile', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: data.user.id })
-          })
-          
-          console.log('API Response status:', response.status)
-          
-          if (!response.ok) {
-            const errorText = await response.text()
-            console.error('API Error Response:', errorText)
-            throw new Error(`Failed to load profile: ${response.status} - ${errorText}`)
-          }
-          
+        const response = await fetch('/api/auth/get-profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: data.user.id })
+        })
+        
+        if (response.ok) {
           const result = await response.json()
-          console.log('API Result:', result)
-          
-          if (result.profile && result.profile.user_type) {
-            // Profile loaded successfully, redirect to dashboard
-            redirectBasedOnUserType(result.profile.user_type)
-          } else {
-            // Profile is missing or invalid
-            console.error('Invalid profile data:', result)
-            setMessage('Login successful but profile setup failed. Please contact support or try registering again.')
+          if (result.profile?.user_type) {
+            const routes: Record<string, string> = {
+              worker: '/worker',
+              client: '/client',
+              admin: '/admin',
+              superadmin: '/admin'
+            }
+            router.push(routes[result.profile.user_type] || '/worker')
           }
-        } catch (error: any) {
-          console.error('Profile fetch error:', error)
-          setMessage('Login successful but profile setup failed: ' + error.message)
         }
       }
     } catch (error: any) {
-      console.error('Login error:', error)
-      setMessage(error.message || 'Login failed. Please check your credentials.')
+      setMessage(error.message || 'Sign in failed. Please check your credentials.')
     } finally {
       setIsLoading(false)
     }
   }
 
-  const redirectBasedOnUserType = (userType: string) => {
-    // Redirect based on user type
-    if (userType === 'worker') {
-      router.push('/worker')
-    } else if (userType === 'client') {
-      router.push('/client')
-    } else if (userType === 'admin' || userType === 'superadmin') {
-      router.push('/admin')
-    } else {
-      setMessage('Invalid user type. Please contact support.')
-    }
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-purple-50 flex">
-      {/* Left Side - Form */}
+    <div className="min-h-screen bg-slate-50 flex">
+      {/* Left - Form */}
       <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-sm">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 mb-8">
-            <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
-              <Briefcase className="w-6 h-6 text-white" />
+          <Link href="/" className="flex items-center gap-2 mb-10">
+            <div className="w-9 h-9 bg-slate-900 rounded-lg flex items-center justify-center">
+              <Layers className="w-5 h-5 text-white" />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              2ndShift
-            </span>
+            <span className="text-xl font-semibold text-slate-900">2ndShift</span>
           </Link>
 
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-slate-900 mb-3">Welcome back</h1>
-            <p className="text-lg text-slate-600">Sign in to continue to your dashboard</p>
-          </div>
+          <h1 className="text-2xl font-semibold text-slate-900 mb-2">Welcome back</h1>
+          <p className="text-slate-600 mb-8">Sign in to your account to continue</p>
 
-          {/* Success Message */}
+          {/* Messages */}
           {successMessage && (
-            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-800 text-sm flex items-start gap-3 animate-in slide-in-from-top">
-              <div className="w-5 h-5 bg-green-200 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <CheckCircle className="w-3 h-3 text-green-800" />
-              </div>
+            <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-700 flex items-start gap-3">
+              <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
               <span>{successMessage}</span>
             </div>
           )}
 
-          {/* Error Message */}
           {message && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm flex items-start gap-3 animate-in slide-in-from-top">
-              <div className="w-5 h-5 bg-red-200 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <span className="text-red-800 text-xs font-bold">!</span>
-              </div>
-              <span>{message}</span>
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
+              {message}
             </div>
           )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="group">
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                Email Address
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Email address
               </label>
               <div className="relative">
-                <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-indigo-600 transition" />
+                <Mail className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full pl-12 pr-4 py-3.5 border-2 border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 transition outline-none"
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:border-slate-300 focus:ring-2 focus:ring-slate-100 transition-all outline-none text-sm"
                   placeholder="you@example.com"
                 />
               </div>
-              {errors.email && (
-                <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
-                  <span className="w-1 h-1 bg-red-600 rounded-full"></span>
-                  {errors.email}
-                </p>
-              )}
+              {errors.email && <p className="mt-1.5 text-sm text-red-600">{errors.email}</p>}
             </div>
 
-            <div className="group">
+            <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-semibold text-slate-700">
-                  Password
-                </label>
-                <Link href="/forgot-password" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+                <label className="block text-sm font-medium text-slate-700">Password</label>
+                <Link href="/forgot-password" className="text-sm text-slate-600 hover:text-slate-900">
                   Forgot?
                 </Link>
               </div>
               <div className="relative">
-                <Lock className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-indigo-600 transition" />
+                <Lock className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full pl-12 pr-4 py-3.5 border-2 border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 transition outline-none"
+                  className="w-full pl-10 pr-10 py-3 bg-white border border-slate-200 rounded-xl focus:border-slate-300 focus:ring-2 focus:ring-slate-100 transition-all outline-none text-sm"
                   placeholder="••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
               </div>
-              {errors.password && (
-                <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
-                  <span className="w-1 h-1 bg-red-600 rounded-full"></span>
-                  {errors.password}
-                </p>
-              )}
+              {errors.password && <p className="mt-1.5 text-sm text-red-600">{errors.password}</p>}
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="group w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 rounded-xl font-semibold hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
+              className="w-full bg-slate-900 text-white py-3 rounded-xl font-medium hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  <span>Signing in...</span>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Signing in...
                 </>
               ) : (
                 <>
-                  <span>Sign In</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  Sign in
+                  <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
           </form>
 
-          {/* Footer */}
-          <div className="mt-8 text-center">
-            <p className="text-slate-600">
-              Don&apos;t have an account?{' '}
-              <Link href="/register" className="font-semibold text-indigo-600 hover:text-indigo-700 transition">
-                Create one now
-              </Link>
-            </p>
-          </div>
+          <p className="mt-8 text-center text-sm text-slate-600">
+            Don&apos;t have an account?{' '}
+            <Link href="/register" className="font-medium text-slate-900 hover:underline">
+              Create one
+            </Link>
+          </p>
 
-          <div className="mt-8 pt-8 border-t border-slate-200">
-            <p className="text-sm text-slate-500 text-center">
-              By signing in, you agree to our{' '}
-              <Link href="/terms" className="text-indigo-600 hover:underline">Terms</Link>
-              {' '}and{' '}
-              <Link href="/privacy" className="text-indigo-600 hover:underline">Privacy Policy</Link>
-            </p>
-          </div>
+          <p className="mt-6 pt-6 border-t border-slate-200 text-xs text-center text-slate-500">
+            By signing in, you agree to our{' '}
+            <Link href="/terms" className="underline hover:text-slate-700">Terms</Link>
+            {' '}and{' '}
+            <Link href="/privacy" className="underline hover:text-slate-700">Privacy Policy</Link>
+          </p>
         </div>
       </div>
 
-      {/* Right Side - Benefits */}
-      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-indigo-600 to-purple-600 p-12 items-center justify-center relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute inset-0 bg-grid-white/10"></div>
-        <div className="absolute top-20 right-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
+      {/* Right - Info Panel */}
+      <div className="hidden lg:flex flex-1 bg-slate-900 p-12 items-center justify-center relative">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
         
-        <div className="relative z-10 max-w-md">
-          <Shield className="w-16 h-16 text-white mb-6" />
-          <h2 className="text-4xl font-bold text-white mb-6">
-            India&apos;s Most Trusted
-            <br />
-            Freelance Platform
+        <div className="relative max-w-md">
+          <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-8">
+            <Shield className="w-7 h-7 text-white" />
+          </div>
+          
+          <h2 className="text-3xl font-semibold text-white mb-4">
+            India&apos;s compliant talent platform
           </h2>
-          <p className="text-xl text-indigo-100 mb-8">
-            Join thousands of professionals working safely and legally on 2ndShift
+          <p className="text-lg text-slate-400 mb-10">
+            Join thousands of professionals and companies building the future of work.
           </p>
 
-          <div className="space-y-4">
+          <ul className="space-y-4">
             {[
               'Automatic TDS & GST compliance',
-              'Instant payments after approval',
-              'Professional contracts & NDAs',
-              'Verified clients and workers'
-            ].map((benefit, i) => (
-              <div key={i} className="flex items-center gap-3 text-white">
-                <div className="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <CheckCircle className="w-4 h-4" />
-                </div>
-                <span className="text-lg">{benefit}</span>
-              </div>
+              'Weekly payments to your bank',
+              'Professional contracts included',
+              'Verified clients and professionals'
+            ].map((item, i) => (
+              <li key={i} className="flex items-center gap-3 text-slate-300">
+                <CheckCircle className="w-5 h-5 text-emerald-400" />
+                <span>{item}</span>
+              </li>
             ))}
-          </div>
+          </ul>
 
-          <div className="mt-12 p-6 bg-white/10 backdrop-blur border border-white/20 rounded-2xl">
-            <div className="flex items-center gap-4 mb-3">
+          <div className="mt-12 p-6 bg-white/5 rounded-2xl border border-white/10">
+            <div className="flex items-center gap-4 mb-4">
               <div className="flex -space-x-2">
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="w-10 h-10 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-full border-2 border-white"></div>
+                  <div key={i} className="w-8 h-8 bg-slate-700 rounded-full border-2 border-slate-900" />
                 ))}
               </div>
-              <div className="text-white">
-                <div className="font-bold">5,000+</div>
-                <div className="text-sm text-indigo-100">Active Users</div>
+              <div>
+                <div className="font-semibold text-white">Growing</div>
+                <div className="text-sm text-slate-300">Professional community</div>
               </div>
             </div>
-            <p className="text-sm text-indigo-100">
-              &quot;2ndShift made freelancing completely stress-free. No more tax worries!&quot;
+            <p className="text-sm text-slate-300 italic">
+              &ldquo;The platform that finally makes freelancing simple and compliant.&rdquo;
             </p>
           </div>
         </div>

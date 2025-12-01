@@ -1,40 +1,74 @@
-/* Custom Animations for 2ndShift */
+/* ============================================
+   2NDSHIFT - ANIMATION SYSTEM
+   Professional • Subtle • Performant
+   ============================================ */
 
-@keyframes slide-in-from-top {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ---- Animation Configuration ---- */
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes slide-in-from-bottom {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
+/* ---- Core Keyframes ---- */
 @keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes slide-up {
   from {
     opacity: 0;
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
 @keyframes scale-in {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.96);
   }
   to {
     opacity: 1;
@@ -42,100 +76,264 @@
   }
 }
 
-.animate-in {
-  animation-duration: 0.3s;
-  animation-timing-function: ease-out;
-  animation-fill-mode: both;
-}
-
-.slide-in-from-top {
-  animation-name: slide-in-from-top;
-}
-
-.slide-in-from-bottom {
-  animation-name: slide-in-from-bottom;
-}
-
-.fade-in {
-  animation-name: fade-in;
-}
-
-.scale-in {
-  animation-name: scale-in;
-}
-
-/* Grid pattern background */
-.bg-grid-white\/10 {
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
-/* Smooth hover transitions for all interactive elements */
-button,
-a,
-input,
-select,
-textarea {
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
-}
-
-/* Focus visible for accessibility */
-*:focus-visible {
-  outline: 2px solid #4f46e5;
-  outline-offset: 2px;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #94a3b8;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
-}
-
-/* Pulse animation for loading states */
-@keyframes pulse {
-  0%, 100% {
+@keyframes scale-out {
+  from {
     opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+/* ---- Entrance Animations ---- */
+.animate-fade-in {
+  animation: fade-in 0.4s var(--ease-out-expo) forwards;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s var(--ease-out-expo) forwards;
+}
+
+.animate-slide-down {
+  animation: slide-down 0.5s var(--ease-out-expo) forwards;
+}
+
+.animate-slide-left {
+  animation: slide-left 0.5s var(--ease-out-expo) forwards;
+}
+
+.animate-slide-right {
+  animation: slide-right 0.5s var(--ease-out-expo) forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s var(--ease-out-expo) forwards;
+}
+
+/* ---- Exit Animations ---- */
+.animate-fade-out {
+  animation: fade-out 0.3s var(--ease-in-out) forwards;
+}
+
+.animate-scale-out {
+  animation: scale-out 0.3s var(--ease-in-out) forwards;
+}
+
+/* ---- Continuous Animations ---- */
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
   50% {
-    opacity: 0.5;
+    transform: translateY(-8px);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
 
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.animate-pulse-soft {
+  animation: pulse-soft 2s var(--ease-in-out) infinite;
 }
 
-/* Gradient text animation */
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.animate-bounce {
+  animation: bounce 1.2s infinite;
+}
+
+/* ---- Loading Animations ---- */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #f1f5f9 0%,
+    #e2e8f0 50%,
+    #f1f5f9 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 6px;
+}
+
+/* ---- Stagger Delays ---- */
+.delay-0 { animation-delay: 0ms; }
+.delay-75 { animation-delay: 75ms; }
+.delay-100 { animation-delay: 100ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-800 { animation-delay: 800ms; }
+
+/* ---- Hover Transitions ---- */
+.hover-lift {
+  transition: transform 200ms var(--ease-out-expo), box-shadow 200ms var(--ease-out-expo);
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+.hover-scale {
+  transition: transform 200ms var(--ease-out-expo);
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+.hover-glow {
+  transition: box-shadow 200ms var(--ease-out-expo);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 24px -4px rgba(14, 165, 233, 0.3);
+}
+
+/* ---- Group Transitions ---- */
+.group .group-hover-slide {
+  transition: transform 200ms var(--ease-out-expo);
+}
+
+.group:hover .group-hover-slide {
+  transform: translateX(4px);
+}
+
+.group .group-hover-scale {
+  transition: transform 200ms var(--ease-out-expo);
+}
+
+.group:hover .group-hover-scale {
+  transform: scale(1.1);
+}
+
+/* ---- Backdrop Animations ---- */
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0);
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
+  to {
+    opacity: 1;
+    backdrop-filter: blur(8px);
   }
 }
 
-.animate-gradient {
-  background-size: 200% 200%;
-  animation: gradient-shift 3s ease infinite;
+.animate-backdrop {
+  animation: backdrop-in 0.3s var(--ease-out-expo) forwards;
+}
+
+/* ---- Page Transitions ---- */
+.page-enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms var(--ease-out-expo), transform 300ms var(--ease-out-expo);
+}
+
+.page-exit {
+  opacity: 1;
+}
+
+.page-exit-active {
+  opacity: 0;
+  transition: opacity 200ms var(--ease-in-out);
+}
+
+/* ---- Notification Animations ---- */
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-out-right {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s var(--ease-out-expo) forwards;
+}
+
+.animate-slide-out-right {
+  animation: slide-out-right 0.2s var(--ease-in-out) forwards;
+}
+
+/* ---- Reduced Motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -1,116 +1,121 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Briefcase, Shield, CheckCircle, Clock, Users, TrendingUp, Globe, Award, Star, Play, BarChart3, Zap, Lock, FileCheck, Headphones, ChevronRight, Mail, Phone, MapPin, Linkedin, Twitter, Facebook, Quote, X, DollarSign } from 'lucide-react'
+import { 
+  ArrowRight, Briefcase, Shield, CheckCircle, Users, TrendingUp, 
+  Award, Star, Zap, Lock, FileCheck, ChevronRight, Mail, Phone, 
+  MapPin, Linkedin, Twitter, ArrowUpRight, Target, Building2, 
+  Globe, Clock, BadgeCheck, Play, ChevronDown, Menu, X, 
+  BarChart3, CreditCard, FileText, Headphones, Layers, Timer,
+  Wallet, Calendar, Coffee, Sparkles, Heart, IndianRupee
+} from 'lucide-react'
 import { useState, useEffect } from 'react'
-import BackToTop from '@/components/shared/BackToTop'
-import StructuredData from '@/components/shared/StructuredData'
+
+// What makes us different
+const VALUE_PROPS = [
+  { icon: Shield, label: 'TDS & GST Handled' },
+  { icon: Lock, label: 'Secure Escrow Payments' },
+  { icon: Clock, label: 'Flexible: Hourly to Full-time' },
+  { icon: Star, label: 'Verified Professionals' },
+]
+
+const SAMPLE_JOBS = [
+  {
+    title: 'React Native Developer',
+    skills: ['React Native', 'TypeScript', 'Firebase'],
+    budget: '₹40,000 - ₹60,000',
+    duration: '2-3 weeks',
+    type: 'Project',
+    posted: 'Just now',
+  },
+  {
+    title: 'UI/UX Designer',
+    skills: ['Figma', 'UI Design', 'Prototyping'],
+    budget: '₹25,000 - ₹40,000',
+    duration: '1-2 weeks',
+    type: 'Project',
+    posted: '1h ago',
+  },
+  {
+    title: 'Backend Developer',
+    skills: ['Node.js', 'PostgreSQL', 'AWS'],
+    budget: '₹800 - ₹1,200/hr',
+    duration: 'Ongoing',
+    type: 'Part-time',
+    posted: '2h ago',
+  },
+  {
+    title: 'Full Stack Engineer',
+    skills: ['React', 'Python', 'Docker'],
+    budget: '₹1.2L - ₹1.8L/month',
+    duration: '6+ months',
+    type: 'Full-time',
+    posted: '3h ago',
+  },
+]
 
 export default function HomePage() {
-  const [email, setEmail] = useState('')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-    }
+    const handleScroll = () => setIsScrolled(window.scrollY > 10)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setNewsletterSubmitted(true)
-    setTimeout(() => {
-      setNewsletterSubmitted(false)
-      setEmail('')
-    }, 3000)
-  }
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      setMobileMenuOpen(false)
-    }
-  }
-
   return (
     <div className="min-h-screen bg-white">
-      {/* SEO Structured Data */}
-      <StructuredData />
-      
       {/* Navigation */}
-      <nav className={`border-b fixed w-full z-50 transition-all duration-300 ${
+      <nav className={`fixed w-full z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-white/95 backdrop-blur-lg shadow-lg' 
-          : 'bg-white/95 backdrop-blur-lg shadow-sm'
+          ? 'bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm' 
+          : 'bg-transparent'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-11 h-11 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
-                <Briefcase className="w-6 h-6 text-white" />
+          <div className="flex justify-between items-center h-16 lg:h-20">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="w-9 h-9 bg-slate-900 rounded-lg flex items-center justify-center">
+                <Layers className="w-5 h-5 text-white" />
               </div>
-              <div className="flex flex-col">
-                <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent">
-                  2ndShift
-                </span>
-                <span className="text-[10px] text-slate-500 -mt-1 font-medium">Legal Freelance Platform</span>
-              </div>
+              <span className="text-xl font-semibold text-slate-900 tracking-tight">
+                2ndShift
+              </span>
             </Link>
 
-            <div className="hidden lg:flex items-center gap-8">
-              <Link href="/about" className="text-slate-700 hover:text-indigo-600 font-medium transition-colors relative group">
-                About
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 group-hover:w-full transition-all duration-300"></span>
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-1">
+              <Link href="/for-workers" className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
+                For Professionals
               </Link>
-              <button onClick={() => scrollToSection('how-it-works')} className="text-slate-700 hover:text-indigo-600 font-medium transition-colors relative group">
-                How It Works
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 group-hover:w-full transition-all duration-300"></span>
-              </button>
-              <Link href="/workers" className="text-slate-700 hover:text-indigo-600 font-medium transition-colors relative group">
-                For Workers
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 group-hover:w-full transition-all duration-300"></span>
-              </Link>
-              <Link href="/employers" className="text-slate-700 hover:text-indigo-600 font-medium transition-colors relative group">
+              <Link href="/employers" className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
                 For Employers
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 group-hover:w-full transition-all duration-300"></span>
               </Link>
-              <Link href="/pricing" className="text-slate-700 hover:text-indigo-600 font-medium transition-colors relative group">
+              <Link href="/features" className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
+                How It Works
+              </Link>
+              <Link href="/pricing" className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
                 Pricing
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 group-hover:w-full transition-all duration-300"></span>
               </Link>
             </div>
 
-            <div className="flex items-center gap-4">
-              <Link
-                href="/login"
-                className="hidden sm:block text-slate-700 hover:text-indigo-600 font-semibold transition-colors"
-              >
-                Sign In
+            {/* CTA Buttons */}
+            <div className="flex items-center gap-3">
+              <Link href="/login" className="hidden sm:block px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
+                Sign in
               </Link>
-              <Link
-                href="/register"
-                className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
+              <Link 
+                href="/register" 
+                className="bg-slate-900 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-slate-800 transition-all shadow-sm"
               >
-                Get Started
-                <ChevronRight className="w-4 h-4" />
+                Get Started Free
               </Link>
               <button 
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
-                aria-label="Toggle menu"
+                className="lg:hidden p-2 text-slate-600 hover:text-slate-900"
               >
-                {mobileMenuOpen ? (
-                  <X className="w-6 h-6" />
-                ) : (
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                )}
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
             </div>
           </div>
@@ -118,34 +123,27 @@ export default function HomePage() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-slate-200 bg-white shadow-xl">
-            <div className="max-w-7xl mx-auto px-4 py-6 space-y-4">
-              <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="block text-slate-700 hover:text-indigo-600 font-medium py-2 transition-colors">
-                About
-              </Link>
-              <button onClick={() => scrollToSection('how-it-works')} className="block w-full text-left text-slate-700 hover:text-indigo-600 font-medium py-2 transition-colors">
-                How It Works
-              </button>
-              <Link href="/workers" onClick={() => setMobileMenuOpen(false)} className="block text-slate-700 hover:text-indigo-600 font-medium py-2 transition-colors">
-                For Workers
-              </Link>
-              <Link href="/employers" onClick={() => setMobileMenuOpen(false)} className="block text-slate-700 hover:text-indigo-600 font-medium py-2 transition-colors">
-                For Employers
-              </Link>
-              <Link href="/pricing" onClick={() => setMobileMenuOpen(false)} className="block text-slate-700 hover:text-indigo-600 font-medium py-2 transition-colors">
-                Pricing
-              </Link>
-              <div className="pt-4 border-t border-slate-200">
-                <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="block text-slate-700 hover:text-indigo-600 font-semibold py-2 transition-colors">
-                  Sign In
-                </Link>
-                <Link
-                  href="/register"
+          <div className="lg:hidden bg-white border-t border-slate-200 shadow-lg">
+            <div className="px-4 py-4 space-y-1">
+              {[
+                { label: 'For Professionals', href: '/for-workers' },
+                { label: 'For Employers', href: '/employers' },
+                { label: 'How It Works', href: '/features' },
+                { label: 'Find Talent', href: '/workers' },
+                { label: 'Pricing', href: '/pricing' },
+              ].map((item) => (
+                <Link 
+                  key={item.href}
+                  href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="mt-2 flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-xl transition-all duration-300"
+                  className="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg font-medium"
                 >
-                  Get Started
-                  <ChevronRight className="w-4 h-4" />
+                  {item.label}
+                </Link>
+              ))}
+              <div className="pt-4 border-t border-slate-200 mt-4">
+                <Link href="/login" className="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg font-medium">
+                  Sign in
                 </Link>
               </div>
             </div>
@@ -154,825 +152,552 @@ export default function HomePage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-slate-50 via-white to-indigo-50">
-        {/* Decorative background elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-200/30 to-purple-200/30 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-blue-200/30 to-cyan-200/30 rounded-full blur-3xl"></div>
-        </div>
+      <section className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-50 to-white"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-100/40 via-transparent to-transparent"></div>
+        
+        {/* Grid Pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left Column - Content */}
-            <div className="text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-5 py-2.5 rounded-full text-sm font-semibold mb-8 shadow-sm border border-indigo-200/50">
-                <Star className="w-4 h-4 fill-indigo-600" />
-                <span>India&apos;s First Legal, Tax-Compliant Platform</span>
-              </div>
-              
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 mb-6 leading-tight">
-                Earn More.
-                <br />
-                <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 bg-clip-text text-transparent animate-gradient">
-                  Work Your Way.
-                </span>
-              </h1>
-              
-              <p className="text-lg sm:text-xl text-slate-600 mb-8 sm:mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                <span className="text-xl sm:text-2xl font-bold text-slate-900 block mb-2">Earn ₹50,000-1,50,000 extra per month</span>
-                Use your professional skills. Work remotely. Set your schedule.
-                <br />
-                <span className="font-semibold text-slate-800">Weekly payouts. Only 5% platform fee.</span>
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start items-stretch sm:items-center mb-8 sm:mb-10">
-                <Link
-                  href="/register?type=worker"
-                  className="group bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2 justify-center shadow-lg"
-                >
-                  Start Earning
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link
-                  href="/register?type=client"
-                  className="group bg-white text-slate-900 px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg border-2 border-slate-300 hover:border-indigo-600 hover:shadow-xl transition-all duration-300 flex items-center gap-2 justify-center"
-                >
-                  Hire in Minutes
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm">
-                <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-sm">
-                  <CheckCircle className="w-5 h-5 text-green-600" />
-                  <span className="font-semibold text-slate-700">100% Legal</span>
-                </div>
-                <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-sm">
-                  <CheckCircle className="w-5 h-5 text-green-600" />
-                  <span className="font-semibold text-slate-700">Tax Compliant</span>
-                </div>
-                <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-sm">
-                  <CheckCircle className="w-5 h-5 text-green-600" />
-                  <span className="font-semibold text-slate-700">Secure Payments</span>
-                </div>
-              </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-4 py-1.5 mb-8 animate-fade-in">
+              <Sparkles className="w-4 h-4 text-emerald-600" />
+              <span className="text-sm font-medium text-emerald-700">
+                Now open for early access
+              </span>
             </div>
 
-            {/* Right Column - Visual/Demo */}
-            <div className="relative hidden lg:block">
-              <div className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 rounded-3xl p-8 shadow-2xl">
-                <div className="absolute -top-4 -right-4 w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-slate-900">₹5L+</div>
-                    <div className="text-xs text-slate-800">Paid Out</div>
-                  </div>
-                </div>
-                
-                {/* Mock Dashboard */}
-                <div className="bg-white rounded-2xl p-6 shadow-xl">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full"></div>
-                    <div>
-                      <div className="font-semibold text-slate-900">Professional Dashboard</div>
-                      <div className="text-sm text-slate-500">Manage your projects</div>
+            {/* Headline */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-slate-900 tracking-tight mb-6 animate-slide-up">
+              Get work done.
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-indigo-600">
+                Without the hassle.
+              </span>
+            </h1>
+
+            {/* Subheadline */}
+            <p className="text-lg lg:text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed animate-slide-up delay-100">
+              Whether you need a quick task done or a full-time team member, 
+              find verified professionals who fit your budget and timeline. 
+              <span className="font-medium text-slate-800"> All tax compliance included.</span>
+            </p>
+
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-slide-up delay-200">
+              <Link 
+                href="/register?type=client"
+                className="group inline-flex items-center justify-center gap-2 bg-slate-900 text-white px-6 py-3.5 rounded-xl font-medium hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10"
+              >
+                I want to hire
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+              <Link 
+                href="/register?type=worker"
+                className="group inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-6 py-3.5 rounded-xl font-medium border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all"
+              >
+                I want to work
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </Link>
+            </div>
+
+            {/* Trust Indicators */}
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 animate-slide-up delay-300">
+              {VALUE_PROPS.map((item, i) => (
+                <span key={i} className="flex items-center gap-2 text-sm text-slate-600">
+                  <item.icon className="w-4 h-4 text-emerald-600" />
+                  {item.label}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What You Can Do */}
+      <section className="py-16 bg-slate-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid sm:grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="w-12 h-12 bg-sky-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Coffee className="w-6 h-6 text-sky-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-white mb-2">Quick Tasks</h3>
+              <p className="text-slate-400 text-sm">
+                Logo design, bug fixes, content writing. Get small tasks done in hours, not days.
+              </p>
+            </div>
+            <div>
+              <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Calendar className="w-6 h-6 text-emerald-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-white mb-2">Project-Based</h3>
+              <p className="text-slate-400 text-sm">
+                App development, website redesign, marketing campaigns. Fixed price, clear timeline.
+              </p>
+            </div>
+            <div>
+              <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Users className="w-6 h-6 text-purple-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-white mb-2">Full-Time Hire</h3>
+              <p className="text-slate-400 text-sm">
+                Need a dedicated team member? Hire full-time with all compliance handled.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Live Opportunities */}
+      <section className="py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
+            <div>
+              <div className="inline-flex items-center gap-2 text-sm font-medium text-sky-600 mb-3">
+                <span className="flex h-2 w-2 rounded-full bg-sky-500 animate-pulse"></span>
+                Open Opportunities
+              </div>
+              <h2 className="text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight">
+                Work that fits your life
+              </h2>
+              <p className="text-slate-600 mt-2">
+                From quick gigs to full-time roles. Choose what works for you.
+              </p>
+            </div>
+            <Link 
+              href="/jobs"
+              className="inline-flex items-center gap-2 text-slate-900 font-medium hover:text-sky-600 transition-colors"
+            >
+              View all opportunities
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          {/* Jobs Grid */}
+          <div className="grid md:grid-cols-2 gap-4">
+            {SAMPLE_JOBS.map((job, i) => (
+              <Link
+                key={i}
+                href="/register"
+                className="group p-6 bg-white border border-slate-200 rounded-xl hover:border-slate-300 hover:shadow-lg transition-all"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-semibold text-slate-900 group-hover:text-sky-600 transition-colors">
+                        {job.title}
+                      </h3>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-slate-500">
+                      <Timer className="w-3.5 h-3.5" />
+                      <span>{job.duration}</span>
+                      <span>•</span>
+                      <span>{job.posted}</span>
                     </div>
                   </div>
-                  
-                  <div className="space-y-3">
-                    {[
-                      { label: 'Active Projects', value: '12', color: 'from-blue-500 to-cyan-500' },
-                      { label: 'This Month Earnings', value: '₹45,000', color: 'from-green-500 to-emerald-500' },
-                      { label: 'Completion Rate', value: '98%', color: 'from-purple-500 to-pink-500' }
-                    ].map((stat, i) => (
-                      <div key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                        <span className="text-sm text-slate-600">{stat.label}</span>
-                        <span className={`font-bold text-lg bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
-                          {stat.value}
-                        </span>
-                      </div>
-                    ))}
+                  <span className={`px-2.5 py-1 text-xs font-medium rounded-lg ${
+                    job.type === 'Full-time' 
+                      ? 'text-purple-700 bg-purple-50 border border-purple-200'
+                      : job.type === 'Part-time'
+                      ? 'text-emerald-700 bg-emerald-50 border border-emerald-200'
+                      : 'text-sky-700 bg-sky-50 border border-sky-200'
+                  }`}>
+                    {job.type}
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {job.skills.map((skill) => (
+                    <span key={skill} className="px-2.5 py-1 text-xs font-medium text-slate-600 bg-slate-100 rounded-md">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                  <div>
+                    <div className="text-lg font-semibold text-slate-900">{job.budget}</div>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-sky-100 transition-colors">
+                    <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-sky-600 transition-colors" />
                   </div>
                 </div>
-              </div>
-            </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Sign Up CTA */}
+          <div className="text-center mt-10 p-6 bg-slate-50 rounded-2xl border border-slate-200">
+            <p className="text-slate-600 mb-4">
+              Sign up free to see company details and apply to opportunities
+            </p>
+            <Link
+              href="/register"
+              className="inline-flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-xl font-medium hover:bg-slate-800 transition-all"
+            >
+              Create Free Account
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Value Proposition - Two Blocks */}
-      <section className="py-20 bg-white border-y">
+      {/* Two-Column Value Prop */}
+      <section className="py-20 lg:py-28 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            
-            {/* For Workers */}
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-10 border-2 border-purple-200 hover:shadow-xl transition-all">
-              <div className="inline-flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-6">
-                <Users className="w-4 h-4" />
-                For Workers
-              </div>
-              <h3 className="text-3xl font-bold text-slate-900 mb-6">Earn ₹50K-1.5L/month extra</h3>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-purple-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-bold text-slate-900">Weekly payouts</div>
-                    <div className="text-slate-600 text-sm">Get paid every week via direct bank transfer</div>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-purple-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-bold text-slate-900">Only 5% platform fee</div>
-                    <div className="text-slate-600 text-sm">One of the lowest in India. You keep 95%</div>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-purple-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-bold text-slate-900">100% remote work</div>
-                    <div className="text-slate-600 text-sm">Work from home on your own schedule</div>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-purple-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-bold text-slate-900">Professional projects</div>
-                    <div className="text-slate-600 text-sm">Work with verified startups and companies</div>
-                  </div>
-                </li>
-              </ul>
-              <Link href="/register?type=worker" className="mt-8 inline-flex items-center gap-2 bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-700 transition-all">
-                Start Earning
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-            </div>
-
-            {/* For Companies */}
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-10 border-2 border-green-200 hover:shadow-xl transition-all">
-              <div className="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-6">
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* For Professionals */}
+            <div className="bg-white p-8 lg:p-10 rounded-2xl border border-slate-200 shadow-sm">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-sky-50 text-sky-700 rounded-lg text-sm font-medium mb-6">
                 <Briefcase className="w-4 h-4" />
-                For Companies
+                For Professionals
               </div>
-              <h3 className="text-3xl font-bold text-slate-900 mb-6">Hire skilled professionals instantly</h3>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-bold text-slate-900">Post and hire in minutes</div>
-                    <div className="text-slate-600 text-sm">Access 2,500+ verified professionals</div>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-bold text-slate-900">Pay only for hours worked</div>
-                    <div className="text-slate-600 text-sm">Flexible billing, no long-term contracts</div>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-bold text-slate-900">Pre-vetted talent</div>
-                    <div className="text-slate-600 text-sm">Developers, testers, DevOps, cloud experts</div>
-                  </div>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-bold text-slate-900">60% cheaper than agencies</div>
-                    <div className="text-slate-600 text-sm">No recruitment fees or markups</div>
-                  </div>
-                </li>
+
+              <h3 className="text-2xl lg:text-3xl font-semibold text-slate-900 mb-4">
+                Use your skills.
+                <br />
+                <span className="text-sky-600">Earn on your terms.</span>
+              </h3>
+              <p className="text-slate-600 mb-8">
+                Turn your free time into income. Work on projects you love, 
+                with clients who value your expertise.
+              </p>
+
+              <ul className="space-y-4 mb-8">
+                {[
+                  { label: 'Work when you want', desc: 'Evening, weekends, or full-time - you decide' },
+                  { label: 'Get paid securely', desc: 'Escrow protection ensures you always get paid' },
+                  { label: 'No tax headaches', desc: 'TDS handled, Form 16A provided automatically' },
+                  { label: 'Build your reputation', desc: 'Verified reviews help you land better projects' },
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <div className="font-medium text-slate-900">{item.label}</div>
+                      <div className="text-sm text-slate-500">{item.desc}</div>
+                    </div>
+                  </li>
+                ))}
               </ul>
-              <Link href="/register?type=client" className="mt-8 inline-flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 transition-all">
-                Hire in Minutes
-                <ArrowRight className="w-5 h-5" />
+
+              <Link 
+                href="/register?type=worker"
+                className="inline-flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-slate-800 transition-all"
+              >
+                Start Earning
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
 
+            {/* For Clients */}
+            <div className="bg-slate-900 p-8 lg:p-10 rounded-2xl text-white">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 text-white rounded-lg text-sm font-medium mb-6">
+                <Building2 className="w-4 h-4" />
+                For Businesses
+              </div>
+
+              <h3 className="text-2xl lg:text-3xl font-semibold mb-4">
+                Get work done.
+                <br />
+                <span className="text-sky-400">Stay within budget.</span>
+              </h3>
+              <p className="text-slate-300 mb-8">
+                From one-time tasks to building your dream team. 
+                Find the right talent without the recruitment overhead.
+              </p>
+
+              <ul className="space-y-4 mb-8">
+                {[
+                  { label: 'Find talent in hours', desc: 'Browse verified professionals, hire same day' },
+                  { label: 'Flexible engagement', desc: 'Project, part-time, or full-time - your choice' },
+                  { label: 'Zero compliance burden', desc: 'We handle TDS, GST, contracts - everything' },
+                  { label: 'Pay only for results', desc: 'Escrow ensures you pay only when satisfied' },
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-sky-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <div className="font-medium text-white">{item.label}</div>
+                      <div className="text-sm text-slate-400">{item.desc}</div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <Link 
+                href="/register?type=client"
+                className="inline-flex items-center gap-2 bg-white text-slate-900 px-5 py-2.5 rounded-lg font-medium hover:bg-slate-100 transition-all"
+              >
+                Post a Requirement
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
+      {/* Why 2ndShift */}
+      <section className="py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4">
-              Why 2ndShift?
+            <h2 className="text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight mb-4">
+              Why choose 2ndShift?
             </h2>
-            <p className="text-xl text-slate-600">
-              Safe. Simple. Trusted.
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              We built the platform we wished existed. Here&apos;s what makes us different.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              {
-                icon: Shield,
-                title: '100% secure payments',
-                description: 'Your money is safe with bank-level security'
+              { 
+                icon: Shield, 
+                title: 'Complete Compliance', 
+                description: 'TDS, GST, Form 16A, professional contracts - all handled automatically. No legal worries.' 
               },
-              {
-                icon: Headphones,
-                title: 'WhatsApp support',
-                description: 'Get help instantly on WhatsApp'
+              { 
+                icon: Lock, 
+                title: 'Payment Protection', 
+                description: 'Every payment secured in escrow. Workers get paid for completed work, clients pay only when satisfied.' 
               },
-              {
-                icon: CheckCircle,
-                title: 'Verified workers',
-                description: 'All workers are background-checked'
+              { 
+                icon: Star, 
+                title: 'Two-Way Reviews', 
+                description: 'Workers rate clients too. Know if they pay on time before you accept. Transparency for everyone.' 
               },
-              {
-                icon: Award,
-                title: 'Reliable employers',
-                description: 'Work with trusted companies only'
+              { 
+                icon: Zap, 
+                title: 'EarlyPay Access', 
+                description: 'Workers can access earned money before project completion. Because you shouldn\'t wait to get paid.' 
               },
-              {
-                icon: DollarSign,
-                title: 'Transparent payouts',
-                description: 'See exactly what you earn'
+              { 
+                icon: IndianRupee, 
+                title: 'Fair Pricing', 
+                description: 'Just 5-10% platform fee. No hidden charges. Transparent pricing for both sides.' 
               },
-              {
-                icon: Lock,
-                title: 'Data protection',
-                description: 'Your information stays private'
-              }
-            ].map((feature, index) => (
-              <div
-                key={index}
-                className="bg-slate-50 p-6 rounded-2xl border border-slate-200 hover:border-indigo-300 hover:shadow-lg transition-all duration-300"
-              >
-                <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center mb-4">
-                  <feature.icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-slate-600 text-sm">
-                  {feature.description}
-                </p>
+              { 
+                icon: Heart, 
+                title: 'Human Support', 
+                description: 'Real people, not bots. WhatsApp, email, or call - we\'re here when you need help.' 
+              },
+            ].map((feature, i) => (
+              <div key={i} className="p-6 bg-slate-50 rounded-xl border border-slate-200 hover:border-slate-300 transition-colors">
+                <feature.icon className="w-10 h-10 text-sky-600 mb-4" />
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">{feature.title}</h3>
+                <p className="text-slate-600 text-sm">{feature.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Sample Earnings Table - Remote Professional Roles */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-pink-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4">
-              Earn with your skills. Work remotely.
-            </h2>
-            <p className="text-xl text-slate-600">
-              Real earnings for professional remote work
-            </p>
-          </div>
-
-          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-2 border-purple-200">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-gradient-to-r from-purple-600 to-pink-600 text-white">
-                    <th className="px-6 py-4 text-left font-bold">Remote Role</th>
-                    <th className="px-6 py-4 text-center font-bold">Per Hour</th>
-                    <th className="px-6 py-4 text-center font-bold">Work Type</th>
-                    <th className="px-6 py-4 text-right font-bold">Monthly (20 hrs/week)</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-200">
-                  {[
-                    { role: 'Software Developer', perHour: '₹800-1,500', type: 'Project-based', monthly: '₹64,000-1,20,000', icon: '💻', desc: 'Backend, Frontend, Full-stack' },
-                    { role: 'QA/Test Engineer', perHour: '₹600-1,000', type: 'Remote', monthly: '₹48,000-80,000', icon: '🧪', desc: 'Manual & Automation testing' },
-                    { role: 'DevOps Engineer', perHour: '₹900-1,800', type: 'On-demand', monthly: '₹72,000-1,44,000', icon: '⚙️', desc: 'CI/CD, Cloud deployment' },
-                    { role: 'Cloud Architect', perHour: '₹1,200-2,000', type: 'Consulting', monthly: '₹96,000-1,60,000', icon: '☁️', desc: 'AWS, Azure, GCP' },
-                    { role: 'Security Auditor', perHour: '₹1,000-1,800', type: 'Project-based', monthly: '₹80,000-1,44,000', icon: '🔒', desc: 'Penetration testing, compliance' },
-                    { role: 'IT Consultant', perHour: '₹700-1,200', type: 'Hourly', monthly: '₹56,000-96,000', icon: '📊', desc: 'System design, optimization' },
-                    { role: 'Data Analyst', perHour: '₹600-1,100', type: 'Remote', monthly: '₹48,000-88,000', icon: '📈', desc: 'SQL, Python, visualization' },
-                    { role: 'Network Engineer', perHour: '₹700-1,300', type: 'On-demand', monthly: '₹56,000-1,04,000', icon: '🌐', desc: 'Setup, troubleshooting, security' }
-                  ].map((item, index) => (
-                    <tr key={index} className="hover:bg-purple-50 transition-colors">
-                      <td className="px-6 py-4">
-                        <div className="flex items-start gap-3">
-                          <span className="text-2xl">{item.icon}</span>
-                          <div>
-                            <div className="font-semibold text-slate-900">{item.role}</div>
-                            <div className="text-xs text-slate-500 mt-1">{item.desc}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        <span className="font-bold text-purple-600">{item.perHour}</span>
-                      </td>
-                      <td className="px-6 py-4 text-center text-slate-600 text-sm">
-                        {item.type}
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <span className="font-bold text-green-600 text-lg">{item.monthly}</span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            
-            <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 border-t-2 border-purple-200">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="w-6 h-6 text-green-600" />
-                  <span className="text-slate-700 font-medium">Based on 20 hours per week (~5 hrs on weekends)</span>
-                </div>
-                <Link 
-                  href="/register?type=worker"
-                  className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-xl font-semibold transition-all hover:scale-105 shadow-lg"
-                >
-                  Start Earning Now
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Additional Info Cards */}
-          <div className="grid md:grid-cols-3 gap-6 mt-12">
-            <div className="bg-white p-6 rounded-2xl border-2 border-purple-200 text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">₹1.5L+</div>
-              <div className="text-slate-700 font-medium">Top professionals earn</div>
-              <div className="text-sm text-slate-500 mt-1">Senior engineers working weekends</div>
-            </div>
-            <div className="bg-white p-6 rounded-2xl border-2 border-green-200 text-center">
-              <div className="text-3xl font-bold text-green-600 mb-2">Weekly</div>
-              <div className="text-slate-700 font-medium">Payment frequency</div>
-              <div className="text-sm text-slate-500 mt-1">Get paid every week</div>
-            </div>
-            <div className="bg-white p-6 rounded-2xl border-2 border-blue-200 text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">5%</div>
-              <div className="text-slate-700 font-medium">Platform fee</div>
-              <div className="text-sm text-slate-500 mt-1">One of the lowest in India</div>
-            </div>
-          </div>
-
-          {/* Work Remotely Badge */}
-          <div className="mt-12 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-8 border-2 border-indigo-200 text-center">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <span className="text-4xl">🏠</span>
-              <h3 className="text-2xl font-bold text-slate-900">100% Remote Work</h3>
-            </div>
-            <p className="text-slate-600 max-w-2xl mx-auto">
-              All roles can be done from home. No commute, no office politics. Just your skills, your schedule, and your earnings.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* How It Works */}
-      <section id="how-it-works" className="py-24 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 px-4 sm:px-6 lg:px-8 relative overflow-hidden scroll-mt-20">
-        <div className="absolute inset-0 bg-grid-white/10"></div>
-        <div className="max-w-7xl mx-auto relative z-10">
+      <section className="py-20 lg:py-28 bg-slate-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4">
-              How It Works
+            <h2 className="text-3xl lg:text-4xl font-semibold text-white tracking-tight mb-4">
+              Simple process
             </h2>
-            <p className="text-xl text-slate-600">
-              Simple. Fast. Secure.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            {/* For Workers */}
-            <div className="bg-white p-8 lg:p-10 rounded-3xl shadow-2xl border border-purple-100 hover:shadow-3xl transition-shadow duration-300">
-              <div className="inline-flex items-center gap-2 bg-purple-600 text-white px-5 py-2.5 rounded-full text-sm font-bold mb-8">
-                <Users className="w-4 h-4" />
-                For Workers
-              </div>
-              <div className="space-y-6">
-                {[
-                  { step: '01', title: 'Sign up', desc: 'Quick registration', icon: '📝' },
-                  { step: '02', title: 'Complete profile', desc: 'Add your skills', icon: '✏️' },
-                  { step: '03', title: 'Get verified', desc: 'We check your background', icon: '✓' },
-                  { step: '04', title: 'Pick shifts', desc: 'Choose work you like', icon: '📋' },
-                  { step: '05', title: 'Get paid', desc: 'Money in your account', icon: '💰' }
-                ].map((item, i) => (
-                  <div key={i} className="flex gap-5 group">
-                    <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:scale-110 transition-all duration-300">
-                      {item.step}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-2xl">{item.icon}</span>
-                        <h4 className="font-bold text-slate-900 text-lg">{item.title}</h4>
-                      </div>
-                      <p className="text-slate-600 text-sm">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-8 pt-8 border-t border-slate-200">
-                <Link href="/register?type=worker" className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300">
-                  Start Earning
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
-              </div>
-            </div>
-
-            {/* For Companies */}
-            <div className="bg-white p-8 lg:p-10 rounded-3xl shadow-2xl border border-green-100 hover:shadow-3xl transition-shadow duration-300">
-              <div className="inline-flex items-center gap-2 bg-green-600 text-white px-5 py-2.5 rounded-full text-sm font-bold mb-8">
-                <Briefcase className="w-4 h-4" />
-                For Companies
-              </div>
-              <div className="space-y-6">
-                {[
-                  { step: '01', title: 'Create profile', desc: 'Set up company account', icon: '🏢' },
-                  { step: '02', title: 'Post a shift', desc: 'Tell us what you need', icon: '📝' },
-                  { step: '03', title: 'Select workers', desc: 'Pick from verified profiles', icon: '👥' },
-                  { step: '04', title: 'Track attendance', desc: 'Monitor work progress', icon: '📊' },
-                  { step: '05', title: 'Pay securely', desc: 'Automatic and safe', icon: '🔒' }
-                ].map((item, i) => (
-                  <div key={i} className="flex gap-5 group">
-                    <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:scale-110 transition-all duration-300">
-                      {item.step}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-2xl">{item.icon}</span>
-                        <h4 className="font-bold text-slate-900 text-lg">{item.title}</h4>
-                      </div>
-                      <p className="text-slate-600 text-sm">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-8 pt-8 border-t border-slate-200">
-                <Link href="/register?type=client" className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300">
-                  Hire in Minutes
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Real Testimonials Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4">
-              Real people. Real earnings.
-            </h2>
-            <p className="text-xl text-slate-600">
-              See what workers and companies are saying
+            <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+              Get started in minutes. No complicated onboarding.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Professional Testimonial 1 */}
-            <div className="bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl border-2 border-slate-200 hover:border-purple-300 hover:shadow-xl transition-all">
-              <div className="flex items-center gap-1 mb-4">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                ))}
-              </div>
-              <p className="text-slate-700 mb-6 leading-relaxed">
-                "I work as a DevOps engineer on weekends and earn ₹80,000 extra per month. The 5% fee is the lowest I've seen. Payments are always on time."
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
-                  AK
+            {[
+              {
+                step: '01',
+                title: 'Create free account',
+                description: 'Sign up in 2 minutes. Add your skills or post your requirement.',
+                icon: Users,
+              },
+              {
+                step: '02',
+                title: 'Get matched',
+                description: 'Our AI finds the best matches. Review profiles, chat, and decide.',
+                icon: Target,
+              },
+              {
+                step: '03',
+                title: 'Start working',
+                description: 'Agree on terms, we handle the paperwork. Get work done.',
+                icon: Zap,
+              },
+            ].map((item, i) => (
+              <div key={i} className="text-center">
+                <div className="text-5xl font-bold text-slate-700 mb-4">{item.step}</div>
+                <div className="w-14 h-14 bg-sky-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <item.icon className="w-7 h-7 text-sky-400" />
                 </div>
-                <div>
-                  <div className="font-bold text-slate-900">Amit Kumar</div>
-                  <div className="text-sm text-slate-600">DevOps Engineer, Bangalore</div>
-                  <div className="text-xs text-green-600 font-semibold mt-1">Earned ₹2,40,000 in 3 months</div>
-                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">{item.title}</h3>
+                <p className="text-slate-400">{item.description}</p>
               </div>
-            </div>
-
-            {/* Professional Testimonial 2 */}
-            <div className="bg-gradient-to-br from-slate-50 to-white p-8 rounded-2xl border-2 border-slate-200 hover:border-purple-300 hover:shadow-xl transition-all">
-              <div className="flex items-center gap-1 mb-4">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                ))}
-              </div>
-              <p className="text-slate-700 mb-6 leading-relaxed">
-                "As a QA engineer, I take on projects after work hours. Made ₹65,000 last month working just 20 hours per week. Perfect work-life balance."
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
-                  PS
-                </div>
-                <div>
-                  <div className="font-bold text-slate-900">Priya Singh</div>
-                  <div className="text-sm text-slate-600">QA Engineer, Pune</div>
-                  <div className="text-xs text-green-600 font-semibold mt-1">Earned ₹1,95,000 in 3 months</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Company Testimonial */}
-            <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl border-2 border-green-200 hover:border-green-400 hover:shadow-xl transition-all">
-              <div className="flex items-center gap-1 mb-4">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                ))}
-              </div>
-              <p className="text-slate-700 mb-6 leading-relaxed">
-                "We found a senior cloud architect in 2 hours. Saved ₹3 lakhs vs traditional recruitment. Quality of professionals is excellent."
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold">
-                  FS
-                </div>
-                <div>
-                  <div className="font-bold text-slate-900">FinTech Startup</div>
-                  <div className="text-sm text-slate-600">SaaS Company, Hyderabad</div>
-                  <div className="text-xs text-green-600 font-semibold mt-1">Hired 8 professionals</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Trust Badges */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-5xl mx-auto mt-16">
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center hover:shadow-lg transition-all">
-              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <CheckCircle className="w-6 h-6 text-white" />
-              </div>
-              <div className="font-bold text-slate-900 text-sm">100% secure payments</div>
-            </div>
-
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center hover:shadow-lg transition-all">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Headphones className="w-6 h-6 text-white" />
-              </div>
-              <div className="font-bold text-slate-900 text-sm">WhatsApp support</div>
-            </div>
-
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center hover:shadow-lg transition-all">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Users className="w-6 h-6 text-white" />
-              </div>
-              <div className="font-bold text-slate-900 text-sm">2,500+ verified workers</div>
-            </div>
-
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center hover:shadow-lg transition-all">
-              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Award className="w-6 h-6 text-white" />
-              </div>
-              <div className="font-bold text-slate-900 text-sm">500+ companies</div>
-            </div>
-
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center hover:shadow-lg transition-all">
-              <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <TrendingUp className="w-6 h-6 text-white" />
-              </div>
-              <div className="font-bold text-slate-900 text-sm">₹5Cr+ paid out</div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-
-      {/* FAQ Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-indigo-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4">
-              Common Questions
-            </h2>
-            <p className="text-xl text-slate-600">
-              Everything you need to know
-            </p>
+      {/* Future Vision */}
+      <section className="py-20 lg:py-28">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-50 text-purple-700 rounded-full text-sm font-medium mb-6">
+            <Sparkles className="w-4 h-4" />
+            Our Vision
           </div>
+          
+          <h2 className="text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight mb-6">
+            The future of work in India
+          </h2>
+          
+          <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+            We believe everyone deserves the freedom to work on their own terms. 
+            Whether you&apos;re a developer coding on weekends, a designer exploring freelance, 
+            or a company looking for the perfect hire - 2ndShift is building the platform 
+            that makes it seamless, compliant, and fair for everyone.
+          </p>
 
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            {/* For Workers FAQs */}
-            <div>
-              <h3 className="text-2xl font-bold text-purple-600 mb-8 flex items-center gap-2">
-                <Users className="w-6 h-6" />
-                For Workers
-              </h3>
-              <div className="space-y-6">
-                <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 hover:border-purple-300 transition-all">
-                  <h4 className="font-bold text-slate-900 mb-2 text-lg">Is there a joining fee?</h4>
-                  <p className="text-slate-600">No. 100% free to join. We don't charge any registration or membership fees.</p>
-                </div>
-
-                <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 hover:border-purple-300 transition-all">
-                  <h4 className="font-bold text-slate-900 mb-2 text-lg">How do I get paid?</h4>
-                  <p className="text-slate-600">Direct bank transfer within 24 hours of completing your shift. No delays.</p>
-                </div>
-
-                <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 hover:border-purple-300 transition-all">
-                  <h4 className="font-bold text-slate-900 mb-2 text-lg">What if the company cancels?</h4>
-                  <p className="text-slate-600">You receive a cancellation fee. Companies must pay a penalty for last-minute cancellations.</p>
-                </div>
-
-                <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 hover:border-purple-300 transition-all">
-                  <h4 className="font-bold text-slate-900 mb-2 text-lg">How much can I really earn?</h4>
-                  <p className="text-slate-600">₹6,000-15,000 per month on average. Top workers earn ₹20,000+ working weekends and evenings.</p>
-                </div>
-
-                <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 hover:border-purple-300 transition-all">
-                  <h4 className="font-bold text-slate-900 mb-2 text-lg">Is this safe and legal?</h4>
-                  <p className="text-slate-600">Yes. All companies are verified. You get proper contracts, insurance coverage, and legal protection.</p>
-                </div>
-              </div>
+          <div className="flex flex-wrap justify-center gap-4 mb-10">
+            <div className="px-4 py-2 bg-slate-100 rounded-lg text-sm text-slate-700">
+              🎯 Skill-based matching
             </div>
-
-            {/* For Companies FAQs */}
-            <div>
-              <h3 className="text-2xl font-bold text-green-600 mb-8 flex items-center gap-2">
-                <Briefcase className="w-6 h-6" />
-                For Companies
-              </h3>
-              <div className="space-y-6">
-                <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 hover:border-green-300 transition-all">
-                  <h4 className="font-bold text-slate-900 mb-2 text-lg">What if worker doesn't show up?</h4>
-                  <p className="text-slate-600">We send an immediate replacement at no extra cost. Worker also gets penalized.</p>
-                </div>
-
-                <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 hover:border-green-300 transition-all">
-                  <h4 className="font-bold text-slate-900 mb-2 text-lg">When do I pay?</h4>
-                  <p className="text-slate-600">Only after the shift is completed and you've verified the work. 100% secure payment.</p>
-                </div>
-
-                <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 hover:border-green-300 transition-all">
-                  <h4 className="font-bold text-slate-900 mb-2 text-lg">Are workers verified?</h4>
-                  <p className="text-slate-600">Yes. Background check, ID verification, and skill assessment. Only 30% of applicants get approved.</p>
-                </div>
-
-                <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 hover:border-green-300 transition-all">
-                  <h4 className="font-bold text-slate-900 mb-2 text-lg">Is there a minimum hire?</h4>
-                  <p className="text-slate-600">No minimum. Hire for 1 shift or 100 shifts. You decide based on your needs.</p>
-                </div>
-
-                <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 hover:border-green-300 transition-all">
-                  <h4 className="font-bold text-slate-900 mb-2 text-lg">What's the cost?</h4>
-                  <p className="text-slate-600">₹300-800 per worker per shift depending on role and duration. 60% cheaper than traditional staffing agencies.</p>
-                </div>
-              </div>
+            <div className="px-4 py-2 bg-slate-100 rounded-lg text-sm text-slate-700">
+              🛡️ Payment protection
+            </div>
+            <div className="px-4 py-2 bg-slate-100 rounded-lg text-sm text-slate-700">
+              📋 Full compliance
+            </div>
+            <div className="px-4 py-2 bg-slate-100 rounded-lg text-sm text-slate-700">
+              ⭐ Trust & transparency
             </div>
           </div>
 
-          {/* Contact CTA */}
-          <div className="mt-16 text-center">
-            <p className="text-lg text-slate-600 mb-6">Still have questions?</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a
-                href="https://wa.me/918639649349"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-xl font-semibold transition-all hover:scale-105 shadow-lg"
-              >
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                </svg>
-                WhatsApp Us
-              </a>
-              <a
-                href="mailto:support@2ndshift.com"
-                className="inline-flex items-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-xl font-semibold border-2 border-slate-300 hover:border-indigo-600 transition-all hover:scale-105"
-              >
-                <Mail className="w-5 h-5" />
-                Email Support
-              </a>
-            </div>
-          </div>
+          <Link
+            href="/register"
+            className="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-xl text-lg font-medium hover:bg-slate-800 transition-all"
+          >
+            Join Early Access
+            <ArrowRight className="w-5 h-5" />
+          </Link>
+          
+          <p className="text-sm text-slate-500 mt-4">
+            Free to join. First 100 users get lifetime benefits.
+          </p>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-900">
-        <div className="max-w-6xl mx-auto">
-          <div className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 rounded-3xl p-12 sm:p-16 text-white overflow-hidden shadow-2xl">
-            {/* Decorative elements */}
-            <div className="absolute inset-0 bg-grid-white/10"></div>
-            <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl"></div>
-            
-            <div className="relative z-10 text-center">
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-                Start earning today
-              </h2>
-              <p className="text-xl text-indigo-100 mb-10 max-w-2xl mx-auto leading-relaxed">
-                Join workers and companies building better income together.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Link
-                  href="/register?type=worker"
-                  className="group bg-white text-indigo-600 px-10 py-5 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
-                >
-                  Start Earning
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link
-                  href="/register?type=client"
-                  className="group bg-transparent text-white px-10 py-5 rounded-xl font-bold text-lg border-2 border-white/30 hover:bg-white/10 hover:border-white transition-all duration-300 flex items-center gap-2"
-                >
-                  Hire in Minutes
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            </div>
+      <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl lg:text-4xl font-semibold text-white tracking-tight mb-4">
+            Ready to get started?
+          </h2>
+          <p className="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">
+            Join 2ndShift today. It&apos;s free to create an account.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link 
+              href="/register?type=worker"
+              className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-xl font-medium hover:bg-slate-100 transition-all"
+            >
+              I want to earn
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link 
+              href="/register?type=client"
+              className="inline-flex items-center justify-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-xl font-medium hover:bg-sky-700 transition-all"
+            >
+              I want to hire
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-slate-300 py-16 px-4 sm:px-6 lg:px-8 border-t border-slate-800">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 mb-12">
-            {/* Brand Column */}
-            <div className="col-span-2">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg">
-                  <Briefcase className="w-6 h-6 text-white" />
+      <footer className="py-16 bg-white border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+            {/* Brand */}
+            <div className="col-span-2 lg:col-span-1">
+              <Link href="/" className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
+                  <Layers className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-white font-bold text-2xl">2ndShift</span>
-              </div>
-              <p className="text-sm text-slate-400 mb-6 max-w-sm">
-                Work flexible. Earn more. Live better.
+                <span className="text-lg font-semibold text-slate-900">2ndShift</span>
+              </Link>
+              <p className="text-sm text-slate-500 mb-4">
+                Work on your terms.<br />Get paid with confidence.
               </p>
               <div className="flex gap-3">
-                <a href="#" className="w-9 h-9 bg-slate-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all">
+                <a href="#" className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors">
                   <Twitter className="w-4 h-4" />
                 </a>
-                <a href="#" className="w-9 h-9 bg-slate-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all">
+                <a href="#" className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors">
                   <Linkedin className="w-4 h-4" />
                 </a>
-                <a href="#" className="w-9 h-9 bg-slate-800 hover:bg-indigo-600 rounded-lg flex items-center justify-center transition-all">
-                  <Facebook className="w-4 h-4" />
-                </a>
               </div>
             </div>
 
-            {/* Company Column */}
+            {/* Links */}
             <div>
-              <h4 className="text-white font-bold mb-4 text-sm">Company</h4>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/about" className="hover:text-white transition">About</Link></li>
-                <li><Link href="/contact" className="hover:text-white transition">Contact</Link></li>
-                <li><Link href="/careers" className="hover:text-white transition">Careers</Link></li>
+              <h4 className="font-semibold text-slate-900 mb-4">For Professionals</h4>
+              <ul className="space-y-3 text-sm">
+                <li><Link href="/for-workers" className="text-slate-600 hover:text-slate-900 transition-colors">Why 2ndShift</Link></li>
+                <li><Link href="/worker/discover" className="text-slate-600 hover:text-slate-900 transition-colors">Find Work</Link></li>
+                <li><Link href="/features" className="text-slate-600 hover:text-slate-900 transition-colors">How Shifts Work</Link></li>
+                <li><Link href="/pricing" className="text-slate-600 hover:text-slate-900 transition-colors">Pricing</Link></li>
               </ul>
             </div>
 
-            {/* Legal Column */}
             <div>
-              <h4 className="text-white font-bold mb-4 text-sm">Legal</h4>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/terms" className="hover:text-white transition">Terms</Link></li>
-                <li><Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link></li>
-                <li><Link href="/security" className="hover:text-white transition">Security</Link></li>
+              <h4 className="font-semibold text-slate-900 mb-4">For Employers</h4>
+              <ul className="space-y-3 text-sm">
+                <li><Link href="/employers" className="text-slate-600 hover:text-slate-900 transition-colors">Why 2ndShift</Link></li>
+                <li><Link href="/workers" className="text-slate-600 hover:text-slate-900 transition-colors">Find Talent</Link></li>
+                <li><Link href="/features" className="text-slate-600 hover:text-slate-900 transition-colors">How It Works</Link></li>
+                <li><Link href="/about" className="text-slate-600 hover:text-slate-900 transition-colors">About Us</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-4">Legal</h4>
+              <ul className="space-y-3 text-sm">
+                <li><Link href="/terms" className="text-slate-600 hover:text-slate-900 transition-colors">Terms</Link></li>
+                <li><Link href="/privacy" className="text-slate-600 hover:text-slate-900 transition-colors">Privacy</Link></li>
+                <li><Link href="/security" className="text-slate-600 hover:text-slate-900 transition-colors">Security</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-slate-900 mb-4">Contact</h4>
+              <ul className="space-y-3 text-sm text-slate-600">
+                <li className="flex items-center gap-2">
+                  <Mail className="w-4 h-4" />
+                  hello@2ndshift.in
+                </li>
+                <li className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4" />
+                  Hyderabad, India
+                </li>
               </ul>
             </div>
           </div>
 
-          {/* Contact Info */}
-          <div className="border-t border-slate-800 pt-8 pb-8">
-            <div className="grid sm:grid-cols-3 gap-6 text-sm">
-              <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-indigo-400" />
-                <a href="mailto:support@2ndshift.com" className="text-slate-400 hover:text-white transition">support@2ndshift.com</a>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-indigo-400" />
-                <a href="tel:+911800123456" className="text-slate-400 hover:text-white transition">+91 1800 123 456</a>
-              </div>
-              <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-indigo-400" />
-                <span className="text-slate-400">Hyderabad, India</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Bar */}
-          <div className="border-t border-slate-800 pt-8 text-center">
-            <p className="text-sm text-slate-400">
+          {/* Bottom */}
+          <div className="pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-slate-500">
               © 2025 2ndShift. All rights reserved.
+            </p>
+            <p className="text-sm text-slate-500">
+              Made with ❤️ in India
             </p>
           </div>
         </div>
       </footer>
-
-      {/* Back to Top Button */}
-      <BackToTop />
-
-      {/* Floating WhatsApp Button */}
-      <a
-        href="https://wa.me/918639649349"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all duration-300 group"
-        aria-label="Chat on WhatsApp"
-      >
-        <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-        </svg>
-        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">1</span>
-      </a>
     </div>
   )
 }

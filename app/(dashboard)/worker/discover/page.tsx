@@ -5,12 +5,13 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
 import { 
   Search, Filter, Bookmark, Clock, DollarSign, Calendar,
-  TrendingUp, Zap, Star, ArrowLeft, Bell
+  TrendingUp, Zap, Star, ArrowLeft, Bell, Shield, Lock
 } from 'lucide-react'
 import type { User as UserType, Project } from '@/types/database.types'
 import RecommendedJobs from '@/components/worker/RecommendedJobs'
 import JobAlertsManager from '@/components/worker/JobAlertsManager'
 import JobAlertModal from '@/components/worker/JobAlertModal'
+import { PaymentVerifiedBadge } from '@/components/badges/PaymentBadges'
 
 export default function WorkerJobDiscoveryPage() {
   const router = useRouter()
@@ -365,18 +366,28 @@ export default function WorkerJobDiscoveryPage() {
                     >
                       <div className="flex justify-between items-start mb-3">
                         <div className="flex-1">
-                          <h4 
-                            className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 cursor-pointer"
-                            onClick={() => router.push(`/projects/${project.id}`)}
-                          >
-                            {project.title}
-                          </h4>
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 
+                              className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 cursor-pointer"
+                              onClick={() => router.push(`/projects/${project.id}`)}
+                            >
+                              {project.title}
+                            </h4>
+                            {(project as any).escrow_enabled && (
+                              <PaymentVerifiedBadge size="sm" />
+                            )}
+                          </div>
                         </div>
                         <div className="text-right ml-4">
                           <div className="text-xl font-bold text-green-600 dark:text-green-400">
                             ₹{project.budget.toLocaleString()}
                           </div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">Budget</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center justify-end gap-1">
+                            {(project as any).escrow_enabled && (
+                              <Lock className="w-3 h-3 text-emerald-500" />
+                            )}
+                            Budget
+                          </div>
                         </div>
                       </div>
 
