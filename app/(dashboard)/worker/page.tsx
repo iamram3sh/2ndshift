@@ -7,13 +7,18 @@ import {
   Briefcase, Clock, DollarSign, User, LogOut, Search, 
   TrendingUp, FileText, CheckCircle, XCircle, AlertCircle,
   Award, Target, Activity, Bell, Filter, ArrowUpRight,
-  Calendar, Zap, BarChart3
+  Calendar, Zap, BarChart3, Sparkles, ArrowRight, TrendingDown
 } from 'lucide-react'
 import type { User as UserType, Project, Contract, WorkerProfile } from '@/types/database.types'
 import { StatsCard } from '@/components/dashboard/StatsCard'
 import ProfileCompletionWidget from '@/components/profile/ProfileCompletionWidget'
 import VerificationBadges from '@/components/profile/VerificationBadges'
 import OnlineStatusIndicator, { StatusToggle } from '@/components/profile/OnlineStatusIndicator'
+import { Badge } from '@/components/ui/Badge'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
+import Link from 'next/link'
 
 interface Application {
   id: string
@@ -167,7 +172,6 @@ export default function WorkerDashboard() {
   const fetchEarnings = async () => {
     if (!user) return
 
-    // Total earnings
     const { data: totalData } = await supabase
       .from('payments')
       .select('net_amount')
@@ -179,7 +183,6 @@ export default function WorkerDashboard() {
       setStats(prev => ({ ...prev, totalEarnings: total }))
     }
 
-    // This month's hours - calculated from contracts
     const startOfMonth = new Date()
     startOfMonth.setDate(1)
     startOfMonth.setHours(0, 0, 0, 0)
@@ -255,105 +258,92 @@ export default function WorkerDashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
-        <div className="text-lg text-gray-600 dark:text-gray-400">Loading...</div>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-lg text-slate-600 dark:text-slate-400">Loading your dashboard...</p>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
-      {/* Navigation */}
-      <nav className="bg-white dark:bg-slate-800 shadow-sm border-b dark:border-slate-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-6">
-              <h1 className="text-2xl font-bold text-indigo-600">2ndShift</h1>
-              <span className="text-sm text-gray-500 dark:text-gray-400">Worker Dashboard</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <button className="relative p-2 text-gray-600 hover:text-indigo-600 dark:text-gray-400">
-                <Bell className="w-5 h-5" />
-                {stats.pendingApplications > 0 && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                )}
-              </button>
-              <button
-                onClick={() => router.push('/profile')}
-                className="flex items-center gap-2 text-gray-700 hover:text-indigo-600 dark:text-gray-300"
-              >
-                <User className="w-5 h-5" />
-                <span>{user?.full_name}</span>
-              </button>
-              <button
-                onClick={handleSignOut}
-                className="flex items-center gap-2 text-gray-700 hover:text-red-600 dark:text-gray-300"
-              >
-                <LogOut className="w-5 h-5" />
-                <span>Sign Out</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50 dark:bg-slate-900 pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Profile Completion Widget */}
-        {user && (
-          <div className="mb-6">
+        {user && stats.profileCompletion < 100 && (
+          <div className="mb-6 animate-in slide-in-from-top">
             <ProfileCompletionWidget userId={user.id} userType="worker" />
           </div>
         )}
 
-        {/* Welcome Section */}
-        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-8 text-white mb-8 shadow-lg">
-          <div className="flex justify-between items-start">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <h2 className="text-3xl font-bold">Welcome back, {user?.full_name}! 👋</h2>
-                {user && (
-                  <OnlineStatusIndicator
-                    userId={user.id}
-                    size="lg"
-                    showLabel={true}
-                  />
-                )}
-              </div>
-              {user && (
-                <div className="mb-4">
-                  <VerificationBadges
-                    verificationLevel={3}
-                    isVerified={user.verification_status === 'verified'}
-                    emailVerified={user.email_verified || false}
-                    phoneVerified={user.phone_verified || false}
-                  />
+        {/* Welcome Hero Section */}
+        <Card variant="gradient" className="mb-8 overflow-hidden animate-in slide-in-from-bottom">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-700 opacity-10"></div>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl"></div>
+            
+            <CardContent className="relative z-10 p-8">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-3">
+                    <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white">
+                      Welcome back, {user?.full_name?.split(' ')[0]}! 👋
+                    </h2>
+                    {user && (
+                      <OnlineStatusIndicator
+                        userId={user.id}
+                        size="lg"
+                        showLabel={true}
+                      />
+                    )}
+                  </div>
+                  
+                  {user && (
+                    <div className="mb-4">
+                      <VerificationBadges
+                        verificationLevel={3}
+                        isVerified={user.verification_status === 'verified'}
+                        emailVerified={user.email_verified || false}
+                        phoneVerified={user.phone_verified || false}
+                      />
+                    </div>
+                  )}
+                  
+                  <p className="text-lg text-slate-600 dark:text-slate-400 mb-6">
+                    Ready to discover your next opportunity?
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-3">
+                    <Button
+                      variant="primary"
+                      size="lg"
+                      icon={<Sparkles className="w-5 h-5" />}
+                      onClick={() => router.push('/worker/discover')}
+                    >
+                      Discover Jobs with AI
+                    </Button>
+                    {user && (
+                      <StatusToggle userId={user.id} currentStatus={user.availability_status || 'offline'} />
+                    )}
+                  </div>
                 </div>
-              )}
-              <p className="text-indigo-100 mb-4">Ready to find your next project?</p>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => router.push('/worker/discover')}
-                  className="px-6 py-3 bg-white text-indigo-600 rounded-lg hover:bg-indigo-50 transition font-semibold flex items-center gap-2"
-                >
-                  <Zap className="w-5 h-5" />
-                  Discover Jobs with AI
-                </button>
-                {user && (
-                  <StatusToggle userId={user.id} currentStatus={user.availability_status || 'offline'} />
-                )}
+                
+                <div className="hidden lg:flex items-center justify-center">
+                  <div className="text-center p-8 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-3xl shadow-xl border border-white/20">
+                    <div className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+                      {stats.activeContracts}
+                    </div>
+                    <div className="text-sm font-semibold text-slate-600 dark:text-slate-400">Active Projects</div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="hidden md:block">
-              <div className="text-right">
-                <div className="text-4xl font-bold">{stats.activeContracts}</div>
-                <div className="text-sm text-indigo-200">Active Projects</div>
-              </div>
-            </div>
+            </CardContent>
           </div>
-        </div>
+        </Card>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 stagger-animation">
           <StatsCard
             title="Active Contracts"
             value={stats.activeContracts}
@@ -383,157 +373,156 @@ export default function WorkerDashboard() {
         </div>
 
         {/* Secondary Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-                <FileText className="w-5 h-5 text-blue-600 dark:text-blue-300" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          {[
+            { icon: FileText, label: 'Pending Apps', value: stats.pendingApplications, color: 'blue' },
+            { icon: CheckCircle, label: 'Completed', value: stats.completedProjects, color: 'green' },
+            { icon: Target, label: 'Profile Score', value: `${stats.profileCompletion}%`, color: 'purple' },
+            { icon: Award, label: 'Avg Rating', value: stats.avgRating || '—', color: 'orange' }
+          ].map((stat, index) => (
+            <Card key={index} hover className="p-4 animate-in scale-in" style={{ animationDelay: `${index * 50}ms` }}>
+              <div className="flex items-center gap-3">
+                <div className={`p-2.5 bg-${stat.color}-100 dark:bg-${stat.color}-900/30 rounded-xl`}>
+                  <stat.icon className={`w-5 h-5 text-${stat.color}-600 dark:text-${stat.color}-400`} />
+                </div>
+                <div>
+                  <div className="text-xs text-slate-600 dark:text-slate-400 font-medium">{stat.label}</div>
+                  <div className="text-xl font-bold text-slate-900 dark:text-white">{stat.value}</div>
+                </div>
               </div>
-              <div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Pending Apps</div>
-                <div className="text-xl font-bold text-gray-900 dark:text-white">{stats.pendingApplications}</div>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
-                <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-300" />
-              </div>
-              <div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Completed</div>
-                <div className="text-xl font-bold text-gray-900 dark:text-white">{stats.completedProjects}</div>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
-                <Target className="w-5 h-5 text-purple-600 dark:text-purple-300" />
-              </div>
-              <div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Profile Score</div>
-                <div className="text-xl font-bold text-gray-900 dark:text-white">{stats.profileCompletion}%</div>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-orange-100 dark:bg-orange-900 rounded-lg">
-                <Award className="w-5 h-5 text-orange-600 dark:text-orange-300" />
-              </div>
-              <div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Avg Rating</div>
-                <div className="text-xl font-bold text-gray-900 dark:text-white">{stats.avgRating || '—'}</div>
-              </div>
-            </div>
-          </div>
+            </Card>
+          ))}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {/* Recent Applications */}
-          <div className="lg:col-span-1 bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-700">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <Card className="lg:col-span-1">
+            <CardHeader>
+              <CardTitle size="default" className="flex items-center gap-2">
                 <Activity className="w-5 h-5 text-indigo-600" />
                 Recent Applications
-              </h3>
-            </div>
-            <div className="space-y-3">
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
               {applications.length === 0 ? (
-                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                  <FileText className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                  <p className="text-sm">No applications yet</p>
+                <div className="empty-state">
+                  <FileText className="empty-state-icon" />
+                  <p className="text-sm font-medium text-slate-900 dark:text-white mb-1">No applications yet</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Start applying to projects below</p>
                 </div>
               ) : (
-                applications.slice(0, 5).map((app) => (
-                  <div key={app.id} className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 dark:bg-slate-700/50">
-                    <div className="mt-1">
-                      {app.status === 'pending' && <Clock className="w-4 h-4 text-amber-500" />}
-                      {app.status === 'accepted' && <CheckCircle className="w-4 h-4 text-green-500" />}
-                      {app.status === 'rejected' && <XCircle className="w-4 h-4 text-red-500" />}
+                <div className="space-y-3">
+                  {applications.slice(0, 5).map((app) => (
+                    <div key={app.id} className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all card-hover">
+                      <div className="mt-1">
+                        {app.status === 'pending' && <Clock className="w-4 h-4 text-amber-500" />}
+                        {app.status === 'accepted' && <CheckCircle className="w-4 h-4 text-green-500" />}
+                        {app.status === 'rejected' && <XCircle className="w-4 h-4 text-red-500" />}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">
+                          {app.project?.title || 'Project'}
+                        </p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <Badge variant={app.status === 'pending' ? 'warning' : app.status === 'accepted' ? 'success' : 'danger'} size="sm" rounded>
+                            {app.status}
+                          </Badge>
+                          <span className="text-xs text-slate-500 dark:text-slate-400">₹{app.proposed_rate}/hr</span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                        {app.project?.title || 'Project'}
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {app.status} • ₹{app.proposed_rate}/hr
-                      </p>
-                    </div>
-                  </div>
-                ))
+                  ))}
+                </div>
               )}
-            </div>
-            {applications.length > 5 && (
-              <button className="w-full mt-4 text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:text-indigo-700">
-                View All Applications →
-              </button>
-            )}
-          </div>
+              {applications.length > 5 && (
+                <Button variant="ghost" fullWidth className="mt-4" icon={<ArrowRight className="w-4 h-4" />} iconPosition="right">
+                  View All Applications
+                </Button>
+              )}
+            </CardContent>
+          </Card>
 
           {/* Active Contracts */}
-          <div className="lg:col-span-2 bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-700">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle size="default" className="flex items-center gap-2">
                 <Zap className="w-5 h-5 text-green-600" />
                 Active Contracts
-              </h3>
-            </div>
-            {contracts.length === 0 ? (
-              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-                <Briefcase className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <p className="font-medium">No active contracts</p>
-                <p className="text-sm mt-1">Apply to projects below to get started!</p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {contracts.map((contract) => (
-                  <div key={contract.id} className="border border-gray-200 dark:border-slate-600 rounded-lg p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-white">Contract #{contract.id.slice(0, 8)}</h4>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Status: {contract.status}</p>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {contracts.length === 0 ? (
+                <div className="empty-state">
+                  <Briefcase className="empty-state-icon" />
+                  <p className="text-base font-semibold text-slate-900 dark:text-white mb-1">No active contracts</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">Apply to projects below to get started!</p>
+                  <Button variant="primary" icon={<Search className="w-4 h-4" />}>
+                    Browse Projects
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {contracts.map((contract) => (
+                    <div key={contract.id} className="border-2 border-slate-200 dark:border-slate-600 rounded-xl p-5 hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-lg transition-all card-hover">
+                      <div className="flex justify-between items-start mb-3">
+                        <div>
+                          <h4 className="font-bold text-slate-900 dark:text-white mb-1">
+                            Contract #{contract.id.slice(0, 8)}
+                          </h4>
+                          <Badge variant="success" size="sm" rounded>
+                            {contract.status}
+                          </Badge>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                            ₹{contract.worker_payout.toLocaleString()}
+                          </div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400">Your payout</div>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <div className="text-lg font-bold text-green-600">₹{contract.worker_payout.toLocaleString()}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">Your payout</div>
-                      </div>
-                    </div>
-                    <div className="mt-3 flex gap-2">
-                      <button className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                      <Button variant="secondary" size="sm" icon={<ArrowRight className="w-4 h-4" />} iconPosition="right">
                         View Details
-                      </button>
+                      </Button>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
 
         {/* Available Projects */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-700">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <Card>
+          <CardHeader actions={
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" icon={<Filter className="w-4 h-4" />}>
+                Filter
+              </Button>
+            </div>
+          }>
+            <CardTitle size="lg" className="flex items-center gap-2">
               <BarChart3 className="w-6 h-6 text-indigo-600" />
-              Available Projects ({filteredProjects.length})
-            </h3>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <div className="relative">
-                <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search projects..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-white w-full sm:w-auto"
-                />
-              </div>
+              Available Projects
+            </CardTitle>
+            <CardDescription>
+              {filteredProjects.length} opportunities matching your skills
+            </CardDescription>
+          </CardHeader>
+          
+          <CardContent>
+            {/* Search and Filter */}
+            <div className="flex flex-col md:flex-row gap-3 mb-6">
+              <Input
+                icon={<Search className="w-5 h-5" />}
+                placeholder="Search projects..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="md:flex-1"
+              />
               <select
                 value={filterSkill}
                 onChange={(e) => setFilterSkill(e.target.value)}
-                className="px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-white"
+                className="input md:w-64"
               >
                 <option value="all">All Skills</option>
                 {allSkills.slice(0, 10).map(skill => (
@@ -541,79 +530,92 @@ export default function WorkerDashboard() {
                 ))}
               </select>
             </div>
-          </div>
 
-          {filteredProjects.length === 0 ? (
-            <div className="text-center py-12">
-              <Briefcase className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-500 dark:text-gray-400">No projects available at the moment</p>
-              <p className="text-sm text-gray-400 dark:text-gray-500">Check back later for new opportunities</p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {filteredProjects.map((project) => {
-                const skillMatch = getSkillMatch(project.required_skills)
-                return (
-                  <div
-                    key={project.id}
-                    className="border border-gray-200 dark:border-slate-600 rounded-lg p-6 hover:shadow-lg hover:border-indigo-300 dark:hover:border-indigo-600 transition cursor-pointer group"
-                    onClick={() => router.push(`/projects/${project.id}`)}
-                  >
-                    <div className="flex justify-between items-start mb-3">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h4 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                            {project.title}
-                          </h4>
-                          {skillMatch >= 70 && (
-                            <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300 rounded-full">
-                              {skillMatch}% Match
-                            </span>
-                          )}
+            {filteredProjects.length === 0 ? (
+              <div className="empty-state">
+                <Briefcase className="empty-state-icon" />
+                <p className="text-base font-semibold text-slate-900 dark:text-white mb-1">
+                  No projects available
+                </p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  Check back later for new opportunities
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {filteredProjects.map((project) => {
+                  const skillMatch = getSkillMatch(project.required_skills)
+                  return (
+                    <Card
+                      key={project.id}
+                      interactive
+                      onClick={() => router.push(`/projects/${project.id}`)}
+                      className="group"
+                    >
+                      <CardContent>
+                        <div className="flex flex-col lg:flex-row justify-between gap-4">
+                          <div className="flex-1">
+                            <div className="flex items-start gap-3 mb-3">
+                              <div>
+                                <h4 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors mb-2">
+                                  {project.title}
+                                </h4>
+                                <div className="flex flex-wrap items-center gap-2">
+                                  {skillMatch >= 70 && (
+                                    <Badge variant="success" size="sm" rounded icon={<Sparkles className="w-3 h-3" />}>
+                                      {skillMatch}% Match
+                                    </Badge>
+                                  )}
+                                  <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+                                    <Clock className="w-3.5 h-3.5" />
+                                    <span>{project.duration_hours}h</span>
+                                  </div>
+                                  {project.deadline && (
+                                    <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+                                      <Calendar className="w-3.5 h-3.5" />
+                                      <span>{new Date(project.deadline).toLocaleDateString()}</span>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                            <p className="text-slate-600 dark:text-slate-300 mb-4 line-clamp-2">
+                              {project.description}
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              {project.required_skills.slice(0, 4).map(skill => (
+                                <Badge key={skill} variant="default" size="sm">
+                                  {skill}
+                                </Badge>
+                              ))}
+                              {project.required_skills.length > 4 && (
+                                <Badge variant="default" size="sm">
+                                  +{project.required_skills.length - 4}
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                          
+                          <div className="flex lg:flex-col items-end justify-between lg:justify-start gap-3">
+                            <div className="text-right">
+                              <div className="text-3xl font-bold text-green-600 dark:text-green-400">
+                                ₹{project.budget.toLocaleString()}
+                              </div>
+                              <div className="text-xs text-slate-500 dark:text-slate-400">Budget</div>
+                            </div>
+                            <Button variant="primary" size="sm" icon={<ArrowRight className="w-4 h-4" />} iconPosition="right">
+                              Apply Now
+                            </Button>
+                          </div>
                         </div>
-                      </div>
-                      <div className="text-right ml-4">
-                        <div className="text-xl font-bold text-green-600 dark:text-green-400">
-                          ₹{project.budget.toLocaleString()}
-                        </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">Budget</div>
-                      </div>
-                    </div>
-                    <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">{project.description}</p>
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        {project.duration_hours}h
-                      </span>
-                      {project.deadline && (
-                        <>
-                          <span>•</span>
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-4 h-4" />
-                            {new Date(project.deadline).toLocaleDateString()}
-                          </span>
-                        </>
-                      )}
-                      <span>•</span>
-                      <div className="flex flex-wrap gap-2">
-                        {project.required_skills.slice(0, 3).map(skill => (
-                          <span key={skill} className="px-2 py-1 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded text-xs">
-                            {skill}
-                          </span>
-                        ))}
-                        {project.required_skills.length > 3 && (
-                          <span className="px-2 py-1 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded text-xs">
-                            +{project.required_skills.length - 3}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          )}
-        </div>
+                      </CardContent>
+                    </Card>
+                  )
+                })}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
