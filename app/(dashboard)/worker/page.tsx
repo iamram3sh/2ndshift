@@ -14,6 +14,7 @@ import { StatsCard } from '@/components/dashboard/StatsCard'
 import ProfileCompletionWidget from '@/components/profile/ProfileCompletionWidget'
 import VerificationBadges from '@/components/profile/VerificationBadges'
 import OnlineStatusIndicator, { StatusToggle } from '@/components/profile/OnlineStatusIndicator'
+import { KycStatusCard } from '@/components/compliance/KycStatusCard'
 
 interface Application {
   id: string
@@ -298,10 +299,11 @@ export default function WorkerDashboard() {
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Profile Completion Widget */}
+        {/* Profile Completion + KYC */}
         {user && (
-          <div className="mb-6">
+          <div className="mb-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
             <ProfileCompletionWidget userId={user.id} userType="worker" />
+            <KycStatusCard userId={user.id} verificationType="pan" />
           </div>
         )}
 
