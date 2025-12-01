@@ -138,7 +138,7 @@ export function ConversationList({ currentUserId, onSelectConversation }: Conver
         unreadMap.set(row.conversation_id, (unreadMap.get(row.conversation_id) || 0) + 1)
       })
 
-      const formatted: ConversationListItem[] = (memberships ?? [])
+      const formatted = (memberships ?? [])
         .map((membership) => {
           const conversationId = membership.conversation_id
           const otherUser = participantMap.get(conversationId)
@@ -159,7 +159,7 @@ export function ConversationList({ currentUserId, onSelectConversation }: Conver
             updatedAt: membership.conversation?.updated_at ?? lastMessage?.timestamp ?? membership.joined_at
           }
         })
-        .filter((item): item is ConversationListItem => Boolean(item))
+        .filter((item): item is ConversationListItem => item !== null)
         .sort((a, b) => {
           const aTime = a.updatedAt ? new Date(a.updatedAt).getTime() : 0
           const bTime = b.updatedAt ? new Date(b.updatedAt).getTime() : 0
