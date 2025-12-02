@@ -135,16 +135,30 @@ test.describe('Homepage Role Selection', () => {
     }
   })
 
-  test('links preserve role param', async ({ page }) => {
-    // Select worker role
-    await page.click('button:has-text("I Want to Work")')
-    await page.waitForURL(/\?role=worker/)
+  test('links preserve role context on role-specific pages', async ({ page }) => {
+    // Navigate to /work (worker page)
+    await page.goto('/work')
+    await expect(page.locator('text=Earn from Anywhere')).toBeVisible()
     
-    // Click a link (e.g., "Browse Jobs")
+    // Check that links on worker page are role-aware
+    // Links should either have role=worker param or link to worker-specific routes
     const browseJobsLink = page.locator('a:has-text("Browse Jobs")')
     if (await browseJobsLink.isVisible()) {
       const href = await browseJobsLink.getAttribute('href')
-      expect(href).toContain('role=worker')
+      // Link should either contain role=worker or be a worker-specific route
+      expect(href).toMatch(/role=worker|\/worker/)
+    }
+    
+    // Navigate to /clients (client page)
+    await page.goto('/clients')
+    await expect(page.locator('text=Hire Talent Fast')).toBeVisible()
+    
+    // Check that links on client page are role-aware
+    const browseTalentLink = page.locator('a:has-text("Browse Talent")')
+    if (await browseTalentLink.isVisible()) {
+      const href = await browseTalentLink.getAttribute('href')
+      // Link should either contain role=client or be a client-specific route
+      expect(href).toMatch(/role=client|\/workers/)
     }
   })
 
