@@ -31,7 +31,11 @@ export function AlertsInbox({ userId }: { userId: string }) {
   const fetchAlerts = async () => {
     try {
       const result = await apiClient.getAlerts()
-      setAlerts(result.data?.alerts || [])
+      if (result.data && typeof result.data === 'object' && 'alerts' in result.data) {
+        setAlerts((result.data as any).alerts || [])
+      } else {
+        setAlerts([])
+      }
     } catch (error) {
       console.error('Error fetching alerts:', error)
     } finally {
