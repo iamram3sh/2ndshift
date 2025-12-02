@@ -8,8 +8,9 @@ import {
   Mail, MapPin, Linkedin, Twitter, Target, Menu, X, ArrowUpRight
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { useRole } from '@/components/role/RoleContextProvider'
-import { RoleToggle } from '@/components/role/RoleToggle'
+import { RolePickerModal } from '@/components/auth/RolePickerModal'
 import { RoleAwareNav } from '@/components/role/RoleAwareNav'
 import { withRoleParam } from '@/lib/utils/roleAwareLinks'
 import { trackRoleCTA } from '@/lib/analytics/roleEvents'
@@ -62,8 +63,28 @@ const SAMPLE_JOBS = [
 export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'worker' | null }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const { role } = useRole()
+  const [showRolePicker, setShowRolePicker] = useState(false)
+  const router = useRouter()
+  const { role, setRole } = useRole()
   const isRoleEnabled = isRoleHomeEnabled()
+
+  // Enforce worker role - redirect if mismatch
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (!isRoleEnabled) return
+
+    const currentRole = role || initialRole
+    if (currentRole && currentRole !== 'worker') {
+      // Role mismatch - redirect to home with correct role
+      router.push(`/?role=${currentRole}`)
+      return
+    }
+
+    // Ensure role is set to worker
+    if (!currentRole) {
+      setRole('worker', 'query')
+    }
+  }, [role, initialRole, isRoleEnabled, router, setRole])
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10)
@@ -101,14 +122,19 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
             </div>
 
             <div className="flex items-center gap-3">
-              {isRoleEnabled && role && (
-                <div className="hidden lg:block">
-                  <RoleToggle variant="header" />
-                </div>
+              {role ? (
+                <Link href={`/login?role=${role}`} className="hidden sm:block px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
+                  Sign in
+                </Link>
+              ) : (
+                <button
+                  onClick={() => setShowRolePicker(true)}
+                  className="hidden sm:block px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors"
+                  aria-label="Sign in - choose your role"
+                >
+                  Sign in
+                </button>
               )}
-              <Link href="/login" className="hidden sm:block px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
-                Sign in
-              </Link>
               <Link 
                 href={withRoleParam("/register", role)} 
                 className="bg-slate-900 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-slate-800 transition-all shadow-sm"
@@ -128,16 +154,23 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
         {mobileMenuOpen && (
           <div className="lg:hidden bg-white border-t border-slate-200 shadow-lg">
             <div className="px-4 py-4 space-y-1">
-              {isRoleEnabled && role && (
-                <div className="mb-4 pb-4 border-b border-slate-200">
-                  <RoleToggle variant="header" />
-                </div>
-              )}
               <RoleAwareNav isMobile onLinkClick={() => setMobileMenuOpen(false)} />
               <div className="pt-4 border-t border-slate-200 mt-4">
-                <Link href="/login" className="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg font-medium">
-                  Sign in
-                </Link>
+                {role ? (
+                  <Link href={`/login?role=${role}`} className="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg font-medium">
+                    Sign in
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setShowRolePicker(true)
+                      setMobileMenuOpen(false)
+                    }}
+                    className="block w-full text-left px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg font-medium"
+                  >
+                    Sign in
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -149,10 +182,6 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
       <section className="relative pt-24 lg:pt-32 pb-16 lg:pb-24 bg-white border-b border-slate-200" data-role="worker">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
-            <div className="flex justify-center mb-8">
-              <RoleToggle variant="hero" />
-            </div>
-
             <div className="text-center">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
                 Earn from Anywhere.
@@ -507,6 +536,13 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
           </div>
         </div>
       </footer>
+
+      {/* Role Picker Modal */}
+      <RolePickerModal
+        isOpen={showRolePicker}
+        onClose={() => setShowRolePicker(false)}
+        onRoleSelected={() => setShowRolePicker(false)}
+      />
     </div>
   )
 }

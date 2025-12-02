@@ -81,12 +81,12 @@ export default function LoginPage() {
       
       if (result.data?.user) {
         const routes: Record<string, string> = {
-          worker: '/worker',
-          client: '/client',
+          worker: '/work',
+          client: '/clients',
           admin: '/dashboard/admin',
           superadmin: '/dashboard/admin'
         }
-        const targetRoute = routes[result.data.user.role] || '/worker'
+        const targetRoute = routes[result.data.user.role] || '/work'
         trackEvent('login_success', { role: result.data.user.role })
         if (result.data.user.role === 'worker' || result.data.user.role === 'client') {
           trackRoleSelected(result.data.user.role, 'login')

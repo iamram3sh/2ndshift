@@ -12,13 +12,13 @@ import {
 import { useState, useEffect } from 'react'
 import { useRole } from '@/components/role/RoleContextProvider'
 import { WORKER_QUICK_TASKS, CLIENT_QUICK_PACKS } from '@/data/highValueTasks'
-import { RoleToggle } from '@/components/role/RoleToggle'
 import { RoleSection } from '@/components/role/RoleSection'
 import { RoleAwareNav } from '@/components/role/RoleAwareNav'
 import { withRoleParam } from '@/lib/utils/roleAwareLinks'
 import { trackRoleCTA } from '@/lib/analytics/roleEvents'
 import { isRoleHomeEnabled } from '@/lib/role/feature-flag'
 import { HIGH_VALUE_CATEGORIES } from '@/lib/constants/highValueCategories'
+import { RolePickerModal } from '@/components/auth/RolePickerModal'
 
 // What makes us different
 const VALUE_PROPS = [
@@ -66,6 +66,7 @@ const SAMPLE_JOBS = [
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [showRolePicker, setShowRolePicker] = useState(false)
   const { role, setRole } = useRole()
   const isRoleEnabled = isRoleHomeEnabled()
 
@@ -108,14 +109,19 @@ export default function HomePage() {
 
             {/* CTA Buttons */}
             <div className="flex items-center gap-3">
-              {isRoleEnabled && role && (
-                <div className="hidden lg:block">
-                  <RoleToggle variant="header" />
-                </div>
+              {role ? (
+                <Link href={`/login?role=${role}`} className="hidden sm:block px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
+                  Sign in
+                </Link>
+              ) : (
+                <button
+                  onClick={() => setShowRolePicker(true)}
+                  className="hidden sm:block px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors"
+                  aria-label="Sign in - choose your role"
+                >
+                  Sign in
+                </button>
               )}
-              <Link href="/login" className="hidden sm:block px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
-                Sign in
-              </Link>
               <Link 
                 href={withRoleParam("/register", role)} 
                 className="bg-slate-900 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-slate-800 transition-all shadow-sm"
@@ -136,16 +142,23 @@ export default function HomePage() {
         {mobileMenuOpen && (
           <div className="lg:hidden bg-white border-t border-slate-200 shadow-lg">
             <div className="px-4 py-4 space-y-1">
-              {isRoleEnabled && role && (
-                <div className="mb-4 pb-4 border-b border-slate-200">
-                  <RoleToggle variant="header" />
-                </div>
-              )}
               <RoleAwareNav isMobile onLinkClick={() => setMobileMenuOpen(false)} />
               <div className="pt-4 border-t border-slate-200 mt-4">
-                <Link href="/login" className="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg font-medium">
-                  Sign in
-                </Link>
+                {role ? (
+                  <Link href={`/login?role=${role}`} className="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg font-medium">
+                    Sign in
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setShowRolePicker(true)
+                      setMobileMenuOpen(false)
+                    }}
+                    className="block w-full text-left px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg font-medium"
+                  >
+                    Sign in
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -156,10 +169,47 @@ export default function HomePage() {
       <section className="relative pt-24 lg:pt-32 pb-16 lg:pb-24 bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
-            {/* Role Toggle */}
-            <div className="flex justify-center mb-8">
-              <RoleToggle variant="hero" />
-            </div>
+            {/* Hero CTAs - Single Source of Role Selection */}
+            {!isRoleEnabled || role === null ? (
+              <div className="text-center">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
+                  Work on Your Terms.
+                  <br />
+                  <span className="text-[#111]">Get Paid with Confidence.</span>
+                </h1>
+                <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
+                  Choose your path below to see personalized content.
+                </p>
+
+                {/* CTAs - Single Source */}
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 justify-center mb-8">
+                  <Link 
+                    href="/work?role=worker"
+                    onClick={() => {
+                      handleCTAClick('I want to work', 'worker')
+                      setRole('worker', 'hero')
+                    }}
+                    aria-label="I want to work — show worker signup"
+                    className="inline-flex items-center justify-center gap-2 bg-[#0b63ff] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#0a56e6] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  >
+                    I want to work
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+                  <Link 
+                    href="/clients?role=client"
+                    onClick={() => {
+                      handleCTAClick('I want to hire', 'client')
+                      setRole('client', 'hero')
+                    }}
+                    aria-label="I want to hire — show client signup"
+                    className="inline-flex items-center justify-center gap-2 bg-transparent text-[#0b1220] px-8 py-4 rounded-lg font-semibold border-2 border-[#0b1220] hover:bg-[#0b1220] hover:text-white transition-all"
+                  >
+                    I want to hire
+                    <ArrowUpRight className="w-5 h-5" />
+                  </Link>
+                </div>
+              </div>
+            ) : null}
 
             {/* Worker-Focused Hero */}
             <RoleSection role="worker" sectionId="hero-worker" fallback={!isRoleEnabled || role === null ? (
@@ -186,10 +236,10 @@ export default function HomePage() {
                   DevOps, Cloud, Networking, Security, AI, Data, SRE, DB & Programming — delivered by certified Indian professionals.
                 </p>
 
-                {/* CTAs */}
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-12 justify-center mb-8">
+                {/* CTAs - Single Source */}
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 justify-center mb-8">
                   <Link 
-                    href="/worker?role=worker"
+                    href="/work?role=worker"
                     onClick={() => {
                       handleCTAClick('I want to work', 'worker')
                       setRole('worker', 'hero')
@@ -201,7 +251,7 @@ export default function HomePage() {
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                   <Link 
-                    href="/client?role=client"
+                    href="/clients?role=client"
                     onClick={() => {
                       handleCTAClick('I want to hire', 'client')
                       setRole('client', 'hero')
@@ -247,10 +297,10 @@ export default function HomePage() {
                   DevOps, Cloud, Networking, Security, AI, Data, SRE, DB & Programming — delivered by certified Indian professionals.
                 </p>
 
-                {/* CTAs */}
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-12 justify-center mb-8">
+                {/* CTAs - Single Source */}
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 justify-center mb-8">
                   <Link 
-                    href="/client?role=client"
+                    href="/clients?role=client"
                     onClick={() => {
                       handleCTAClick('I want to hire', 'client')
                       setRole('client', 'hero')
@@ -262,7 +312,7 @@ export default function HomePage() {
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                   <Link 
-                    href="/worker?role=worker"
+                    href="/work?role=worker"
                     onClick={() => {
                       handleCTAClick('I want to work', 'worker')
                       setRole('worker', 'hero')
@@ -1012,6 +1062,13 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* Role Picker Modal */}
+      <RolePickerModal
+        isOpen={showRolePicker}
+        onClose={() => setShowRolePicker(false)}
+        onRoleSelected={() => setShowRolePicker(false)}
+      />
     </div>
   )
 }

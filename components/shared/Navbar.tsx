@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase/client'
 import { User, LogOut, Layers, Bell, Zap, Menu, X, Home, Briefcase, Users, ChevronDown } from 'lucide-react'
 import { ShiftsHeaderIndicator } from '@/components/revenue/ShiftsHeaderIndicator'
 import { useRole } from '@/components/role/RoleContextProvider'
+import { RolePickerModal } from '@/components/auth/RolePickerModal'
 import type { User as UserType } from '@/types/database.types'
 
 export function Navbar() {
@@ -15,6 +16,7 @@ export function Navbar() {
   const { role } = useRole()
   const [user, setUser] = useState<UserType | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [showRolePicker, setShowRolePicker] = useState(false)
 
   const checkUser = async () => {
     const { data: { user: authUser } } = await supabase.auth.getUser()
@@ -244,16 +246,9 @@ export function Navbar() {
                   </Link>
                 ) : (
                   <button
-                    onClick={() => {
-                      // Open role picker modal or navigate to login with role picker
-                      if (typeof window !== 'undefined') {
-                        window.location.href = '/login'
-                        if (window.gtag) {
-                          window.gtag('event', 'login_shown', { role: null })
-                        }
-                      }
-                    }}
+                    onClick={() => setShowRolePicker(true)}
                     className="hidden sm:block px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900"
+                    aria-label="Sign in - choose your role"
                   >
                     Sign in
                   </button>
@@ -262,7 +257,7 @@ export function Navbar() {
                   href="/register"
                   className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-all"
                 >
-                  Get Started
+                  Get Started Free
                 </Link>
               </>
             )}
@@ -393,6 +388,13 @@ export function Navbar() {
           </div>
         </div>
       )}
+
+      {/* Role Picker Modal */}
+      <RolePickerModal
+        isOpen={showRolePicker}
+        onClose={() => setShowRolePicker(false)}
+        onRoleSelected={() => setShowRolePicker(false)}
+      />
     </nav>
   )
 }
