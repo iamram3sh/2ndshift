@@ -6,6 +6,12 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase/client'
 import apiClient from '@/lib/apiClient'
 import { ShiftsModal } from '@/components/shifts/ShiftsModal'
+import { BuyCreditsModalV1 } from '@/components/revenue/BuyCreditsModalV1'
+import { VerificationBadge } from '@/components/revenue/VerificationBadge'
+import { SubscriptionUpsell } from '@/components/revenue/SubscriptionUpsell'
+import { VerificationBadgeInfo } from '@/components/revenue/VerificationBadgeInfo'
+import { CommissionBreakdown } from '@/components/revenue/CommissionBreakdown'
+import { SubscriptionUpsellSection } from '@/components/revenue/SubscriptionUpsellSection'
 import { 
   Briefcase, Clock, DollarSign, User, LogOut, Search, 
   TrendingUp, FileText, CheckCircle, XCircle, AlertCircle,
@@ -62,19 +68,21 @@ export default function WorkerDashboard() {
   const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [showShiftsModal, setShowShiftsModal] = useState(false)
+  const [showBuyCreditsModal, setShowBuyCreditsModal] = useState(false)
   const [shiftsBalance, setShiftsBalance] = useState(0)
+  const [verifiedLevel, setVerifiedLevel] = useState<'basic' | 'professional' | 'premium' | null>(null)
 
-  // Fetch Shifts balance
-  const fetchShiftsBalance = useCallback(async (userId: string) => {
+  // Fetch Shifts balance using v1 API
+  const fetchShiftsBalance = useCallback(async () => {
     try {
-      const response = await fetch(`/api/shifts/balance?userId=${userId}`)
-      const data = await response.json()
-      if (response.ok) {
-        setShiftsBalance(data.balance || 0)
-        setStats(prev => ({ ...prev, shiftsBalance: data.balance || 0 }))
+      const result = await apiClient.getCreditsBalance()
+      if (result.data) {
+        const balance = result.data.balance || 0
+        setShiftsBalance(balance)
+        setStats(prev => ({ ...prev, shiftsBalance: balance }))
       }
     } catch (err) {
-      console.error('Error fetching Shifts balance:', err)
+      console.error('Error fetching credits balance:', err)
     }
   }, [])
 
@@ -110,6 +118,7 @@ export default function WorkerDashboard() {
 
     // Fetch worker profile and other data
     await fetchWorkerProfile(currentUser.id)
+    await fetchShiftsBalance()
     setIsLoading(false)
   }
 
@@ -123,6 +132,10 @@ export default function WorkerDashboard() {
 
     if (profileData) {
       setWorkerProfile(profileData as any)
+      // Set verified level
+      if (profileData.verified_level) {
+        setVerifiedLevel(profileData.verified_level as 'basic' | 'professional' | 'premium')
+      }
       // Calculate profile completion for v1 schema
       if (profileData.skills && Array.isArray(profileData.skills)) {
         const completion = Math.min(100, (profileData.skills.length / 5) * 100)
@@ -248,7 +261,6 @@ export default function WorkerDashboard() {
       fetchApplications()
       fetchContracts()
       fetchEarnings()
-      fetchShiftsBalance(user.id)
     }
   }, [user, isLoading])
 
@@ -356,6 +368,12 @@ export default function WorkerDashboard() {
           </div>
           
           <div className="flex items-center gap-3">
+            {workerProfile && (
+              <VerificationBadgeInfo
+                verifiedLevel={workerProfile.verified_level || 0}
+                badges={[]}
+              />
+            )}
             <Link
               href="/worker/discover"
               className="inline-flex items-center gap-2 bg-[#111] text-white px-6 py-3 rounded-lg text-sm font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl"
@@ -364,6 +382,14 @@ export default function WorkerDashboard() {
               Find Work
             </Link>
           </div>
+        </div>
+
+        {/* Verification Badge */}
+        <div className="mb-6">
+          <VerificationBadge 
+            verifiedLevel={verifiedLevel}
+            onUpgrade={() => router.push('/worker/verification')}
+          />
         </div>
 
         {/* Profile Completion Banner */}
@@ -548,6 +574,15 @@ export default function WorkerDashboard() {
                           <div className="text-xl font-bold text-[#111]">
                             ₹{project.budget.toLocaleString()}
                           </div>
+                          {user && (
+                            <div className="mt-2">
+                              <CommissionBreakdown
+                                price={project.budget}
+                                workerId={user.id}
+                                showTooltips={false}
+                              />
+                            </div>
+                          )}
                         </div>
                       </div>
                       
@@ -672,6 +707,15 @@ export default function WorkerDashboard() {
               )}
             </div>
 
+            {/* Subscription Upsell */}
+            <SubscriptionUpsellSection userId={user?.id} />
+
+            {/* Subscription Upsell */}
+            <SubscriptionUpsell
+              userType="worker"
+              onSubscribe={() => router.push('/pricing')}
+            />
+
             {/* Boost Profile Card */}
             <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl p-5 text-white">
               <div className="flex items-center gap-2 mb-3">
@@ -682,10 +726,10 @@ export default function WorkerDashboard() {
                 Get 5x more visibility for 7 days. Appear in featured professionals.
               </p>
               <button
-                onClick={() => setShowShiftsModal(true)}
+                onClick={() => setShowBuyCreditsModal(true)}
                 className="w-full bg-white text-purple-600 py-2 rounded-lg text-sm font-semibold hover:bg-purple-50 transition-colors"
               >
-                Boost for 5 Shifts
+                Boost for 5 Credits
               </button>
             </div>
 
@@ -715,17 +759,18 @@ export default function WorkerDashboard() {
         </div>
       </div>
 
-      {/* Shifts Modal */}
+      {/* Buy Credits Modal */}
       {user && (
-        <ShiftsModal
-          isOpen={showShiftsModal}
-          onClose={() => setShowShiftsModal(false)}
+        <BuyCreditsModalV1
+          isOpen={showBuyCreditsModal}
+          onClose={() => setShowBuyCreditsModal(false)}
           userId={user.id}
           userType="worker"
           currentBalance={shiftsBalance}
           onPurchaseComplete={(newBalance) => {
             setShiftsBalance(newBalance)
             setStats(prev => ({ ...prev, shiftsBalance: newBalance }))
+            fetchShiftsBalance()
           }}
         />
       )}

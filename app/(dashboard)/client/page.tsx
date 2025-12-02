@@ -6,6 +6,11 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase/client'
 import apiClient from '@/lib/apiClient'
 import { ShiftsModal } from '@/components/shifts/ShiftsModal'
+import { BuyCreditsModalV1 } from '@/components/revenue/BuyCreditsModalV1'
+import { SubscriptionUpsell } from '@/components/revenue/SubscriptionUpsell'
+import { CommissionCalculator } from '@/components/revenue/CommissionCalculator'
+import { CommissionBreakdown } from '@/components/revenue/CommissionBreakdown'
+import { SubscriptionUpsellSection } from '@/components/revenue/SubscriptionUpsellSection'
 import { 
   Briefcase, DollarSign, User, LogOut, Plus, Clock,
   Users, CheckCircle, TrendingUp, Eye, MessageSquare,
@@ -13,7 +18,7 @@ import {
   Zap, Target, Activity, Star, ChevronRight, Rocket, 
   Shield, BadgeCheck, Sparkles, ArrowRight, Crown,
   Layers, XCircle, Timer, MapPin, Filter, ArrowUpRight,
-  UserPlus, Send, Gift, Settings, HelpCircle
+  UserPlus, Send, Gift, Settings, HelpCircle, Info
 } from 'lucide-react'
 import type { User as UserType, Project, Contract } from '@/types/database.types'
 
@@ -63,7 +68,10 @@ export default function ClientDashboard() {
   const [isLoading, setIsLoading] = useState(true)
   const [filterStatus, setFilterStatus] = useState<string>('all')
   const [showShiftsModal, setShowShiftsModal] = useState(false)
+  const [showBuyCreditsModal, setShowBuyCreditsModal] = useState(false)
   const [shiftsBalance, setShiftsBalance] = useState(0)
+  const [platformConfig, setPlatformConfig] = useState<any>(null)
+  const [platformConfig, setPlatformConfig] = useState<any>(null)
 
   // Fetch Shifts balance (credits)
   const fetchShiftsBalance = useCallback(async () => {
@@ -76,6 +84,30 @@ export default function ClientDashboard() {
       }
     } catch (err) {
       console.error('Error fetching credits balance:', err)
+    }
+  }, [])
+
+  // Fetch platform config
+  const fetchPlatformConfig = useCallback(async () => {
+    try {
+      const result = await apiClient.getPlatformConfig()
+      if (result.data) {
+        setPlatformConfig(result.data)
+      }
+    } catch (err) {
+      console.error('Error fetching platform config:', err)
+    }
+  }, [])
+
+  // Fetch platform config
+  const fetchPlatformConfig = useCallback(async () => {
+    try {
+      const result = await apiClient.getPlatformConfig()
+      if (result.data) {
+        setPlatformConfig(result.data)
+      }
+    } catch (err) {
+      console.error('Error fetching platform config:', err)
     }
   }, [])
 
@@ -114,7 +146,8 @@ export default function ClientDashboard() {
       fetchProjects(currentUser.id),
       fetchApplications(currentUser.id),
       fetchContracts(currentUser.id),
-      fetchShiftsBalance()
+      fetchShiftsBalance(),
+      fetchPlatformConfig()
     ])
     
     setIsLoading(false)
@@ -298,13 +331,13 @@ export default function ClientDashboard() {
             </div>
 
             <div className="flex items-center gap-3">
-              {/* Shifts Balance */}
+              {/* Shift Credits Balance Widget */}
               <button
-                onClick={() => setShowShiftsModal(true)}
-                className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg text-sm font-medium hover:from-amber-600 hover:to-orange-600 transition-all"
+                onClick={() => setShowBuyCreditsModal(true)}
+                className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg text-sm font-medium hover:from-amber-600 hover:to-orange-600 transition-all shadow-md"
               >
                 <Zap className="w-4 h-4" />
-                <span>{shiftsBalance} Shifts</span>
+                <span>{shiftsBalance} Credits</span>
               </button>
 
               <button className="relative p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
@@ -337,6 +370,27 @@ export default function ClientDashboard() {
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Pricing & Commission Summary */}
+        {platformConfig && (
+          <div className="mb-6 p-4 bg-white border border-slate-200 rounded-xl">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-slate-900 mb-1">Platform Fees</h3>
+                <p className="text-sm text-slate-600">
+                  Client commission: {((platformConfig.client_commission_percent || 0.04) * 100).toFixed(0)}% · 
+                  Escrow fee: {((platformConfig.escrow_fee_percent || 0.02) * 100).toFixed(0)}%
+                </p>
+              </div>
+              <Link
+                href="/pricing"
+                className="text-sm text-sky-600 font-medium hover:text-sky-700"
+              >
+                View Plans →
+              </Link>
+            </div>
+          </div>
+        )}
+
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
           <div>
@@ -346,6 +400,22 @@ export default function ClientDashboard() {
             <p className="text-slate-600 mt-1">
               Manage your projects and find the best talent
             </p>
+            {platformConfig && (
+              <div className="mt-3 flex items-center gap-4 text-sm text-slate-600">
+                <div className="flex items-center gap-1">
+                  <Info className="w-4 h-4" />
+                  <span>
+                    Platform fee: {(parseFloat(platformConfig.client_commission_percent || '0.04') * 100).toFixed(0)}%
+                  </span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Info className="w-4 h-4" />
+                  <span>
+                    Escrow fee: {(parseFloat(platformConfig.escrow_fee_percent || '0.02') * 100).toFixed(0)}%
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
           
           <div className="flex items-center gap-3">
@@ -577,6 +647,15 @@ export default function ClientDashboard() {
                           <div className="text-lg font-semibold text-slate-900">
                             ₹{project.budget.toLocaleString()}
                           </div>
+                          {user && (
+                            <div className="mt-2">
+                              <CommissionBreakdown
+                                price={project.budget}
+                                clientId={user.id}
+                                showTooltips={false}
+                              />
+                            </div>
+                          )}
                         </div>
                       </div>
                       
@@ -649,6 +728,15 @@ export default function ClientDashboard() {
               )}
             </div>
 
+            {/* Subscription Upsell */}
+            <SubscriptionUpsellSection userId={user?.id} userType="client" />
+
+            {/* Client Subscription Upsell */}
+            <SubscriptionUpsell
+              userType="client"
+              onSubscribe={() => router.push('/pricing')}
+            />
+
             {/* Featured Job Promo */}
             <div className="bg-gradient-to-br from-sky-500 to-indigo-600 rounded-xl p-5 text-white">
               <div className="flex items-center gap-2 mb-3">
@@ -659,10 +747,10 @@ export default function ClientDashboard() {
                 Get 10x more applications. Your job appears at the top for 7 days.
               </p>
               <button
-                onClick={() => setShowShiftsModal(true)}
+                onClick={() => setShowBuyCreditsModal(true)}
                 className="w-full bg-white text-sky-600 py-2 rounded-lg text-sm font-semibold hover:bg-sky-50 transition-colors"
               >
-                Feature for 3 Shifts
+                Feature for 3 Credits
               </button>
             </div>
 
@@ -733,17 +821,18 @@ export default function ClientDashboard() {
         </div>
       </div>
 
-      {/* Shifts Modal */}
+      {/* Buy Credits Modal */}
       {user && (
-        <ShiftsModal
-          isOpen={showShiftsModal}
-          onClose={() => setShowShiftsModal(false)}
+        <BuyCreditsModalV1
+          isOpen={showBuyCreditsModal}
+          onClose={() => setShowBuyCreditsModal(false)}
           userId={user.id}
           userType="client"
           currentBalance={shiftsBalance}
           onPurchaseComplete={(newBalance) => {
             setShiftsBalance(newBalance)
             setStats(prev => ({ ...prev, shiftsBalance: newBalance }))
+            fetchShiftsBalance()
           }}
         />
       )}

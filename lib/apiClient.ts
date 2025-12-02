@@ -238,10 +238,17 @@ class ApiClient {
     return this.request<{ balance: number; reserved: number }>('/credits/balance');
   }
 
-  async purchaseCredits(payload: { amount: number; currency?: string }) {
-    return this.request<{ payment_intent: any }>('/credits/purchase', {
+  async purchaseCredits(payload: { package_id: string } | { amount: number; currency?: string }) {
+    return this.request<{ payment_intent_id?: string; purchase_id?: string; credits?: number; status?: string; demo?: boolean; message?: string }>('/credits/purchase', {
       method: 'POST',
       body: JSON.stringify(payload),
+    });
+  }
+
+  async getCreditPackages(userType: 'worker' | 'client' = 'worker') {
+    return this.request<{ packages: any[] }>('/credits/packages', {
+      params: { user_type: userType },
+      requireAuth: false,
     });
   }
 
@@ -292,6 +299,91 @@ class ApiClient {
   async listAllUsers(filters?: { role?: string }) {
     return this.request<{ users: any[] }>('/admin/users', {
       params: filters as any,
+    });
+  }
+
+  // Platform config
+  async getPlatformConfig() {
+    return this.request<Record<string, any>>('/platform-config', {
+      requireAuth: false,
+    });
+  }
+
+  // Subscriptions
+  async getSubscriptionPlans(userType: 'worker' | 'client') {
+    return this.request<{ plans: any[] }>('/subscriptions/plans', {
+      params: { user_type: userType },
+      requireAuth: false,
+    });
+  }
+
+  async subscribeToPlan(planId: string) {
+    return this.request<{ subscription: any }>('/subscriptions/subscribe', {
+      method: 'POST',
+      body: JSON.stringify({ plan_id: planId }),
+    });
+  }
+
+  // Commissions
+  async calculateCommission(params: {
+    price: number;
+    worker_id?: string;
+    client_id?: string;
+    is_microtask?: boolean;
+  }) {
+    return this.request<{ breakdown: any }>('/commissions/calc', {
+      params: params as any,
+    });
+  }
+
+  // Escrows
+  async releaseEscrow(escrowId: string) {
+    return this.request<{ escrow: any }>(`/escrows/${escrowId}/release`, {
+      method: 'POST',
+    });
+  }
+}
+
+export const apiClient = new ApiClient();
+export default apiClient;
+      requireAuth: false,
+    });
+  }
+
+  async subscribeToPlan(planId: string) {
+    return this.request<{ subscription: any; demo: boolean; message: string }>('/subscriptions/subscribe', {
+      method: 'POST',
+      body: JSON.stringify({ plan_id: planId }),
+    });
+  }
+
+  // Commissions
+  async calculateCommission(params: {
+    price: number;
+    job_id?: string;
+    worker_id?: string;
+    client_id?: string;
+    is_microtask?: boolean;
+  }) {
+    return this.request<{
+      workerCommissionPercent: number;
+      workerCommissionAmount: number;
+      clientCommissionPercent: number;
+      clientCommissionAmount: number;
+      escrowFeePercent: number;
+      escrowFeeAmount: number;
+      netWorkerPayout: number;
+      netClientPayment: number;
+      totalPlatformRevenue: number;
+    }>('/commissions/calc', {
+      params: params as any,
+    });
+  }
+
+  // Escrows
+  async releaseEscrow(escrowId: string) {
+    return this.request<{ escrow: any; demo: boolean; message: string }>(`/escrows/${escrowId}/release`, {
+      method: 'POST',
     });
   }
 }

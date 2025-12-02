@@ -58,6 +58,15 @@ async function main() {
     if (!userError && user) {
       clients.push(user);
       console.log(`  ✅ Created client: ${user.email}`);
+      
+      // Initialize credits for client
+      await supabaseAdmin
+        .from('shift_credits')
+        .upsert({
+          user_id: user.id,
+          balance: i === 1 ? 50 : 20, // First client gets more credits
+          reserved: 0,
+        }, { onConflict: 'user_id' });
     }
   }
 
@@ -246,6 +255,63 @@ async function main() {
       }, { onConflict: 'key' });
   }
   console.log('  ✅ Platform config initialized');
+
+  // Create demo subscriptions
+  console.log('\nCreating demo subscriptions...');
+  if (workers.length > 0 && clients.length > 0) {
+    // Get subscription plans
+    const { data: workerPlan } = await supabaseAdmin
+      .from('subscription_plans')
+      .select('*')
+      .eq('user_type', 'worker')
+      .eq('slug', 'worker-professional')
+      .single();
+
+    const { data: clientPlan } = await supabaseAdmin
+      .from('subscription_plans')
+      .select('*')
+      .eq('user_type', 'client')
+      .eq('slug', 'client-business')
+      .single();
+
+    if (workerPlan && workers[0]) {
+      const now = new Date();
+      const periodEnd = new Date(now);
+      periodEnd.setMonth(periodEnd.getMonth() + 1);
+
+      await supabaseAdmin
+        .from('user_subscriptions')
+        .upsert({
+          user_id: workers[0].id,
+          plan_id: workerPlan.id,
+          plan_slug: workerPlan.slug,
+          status: 'active',
+          current_period_start: now.toISOString(),
+          current_period_end: periodEnd.toISOString(),
+          next_billing_date: periodEnd.toISOString(),
+        }, { onConflict: 'user_id' });
+      console.log(`  ✅ Created subscription for worker: ${workers[0].email}`);
+    }
+
+    if (clientPlan && clients[0]) {
+      const now = new Date();
+      const periodEnd = new Date(now);
+      periodEnd.setMonth(periodEnd.getMonth() + 1);
+
+      await supabaseAdmin
+        .from('user_subscriptions')
+        .upsert({
+          user_id: clients[0].id,
+          plan_id: clientPlan.id,
+          plan_slug: clientPlan.slug,
+          status: 'active',
+          current_period_start: now.toISOString(),
+          current_period_end: periodEnd.toISOString(),
+          next_billing_date: periodEnd.toISOString(),
+        }, { onConflict: 'user_id' });
+      console.log(`  ✅ Created subscription for client: ${clients[0].email}`);
+    }
+  }
 
   console.log('\n✅ Demo seed completed!');
   console.log(`\nCreated:`);
