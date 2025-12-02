@@ -6,7 +6,7 @@ import { getInitialRole, persistRole, getRoleFromQuery, type UserRole } from '@/
 import { trackRoleSelected, trackRoleChange, type RoleSource } from '@/lib/analytics/roleEvents'
 import { isRoleHomeEnabled } from '@/lib/role/feature-flag'
 
-interface RoleContextValue {
+export interface RoleContextValue {
   role: UserRole | null
   setRole: (role: UserRole, source?: RoleSource) => void
   persisted: boolean
@@ -14,14 +14,14 @@ interface RoleContextValue {
 }
 
 // Default context value for SSR/initial render
-const defaultContextValue: RoleContextValue = {
+export const defaultContextValue: RoleContextValue = {
   role: null,
   setRole: () => {},
   persisted: false,
   clearRole: () => {},
 }
 
-const RoleContext = createContext<RoleContextValue>(defaultContextValue)
+export const RoleContext = createContext<RoleContextValue>(defaultContextValue)
 
 export function RoleContextProvider({ children }: { children: React.ReactNode }) {
   // This component should only be rendered when feature is enabled
