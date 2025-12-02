@@ -6,7 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:seed": "tsx scripts/seed-dev.ts",
+    "seed": "tsx scripts/seed-dev-supabase.ts",
+    "migrate": "node scripts/apply_backend_schema_v1_direct.js",
+    "migrate:verify": "node scripts/apply_backend_schema_v1_direct.js --verify",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

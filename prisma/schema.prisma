@@ -1,0 +1,593 @@
+// 2ndShift V1 - Prisma Schema
+// Complete database schema for marketplace platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =====================================================
+// ENUMS
+// =====================================================
+
+enum UserType {
+  worker
+  client
+  admin
+}
+
+enum ProfileVisibility {
+  public
+  anonymous
+}
+
+enum ComplexityLevel {
+  beginner
+  intermediate
+  advanced
+  expert
+}
+
+enum DeliveryWindow {
+  sixTo24h    @map("6-24h")
+  threeTo7d   @map("3-7d")
+  oneTo4w     @map("1-4w")
+  oneTo6m     @map("1-6m")
+}
+
+enum JobStatus {
+  draft
+  open
+  assigned
+  in_progress
+  completed
+  disputed
+  cancelled
+}
+
+enum ProposalStatus {
+  pending
+  accepted
+  rejected
+  withdrawn
+}
+
+enum AssignmentStatus {
+  assigned
+  in_progress
+  completed
+  delivered
+  approved
+  rejected
+}
+
+enum VerificationType {
+  identity
+  skill
+  microtask
+  video
+  delivery
+}
+
+enum VerificationStatus {
+  not_started
+  pending
+  verified
+  rejected
+}
+
+enum VerifiedLevel {
+  none
+  basic
+  professional
+  premium
+}
+
+enum CreditReason {
+  purchase
+  apply
+  refund
+  admin_adjust
+  subscription_bonus
+  referral
+}
+
+enum SubscriptionStatus {
+  active
+  canceled
+  past_due
+  expired
+  trial
+}
+
+enum PaymentMethod {
+  card
+  upi
+  wallet
+  bank_transfer
+  netbanking
+}
+
+enum PaymentStatus {
+  pending
+  completed
+  failed
+  refunded
+}
+
+enum EscrowStatus {
+  created
+  funded
+  released
+  refunded
+}
+
+enum CommissionChargedTo {
+  client
+  worker
+  both
+}
+
+// =====================================================
+// MODELS
+// =====================================================
+
+model User {
+  id                String   @id @default(uuid()) @db.Uuid
+  email             String   @unique
+  phone             String?
+  full_name         String
+  user_type         UserType
+  password_hash     String?
+  pan_number        String?
+  profile_visibility ProfileVisibility @default(public)
+  profile_complete  Boolean  @default(false)
+  phone_verified    Boolean  @default(false)
+  email_verified    Boolean  @default(false)
+  last_active_at    DateTime? @db.Timestamptz
+  created_at        DateTime @default(now()) @db.Timestamptz
+  updated_at        DateTime @updatedAt @db.Timestamptz
+
+  // Relations
+  profile           Profile?
+  jobs              Job[]    @relation("ClientJobs")
+  applications      Application[]
+  assignments       Assignment[]
+  verifications     Verification[]
+  shift_credits     ShiftCredits?
+  credit_transactions CreditTransaction[]
+  subscriptions     UserSubscription[]
+  payments_sent     Payment[] @relation("PayerPayments")
+  payments_received Payment[] @relation("PayeePayments")
+  escrows           Escrow[]
+  audits            Audit[]
+  notifications     Notification[]
+  missing_task_requests MissingTaskRequest[]
+  badges            Badge[]
+
+  @@index([email])
+  @@index([user_type])
+  @@index([last_active_at])
+  @@map("users")
+}
+
+model Profile {
+  id              String   @id @default(uuid()) @db.Uuid
+  user_id         String   @unique @db.Uuid
+  headline        String?
+  bio             String?
+  location        String?
+  availability    Json?    @default("{}")
+  hourly_rate_min Decimal? @db.Decimal(10, 2)
+  hourly_rate_max Decimal? @db.Decimal(10, 2)
+  verified_level  VerifiedLevel @default(none)
+  score           Decimal  @default(0) @db.Decimal(5, 2)
+  skills          Json     @default("[]")
+  portfolio_links Json     @default("[]")
+  created_at      DateTime @default(now()) @db.Timestamptz
+  updated_at      DateTime @updatedAt @db.Timestamptz
+
+  user            User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([verified_level])
+  @@index([score(sort: Desc)])
+  @@map("profiles")
+}
+
+model Category {
+  id          String    @id @default(uuid()) @db.Uuid
+  slug        String    @unique
+  name        String
+  description String?
+  parent_id   String?   @db.Uuid
+  icon        String?
+  is_active   Boolean   @default(true)
+  created_at  DateTime  @default(now()) @db.Timestamptz
+  updated_at  DateTime  @updatedAt @db.Timestamptz
+
+  parent      Category? @relation("CategoryHierarchy", fields: [parent_id], references: [id], onDelete: SetNull)
+  children    Category[] @relation("CategoryHierarchy")
+  microtasks  Microtask[]
+  jobs        Job[]
+
+  @@index([slug])
+  @@index([parent_id])
+  @@index([is_active])
+  @@map("categories")
+}
+
+model Microtask {
+  id                      String        @id @default(uuid()) @db.Uuid
+  category_id             String?       @db.Uuid
+  title                   String
+  slug                    String        @unique
+  description             String
+  complexity              ComplexityLevel @default(intermediate)
+  delivery_window         DeliveryWindow @default(threeTo7d)
+  base_price_min          Decimal       @db.Decimal(10, 2)
+  base_price_max          Decimal       @db.Decimal(10, 2)
+  default_commission_percent Decimal    @default(10) @db.Decimal(5, 2)
+  created_at              DateTime      @default(now()) @db.Timestamptz
+  updated_at              DateTime      @updatedAt @db.Timestamptz
+
+  category                Category?     @relation(fields: [category_id], references: [id], onDelete: SetNull)
+  jobs                    Job[]
+
+  @@index([slug])
+  @@index([category_id])
+  @@index([complexity])
+  @@map("microtasks")
+}
+
+model Job {
+  id                String        @id @default(uuid()) @db.Uuid
+  client_id         String        @db.Uuid
+  title             String
+  description       String
+  category_id       String?       @db.Uuid
+  microtask_id      String?       @db.Uuid
+  custom            Boolean       @default(true)
+  status            JobStatus     @default(open)
+  price_fixed       Decimal?      @db.Decimal(12, 2)
+  price_currency    String        @default("INR") @db.VarChar(3)
+  delivery_deadline DateTime?     @db.Timestamptz
+  delivery_window   DeliveryWindow?
+  escrow_id         String?       @db.Uuid
+  requested_at      DateTime      @default(now()) @db.Timestamptz
+  created_at        DateTime      @default(now()) @db.Timestamptz
+  updated_at        DateTime      @updatedAt @db.Timestamptz
+
+  client            User          @relation("ClientJobs", fields: [client_id], references: [id], onDelete: Cascade)
+  category          Category?     @relation(fields: [category_id], references: [id])
+  microtask         Microtask?    @relation(fields: [microtask_id], references: [id])
+  applications      Application[]
+  assignments       Assignment[]
+  escrow            Escrow?
+  commissions       Commission[]
+
+  @@index([client_id])
+  @@index([status])
+  @@index([category_id])
+  @@index([microtask_id])
+  @@index([created_at(sort: Desc)])
+  @@map("jobs")
+}
+
+model Application {
+  id                String         @id @default(uuid()) @db.Uuid
+  project_id        String         @db.Uuid
+  worker_id         String         @db.Uuid
+  cover_text        String?
+  credits_used      Int            @default(3)
+  proposed_price    Decimal?       @db.Decimal(10, 2)
+  proposed_delivery DateTime?      @db.Timestamptz
+  status            ProposalStatus @default(pending)
+  submitted_at      DateTime       @default(now()) @db.Timestamptz
+  reviewed_at       DateTime?      @db.Timestamptz
+  created_at        DateTime       @default(now()) @db.Timestamptz
+  updated_at        DateTime       @updatedAt @db.Timestamptz
+
+  job               Job            @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  worker            User           @relation(fields: [worker_id], references: [id], onDelete: Cascade)
+
+  @@unique([project_id, worker_id])
+  @@index([project_id])
+  @@index([worker_id])
+  @@index([status])
+  @@map("applications")
+}
+
+model Assignment {
+  id           String           @id @default(uuid()) @db.Uuid
+  job_id       String           @db.Uuid
+  worker_id    String           @db.Uuid
+  assigned_at  DateTime         @default(now()) @db.Timestamptz
+  started_at   DateTime?        @db.Timestamptz
+  completed_at DateTime?        @db.Timestamptz
+  status       AssignmentStatus @default(assigned)
+  created_at   DateTime         @default(now()) @db.Timestamptz
+  updated_at   DateTime         @updatedAt @db.Timestamptz
+
+  job          Job              @relation(fields: [job_id], references: [id], onDelete: Cascade)
+  worker       User             @relation(fields: [worker_id], references: [id], onDelete: Cascade)
+
+  @@unique([job_id, worker_id])
+  @@index([job_id])
+  @@index([worker_id])
+  @@index([status])
+  @@map("assignments")
+}
+
+model Verification {
+  id          String             @id @default(uuid()) @db.Uuid
+  user_id     String             @db.Uuid
+  type        VerificationType
+  status      VerificationStatus @default(not_started)
+  evidence    Json               @default("{}")
+  score       Decimal?           @db.Decimal(5, 2)
+  submitted_at DateTime?         @db.Timestamptz
+  verified_at  DateTime?         @db.Timestamptz
+  notes       String?
+  created_at  DateTime           @default(now()) @db.Timestamptz
+  updated_at  DateTime           @updatedAt @db.Timestamptz
+
+  user        User               @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  admin_reviews AdminReview[]
+
+  @@index([user_id])
+  @@index([type])
+  @@index([status])
+  @@map("verifications")
+}
+
+model SkillProof {
+  id            String   @id @default(uuid()) @db.Uuid
+  user_id       String   @db.Uuid
+  title         String
+  skill_name    String
+  proof_type    String
+  url           String?
+  file_path     String?
+  verified      Boolean  @default(false)
+  verified_at   DateTime? @db.Timestamptz
+  created_at    DateTime @default(now()) @db.Timestamptz
+  updated_at    DateTime @updatedAt @db.Timestamptz
+
+  @@index([user_id])
+  @@map("skill_proofs")
+}
+
+model ShiftCredits {
+  id        String   @id @default(uuid()) @db.Uuid
+  user_id   String   @unique @db.Uuid
+  balance   Int      @default(0)
+  reserved  Int      @default(0)
+  created_at DateTime @default(now()) @db.Timestamptz
+  updated_at DateTime @updatedAt @db.Timestamptz
+
+  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("shift_credits")
+}
+
+model CreditTransaction {
+  id           String      @id @default(uuid()) @db.Uuid
+  user_id      String      @db.Uuid
+  change       Int
+  reason       CreditReason
+  reference_id String?     @db.Uuid
+  meta         Json        @default("{}")
+  created_at   DateTime    @default(now()) @db.Timestamptz
+
+  user         User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([reference_id])
+  @@index([created_at(sort: Desc)])
+  @@map("credit_transactions")
+}
+
+model SubscriptionPlan {
+  id                  String   @id @default(uuid()) @db.Uuid
+  name                String
+  slug                String   @unique
+  user_type           UserType
+  price_monthly_inr   Int
+  price_yearly_inr    Int?
+  platform_fee_percent Decimal @db.Decimal(5, 2)
+  free_shifts_monthly Int      @default(0)
+  features            Json     @default("[]")
+  is_active           Boolean  @default(true)
+  created_at          DateTime @default(now()) @db.Timestamptz
+
+  subscriptions       UserSubscription[]
+
+  @@map("subscription_plans")
+}
+
+model UserSubscription {
+  id                  String             @id @default(uuid()) @db.Uuid
+  user_id             String             @unique @db.Uuid
+  plan_id             String             @db.Uuid
+  plan_slug           String?
+  status              SubscriptionStatus @default(active)
+  razorpay_subscription_id String?
+  current_period_start DateTime          @db.Timestamptz
+  current_period_end   DateTime          @db.Timestamptz
+  next_billing_date    DateTime?         @db.Timestamptz
+  cancel_at_period_end Boolean           @default(false)
+  cancelled_at        DateTime?          @db.Timestamptz
+  trial_end           DateTime?          @db.Timestamptz
+  meta                Json               @default("{}")
+  created_at          DateTime           @default(now()) @db.Timestamptz
+  updated_at          DateTime           @updatedAt @db.Timestamptz
+
+  user                User               @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  plan                SubscriptionPlan   @relation(fields: [plan_id], references: [id])
+
+  @@index([user_id])
+  @@index([status])
+  @@map("user_subscriptions")
+}
+
+model Payment {
+  id              String        @id @default(uuid()) @db.Uuid
+  payer_id        String?       @db.Uuid
+  payee_id        String?       @db.Uuid
+  contract_id     String?       @db.Uuid
+  amount          Decimal?      @db.Decimal(12, 2)
+  currency        String        @default("INR") @db.VarChar(3)
+  method          PaymentMethod?
+  status          PaymentStatus @default(pending)
+  gross_amount    Decimal?      @db.Decimal(12, 2)
+  platform_fee    Decimal?      @db.Decimal(12, 2)
+  tds_deducted    Decimal?      @db.Decimal(12, 2)
+  gst_amount      Decimal?      @default(0) @db.Decimal(12, 2)
+  net_amount      Decimal?      @db.Decimal(12, 2)
+  razorpay_payment_id String?
+  razorpay_order_id   String?
+  razorpay_signature  String?
+  provider_meta   Json          @default("{}")
+  invoice_url     String?
+  payment_date    DateTime?     @db.Timestamptz
+  created_at      DateTime      @default(now()) @db.Timestamptz
+  updated_at      DateTime      @updatedAt @db.Timestamptz
+
+  payer           User?         @relation("PayerPayments", fields: [payer_id], references: [id])
+  payee           User?         @relation("PayeePayments", fields: [payee_id], references: [id])
+
+  @@index([status])
+  @@index([payer_id])
+  @@index([payee_id])
+  @@map("payments")
+}
+
+model Escrow {
+  id               String       @id @default(uuid()) @db.Uuid
+  job_id           String       @unique @db.Uuid
+  client_id        String       @db.Uuid
+  amount           Decimal      @db.Decimal(12, 2)
+  currency         String       @default("INR") @db.VarChar(3)
+  status           EscrowStatus @default(created)
+  provider_reference String?
+  created_at       DateTime     @default(now()) @db.Timestamptz
+  updated_at       DateTime     @updatedAt @db.Timestamptz
+
+  job              Job          @relation(fields: [job_id], references: [id], onDelete: Cascade)
+  client           User         @relation(fields: [client_id], references: [id], onDelete: Cascade)
+
+  @@index([job_id])
+  @@index([client_id])
+  @@index([status])
+  @@map("escrows")
+}
+
+model Commission {
+  id          String            @id @default(uuid()) @db.Uuid
+  job_id      String            @db.Uuid
+  amount      Decimal           @db.Decimal(12, 2)
+  percent     Decimal           @db.Decimal(5, 2)
+  charged_to  CommissionChargedTo @default(both)
+  created_at  DateTime          @default(now()) @db.Timestamptz
+
+  job         Job               @relation(fields: [job_id], references: [id], onDelete: Cascade)
+
+  @@index([job_id])
+  @@map("commissions")
+}
+
+model Audit {
+  id          String   @id @default(uuid()) @db.Uuid
+  user_id     String?  @db.Uuid
+  action      String
+  object_type String
+  object_id   String?  @db.Uuid
+  meta        Json     @default("{}")
+  created_at  DateTime @default(now()) @db.Timestamptz
+
+  user        User?    @relation(fields: [user_id], references: [id], onDelete: SetNull)
+
+  @@index([user_id])
+  @@index([object_type, object_id])
+  @@index([created_at(sort: Desc)])
+  @@map("audits")
+}
+
+model AdminReview {
+  id        String   @id @default(uuid()) @db.Uuid
+  verif_id  String   @db.Uuid
+  admin_id  String   @db.Uuid
+  action    String
+  notes     String?
+  created_at DateTime @default(now()) @db.Timestamptz
+
+  verification Verification @relation(fields: [verif_id], references: [id], onDelete: Cascade)
+
+  @@index([verif_id])
+  @@index([admin_id])
+  @@map("admin_reviews")
+}
+
+model Notification {
+  id        String   @id @default(uuid()) @db.Uuid
+  user_id   String   @db.Uuid
+  type      String
+  payload   Json     @default("{}")
+  read      Boolean  @default(false)
+  created_at DateTime @default(now()) @db.Timestamptz
+
+  user      User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([user_id, read])
+  @@index([created_at(sort: Desc)])
+  @@map("notifications")
+}
+
+model MissingTaskRequest {
+  id                  String    @id @default(uuid()) @db.Uuid
+  client_id           String    @db.Uuid
+  raw_text            String
+  parsed              Json      @default("{}")
+  suggested_category_id String? @db.Uuid
+  assigned            Boolean   @default(false)
+  created_at          DateTime  @default(now()) @db.Timestamptz
+
+  client              User      @relation(fields: [client_id], references: [id], onDelete: Cascade)
+
+  @@index([client_id])
+  @@index([assigned])
+  @@map("missing_task_requests")
+}
+
+model Badge {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String
+  criteria    Json     @default("{}")
+  awarded     Boolean  @default(false)
+  user_id     String?  @db.Uuid
+  assigned_at DateTime? @db.Timestamptz
+  created_at  DateTime @default(now()) @db.Timestamptz
+
+  user        User?    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("badges")
+}
+
+model PlatformConfig {
+  id          String   @id @default(uuid()) @db.Uuid
+  key         String   @unique
+  value       Json
+  description String?
+  updated_at  DateTime @updatedAt @db.Timestamptz
+  updated_by  String?  @db.Uuid
+
+  @@map("platform_config")
+}
