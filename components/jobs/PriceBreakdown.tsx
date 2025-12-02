@@ -94,7 +94,9 @@ export function PriceBreakdown({
           <div className="flex items-center justify-between text-slate-600">
             <span className="flex items-center gap-1">
               Escrow Fee ({breakdown.escrow_fee_percent?.toFixed(1)}%):
-              <Info className="w-3 h-3" title="Payment protection fee" />
+              <span title="Payment protection fee">
+                <Info className="w-3 h-3" />
+              </span>
             </span>
             <span className="font-medium">+₹{breakdown.escrow_fee.toFixed(2)}</span>
           </div>
@@ -104,7 +106,9 @@ export function PriceBreakdown({
           <div className="flex items-center justify-between text-slate-600">
             <span className="flex items-center gap-1">
               Platform Fee {breakdown.client_commission_percent ? `(${breakdown.client_commission_percent.toFixed(1)}%)` : '(₹49)'}:
-              <Info className="w-3 h-3" title="Added to client payment" />
+              <span title="Added to client payment">
+                <Info className="w-3 h-3" />
+              </span>
             </span>
             <span className="font-medium">+₹{breakdown.client_commission.toFixed(2)}</span>
           </div>
@@ -114,7 +118,9 @@ export function PriceBreakdown({
           <div className="flex items-center justify-between text-slate-600">
             <span className="flex items-center gap-1">
               Worker Fee ({breakdown.worker_commission_percent?.toFixed(1)}%):
-              <Info className="w-3 h-3" title="Deducted from worker payout" />
+              <span title="Deducted from worker payout">
+                <Info className="w-3 h-3" />
+              </span>
             </span>
             <span className="font-medium text-red-600">-₹{breakdown.worker_commission.toFixed(2)}</span>
           </div>

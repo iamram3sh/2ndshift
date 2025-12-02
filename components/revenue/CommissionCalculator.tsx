@@ -95,7 +95,9 @@ export function CommissionCalculator({
           <div className="flex items-center justify-between text-slate-600">
             <span className="flex items-center gap-1">
               Escrow Fee ({calculation.breakdown.escrow_fee_percent?.toFixed(1)}%):
-              <Info className="w-3 h-3" title="Payment protection fee" />
+              <span title="Payment protection fee">
+                <Info className="w-3 h-3" />
+              </span>
             </span>
             <span className="font-medium text-red-600">
               +₹{calculation.breakdown.escrow_fee.toFixed(2)}
@@ -107,7 +109,9 @@ export function CommissionCalculator({
           <div className="flex items-center justify-between text-slate-600">
             <span className="flex items-center gap-1">
               Client Commission {calculation.breakdown.client_commission_percent ? `(${calculation.breakdown.client_commission_percent.toFixed(1)}%)` : '(Flat ₹49)'}:
-              <Info className="w-3 h-3" title="Added to client payment" />
+              <span title="Added to client payment">
+                <Info className="w-3 h-3" />
+              </span>
             </span>
             <span className="font-medium text-red-600">
               +₹{calculation.breakdown.client_commission.toFixed(2)}
@@ -119,7 +123,9 @@ export function CommissionCalculator({
           <div className="flex items-center justify-between text-slate-600">
             <span className="flex items-center gap-1">
               Worker Commission ({calculation.breakdown.worker_commission_percent?.toFixed(1)}%):
-              <Info className="w-3 h-3" title="Deducted from worker payout" />
+              <span title="Deducted from worker payout">
+                <Info className="w-3 h-3" />
+              </span>
             </span>
             <span className="font-medium text-red-600">
               -₹{calculation.breakdown.worker_commission.toFixed(2)}
