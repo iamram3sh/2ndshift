@@ -1,7 +1,7 @@
 'use client'
 
 import { Suspense } from 'react'
-import { RoleContextProvider } from './RoleContextProvider'
+import { RoleContextProvider, RoleContext, defaultContextValue } from './RoleContextProvider'
 import { isRoleHomeEnabled } from '@/lib/role/feature-flag'
 
 /**
@@ -21,11 +21,14 @@ export function RoleProviderWrapper({ children }: { children: React.ReactNode })
   }
   
   // When enabled, wrap with Suspense for useSearchParams
-  const providerContent = <RoleContextProvider>{children}</RoleContextProvider>
-  
+  // Fallback provides default context without calling useSearchParams
   return (
-    <Suspense fallback={providerContent}>
-      {providerContent}
+    <Suspense fallback={
+      <RoleContext.Provider value={defaultContextValue}>
+        {children}
+      </RoleContext.Provider>
+    }>
+      <RoleContextProvider>{children}</RoleContextProvider>
     </Suspense>
   )
 }
