@@ -15,14 +15,14 @@ const deliverSchema = z.object({
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return requireRole('worker')(request, async (authReq: AuthenticatedRequest) => {
     try {
       const body = await request.json();
       const validated = deliverSchema.parse(body);
       const workerId = authReq.userId!;
-      const jobId = params.id;
+      const { id: jobId } = await params;
 
       // Verify assignment
       const { data: assignment, error: assignError } = await supabaseAdmin

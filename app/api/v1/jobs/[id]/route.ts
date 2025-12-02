@@ -8,10 +8,11 @@ import { supabaseAdmin } from '@/lib/supabase/admin';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return requireAuth(request, async (authReq: AuthenticatedRequest) => {
     try {
+      const { id } = await params;
       const { data: job, error } = await supabaseAdmin
         .from('jobs')
         .select(`
@@ -23,7 +24,7 @@ export async function GET(
           assignments(*, worker:users!assignments_worker_id_fkey(id, full_name, email)),
           escrow:escrows(*)
         `)
-        .eq('id', params.id)
+        .eq('id', id)
         .single();
 
       if (error || !job) {

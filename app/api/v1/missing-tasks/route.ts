@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       };
 
       // Create missing task request
-      const { data: request, error } = await supabaseAdmin
+      const { data: taskRequest, error } = await supabaseAdmin
         .from('missing_task_requests')
         .insert({
           client_id: authReq.userId,
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
       // TODO: Notify admin about new missing task request
 
       return NextResponse.json({
-        request,
+        request: taskRequest,
         message: 'LLM classification stub - replace with actual LLM integration (OpenAI, Anthropic, etc.)',
       }, { status: 201 });
     } catch (error: any) {

@@ -14,14 +14,14 @@ const acceptSchema = z.object({
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return requireRole('client')(request, async (authReq: AuthenticatedRequest) => {
     try {
       const body = await request.json();
       const validated = acceptSchema.parse(body);
       const clientId = authReq.userId!;
-      const jobId = params.id;
+      const { id: jobId } = await params;
 
       // Get job and verify ownership
       const { data: job, error: jobError } = await supabaseAdmin

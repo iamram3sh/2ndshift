@@ -8,13 +8,14 @@ import { supabaseAdmin } from '@/lib/supabase/admin';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const { data: microtasks, error } = await supabaseAdmin
       .from('microtasks')
       .select('*')
-      .eq('category_id', params.id)
+      .eq('category_id', id)
       .order('title');
 
     if (error) {
