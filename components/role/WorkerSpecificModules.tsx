@@ -7,10 +7,9 @@ import {
   Clock, IndianRupee, Wallet, Target, FileText,
   Sparkles, BarChart3, Timer, Calendar
 } from 'lucide-react'
-import { withRoleParam } from '@/lib/utils/roleAwareLinks'
+import { withRoleParam, type UserRole } from '@/lib/utils/roleAwareLinks'
 import { trackRoleCTA } from '@/lib/analytics/roleEvents'
 import { useState } from 'react'
-import type { UserRole } from '@/components/role/RoleContextProvider'
 
 interface WorkerSpecificModulesProps {
   role?: UserRole | null

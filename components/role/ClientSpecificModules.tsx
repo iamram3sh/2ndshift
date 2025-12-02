@@ -7,9 +7,8 @@ import {
   CreditCard, Sparkles, BarChart3, TrendingUp, 
   Clock, IndianRupee, Award, Layers
 } from 'lucide-react'
-import { withRoleParam } from '@/lib/utils/roleAwareLinks'
+import { withRoleParam, type UserRole } from '@/lib/utils/roleAwareLinks'
 import { trackRoleCTA } from '@/lib/analytics/roleEvents'
-import type { UserRole } from '@/components/role/RoleContextProvider'
 
 interface ClientSpecificModulesProps {
   role?: UserRole | null
