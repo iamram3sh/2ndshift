@@ -20,8 +20,8 @@ export default function CompliancePage() {
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
-              <Link href="/about" className="text-slate-600 hover:text-indigo-600 font-medium transition">About</Link>
-              <Link href="/contact" className="text-slate-600 hover:text-indigo-600 font-medium transition">Contact</Link>
+              <Link href="/about" className="text-[#333] hover:text-indigo-600 font-medium transition">About</Link>
+              <Link href="/contact" className="text-[#333] hover:text-indigo-600 font-medium transition">Contact</Link>
             </div>
 
             <Link href="/register" className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition">
@@ -37,10 +37,10 @@ export default function CompliancePage() {
           <div className="w-20 h-20 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <FileCheck className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 mb-6">
+          <h1 className="text-5xl sm:text-6xl font-bold text-[#111] mb-6">
             Compliance Framework
           </h1>
-          <p className="text-xl text-slate-600 leading-relaxed">
+          <p className="text-xl text-[#333] leading-relaxed">
             Our commitment to legal and regulatory compliance
           </p>
         </div>
@@ -52,18 +52,18 @@ export default function CompliancePage() {
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 hover:border-indigo-600 transition">
               <Award className="w-12 h-12 text-indigo-600 mb-4" />
-              <h3 className="text-xl font-bold text-slate-900 mb-3">100% Compliant</h3>
-              <p className="text-slate-600">Full compliance with Indian laws and regulations</p>
+              <h3 className="text-xl font-bold text-[#111] mb-3">100% Compliant</h3>
+              <p className="text-[#333]">Full compliance with Indian laws and regulations</p>
             </div>
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 hover:border-indigo-600 transition">
               <Shield className="w-12 h-12 text-indigo-600 mb-4" />
-              <h3 className="text-xl font-bold text-slate-900 mb-3">Data Protected</h3>
-              <p className="text-slate-600">ISO 27001 certified security practices</p>
+              <h3 className="text-xl font-bold text-[#111] mb-3">Data Protected</h3>
+              <p className="text-[#333]">ISO 27001 certified security practices</p>
             </div>
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 hover:border-indigo-600 transition">
               <Building className="w-12 h-12 text-indigo-600 mb-4" />
-              <h3 className="text-xl font-bold text-slate-900 mb-3">Registered Entity</h3>
-              <p className="text-slate-600">Incorporated under Companies Act 2013</p>
+              <h3 className="text-xl font-bold text-[#111] mb-3">Registered Entity</h3>
+              <p className="text-[#333]">Incorporated under Companies Act 2013</p>
             </div>
           </div>
         </div>
@@ -75,11 +75,11 @@ export default function CompliancePage() {
           
           {/* Regulatory Compliance */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-8">1. Regulatory Compliance</h2>
+            <h2 className="text-3xl font-bold text-[#111] mb-8">1. Regulatory Compliance</h2>
             
             <div className="space-y-6">
               <div className="bg-slate-50 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-[#111] mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-green-600" />
                   Companies Act, 2013
                 </h3>
@@ -93,7 +93,7 @@ export default function CompliancePage() {
               </div>
 
               <div className="bg-slate-50 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-[#111] mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-green-600" />
                   Information Technology Act, 2000
                 </h3>
@@ -108,7 +108,7 @@ export default function CompliancePage() {
               </div>
 
               <div className="bg-slate-50 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-[#111] mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-green-600" />
                   Income Tax Act, 1961
                 </h3>
@@ -124,7 +124,7 @@ export default function CompliancePage() {
               </div>
 
               <div className="bg-slate-50 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-[#111] mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-green-600" />
                   Goods and Services Tax (GST) Act, 2017
                 </h3>
@@ -139,7 +139,7 @@ export default function CompliancePage() {
               </div>
 
               <div className="bg-slate-50 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-[#111] mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-green-600" />
                   Payment and Settlement Systems Act, 2007
                 </h3>
@@ -153,7 +153,7 @@ export default function CompliancePage() {
               </div>
 
               <div className="bg-slate-50 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-[#111] mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-green-600" />
                   Prevention of Money Laundering Act (PMLA), 2002
                 </h3>
@@ -167,7 +167,7 @@ export default function CompliancePage() {
               </div>
 
               <div className="bg-slate-50 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-[#111] mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-green-600" />
                   Indian Contract Act, 1872
                 </h3>
@@ -181,7 +181,7 @@ export default function CompliancePage() {
               </div>
 
               <div className="bg-slate-50 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-[#111] mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-green-600" />
                   Aadhaar Act, 2016
                 </h3>
@@ -198,11 +198,11 @@ export default function CompliancePage() {
 
           {/* Data Protection */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-8">2. Data Protection & Privacy</h2>
+            <h2 className="text-3xl font-bold text-[#111] mb-8">2. Data Protection & Privacy</h2>
             
             <div className="space-y-6">
               <div className="bg-slate-50 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-[#111] mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-green-600" />
                   SPDI Rules, 2011
                 </h3>
@@ -217,7 +217,7 @@ export default function CompliancePage() {
               </div>
 
               <div className="bg-slate-50 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-[#111] mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-green-600" />
                   ISO 27001:2013 Information Security
                 </h3>
@@ -232,7 +232,7 @@ export default function CompliancePage() {
               </div>
 
               <div className="bg-slate-50 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-[#111] mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-green-600" />
                   PCI-DSS Compliance
                 </h3>
@@ -249,11 +249,11 @@ export default function CompliancePage() {
 
           {/* Labor & Employment */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-8">3. Labor & Employment Compliance</h2>
+            <h2 className="text-3xl font-bold text-[#111] mb-8">3. Labor & Employment Compliance</h2>
             
             <div className="space-y-6">
               <div className="bg-slate-50 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-[#111] mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-green-600" />
                   Platform Model Clarification
                 </h3>
@@ -268,7 +268,7 @@ export default function CompliancePage() {
               </div>
 
               <div className="bg-slate-50 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-[#111] mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-green-600" />
                   Anti-Discrimination & Equal Opportunity
                 </h3>
@@ -285,11 +285,11 @@ export default function CompliancePage() {
 
           {/* Intellectual Property */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-8">4. Intellectual Property Compliance</h2>
+            <h2 className="text-3xl font-bold text-[#111] mb-8">4. Intellectual Property Compliance</h2>
             
             <div className="space-y-6">
               <div className="bg-slate-50 p-6 rounded-xl">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-[#111] mb-4 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6 text-green-600" />
                   Copyright & Trademark
                 </h3>
@@ -306,11 +306,11 @@ export default function CompliancePage() {
 
           {/* Audit & Certification */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-8">5. Audits & Certifications</h2>
+            <h2 className="text-3xl font-bold text-[#111] mb-8">5. Audits & Certifications</h2>
             
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-green-50 border-2 border-green-200 p-6 rounded-xl">
-                <h3 className="font-bold text-slate-900 mb-3">Regular Audits</h3>
+                <h3 className="font-bold text-[#111] mb-3">Regular Audits</h3>
                 <ul className="space-y-2 text-sm text-slate-700">
                   <li>• Annual statutory audit by chartered accountants</li>
                   <li>• Quarterly internal compliance reviews</li>
@@ -320,7 +320,7 @@ export default function CompliancePage() {
               </div>
 
               <div className="bg-blue-50 border-2 border-blue-200 p-6 rounded-xl">
-                <h3 className="font-bold text-slate-900 mb-3">Certifications</h3>
+                <h3 className="font-bold text-[#111] mb-3">Certifications</h3>
                 <ul className="space-y-2 text-sm text-slate-700">
                   <li>• ISO 27001:2013 (Information Security)</li>
                   <li>• PCI-DSS Level 1 (Payment Security)</li>
@@ -333,7 +333,7 @@ export default function CompliancePage() {
 
           {/* Grievance Redressal */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-8">6. Grievance Redressal Mechanism</h2>
+            <h2 className="text-3xl font-bold text-[#111] mb-8">6. Grievance Redressal Mechanism</h2>
             
             <div className="bg-slate-50 p-8 rounded-xl">
               <p className="text-slate-700 mb-6">
@@ -342,7 +342,7 @@ export default function CompliancePage() {
               
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-2">Grievance Officer</h4>
+                  <h4 className="font-semibold text-[#111] mb-2">Grievance Officer</h4>
                   <p className="text-slate-700">Name: [To be designated]</p>
                   <p className="text-slate-700">Email: grievance@2ndshift.in</p>
                   <p className="text-slate-700">Phone: +91 80712 34567</p>
@@ -350,7 +350,7 @@ export default function CompliancePage() {
                 </div>
 
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-2">Response Timeline</h4>
+                  <h4 className="font-semibold text-[#111] mb-2">Response Timeline</h4>
                   <ul className="list-disc pl-6 space-y-1 text-slate-700">
                     <li>Acknowledgment within 24 hours</li>
                     <li>Resolution within 15 days</li>
@@ -363,7 +363,7 @@ export default function CompliancePage() {
 
           {/* Transparency Report */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-8">7. Transparency Reporting</h2>
+            <h2 className="text-3xl font-bold text-[#111] mb-8">7. Transparency Reporting</h2>
             
             <div className="bg-slate-50 p-6 rounded-xl">
               <p className="text-slate-700 mb-4">
@@ -402,22 +402,22 @@ export default function CompliancePage() {
       {/* Related Links */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-slate-50">
         <div className="max-w-4xl mx-auto">
-          <h3 className="text-2xl font-bold text-slate-900 mb-8 text-center">Related Documents</h3>
+          <h3 className="text-2xl font-bold text-[#111] mb-8 text-center">Related Documents</h3>
           <div className="grid md:grid-cols-3 gap-6">
             <Link href="/terms" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
               <FileCheck className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-slate-900 mb-2 group-hover:text-indigo-600">Terms of Service</h4>
-              <p className="text-sm text-slate-600">Platform usage terms</p>
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Terms of Service</h4>
+              <p className="text-sm text-[#333]">Platform usage terms</p>
             </Link>
             <Link href="/privacy" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
               <Shield className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-slate-900 mb-2 group-hover:text-indigo-600">Privacy Policy</h4>
-              <p className="text-sm text-slate-600">Data protection practices</p>
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Privacy Policy</h4>
+              <p className="text-sm text-[#333]">Data protection practices</p>
             </Link>
             <Link href="/security" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
               <Award className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-slate-900 mb-2 group-hover:text-indigo-600">Security</h4>
-              <p className="text-sm text-slate-600">Platform security measures</p>
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Security</h4>
+              <p className="text-sm text-[#333]">Platform security measures</p>
             </Link>
           </div>
         </div>

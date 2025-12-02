@@ -20,8 +20,8 @@ export default function PrivacyPolicyPage() {
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
-              <Link href="/about" className="text-slate-600 hover:text-indigo-600 font-medium transition">About</Link>
-              <Link href="/contact" className="text-slate-600 hover:text-indigo-600 font-medium transition">Contact</Link>
+              <Link href="/about" className="text-[#333] hover:text-indigo-600 font-medium transition">About</Link>
+              <Link href="/contact" className="text-[#333] hover:text-indigo-600 font-medium transition">Contact</Link>
             </div>
 
             <Link href="/register" className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition">
@@ -37,10 +37,10 @@ export default function PrivacyPolicyPage() {
           <div className="w-20 h-20 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <Shield className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 mb-6">
+          <h1 className="text-5xl sm:text-6xl font-bold text-[#111] mb-6">
             Privacy Policy
           </h1>
-          <p className="text-xl text-slate-600 leading-relaxed">
+          <p className="text-xl text-[#333] leading-relaxed">
             Last Updated: January 15, 2025
           </p>
         </div>
@@ -53,7 +53,7 @@ export default function PrivacyPolicyPage() {
             
             {/* Introduction */}
             <div className="bg-indigo-50 border-l-4 border-indigo-600 p-6 rounded-r-xl mb-12">
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Your Privacy Matters</h3>
+              <h3 className="text-xl font-bold text-[#111] mb-2">Your Privacy Matters</h3>
               <p className="text-slate-700 leading-relaxed">
                 At 2ndShift, we are committed to protecting your privacy and personal information. This Privacy Policy explains how we collect, use, store, and protect your data when you use our Platform.
               </p>
@@ -61,13 +61,13 @@ export default function PrivacyPolicyPage() {
 
             {/* 1. Information We Collect */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+              <h2 className="text-3xl font-bold text-[#111] mb-6 flex items-center gap-3">
                 <Database className="w-8 h-8 text-indigo-600" />
                 1. Information We Collect
               </h2>
               
               <div className="space-y-6 text-slate-700">
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">1.1 Personal Information</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">1.1 Personal Information</h3>
                 <p>We collect the following personal information when you register and use our Platform:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li><strong>Identity Information:</strong> Name, date of birth, gender, profile photo</li>
@@ -78,7 +78,7 @@ export default function PrivacyPolicyPage() {
                   <li><strong>Business Information:</strong> Company name, GST number, business registration details (for corporate clients)</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">1.2 Usage Data</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">1.2 Usage Data</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Login times, IP addresses, device information</li>
                   <li>Browser type, operating system, and version</li>
@@ -88,7 +88,7 @@ export default function PrivacyPolicyPage() {
                   <li>Messages and communications (for dispute resolution and quality assurance)</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">1.3 Transaction Data</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">1.3 Transaction Data</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Project details and contracts</li>
                   <li>Payment amounts, dates, and methods</li>
@@ -97,7 +97,7 @@ export default function PrivacyPolicyPage() {
                   <li>Refund and dispute records</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">1.4 Information from Third Parties</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">1.4 Information from Third Parties</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>KYC verification data from UIDAI (Aadhaar)</li>
                   <li>PAN verification from Income Tax Department</li>
@@ -105,7 +105,7 @@ export default function PrivacyPolicyPage() {
                   <li>Social login information (Google, LinkedIn - if used)</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">1.5 Cookies and Tracking Technologies</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">1.5 Cookies and Tracking Technologies</h3>
                 <p>We use cookies, web beacons, and similar technologies to:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Maintain your login session</li>
@@ -119,13 +119,13 @@ export default function PrivacyPolicyPage() {
 
             {/* 2. How We Use Your Information */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+              <h2 className="text-3xl font-bold text-[#111] mb-6 flex items-center gap-3">
                 <Eye className="w-8 h-8 text-indigo-600" />
                 2. How We Use Your Information
               </h2>
               
               <div className="space-y-6 text-slate-700">
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">2.1 Platform Operations</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">2.1 Platform Operations</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Create and manage your account</li>
                   <li>Verify your identity and credentials</li>
@@ -135,7 +135,7 @@ export default function PrivacyPolicyPage() {
                   <li>Provide customer support</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">2.2 Legal and Compliance</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">2.2 Legal and Compliance</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Comply with KYC/AML regulations</li>
                   <li>Deduct and remit TDS as per Income Tax Act</li>
@@ -145,7 +145,7 @@ export default function PrivacyPolicyPage() {
                   <li>Prevent fraud, money laundering, and illegal activities</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">2.3 Service Improvement</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">2.3 Service Improvement</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Analyze usage patterns and user behavior</li>
                   <li>Improve Platform features and functionality</li>
@@ -154,7 +154,7 @@ export default function PrivacyPolicyPage() {
                   <li>Conduct research and analytics</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">2.4 Communication</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">2.4 Communication</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Send transactional emails (payment confirmations, contract updates)</li>
                   <li>Notify about project opportunities (Workers)</li>
@@ -163,7 +163,7 @@ export default function PrivacyPolicyPage() {
                   <li>Request feedback and reviews</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">2.5 Security and Fraud Prevention</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">2.5 Security and Fraud Prevention</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Detect and prevent fraudulent activities</li>
                   <li>Monitor for suspicious transactions</li>
@@ -176,10 +176,10 @@ export default function PrivacyPolicyPage() {
 
             {/* 3. How We Share Your Information */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">3. Information Sharing and Disclosure</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">3. Information Sharing and Disclosure</h2>
               
               <div className="space-y-6 text-slate-700">
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">3.1 With Other Users</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">3.1 With Other Users</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li><strong>Workers:</strong> Profile information, skills, ratings, portfolio (visible to Clients)</li>
                   <li><strong>Clients:</strong> Company name, project details, ratings (visible to Workers)</li>
@@ -187,7 +187,7 @@ export default function PrivacyPolicyPage() {
                   <li>You control visibility settings for your profile information</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">3.2 With Service Providers</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">3.2 With Service Providers</h3>
                 <p>We share data with trusted third-party service providers who help us operate the Platform:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li><strong>Payment Processors:</strong> Razorpay (for payment processing)</li>
@@ -199,7 +199,7 @@ export default function PrivacyPolicyPage() {
                 </ul>
                 <p className="mt-4">All service providers are bound by confidentiality agreements and data protection obligations.</p>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">3.3 Legal Requirements</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">3.3 Legal Requirements</h3>
                 <p>We may disclose your information when required by law:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>To comply with legal processes (subpoenas, court orders)</li>
@@ -209,30 +209,30 @@ export default function PrivacyPolicyPage() {
                   <li>To enforce our Terms of Service</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">3.4 Business Transfers</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">3.4 Business Transfers</h3>
                 <p>In the event of merger, acquisition, or sale of assets, your information may be transferred to the new entity. We will notify you before your information is transferred and becomes subject to a different Privacy Policy.</p>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">3.5 With Your Consent</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">3.5 With Your Consent</h3>
                 <p>We may share information with third parties when you explicitly consent to such sharing.</p>
               </div>
             </section>
 
             {/* 4. Data Storage and Security */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+              <h2 className="text-3xl font-bold text-[#111] mb-6 flex items-center gap-3">
                 <Lock className="w-8 h-8 text-indigo-600" />
                 4. Data Storage and Security
               </h2>
               
               <div className="space-y-6 text-slate-700">
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">4.1 Data Location</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">4.1 Data Location</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Your data is primarily stored on servers located in India</li>
                   <li>Some data may be processed by service providers outside India (with appropriate safeguards)</li>
                   <li>We comply with cross-border data transfer regulations</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">4.2 Security Measures</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">4.2 Security Measures</h3>
                 <p>We implement industry-standard security practices:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li><strong>Encryption:</strong> TLS/SSL for data in transit, AES-256 for data at rest</li>
@@ -244,7 +244,7 @@ export default function PrivacyPolicyPage() {
                   <li><strong>Employee Training:</strong> Regular security awareness training</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">4.3 Data Retention</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">4.3 Data Retention</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li><strong>Active Accounts:</strong> Data retained as long as account is active</li>
                   <li><strong>Inactive Accounts:</strong> Data retained for 3 years after last activity</li>
@@ -253,7 +253,7 @@ export default function PrivacyPolicyPage() {
                   <li><strong>Deleted Accounts:</strong> Data deleted within 90 days (except legally required records)</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">4.4 Sensitive Data Protection</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">4.4 Sensitive Data Protection</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Aadhaar numbers encrypted and masked (showing only last 4 digits)</li>
                   <li>Payment card data never stored (tokenized by payment processor)</li>
@@ -265,13 +265,13 @@ export default function PrivacyPolicyPage() {
 
             {/* 5. Your Rights and Choices */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+              <h2 className="text-3xl font-bold text-[#111] mb-6 flex items-center gap-3">
                 <UserCheck className="w-8 h-8 text-indigo-600" />
                 5. Your Rights and Choices
               </h2>
               
               <div className="space-y-6 text-slate-700">
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">5.1 Access and Correction</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">5.1 Access and Correction</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Access your personal information through your account dashboard</li>
                   <li>Update or correct your information at any time</li>
@@ -279,7 +279,7 @@ export default function PrivacyPolicyPage() {
                   <li>Request a copy of all data we hold about you</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">5.2 Data Deletion</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">5.2 Data Deletion</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Request deletion of your account and personal data</li>
                   <li>We will delete data within 90 days (except legally required records)</li>
@@ -287,21 +287,21 @@ export default function PrivacyPolicyPage() {
                   <li>Financial records retained for 7 years as per law</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">5.3 Marketing Communications</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">5.3 Marketing Communications</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Opt out of promotional emails via unsubscribe link</li>
                   <li>Manage notification preferences in account settings</li>
                   <li>You cannot opt out of transactional communications (payment confirmations, security alerts)</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">5.4 Cookie Management</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">5.4 Cookie Management</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Control cookies through browser settings</li>
                   <li>Disable non-essential cookies via Cookie Consent Manager</li>
                   <li>Note: Disabling cookies may affect Platform functionality</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">5.5 Profile Visibility</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">5.5 Profile Visibility</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Control who can see your profile (public, clients only, private)</li>
                   <li>Hide specific information from your profile</li>
@@ -313,7 +313,7 @@ export default function PrivacyPolicyPage() {
 
             {/* 6. Children's Privacy */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">6. Children's Privacy</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">6. Children's Privacy</h2>
               <div className="space-y-4 text-slate-700">
                 <p>
                   2ndShift is not intended for individuals under 18 years of age. We do not knowingly collect personal information from children. If we become aware that a child has provided us with personal information, we will take steps to delete such information.
@@ -326,7 +326,7 @@ export default function PrivacyPolicyPage() {
 
             {/* 7. Third-Party Links */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">7. Third-Party Links and Services</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">7. Third-Party Links and Services</h2>
               <div className="space-y-4 text-slate-700">
                 <p>
                   Our Platform may contain links to third-party websites or services. We are not responsible for the privacy practices of these third parties. We encourage you to review their privacy policies before providing any information.
@@ -343,7 +343,7 @@ export default function PrivacyPolicyPage() {
 
             {/* 8. International Users */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">8. International Users</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">8. International Users</h2>
               <div className="space-y-4 text-slate-700">
                 <p>
                   2ndShift primarily operates in India. If you access our Platform from outside India, your information may be transferred to, stored, and processed in India. By using our Platform, you consent to such transfer.
@@ -356,7 +356,7 @@ export default function PrivacyPolicyPage() {
 
             {/* 9. Legal Basis for Processing */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">9. Legal Basis for Processing (IT Act 2000 & SPDI Rules)</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">9. Legal Basis for Processing (IT Act 2000 & SPDI Rules)</h2>
               <div className="space-y-4 text-slate-700">
                 <p>We process your personal information under the following legal bases:</p>
                 <ul className="list-disc pl-6 space-y-2">
@@ -370,7 +370,7 @@ export default function PrivacyPolicyPage() {
 
             {/* 10. Data Breach Notification */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">10. Data Breach Notification</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">10. Data Breach Notification</h2>
               <div className="space-y-4 text-slate-700">
                 <p>
                   In the event of a data breach that may compromise your personal information, we will:
@@ -387,7 +387,7 @@ export default function PrivacyPolicyPage() {
 
             {/* 11. Changes to Privacy Policy */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">11. Changes to This Privacy Policy</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">11. Changes to This Privacy Policy</h2>
               <div className="space-y-4 text-slate-700">
                 <p>
                   We may update this Privacy Policy from time to time to reflect changes in our practices, technology, legal requirements, or other factors.
@@ -403,7 +403,7 @@ export default function PrivacyPolicyPage() {
 
             {/* Contact Information */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">12. Contact Us</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">12. Contact Us</h2>
               <div className="space-y-4 text-slate-700">
                 <p>If you have questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:</p>
                 
@@ -445,22 +445,22 @@ export default function PrivacyPolicyPage() {
       {/* Related Links */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-slate-50">
         <div className="max-w-4xl mx-auto">
-          <h3 className="text-2xl font-bold text-slate-900 mb-8 text-center">Related Documents</h3>
+          <h3 className="text-2xl font-bold text-[#111] mb-8 text-center">Related Documents</h3>
           <div className="grid md:grid-cols-3 gap-6">
             <Link href="/terms" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
               <Shield className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-slate-900 mb-2 group-hover:text-indigo-600">Terms of Service</h4>
-              <p className="text-sm text-slate-600">Platform usage terms and conditions</p>
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Terms of Service</h4>
+              <p className="text-sm text-[#333]">Platform usage terms and conditions</p>
             </Link>
             <Link href="/compliance" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
               <Lock className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-slate-900 mb-2 group-hover:text-indigo-600">Compliance</h4>
-              <p className="text-sm text-slate-600">Our regulatory compliance framework</p>
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Compliance</h4>
+              <p className="text-sm text-[#333]">Our regulatory compliance framework</p>
             </Link>
             <Link href="/security" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
               <Database className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-slate-900 mb-2 group-hover:text-indigo-600">Security</h4>
-              <p className="text-sm text-slate-600">Platform security measures</p>
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Security</h4>
+              <p className="text-sm text-[#333]">Platform security measures</p>
             </Link>
           </div>
         </div>

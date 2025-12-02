@@ -42,9 +42,9 @@ export default function ContactPage() {
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
-              <Link href="/about" className="text-slate-600 hover:text-indigo-600 font-medium transition">About</Link>
-              <Link href="/pricing" className="text-slate-600 hover:text-indigo-600 font-medium transition">Pricing</Link>
-              <Link href="/faq" className="text-slate-600 hover:text-indigo-600 font-medium transition">FAQ</Link>
+              <Link href="/about" className="text-[#333] hover:text-indigo-600 font-medium transition">About</Link>
+              <Link href="/pricing" className="text-[#333] hover:text-indigo-600 font-medium transition">Pricing</Link>
+              <Link href="/faq" className="text-[#333] hover:text-indigo-600 font-medium transition">FAQ</Link>
             </div>
 
             <Link href="/register" className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition">
@@ -57,10 +57,10 @@ export default function ContactPage() {
       {/* Hero */}
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-indigo-50 to-purple-50">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 mb-6">
+          <h1 className="text-5xl sm:text-6xl font-bold text-[#111] mb-6">
             Get in Touch
           </h1>
-          <p className="text-xl text-slate-600 leading-relaxed">
+          <p className="text-xl text-[#333] leading-relaxed">
             Have questions? We&apos;re here to help. Reach out to our team.
           </p>
         </div>
@@ -72,7 +72,7 @@ export default function ContactPage() {
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Info */}
             <div>
-              <h2 className="text-3xl font-bold text-slate-900 mb-8">Contact Information</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-8">Contact Information</h2>
               
               <div className="space-y-6 mb-12">
                 <div className="flex items-start gap-4">
@@ -80,7 +80,7 @@ export default function ContactPage() {
                     <Mail className="w-6 h-6 text-indigo-600" />
                   </div>
                   <div>
-                    <div className="font-semibold text-slate-900 mb-1">Email Us</div>
+                    <div className="font-semibold text-[#111] mb-1">Email Us</div>
                     <a href="mailto:support@2ndshift.in" className="text-indigo-600 hover:text-indigo-700">
                       support@2ndshift.in
                     </a>
@@ -93,7 +93,7 @@ export default function ContactPage() {
                     <Phone className="w-6 h-6 text-green-600" />
                   </div>
                   <div>
-                    <div className="font-semibold text-slate-900 mb-1">Call Us</div>
+                    <div className="font-semibold text-[#111] mb-1">Call Us</div>
                     <a href="tel:+918071234567" className="text-indigo-600 hover:text-indigo-700">
                       +91 80712 34567
                     </a>
@@ -106,8 +106,8 @@ export default function ContactPage() {
                     <MapPin className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
-                    <div className="font-semibold text-slate-900 mb-1">Visit Us</div>
-                    <p className="text-slate-600">
+                    <div className="font-semibold text-[#111] mb-1">Visit Us</div>
+                    <p className="text-[#333]">
                       2ndShift India Private Limited
                       <br />
                       Hyderabad, Telangana
@@ -119,19 +119,19 @@ export default function ContactPage() {
               </div>
 
               <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl">
-                <h3 className="font-bold text-slate-900 mb-4">Quick Response Times</h3>
+                <h3 className="font-bold text-[#111] mb-4">Quick Response Times</h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-600">Email Support</span>
-                    <span className="font-semibold text-slate-900">&lt; 24 hours</span>
+                    <span className="text-[#333]">Email Support</span>
+                    <span className="font-semibold text-[#111]">&lt; 24 hours</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-600">Phone Support</span>
-                    <span className="font-semibold text-slate-900">Instant</span>
+                    <span className="text-[#333]">Phone Support</span>
+                    <span className="font-semibold text-[#111]">Instant</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-600">Enterprise Queries</span>
-                    <span className="font-semibold text-slate-900">&lt; 4 hours</span>
+                    <span className="text-[#333]">Enterprise Queries</span>
+                    <span className="font-semibold text-[#111]">&lt; 4 hours</span>
                   </div>
                 </div>
               </div>
@@ -139,7 +139,7 @@ export default function ContactPage() {
 
             {/* Contact Form */}
             <div className="bg-white border-2 border-slate-200 rounded-3xl p-8 shadow-lg">
-              <h2 className="text-2xl font-bold text-slate-900 mb-6">Send us a Message</h2>
+              <h2 className="text-2xl font-bold text-[#111] mb-6">Send us a Message</h2>
 
               {submitted && (
                 <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl flex items-start gap-3 animate-in slide-in-from-top">

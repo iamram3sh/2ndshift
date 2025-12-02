@@ -181,26 +181,26 @@ export default function FAQPage() {
               <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
                 <Layers className="w-4 h-4 text-white" />
               </div>
-              <span className="text-lg font-semibold text-slate-900">2ndShift</span>
+              <span className="text-lg font-semibold text-[#111]">2ndShift</span>
             </Link>
             
             <div className="hidden lg:flex items-center gap-1">
-              <Link href="/jobs" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/jobs" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111]">
                 Browse Jobs
               </Link>
-              <Link href="/how-it-works" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/how-it-works" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111]">
                 How It Works
               </Link>
-              <Link href="/pricing" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/pricing" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111]">
                 Pricing
               </Link>
-              <Link href="/faq" className="px-3 py-2 text-sm font-medium text-slate-900 bg-slate-100 rounded-lg">
+              <Link href="/faq" className="px-3 py-2 text-sm font-medium text-[#111] bg-slate-100 rounded-lg">
                 FAQ
               </Link>
             </div>
 
             <div className="flex items-center gap-3">
-              <Link href="/login" className="hidden sm:block px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/login" className="hidden sm:block px-4 py-2 text-sm font-medium text-[#333] hover:text-[#111]">
                 Sign in
               </Link>
               <Link 
@@ -217,10 +217,10 @@ export default function FAQPage() {
       {/* Hero */}
       <section className="py-16 lg:py-20 bg-slate-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl lg:text-4xl font-semibold text-slate-900 mb-4">
+          <h1 className="text-3xl lg:text-4xl font-semibold text-[#111] mb-4">
             Frequently Asked Questions
           </h1>
-          <p className="text-lg text-slate-600 mb-8">
+          <p className="text-lg text-[#333] mb-8">
             Everything you need to know about 2ndShift. Can&apos;t find your answer? Contact us.
           </p>
 
@@ -248,7 +248,7 @@ export default function FAQPage() {
             {!searchQuery && (
               <aside className="lg:w-64 flex-shrink-0">
                 <div className="sticky top-24">
-                  <h3 className="text-sm font-semibold text-slate-900 mb-4">Categories</h3>
+                  <h3 className="text-sm font-semibold text-[#111] mb-4">Categories</h3>
                   <div className="space-y-1">
                     {FAQ_CATEGORIES.map((cat) => (
                       <button
@@ -260,7 +260,7 @@ export default function FAQPage() {
                         className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${
                           activeCategory === cat.id
                             ? 'bg-slate-900 text-white'
-                            : 'text-slate-600 hover:bg-slate-50'
+                            : 'text-[#333] hover:bg-slate-50'
                         }`}
                       >
                         <cat.icon className="w-4 h-4" />
@@ -276,7 +276,7 @@ export default function FAQPage() {
             <main className="flex-1 max-w-3xl">
               {searchQuery && (
                 <div className="mb-6">
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-[#333]">
                     Found {filteredFaqs.length} results for &quot;{searchQuery}&quot;
                   </p>
                 </div>
@@ -292,13 +292,13 @@ export default function FAQPage() {
                       onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
                       className="w-full flex items-center justify-between p-5 text-left"
                     >
-                      <span className="font-medium text-slate-900 pr-4">{faq.q}</span>
+                      <span className="font-medium text-[#111] pr-4">{faq.q}</span>
                       <ChevronDown className={`w-5 h-5 text-slate-400 flex-shrink-0 transition-transform ${
                         expandedFaq === i ? 'rotate-180' : ''
                       }`} />
                     </button>
                     {expandedFaq === i && (
-                      <div className="px-5 pb-5 text-slate-600 leading-relaxed">
+                      <div className="px-5 pb-5 text-[#333] leading-relaxed">
                         {faq.a}
                       </div>
                     )}
@@ -309,8 +309,8 @@ export default function FAQPage() {
               {filteredFaqs.length === 0 && (
                 <div className="text-center py-12">
                   <HelpCircle className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                  <p className="text-slate-600">No matching questions found.</p>
-                  <p className="text-sm text-slate-500 mt-2">Try a different search or browse by category.</p>
+                  <p className="text-[#333]">No matching questions found.</p>
+                  <p className="text-sm text-[#333] mt-2">Try a different search or browse by category.</p>
                 </div>
               )}
             </main>
@@ -322,12 +322,12 @@ export default function FAQPage() {
       <section className="py-16 lg:py-20 bg-slate-50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="w-16 h-16 bg-slate-200 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <MessageSquare className="w-8 h-8 text-slate-600" />
+            <MessageSquare className="w-8 h-8 text-[#333]" />
           </div>
-          <h2 className="text-2xl lg:text-3xl font-semibold text-slate-900 mb-4">
+          <h2 className="text-2xl lg:text-3xl font-semibold text-[#111] mb-4">
             Still have questions?
           </h2>
-          <p className="text-slate-600 mb-8">
+          <p className="text-[#333] mb-8">
             Our support team is here to help. Reach out and we&apos;ll get back to you within 24 hours.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -340,7 +340,7 @@ export default function FAQPage() {
             </Link>
             <a
               href="mailto:support@2ndshift.com"
-              className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-6 py-3 rounded-xl font-medium border border-slate-200 hover:bg-slate-50 transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-6 py-3 rounded-xl font-medium border border-slate-200 hover:bg-slate-50 transition-all"
             >
               Email Us
             </a>
@@ -356,15 +356,15 @@ export default function FAQPage() {
               <div className="w-7 h-7 bg-slate-900 rounded-lg flex items-center justify-center">
                 <Layers className="w-3.5 h-3.5 text-white" />
               </div>
-              <span className="font-semibold text-slate-900">2ndShift</span>
+              <span className="font-semibold text-[#111]">2ndShift</span>
             </div>
-            <div className="flex items-center gap-6 text-sm text-slate-600">
-              <Link href="/about" className="hover:text-slate-900">About</Link>
-              <Link href="/terms" className="hover:text-slate-900">Terms</Link>
-              <Link href="/privacy" className="hover:text-slate-900">Privacy</Link>
-              <Link href="/contact" className="hover:text-slate-900">Contact</Link>
+            <div className="flex items-center gap-6 text-sm text-[#333]">
+              <Link href="/about" className="hover:text-[#111]">About</Link>
+              <Link href="/terms" className="hover:text-[#111]">Terms</Link>
+              <Link href="/privacy" className="hover:text-[#111]">Privacy</Link>
+              <Link href="/contact" className="hover:text-[#111]">Contact</Link>
             </div>
-            <p className="text-sm text-slate-500">© 2025 2ndShift</p>
+            <p className="text-sm text-[#333]">© 2025 2ndShift</p>
           </div>
         </div>
       </footer>

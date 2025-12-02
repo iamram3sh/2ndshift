@@ -184,26 +184,26 @@ export default function PricingPage() {
               <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
                 <Layers className="w-4 h-4 text-white" />
               </div>
-              <span className="text-lg font-semibold text-slate-900">2ndShift</span>
+              <span className="text-lg font-semibold text-[#111]">2ndShift</span>
             </Link>
             
             <div className="hidden lg:flex items-center gap-1">
-              <Link href="/jobs" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/jobs" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111]">
                 Browse Jobs
               </Link>
-              <Link href="/workers" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/workers" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111]">
                 Find Talent
               </Link>
-              <Link href="/how-it-works" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/how-it-works" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111]">
                 How It Works
               </Link>
-              <Link href="/pricing" className="px-3 py-2 text-sm font-medium text-slate-900 bg-slate-100 rounded-lg">
+              <Link href="/pricing" className="px-3 py-2 text-sm font-medium text-[#111] bg-slate-100 rounded-lg">
                 Pricing
               </Link>
             </div>
 
             <div className="flex items-center gap-3">
-              <Link href="/login" className="hidden sm:block px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/login" className="hidden sm:block px-4 py-2 text-sm font-medium text-[#333] hover:text-[#111]">
                 Sign in
               </Link>
               <Link 
@@ -220,10 +220,10 @@ export default function PricingPage() {
       {/* Hero */}
       <section className="py-16 lg:py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl lg:text-4xl font-semibold text-slate-900 mb-4">
+          <h1 className="text-3xl lg:text-4xl font-semibold text-[#111] mb-4">
             Simple, transparent pricing
           </h1>
-          <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-[#333] mb-8 max-w-2xl mx-auto">
             Start free, upgrade when you need more. All plans include full compliance handling.
           </p>
 
@@ -234,7 +234,7 @@ export default function PricingPage() {
               className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 userType === 'client'
                   ? 'bg-slate-900 text-white'
-                  : 'text-slate-600 hover:text-slate-900'
+                  : 'text-[#333] hover:text-[#111]'
               }`}
             >
               <span className="flex items-center gap-2">
@@ -247,7 +247,7 @@ export default function PricingPage() {
               className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 userType === 'worker'
                   ? 'bg-slate-900 text-white'
-                  : 'text-slate-600 hover:text-slate-900'
+                  : 'text-[#333] hover:text-[#111]'
               }`}
             >
               <span className="flex items-center gap-2">
@@ -281,18 +281,18 @@ export default function PricingPage() {
                 )}
 
                 <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-slate-900 mb-2">{plan.name}</h3>
-                  <p className="text-slate-600 text-sm">{plan.description}</p>
+                  <h3 className="text-xl font-semibold text-[#111] mb-2">{plan.name}</h3>
+                  <p className="text-[#333] text-sm">{plan.description}</p>
                 </div>
 
                 <div className="mb-6">
                   {plan.price !== null ? (
                     <div className="flex items-baseline gap-1">
-                      <span className="text-4xl font-bold text-slate-900">₹{plan.price.toLocaleString()}</span>
-                      {plan.period && <span className="text-slate-500">{plan.period}</span>}
+                      <span className="text-4xl font-bold text-[#111]">₹{plan.price.toLocaleString()}</span>
+                      {plan.period && <span className="text-[#333]">{plan.period}</span>}
                     </div>
                   ) : (
-                    <div className="text-4xl font-bold text-slate-900">{plan.priceLabel}</div>
+                    <div className="text-4xl font-bold text-[#111]">{plan.priceLabel}</div>
                   )}
                 </div>
 
@@ -301,7 +301,7 @@ export default function PricingPage() {
                   className={`block w-full py-3 rounded-xl font-medium text-center transition-all mb-8 ${
                     plan.popular
                       ? 'bg-slate-900 text-white hover:bg-slate-800'
-                      : 'bg-white text-slate-900 border border-slate-200 hover:bg-slate-50'
+                      : 'bg-white text-[#111] border border-slate-200 hover:bg-slate-50'
                   }`}
                 >
                   {plan.cta}
@@ -315,7 +315,7 @@ export default function PricingPage() {
                       ) : (
                         <X className="w-5 h-5 text-slate-300 flex-shrink-0 mt-0.5" />
                       )}
-                      <span className={feature.included ? 'text-slate-700' : 'text-slate-400'}>
+                      <span className={feature.included ? 'text-[#111]' : 'text-[#333]'}>
                         {feature.text}
                       </span>
                     </li>
@@ -393,10 +393,10 @@ export default function PricingPage() {
       <section className="py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-semibold text-slate-900 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-semibold text-[#111] mb-4">
               Included in all plans
             </h2>
-            <p className="text-lg text-slate-600">
+            <p className="text-lg text-[#333]">
               Every plan comes with enterprise-grade features at no extra cost.
             </p>
           </div>
@@ -410,10 +410,10 @@ export default function PricingPage() {
             ].map((feature, i) => (
               <div key={i} className="text-center p-6">
                 <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <feature.icon className="w-6 h-6 text-slate-700" />
+                  <feature.icon className="w-6 h-6 text-[#111]" />
                 </div>
-                <h3 className="font-semibold text-slate-900 mb-2">{feature.title}</h3>
-                <p className="text-sm text-slate-600">{feature.description}</p>
+                <h3 className="font-semibold text-[#111] mb-2">{feature.title}</h3>
+                <p className="text-sm text-[#333]">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -424,7 +424,7 @@ export default function PricingPage() {
       <section className="py-16 lg:py-20 bg-slate-50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-semibold text-slate-900 mb-4">
+            <h2 className="text-3xl lg:text-4xl font-semibold text-[#111] mb-4">
               Frequently asked questions
             </h2>
           </div>
@@ -436,13 +436,13 @@ export default function PricingPage() {
                   onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
                   className="w-full flex items-center justify-between p-5 text-left"
                 >
-                  <span className="font-medium text-slate-900">{faq.q}</span>
-                  <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform ${
+                  <span className="font-medium text-[#111]">{faq.q}</span>
+                  <ChevronDown className={`w-5 h-5 text-[#333] transition-transform ${
                     expandedFaq === i ? 'rotate-180' : ''
                   }`} />
                 </button>
                 {expandedFaq === i && (
-                  <div className="px-5 pb-5 text-slate-600">
+                  <div className="px-5 pb-5 text-[#333]">
                     {faq.a}
                   </div>
                 )}
@@ -451,10 +451,10 @@ export default function PricingPage() {
           </div>
 
           <div className="text-center mt-12">
-            <p className="text-slate-600 mb-4">Still have questions?</p>
+            <p className="text-[#333] mb-4">Still have questions?</p>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 text-slate-900 font-medium hover:text-slate-700"
+              className="inline-flex items-center gap-2 text-[#111] font-medium hover:text-[#111]"
             >
               Contact our team
               <ArrowRight className="w-4 h-4" />
@@ -471,15 +471,15 @@ export default function PricingPage() {
               <div className="w-7 h-7 bg-slate-900 rounded-lg flex items-center justify-center">
                 <Layers className="w-3.5 h-3.5 text-white" />
               </div>
-              <span className="font-semibold text-slate-900">2ndShift</span>
+              <span className="font-semibold text-[#111]">2ndShift</span>
             </div>
-            <div className="flex items-center gap-6 text-sm text-slate-600">
-              <Link href="/about" className="hover:text-slate-900">About</Link>
-              <Link href="/terms" className="hover:text-slate-900">Terms</Link>
-              <Link href="/privacy" className="hover:text-slate-900">Privacy</Link>
-              <Link href="/contact" className="hover:text-slate-900">Contact</Link>
+            <div className="flex items-center gap-6 text-sm text-[#333]">
+              <Link href="/about" className="hover:text-[#111]">About</Link>
+              <Link href="/terms" className="hover:text-[#111]">Terms</Link>
+              <Link href="/privacy" className="hover:text-[#111]">Privacy</Link>
+              <Link href="/contact" className="hover:text-[#111]">Contact</Link>
             </div>
-            <p className="text-sm text-slate-500">© 2025 2ndShift</p>
+            <p className="text-sm text-[#333]">© 2025 2ndShift</p>
           </div>
         </div>
       </footer>

@@ -20,8 +20,8 @@ export default function TermsOfServicePage() {
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
-              <Link href="/about" className="text-slate-600 hover:text-indigo-600 font-medium transition">About</Link>
-              <Link href="/contact" className="text-slate-600 hover:text-indigo-600 font-medium transition">Contact</Link>
+              <Link href="/about" className="text-[#333] hover:text-indigo-600 font-medium transition">About</Link>
+              <Link href="/contact" className="text-[#333] hover:text-indigo-600 font-medium transition">Contact</Link>
             </div>
 
             <Link href="/register" className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition">
@@ -37,10 +37,10 @@ export default function TermsOfServicePage() {
           <div className="w-20 h-20 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <Scale className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 mb-6">
+          <h1 className="text-5xl sm:text-6xl font-bold text-[#111] mb-6">
             Terms of Service
           </h1>
-          <p className="text-xl text-slate-600 leading-relaxed">
+          <p className="text-xl text-[#333] leading-relaxed">
             Last Updated: January 15, 2025
           </p>
         </div>
@@ -53,7 +53,7 @@ export default function TermsOfServicePage() {
             
             {/* Introduction */}
             <div className="bg-indigo-50 border-l-4 border-indigo-600 p-6 rounded-r-xl mb-12">
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Welcome to 2ndShift</h3>
+              <h3 className="text-xl font-bold text-[#111] mb-2">Welcome to 2ndShift</h3>
               <p className="text-slate-700 leading-relaxed">
                 These Terms of Service ("Terms") govern your access to and use of 2ndShift platform, including our website, mobile application, and services (collectively, the "Platform"). By accessing or using 2ndShift, you agree to be bound by these Terms.
               </p>
@@ -61,7 +61,7 @@ export default function TermsOfServicePage() {
 
             {/* 1. Definitions */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+              <h2 className="text-3xl font-bold text-[#111] mb-6 flex items-center gap-3">
                 <FileText className="w-8 h-8 text-indigo-600" />
                 1. Definitions
               </h2>
@@ -77,7 +77,7 @@ export default function TermsOfServicePage() {
 
             {/* 2. Eligibility */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">2. Eligibility</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">2. Eligibility</h2>
               <div className="space-y-4 text-slate-700">
                 <p>To use 2ndShift, you must:</p>
                 <ul className="list-disc pl-6 space-y-2">
@@ -93,9 +93,9 @@ export default function TermsOfServicePage() {
 
             {/* 3. Account Registration */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">3. Account Registration and Security</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">3. Account Registration and Security</h2>
               <div className="space-y-4 text-slate-700">
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">3.1 Account Creation</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">3.1 Account Creation</h3>
                 <p>You must create an account to access Platform features. You agree to:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Provide accurate, current, and complete information</li>
@@ -105,7 +105,7 @@ export default function TermsOfServicePage() {
                   <li>Immediately notify us of any unauthorized access</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">3.2 Verification</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">3.2 Verification</h3>
                 <p>We may require identity verification including:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Aadhaar-based KYC verification</li>
@@ -119,9 +119,9 @@ export default function TermsOfServicePage() {
 
             {/* 4. User Obligations */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">4. User Obligations</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">4. User Obligations</h2>
               <div className="space-y-4 text-slate-700">
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">4.1 Prohibited Activities</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">4.1 Prohibited Activities</h3>
                 <p>You agree NOT to:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Violate any applicable laws or regulations</li>
@@ -134,7 +134,7 @@ export default function TermsOfServicePage() {
                   <li>Share login credentials or transfer accounts</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">4.2 Content Standards</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">4.2 Content Standards</h3>
                 <p>All content posted on the Platform must:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Be accurate and not misleading</li>
@@ -148,9 +148,9 @@ export default function TermsOfServicePage() {
 
             {/* 5. Services and Platform Use */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">5. Platform Services</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">5. Platform Services</h2>
               <div className="space-y-4 text-slate-700">
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">5.1 For Workers</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">5.1 For Workers</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Create and maintain professional profiles</li>
                   <li>Browse and apply for Projects</li>
@@ -160,7 +160,7 @@ export default function TermsOfServicePage() {
                   <li>Receive and provide reviews</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">5.2 For Clients</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">5.2 For Clients</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Post Project requirements</li>
                   <li>Search and filter qualified Workers</li>
@@ -175,9 +175,9 @@ export default function TermsOfServicePage() {
 
             {/* 6. Payments and Fees */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">6. Payments, Fees, and Taxation</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">6. Payments, Fees, and Taxation</h2>
               <div className="space-y-4 text-slate-700">
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">6.1 Platform Fees</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">6.1 Platform Fees</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li><strong>Workers:</strong> 10% service fee on earnings</li>
                   <li><strong>Clients:</strong> 3% payment processing fee</li>
@@ -185,7 +185,7 @@ export default function TermsOfServicePage() {
                   <li>We reserve the right to modify fees with 30 days notice</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">6.2 Payment Processing</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">6.2 Payment Processing</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Payments are processed through Razorpay (PCI-DSS compliant)</li>
                   <li>Escrow protection holds Client payments until project approval</li>
@@ -193,7 +193,7 @@ export default function TermsOfServicePage() {
                   <li>Instant payout option available for verified Workers (additional 1% fee)</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">6.3 Taxation</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">6.3 Taxation</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li><strong>TDS:</strong> 10% TDS deducted for payments exceeding ₹30,000 per transaction (as per Section 194J/194C)</li>
                   <li>Form 16A issued quarterly for TDS deducted</li>
@@ -202,7 +202,7 @@ export default function TermsOfServicePage() {
                   <li>Annual earning reports provided for ITR filing</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">6.4 Refunds and Disputes</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">6.4 Refunds and Disputes</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Refunds processed based on contract terms and dispute resolution</li>
                   <li>Dispute resolution follows our internal arbitration process</li>
@@ -213,9 +213,9 @@ export default function TermsOfServicePage() {
 
             {/* 7. Contracts and Legal Agreements */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">7. Contracts and Legal Framework</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">7. Contracts and Legal Framework</h2>
               <div className="space-y-4 text-slate-700">
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">7.1 Contract Generation</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">7.1 Contract Generation</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Platform auto-generates legally valid contracts for each Project</li>
                   <li>Contracts comply with Indian Contract Act, 1872</li>
@@ -223,7 +223,7 @@ export default function TermsOfServicePage() {
                   <li>Contracts include: scope, timeline, payment terms, IP rights, confidentiality</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">7.2 Contractual Relationship</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">7.2 Contractual Relationship</h3>
                 <p>2ndShift is a platform facilitating connections. We are NOT:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>An employer of Workers</li>
@@ -232,7 +232,7 @@ export default function TermsOfServicePage() {
                   <li>Liable for disputes between Users (beyond mediation)</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">7.3 Intellectual Property</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">7.3 Intellectual Property</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Work product ownership defined in individual contracts</li>
                   <li>Default: Client owns all deliverables upon full payment</li>
@@ -244,7 +244,7 @@ export default function TermsOfServicePage() {
 
             {/* 8. Privacy and Data Protection */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">8. Privacy and Data Protection</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">8. Privacy and Data Protection</h2>
               <div className="space-y-4 text-slate-700">
                 <p>Your privacy is important to us. Our data practices include:</p>
                 <ul className="list-disc pl-6 space-y-2">
@@ -265,9 +265,9 @@ export default function TermsOfServicePage() {
 
             {/* 9. Dispute Resolution */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">9. Dispute Resolution</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">9. Dispute Resolution</h2>
               <div className="space-y-4 text-slate-700">
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">9.1 Platform Mediation</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">9.1 Platform Mediation</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Initial dispute resolution through Platform support team</li>
                   <li>Evidence-based review of contracts and communications</li>
@@ -275,7 +275,7 @@ export default function TermsOfServicePage() {
                   <li>Escrow protection during dispute resolution</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">9.2 Arbitration</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">9.2 Arbitration</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Unresolved disputes subject to binding arbitration</li>
                   <li>Arbitration conducted in Hyderabad, Telangana</li>
@@ -284,7 +284,7 @@ export default function TermsOfServicePage() {
                   <li>Arbitration costs shared equally unless otherwise decided</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">9.3 Jurisdiction</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">9.3 Jurisdiction</h3>
                 <p>
                   These Terms are governed by Indian law. Exclusive jurisdiction lies with courts in Hyderabad, Telangana.
                 </p>
@@ -293,9 +293,9 @@ export default function TermsOfServicePage() {
 
             {/* 10. Liability and Disclaimers */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">10. Limitation of Liability</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">10. Limitation of Liability</h2>
               <div className="space-y-4 text-slate-700">
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">10.1 Platform Disclaimer</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">10.1 Platform Disclaimer</h3>
                 <p>The Platform is provided "AS IS" and "AS AVAILABLE". We do not guarantee:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Uninterrupted or error-free service</li>
@@ -304,7 +304,7 @@ export default function TermsOfServicePage() {
                   <li>Compatibility with all devices or browsers</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">10.2 User Responsibility</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">10.2 User Responsibility</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Users are responsible for evaluating other Users before engaging</li>
                   <li>Verify credentials, portfolios, and references independently</li>
@@ -312,12 +312,12 @@ export default function TermsOfServicePage() {
                   <li>Maintain backups of your work and communications</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">10.3 Liability Cap</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">10.3 Liability Cap</h3>
                 <p>
                   Our total liability for any claims related to the Platform shall not exceed the lesser of: (a) fees paid by you in the past 12 months, or (b) ₹50,000.
                 </p>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">10.4 Indemnification</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">10.4 Indemnification</h3>
                 <p>You agree to indemnify and hold harmless 2ndShift from claims arising from:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Your violation of these Terms</li>
@@ -330,9 +330,9 @@ export default function TermsOfServicePage() {
 
             {/* 11. Termination */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">11. Account Termination</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">11. Account Termination</h2>
               <div className="space-y-4 text-slate-700">
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">11.1 By User</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">11.1 By User</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>You may close your account at any time</li>
                   <li>Complete all active Projects before closure</li>
@@ -340,7 +340,7 @@ export default function TermsOfServicePage() {
                   <li>Data retention as per Privacy Policy</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">11.2 By Platform</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">11.2 By Platform</h3>
                 <p>We may suspend or terminate accounts for:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Violation of Terms or policies</li>
@@ -350,7 +350,7 @@ export default function TermsOfServicePage() {
                   <li>Non-payment of fees</li>
                 </ul>
 
-                <h3 className="text-xl font-semibold text-slate-900 mt-6">11.3 Effect of Termination</h3>
+                <h3 className="text-xl font-semibold text-[#111] mt-6">11.3 Effect of Termination</h3>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Access to Platform immediately revoked</li>
                   <li>Outstanding financial obligations remain</li>
@@ -361,7 +361,7 @@ export default function TermsOfServicePage() {
 
             {/* 12. Changes to Terms */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">12. Modifications to Terms</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">12. Modifications to Terms</h2>
               <div className="space-y-4 text-slate-700">
                 <ul className="list-disc pl-6 space-y-2">
                   <li>We may update these Terms from time to time</li>
@@ -374,7 +374,7 @@ export default function TermsOfServicePage() {
 
             {/* 13. Miscellaneous */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">13. General Provisions</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">13. General Provisions</h2>
               <div className="space-y-4 text-slate-700">
                 <p><strong>Severability:</strong> If any provision is found unenforceable, remaining provisions continue in effect.</p>
                 <p><strong>Waiver:</strong> Failure to enforce any right does not waive that right.</p>
@@ -386,7 +386,7 @@ export default function TermsOfServicePage() {
 
             {/* Contact */}
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 mb-6">14. Contact Information</h2>
+              <h2 className="text-3xl font-bold text-[#111] mb-6">14. Contact Information</h2>
               <div className="space-y-4 text-slate-700">
                 <p>For questions about these Terms, contact us at:</p>
                 <div className="bg-slate-50 p-6 rounded-xl mt-4">
@@ -412,22 +412,22 @@ export default function TermsOfServicePage() {
       {/* Related Links */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-slate-50">
         <div className="max-w-4xl mx-auto">
-          <h3 className="text-2xl font-bold text-slate-900 mb-8 text-center">Related Legal Documents</h3>
+          <h3 className="text-2xl font-bold text-[#111] mb-8 text-center">Related Legal Documents</h3>
           <div className="grid md:grid-cols-3 gap-6">
             <Link href="/privacy" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
               <Shield className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-slate-900 mb-2 group-hover:text-indigo-600">Privacy Policy</h4>
-              <p className="text-sm text-slate-600">How we collect, use, and protect your data</p>
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Privacy Policy</h4>
+              <p className="text-sm text-[#333]">How we collect, use, and protect your data</p>
             </Link>
             <Link href="/compliance" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
               <FileText className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-slate-900 mb-2 group-hover:text-indigo-600">Compliance</h4>
-              <p className="text-sm text-slate-600">Our regulatory compliance framework</p>
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Compliance</h4>
+              <p className="text-sm text-[#333]">Our regulatory compliance framework</p>
             </Link>
             <Link href="/security" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
               <Scale className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-slate-900 mb-2 group-hover:text-indigo-600">Security</h4>
-              <p className="text-sm text-slate-600">Platform security and data protection</p>
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Security</h4>
+              <p className="text-sm text-[#333]">Platform security and data protection</p>
             </Link>
           </div>
         </div>

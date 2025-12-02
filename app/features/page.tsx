@@ -209,26 +209,26 @@ export default function FeaturesPage() {
               <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
                 <Layers className="w-4 h-4 text-white" />
               </div>
-              <span className="text-lg font-semibold text-slate-900">2ndShift</span>
+              <span className="text-lg font-semibold text-[#111]">2ndShift</span>
             </Link>
             
             <div className="hidden lg:flex items-center gap-1">
-              <Link href="/jobs" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/jobs" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111]">
                 Browse Jobs
               </Link>
-              <Link href="/workers" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/workers" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111]">
                 Find Talent
               </Link>
-              <Link href="/features" className="px-3 py-2 text-sm font-medium text-slate-900 bg-slate-100 rounded-lg">
+              <Link href="/features" className="px-3 py-2 text-sm font-medium text-[#111] bg-slate-100 rounded-lg">
                 Features
               </Link>
-              <Link href="/pricing" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/pricing" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111]">
                 Pricing
               </Link>
             </div>
 
             <div className="flex items-center gap-3">
-              <Link href="/login" className="hidden sm:block px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/login" className="hidden sm:block px-4 py-2 text-sm font-medium text-[#333] hover:text-[#111]">
                 Sign in
               </Link>
               <Link 
@@ -259,7 +259,7 @@ export default function FeaturesPage() {
               onClick={() => setActiveTab('comparison')}
               className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 activeTab === 'comparison'
-                  ? 'bg-white text-slate-900'
+                  ? 'bg-white text-[#111]'
                   : 'text-white hover:bg-white/10'
               }`}
             >
@@ -269,7 +269,7 @@ export default function FeaturesPage() {
               onClick={() => setActiveTab('escrow')}
               className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 activeTab === 'escrow'
-                  ? 'bg-white text-slate-900'
+                  ? 'bg-white text-[#111]'
                   : 'text-white hover:bg-white/10'
               }`}
             >
@@ -279,7 +279,7 @@ export default function FeaturesPage() {
               onClick={() => setActiveTab('shifts')}
               className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 activeTab === 'shifts'
-                  ? 'bg-white text-slate-900'
+                  ? 'bg-white text-[#111]'
                   : 'text-white hover:bg-white/10'
               }`}
             >
@@ -296,10 +296,10 @@ export default function FeaturesPage() {
           <section className="py-16 lg:py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-12">
-                <h2 className="text-3xl font-semibold text-slate-900 mb-4">
+                <h2 className="text-3xl font-semibold text-[#111] mb-4">
                   The Smart Way to Hire Professionals
                 </h2>
-                <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+                <p className="text-lg text-[#333] max-w-3xl mx-auto">
                   Stop spending weeks on hiring. Stop worrying about compliance. 
                   Compare 2ndShift with traditional hiring and agencies.
                 </p>
@@ -310,16 +310,16 @@ export default function FeaturesPage() {
                 <table className="w-full border-collapse">
                   <thead>
                     <tr>
-                      <th className="p-4 text-left text-sm font-semibold text-slate-900 bg-slate-50 rounded-tl-xl">
+                      <th className="p-4 text-left text-sm font-semibold text-[#111] bg-slate-50 rounded-tl-xl">
                         Factor
                       </th>
-                      <th className="p-4 text-center text-sm font-semibold text-slate-500 bg-slate-50">
+                      <th className="p-4 text-center text-sm font-semibold text-[#333] bg-slate-50">
                         <div className="flex flex-col items-center">
                           <Building2 className="w-5 h-5 mb-1" />
                           Traditional Hiring
                         </div>
                       </th>
-                      <th className="p-4 text-center text-sm font-semibold text-slate-500 bg-slate-50">
+                      <th className="p-4 text-center text-sm font-semibold text-[#333] bg-slate-50">
                         <div className="flex flex-col items-center">
                           <Users className="w-5 h-5 mb-1" />
                           Staffing Agency
@@ -336,18 +336,18 @@ export default function FeaturesPage() {
                   <tbody>
                     {HIRING_COMPARISON.map((row, i) => (
                       <tr key={i} className="border-t border-slate-100">
-                        <td className="p-4 text-sm font-medium text-slate-900 bg-slate-50/50">
+                        <td className="p-4 text-sm font-medium text-[#111] bg-slate-50/50">
                           {row.factor}
                         </td>
                         <td className="p-4 text-center">
-                          <div className="text-sm text-slate-700 font-medium">{row.traditional.value}</div>
+                          <div className="text-sm text-[#111] font-medium">{row.traditional.value}</div>
                           <div className="text-xs text-red-500 mt-1 flex items-center justify-center gap-1">
                             <AlertCircle className="w-3 h-3" />
                             {row.traditional.pain}
                           </div>
                         </td>
                         <td className="p-4 text-center">
-                          <div className="text-sm text-slate-700 font-medium">{row.agency.value}</div>
+                          <div className="text-sm text-[#111] font-medium">{row.agency.value}</div>
                           <div className="text-xs text-amber-600 mt-1 flex items-center justify-center gap-1">
                             <AlertCircle className="w-3 h-3" />
                             {row.agency.pain}
@@ -375,7 +375,7 @@ export default function FeaturesPage() {
                   Start Hiring Smarter
                   <ArrowRight className="w-5 h-5" />
                 </Link>
-                <p className="text-sm text-slate-500 mt-3">Free to post. Pay only when you hire.</p>
+                <p className="text-sm text-[#333] mt-3">Free to post. Pay only when you hire.</p>
               </div>
             </div>
           </section>
@@ -383,7 +383,7 @@ export default function FeaturesPage() {
           {/* Key Benefits Cards */}
           <section className="py-16 lg:py-20 bg-slate-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-2xl font-semibold text-slate-900 text-center mb-12">
+              <h2 className="text-2xl font-semibold text-[#111] text-center mb-12">
                 What Makes Us Different
               </h2>
               
@@ -428,10 +428,10 @@ export default function FeaturesPage() {
                 ].map((item, i) => (
                   <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all">
                     <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-4">
-                      <item.icon className="w-6 h-6 text-slate-700" />
+                      <item.icon className="w-6 h-6 text-[#111]" />
                     </div>
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">{item.title}</h3>
-                    <p className="text-slate-600 text-sm mb-3">{item.description}</p>
+                    <h3 className="text-lg font-semibold text-[#111] mb-2">{item.title}</h3>
+                    <p className="text-[#333] text-sm mb-3">{item.description}</p>
                     <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
                       <CheckCircle className="w-3 h-3" />
                       {item.highlight}
@@ -454,10 +454,10 @@ export default function FeaturesPage() {
                   <Shield className="w-4 h-4" />
                   Payment Protection
                 </div>
-                <h2 className="text-3xl font-semibold text-slate-900 mb-4">
+                <h2 className="text-3xl font-semibold text-[#111] mb-4">
                   How Our Escrow System Works
                 </h2>
-                <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                <p className="text-lg text-[#333] max-w-2xl mx-auto">
                   Every payment on 2ndShift is protected by escrow. This means clients only pay for completed work, 
                   and professionals always get paid for their efforts.
                 </p>
@@ -477,16 +477,16 @@ export default function FeaturesPage() {
                     </div>
                     <div className="flex-1 pb-6">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-lg font-semibold text-slate-900">{step.title}</h3>
-                        <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+                        <h3 className="text-lg font-semibold text-[#111]">{step.title}</h3>
+                        <span className="text-xs font-medium text-[#333] bg-slate-100 px-2 py-0.5 rounded-full">
                           {step.who}
                         </span>
                       </div>
-                      <p className="text-slate-600">{step.description}</p>
+                      <p className="text-[#333]">{step.description}</p>
                     </div>
                     <div className="flex-shrink-0 hidden lg:block">
                       <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center">
-                        <step.icon className="w-6 h-6 text-slate-600" />
+                        <step.icon className="w-6 h-6 text-[#333]" />
                       </div>
                     </div>
                   </div>
@@ -520,10 +520,10 @@ export default function FeaturesPage() {
           <section className="py-16 lg:py-20 bg-slate-50">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-12">
-                <h2 className="text-2xl font-semibold text-slate-900 mb-4">
+                <h2 className="text-2xl font-semibold text-[#111] mb-4">
                   Milestone Payments for Large Projects
                 </h2>
-                <p className="text-slate-600 max-w-2xl mx-auto">
+                <p className="text-[#333] max-w-2xl mx-auto">
                   For projects over ₹50,000, we recommend splitting into milestones. 
                   Each phase has its own escrow and approval.
                 </p>
@@ -539,17 +539,17 @@ export default function FeaturesPage() {
                   ].map((m, i) => (
                     <div key={i} className="text-center">
                       <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                        <span className="text-xl font-bold text-slate-700">{m.percentage}%</span>
+                        <span className="text-xl font-bold text-[#111]">{m.percentage}%</span>
                       </div>
-                      <h4 className="font-semibold text-slate-900 mb-1">{m.phase}</h4>
-                      <p className="text-sm text-slate-500">{m.description}</p>
+                      <h4 className="font-semibold text-[#111] mb-1">{m.phase}</h4>
+                      <p className="text-sm text-[#333]">{m.description}</p>
                     </div>
                   ))}
                 </div>
                 
                 <div className="mt-8 pt-8 border-t border-slate-200 flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-[#333]">
                       <strong>Benefit:</strong> Pay only as work progresses. Review each phase before releasing next payment.
                     </p>
                   </div>
@@ -577,10 +577,10 @@ export default function FeaturesPage() {
                   <Zap className="w-4 h-4" />
                   Premium Credits
                 </div>
-                <h2 className="text-3xl font-semibold text-slate-900 mb-4">
+                <h2 className="text-3xl font-semibold text-[#111] mb-4">
                   What are Shifts?
                 </h2>
-                <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                <p className="text-lg text-[#333] max-w-2xl mx-auto">
                   Shifts are our premium currency. They help you stand out, get noticed faster, 
                   and access exclusive features. Both workers and clients use Shifts differently.
                 </p>
@@ -593,8 +593,8 @@ export default function FeaturesPage() {
                     onClick={() => setUserView('client')}
                     className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
                       userView === 'client'
-                        ? 'bg-white text-slate-900 shadow-sm'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'bg-white text-[#111] shadow-sm'
+                        : 'text-[#333] hover:text-[#111]'
                     }`}
                   >
                     <span className="flex items-center gap-2">
@@ -606,8 +606,8 @@ export default function FeaturesPage() {
                     onClick={() => setUserView('worker')}
                     className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
                       userView === 'worker'
-                        ? 'bg-white text-slate-900 shadow-sm'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'bg-white text-[#111] shadow-sm'
+                        : 'text-[#333] hover:text-[#111]'
                     }`}
                   >
                     <span className="flex items-center gap-2">
@@ -631,8 +631,8 @@ export default function FeaturesPage() {
                         {item.shifts} Shifts
                       </div>
                     </div>
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">{item.title}</h3>
-                    <p className="text-slate-600 text-sm mb-3">{item.description}</p>
+                    <h3 className="text-lg font-semibold text-[#111] mb-2">{item.title}</h3>
+                    <p className="text-[#333] text-sm mb-3">{item.description}</p>
                     <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
                       <TrendingUp className="w-3 h-3" />
                       {item.benefit}
@@ -643,7 +643,7 @@ export default function FeaturesPage() {
 
               {/* How to Get Shifts */}
               <div className="mt-16">
-                <h3 className="text-2xl font-semibold text-slate-900 text-center mb-8">
+                <h3 className="text-2xl font-semibold text-[#111] text-center mb-8">
                   How to Get Shifts
                 </h3>
                 <div className="grid md:grid-cols-3 gap-6">
@@ -687,7 +687,7 @@ export default function FeaturesPage() {
           {/* FAQ */}
           <section className="py-16 lg:py-20 bg-slate-50">
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-2xl font-semibold text-slate-900 text-center mb-8">
+              <h2 className="text-2xl font-semibold text-[#111] text-center mb-8">
                 Common Questions About Shifts
               </h2>
               
@@ -715,15 +715,15 @@ export default function FeaturesPage() {
                       onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
                       className="w-full flex items-center justify-between p-5 text-left"
                     >
-                      <span className="font-medium text-slate-900">{faq.q}</span>
+                      <span className="font-medium text-[#111]">{faq.q}</span>
                       {expandedFaq === i ? (
-                        <ChevronUp className="w-5 h-5 text-slate-400" />
+                        <ChevronUp className="w-5 h-5 text-[#333]" />
                       ) : (
-                        <ChevronDown className="w-5 h-5 text-slate-400" />
+                        <ChevronDown className="w-5 h-5 text-[#333]" />
                       )}
                     </button>
                     {expandedFaq === i && (
-                      <div className="px-5 pb-5 text-slate-600">{faq.a}</div>
+                      <div className="px-5 pb-5 text-[#333]">{faq.a}</div>
                     )}
                   </div>
                 ))}
@@ -745,7 +745,7 @@ export default function FeaturesPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/register?type=client"
-              className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-xl font-medium hover:bg-slate-100 transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-xl font-medium hover:bg-slate-100 transition-all"
             >
               <Building2 className="w-5 h-5" />
               I Want to Hire
@@ -769,15 +769,15 @@ export default function FeaturesPage() {
               <div className="w-7 h-7 bg-slate-900 rounded-lg flex items-center justify-center">
                 <Layers className="w-3.5 h-3.5 text-white" />
               </div>
-              <span className="font-semibold text-slate-900">2ndShift</span>
+              <span className="font-semibold text-[#111]">2ndShift</span>
             </div>
-            <div className="flex items-center gap-6 text-sm text-slate-600">
-              <Link href="/about" className="hover:text-slate-900">About</Link>
-              <Link href="/terms" className="hover:text-slate-900">Terms</Link>
-              <Link href="/privacy" className="hover:text-slate-900">Privacy</Link>
-              <Link href="/contact" className="hover:text-slate-900">Contact</Link>
+            <div className="flex items-center gap-6 text-sm text-[#333]">
+              <Link href="/about" className="hover:text-[#111]">About</Link>
+              <Link href="/terms" className="hover:text-[#111]">Terms</Link>
+              <Link href="/privacy" className="hover:text-[#111]">Privacy</Link>
+              <Link href="/contact" className="hover:text-[#111]">Contact</Link>
             </div>
-            <p className="text-sm text-slate-500">© 2025 2ndShift</p>
+            <p className="text-sm text-[#333]">© 2025 2ndShift</p>
           </div>
         </div>
       </footer>
