@@ -368,9 +368,13 @@ export default function WorkerDashboard() {
           </div>
           
           <div className="flex items-center gap-3">
-            {workerProfile && (
+            {verifiedLevel && (
               <VerificationBadgeInfo
-                verifiedLevel={workerProfile.verified_level || 0}
+                verifiedLevel={
+                  verifiedLevel === 'basic' ? 1 :
+                  verifiedLevel === 'professional' ? 2 :
+                  verifiedLevel === 'premium' ? 3 : 0
+                }
                 badges={[]}
               />
             )}
