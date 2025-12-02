@@ -5,7 +5,7 @@ import {
   ArrowRight, Briefcase, Shield, CheckCircle, Users, 
   Zap, Lock, Star, Building2, Target, FileText,
   CreditCard, Sparkles, BarChart3, TrendingUp, 
-  Clock, IndianRupee, Award, Layers
+  Clock, IndianRupee, Award, Layers, Code
 } from 'lucide-react'
 import { withRoleParam, type UserRole } from '@/lib/utils/roleAwareLinks'
 import { trackRoleCTA } from '@/lib/analytics/roleEvents'
@@ -37,17 +37,17 @@ export function HiringModelsSection({ role, onCTAClick }: ClientSpecificModulesP
           {[
             {
               icon: Zap,
-              title: 'Micro Tasks',
-              description: 'Quick one-off tasks: logo design, bug fixes, content writing. Get results in hours.',
-              features: ['Same-day delivery', 'Fixed pricing', 'No long-term commitment'],
+              title: 'High-Value Microtasks',
+              description: 'Premium technical tasks: CI/CD fixes, API debugging, cloud audits, security hardening. Get expert solutions fast.',
+              features: ['3-7 day delivery', 'Fixed pricing', 'Senior-level expertise'],
               iconBg: 'bg-sky-50',
               iconColor: 'text-sky-600'
             },
             {
               icon: Target,
-              title: 'Project-Based',
-              description: 'Fixed-scope projects: app development, website redesign, marketing campaigns.',
-              features: ['Clear timeline', 'Milestone-based payments', 'Dedicated team'],
+              title: 'Complex Projects',
+              description: 'High-value technical projects: architecture refactoring, system migrations, AI/LLM implementations.',
+              features: ['Clear timeline', 'Milestone-based payments', 'Expert delivery'],
               iconBg: 'bg-emerald-50',
               iconColor: 'text-emerald-600'
             },
@@ -135,13 +135,33 @@ export function AIJobWizardSection({ role, onCTAClick }: ClientSpecificModulesPr
             </Link>
           </div>
           <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-lg">
-            <div className="space-y-4">
-              <div className="h-4 bg-slate-200 rounded w-3/4 animate-pulse"></div>
-              <div className="h-4 bg-slate-200 rounded w-full animate-pulse"></div>
-              <div className="h-4 bg-slate-200 rounded w-5/6 animate-pulse"></div>
-              <div className="mt-6 space-y-2">
-                <div className="h-3 bg-slate-100 rounded w-1/2"></div>
-                <div className="h-3 bg-slate-100 rounded w-2/3"></div>
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-[#333] mb-2">Describe your requirement</label>
+                <textarea
+                  placeholder="e.g., Need to fix API memory leak in production Java service. High CPU usage during peak hours."
+                  className="w-full h-24 px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm text-[#111] placeholder-slate-400 focus:border-sky-300 focus:ring-2 focus:ring-sky-100 outline-none resize-none"
+                  readOnly
+                />
+              </div>
+              <div className="pt-4 border-t border-slate-200">
+                <div className="text-sm font-medium text-[#111] mb-3">AI Suggestions:</div>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+                    <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-[#111]">Category: Programming</div>
+                      <div className="text-xs text-[#333]">Suggested budget: ₹8,000 - ₹20,000</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 p-3 bg-sky-50 border border-sky-200 rounded-lg">
+                    <Target className="w-4 h-4 text-sky-600 flex-shrink-0" />
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-[#111]">Skills: Java, Performance, Debugging</div>
+                      <div className="text-xs text-[#333]">3 microtasks suggested</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

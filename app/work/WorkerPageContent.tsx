@@ -184,9 +184,9 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
           <div className="max-w-5xl mx-auto">
             <div className="text-center">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
-                Earn from Anywhere.
+                Take high-value technical microtasks.
                 <br />
-                <span className="text-[#111]">Build a Second Income with Skills You Already Have.</span>
+                <span className="text-[#111]">Verified clients. Fast payouts.</span>
               </h1>
 
               <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
@@ -269,61 +269,101 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
       </section>
       </RoleSection>
 
-      {/* Worker Opportunities Section */}
+      {/* Worker Steps */}
       <RoleSection role="worker" ssrRole={initialRole || 'worker'}>
       <section className="py-20 lg:py-28 bg-white border-t border-slate-200" data-role="worker">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] tracking-tight mb-4">
+              How It Works
+            </h2>
+            <p className="text-lg text-[#333] max-w-2xl mx-auto">
+              Get started in minutes. Start earning from high-value technical work.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-6">
+            {[
+              {
+                step: '01',
+                title: 'Create your profile',
+                description: 'Sign up in 3 minutes. Add your skills and expertise.',
+                icon: Briefcase
+              },
+              {
+                step: '02',
+                title: 'Verify skills',
+                description: 'Complete a microtask or upload certifications to get verified.',
+                icon: BadgeCheck
+              },
+              {
+                step: '03',
+                title: 'Buy credits or subscribe',
+                description: 'Purchase Shift Credits or subscribe to Pro/Elite for better rates.',
+                icon: Wallet
+              },
+              {
+                step: '04',
+                title: 'Apply & deliver',
+                description: 'Browse high-value microtasks, apply, and deliver expert work.',
+                icon: Zap
+              }
+            ].map((item, i) => (
+              <div key={i} className="text-center">
+                <div className="text-4xl font-bold text-slate-300 mb-4">{item.step}</div>
+                <div className="w-12 h-12 bg-sky-50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <item.icon className="w-6 h-6 text-sky-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-[#111] mb-2">{item.title}</h3>
+                <p className="text-sm text-[#333]">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      </RoleSection>
+
+      {/* High-Value Microtasks for Workers */}
+      <RoleSection role="worker" ssrRole={initialRole || 'worker'}>
+      <section className="py-20 lg:py-28 bg-slate-50 border-t border-slate-200" data-role="worker">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
             <div>
-              <div className="inline-flex items-center gap-2 text-sm font-medium text-sky-600 mb-3">
-                <span className="flex h-2 w-2 rounded-full bg-sky-500 animate-pulse"></span>
-                Open Opportunities
-              </div>
               <h2 className="text-3xl lg:text-4xl font-bold text-[#111] tracking-tight">
                 High-value microtasks
               </h2>
               <p className="text-[#333] mt-2">
-                Premium technical tasks across DevOps, Cloud, Security, AI, Programming, and more.
+                Premium technical tasks filtered for your skills. DevOps, Cloud, Security, AI, Programming, and more.
               </p>
             </div>
             <Link 
               href={withRoleParam("/worker/discover", 'worker')}
               className="inline-flex items-center gap-2 text-[#111] font-semibold hover:text-sky-600 transition-colors"
             >
-              View all opportunities
+              View all microtasks
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {SAMPLE_JOBS.map((job, i) => (
               <Link
                 key={i}
                 href={withRoleParam("/register?type=worker", 'worker')}
-                onClick={() => handleCTAClick('Job Card', 'worker')}
-                className="group p-6 bg-white border border-slate-200 rounded-xl hover:border-slate-300 hover:shadow-lg transition-all"
+                onClick={() => handleCTAClick('Microtask Card', 'worker')}
+                className="group p-6 bg-white border-2 border-slate-200 rounded-xl hover:border-sky-300 hover:shadow-lg transition-all"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-[#111] group-hover:text-sky-600 transition-colors">
-                        {job.title}
-                      </h3>
-                    </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-lg text-[#111] mb-2 group-hover:text-sky-600 transition-colors">
+                      {job.title}
+                    </h3>
                     <div className="flex items-center gap-2 text-sm text-[#333]">
                       <Timer className="w-3.5 h-3.5" />
                       <span>{job.duration}</span>
-                      <span>•</span>
-                      <span>{job.posted}</span>
                     </div>
                   </div>
-                  <span className={`px-2.5 py-1 text-xs font-medium rounded-lg ${
-                    job.type === 'High-Value Task'
-                      ? 'text-emerald-700 bg-emerald-50 border border-emerald-200'
-                      : job.type === 'Project'
-                      ? 'text-purple-700 bg-purple-50 border border-purple-200'
-                      : 'text-sky-700 bg-sky-50 border border-sky-200'
-                  }`}>
+                  <span className="px-2.5 py-1 text-xs font-medium rounded-lg text-emerald-700 bg-emerald-50 border border-emerald-200">
                     {job.type}
                   </span>
                 </div>
@@ -336,30 +376,11 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
                   ))}
                 </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                  <div>
-                    <div className="text-lg font-semibold text-[#111]">{job.budget}</div>
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-sky-100 transition-colors">
-                    <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-sky-600 transition-colors" />
-                  </div>
+                <div className="pt-4 border-t border-slate-100">
+                  <div className="text-lg font-semibold text-[#111]">{job.budget}</div>
                 </div>
               </Link>
             ))}
-          </div>
-
-          <div className="text-center mt-10 p-6 bg-slate-50 rounded-2xl border border-slate-200">
-            <p className="text-[#333] mb-4">
-              Sign up free to see company details and apply to opportunities
-            </p>
-            <Link
-              href={withRoleParam("/register?type=worker", 'worker')}
-              onClick={() => handleCTAClick('Create Free Account', 'worker')}
-              className="inline-flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-xl font-medium hover:bg-slate-800 transition-all"
-            >
-              Create Free Account
-              <ArrowRight className="w-4 h-4" />
-            </Link>
           </div>
         </div>
       </section>

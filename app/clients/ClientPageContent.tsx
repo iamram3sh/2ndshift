@@ -25,6 +25,7 @@ import {
 } from '@/components/role/ClientSpecificModules'
 import { PricingSection } from '@/components/revenue/PricingSection'
 import { SimpleProcessClient } from '@/components/auth/SimpleProcessClient'
+import { HIGH_VALUE_CATEGORIES } from '@/lib/constants/highValueCategories'
 
 export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'worker' | null }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -235,27 +236,47 @@ export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'w
       </section>
       </RoleSection>
 
-      {/* Client Opportunities Section */}
+      {/* High-Value Categories Grid */}
       <RoleSection role="client" ssrRole={initialRole || 'client'}>
       <section className="py-20 lg:py-28 bg-white border-t border-slate-200" data-role="client">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-[#111] tracking-tight mb-4">
-              Ready to hire talent?
+              High-Value Expert Categories
             </h2>
-            <p className="text-[#333] text-lg">
-              Post your first job and get proposals from verified professionals.
+            <p className="text-lg text-[#333] max-w-2xl mx-auto">
+              Hire verified, senior IT pros for high-value technical work.
             </p>
           </div>
-          <div className="text-center">
-            <Link
-              href={withRoleParam("/projects/create", 'client')}
-              onClick={() => handleCTAClick('Post a Job', 'client')}
-              className="inline-flex items-center gap-2 bg-[#111] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl"
-            >
-              Post Your First Job
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {HIGH_VALUE_CATEGORIES.map((category) => {
+              const Icon = category.icon
+              return (
+                <Link
+                  key={category.id}
+                  href={`/category/${category.slug}`}
+                  className="group p-6 bg-white border-2 border-slate-200 rounded-xl hover:border-sky-300 hover:shadow-lg transition-all"
+                >
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-12 h-12 bg-sky-50 rounded-lg flex items-center justify-center group-hover:bg-sky-100 transition-colors">
+                      <Icon className="w-6 h-6 text-sky-600" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-[#111] mb-1 group-hover:text-sky-600 transition-colors">
+                        {category.name}
+                      </h3>
+                      <p className="text-sm text-[#333] mb-2">
+                        {category.description}
+                      </p>
+                      <p className="text-xs text-slate-500 font-medium">
+                        {category.example} · {category.priceRange}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -328,24 +349,23 @@ export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'w
       </section>
       </RoleSection>
 
-      {/* Simple Process - Client Only */}
-      <SimpleProcessClient />
 
       {/* CTA Section - Client-Specific */}
       <RoleSection role="client" ssrRole={initialRole || 'client'}>
-      <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800" data-role="client">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4 drop-shadow-lg" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+      <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800 relative" data-role="client">
+        <div className="absolute inset-0 bg-[rgba(2,6,23,0.6)]"></div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
             Ready to hire talent?
           </h2>
-          <p className="text-lg text-white/95 mb-10 max-w-2xl mx-auto font-medium" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+          <p className="text-lg text-white mb-10 max-w-2xl mx-auto font-semibold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.4)' }}>
             Join 2ndShift today. It&apos;s free to create an account.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               href={withRoleParam("/register?type=client", 'client')}
-              onClick={() => handleCTAClick('I want to hire', 'client')}
-              className="inline-flex items-center justify-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-sky-700 transition-all shadow-lg hover:shadow-xl"
+              onClick={() => handleCTAClick('Get Started Free', 'client')}
+              className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
             >
               Get Started Free
               <ArrowRight className="w-4 h-4" />
@@ -353,7 +373,7 @@ export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'w
             <Link 
               href={withRoleParam("/workers", 'client')}
               onClick={() => handleCTAClick('Browse Talent', 'client')}
-              className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
+              className="inline-flex items-center justify-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-sky-700 transition-all shadow-lg hover:shadow-xl"
             >
               Browse Talent
               <ArrowRight className="w-4 h-4" />

@@ -114,10 +114,8 @@ export default function LoginPage() {
             <span className="text-xl font-semibold text-slate-900">2ndShift</span>
           </Link>
 
-          {/* Header */}
-          {!selectedRole ? (
-            <RolePicker />
-          ) : (
+          {/* Header - Role-specific only */}
+          {selectedRole && (
             <div className="mb-6">
               <h1 className="text-2xl font-bold text-slate-900 mb-2">
                 {selectedRole === 'worker' ? 'Welcome back, Professional' : 'Welcome back, Client'}
@@ -127,6 +125,18 @@ export default function LoginPage() {
                   ? 'Sign in to your worker account' 
                   : 'Sign in to your client account'}
               </p>
+            </div>
+          )}
+
+          {!selectedRole && (
+            <div className="mb-6">
+              <h1 className="text-2xl font-bold text-slate-900 mb-2">
+                Sign in to 2ndShift
+              </h1>
+              <p className="text-sm text-slate-600 mb-4">
+                Please select your role to continue
+              </p>
+              <RolePicker />
             </div>
           )}
 
@@ -210,25 +220,12 @@ export default function LoginPage() {
           </form>
 
           {selectedRole && (
-            <>
-              <p className="mt-8 text-center text-sm text-slate-600">
-                Don&apos;t have an account?{' '}
-                <Link href={`/register?type=${selectedRole}`} className="font-medium text-slate-900 hover:underline">
-                  Create one
-                </Link>
-              </p>
-              <p className="mt-4 text-center text-sm text-slate-600">
-                <button
-                  onClick={() => {
-                    setSelectedRole(null)
-                    router.push('/login')
-                  }}
-                  className="text-slate-600 hover:text-slate-900 underline"
-                >
-                  Switch role
-                </button>
-              </p>
-            </>
+            <p className="mt-8 text-center text-sm text-slate-600">
+              Don&apos;t have an account?{' '}
+              <Link href={`/register?type=${selectedRole}`} className="font-medium text-slate-900 hover:underline">
+                Create one
+              </Link>
+            </p>
           )}
 
           {!selectedRole && (
