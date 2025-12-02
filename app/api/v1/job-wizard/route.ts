@@ -96,14 +96,14 @@ export async function POST(request: NextRequest) {
           complexity: maxMatches > 2 ? 'advanced' : 'intermediate',
         },
         suggested_microtasks: microtasks || [],
-        top_workers: workers?.map(w => ({
+        top_workers: (workers || []).map((w: any) => ({
           id: w.user_id,
-          name: w.user?.full_name,
+          name: (w.user as any)?.full_name || 'Unknown',
           headline: w.headline,
           skills: w.skills,
           verified_level: w.verified_level,
           score: w.score,
-        })) || [],
+        })),
         note: '[DEMO-STUB] This is a deterministic stub. Replace with real LLM in production.'
       })
     } catch (error: any) {
