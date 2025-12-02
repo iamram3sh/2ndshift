@@ -88,7 +88,9 @@ export default function LoginPage() {
         }
         const targetRoute = routes[result.data.user.role] || '/worker'
         trackEvent('login_success', { role: result.data.user.role })
-        trackRoleSelected(result.data.user.role as 'worker' | 'client', 'login')
+        if (result.data.user.role === 'worker' || result.data.user.role === 'client') {
+          trackRoleSelected(result.data.user.role, 'login')
+        }
         router.push(targetRoute)
       }
     } catch (error: any) {

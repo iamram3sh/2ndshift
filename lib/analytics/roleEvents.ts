@@ -6,7 +6,7 @@
 import { event } from '@/lib/analytics'
 import type { UserRole } from '@/lib/utils/roleAwareLinks'
 
-export type RoleSource = 'hero' | 'header' | 'query'
+export type RoleSource = 'hero' | 'header' | 'query' | 'login'
 
 /**
  * Track when a user selects a role
