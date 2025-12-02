@@ -113,6 +113,14 @@ export const FEATURES = {
     requiresSubscription: false,
     minPlan: null,
   },
+  ROLE_HOME: {
+    id: 'role_home',
+    name: 'Role-Targeted Homepage',
+    description: 'Show role-specific content on homepage based on user selection',
+    shiftsCost: 0,
+    requiresSubscription: false,
+    minPlan: null,
+  },
 } as const
 
 export type FeatureId = keyof typeof FEATURES

@@ -10,6 +10,13 @@ import {
   Wallet, Calendar, Coffee, Sparkles, Heart, IndianRupee
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { useRole } from '@/components/role/RoleContextProvider'
+import { RoleToggle } from '@/components/role/RoleToggle'
+import { RoleSection } from '@/components/role/RoleSection'
+import { RoleAwareNav } from '@/components/role/RoleAwareNav'
+import { withRoleParam } from '@/lib/utils/roleAwareLinks'
+import { trackRoleCTA } from '@/lib/analytics/roleEvents'
+import { isRoleHomeEnabled } from '@/lib/role/feature-flag'
 
 // What makes us different
 const VALUE_PROPS = [
@@ -57,13 +64,20 @@ const SAMPLE_JOBS = [
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [heroVariant, setHeroVariant] = useState<'worker' | 'employer'>('worker')
+  const { role } = useRole()
+  const isRoleEnabled = isRoleHomeEnabled()
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const handleCTAClick = (ctaName: string, roleType?: 'worker' | 'client') => {
+    if (isRoleEnabled && roleType) {
+      trackRoleCTA(roleType, ctaName)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -87,27 +101,21 @@ export default function HomePage() {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-1">
-              <Link href="/for-workers" className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
-                For Professionals
-              </Link>
-              <Link href="/employers" className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
-                For Employers
-              </Link>
-              <Link href="/features" className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
-                How It Works
-              </Link>
-              <Link href="/pricing" className="px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
-                Pricing
-              </Link>
+              <RoleAwareNav />
             </div>
 
             {/* CTA Buttons */}
             <div className="flex items-center gap-3">
+              {isRoleEnabled && role && (
+                <div className="hidden lg:block">
+                  <RoleToggle variant="header" />
+                </div>
+              )}
               <Link href="/login" className="hidden sm:block px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
                 Sign in
               </Link>
               <Link 
-                href="/register" 
+                href={withRoleParam("/register", role)} 
                 className="bg-slate-900 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-slate-800 transition-all shadow-sm"
               >
                 Get Started Free
@@ -126,22 +134,12 @@ export default function HomePage() {
         {mobileMenuOpen && (
           <div className="lg:hidden bg-white border-t border-slate-200 shadow-lg">
             <div className="px-4 py-4 space-y-1">
-              {[
-                { label: 'For Professionals', href: '/for-workers' },
-                { label: 'For Employers', href: '/employers' },
-                { label: 'How It Works', href: '/features' },
-                { label: 'Find Talent', href: '/workers' },
-                { label: 'Pricing', href: '/pricing' },
-              ].map((item) => (
-                <Link 
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg font-medium"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {isRoleEnabled && role && (
+                <div className="mb-4 pb-4 border-b border-slate-200">
+                  <RoleToggle variant="header" />
+                </div>
+              )}
+              <RoleAwareNav isMobile onLinkClick={() => setMobileMenuOpen(false)} />
               <div className="pt-4 border-t border-slate-200 mt-4">
                 <Link href="/login" className="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg font-medium">
                   Sign in
@@ -156,34 +154,25 @@ export default function HomePage() {
       <section className="relative pt-24 lg:pt-32 pb-16 lg:pb-24 bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
-            {/* Variant Toggle */}
+            {/* Role Toggle */}
             <div className="flex justify-center mb-8">
-              <div className="inline-flex items-center bg-slate-100 rounded-lg p-1 shadow-sm">
-                <button
-                  onClick={() => setHeroVariant('worker')}
-                  className={`px-6 py-2.5 rounded-md text-sm font-semibold transition-all ${
-                    heroVariant === 'worker'
-                      ? 'bg-white text-[#111] shadow-sm'
-                      : 'text-[#333] hover:text-[#111]'
-                  }`}
-                >
-                  I Want Remote Work
-                </button>
-                <button
-                  onClick={() => setHeroVariant('employer')}
-                  className={`px-6 py-2.5 rounded-md text-sm font-semibold transition-all ${
-                    heroVariant === 'employer'
-                      ? 'bg-white text-[#111] shadow-sm'
-                      : 'text-[#333] hover:text-[#111]'
-                  }`}
-                >
-                  I Want to Hire
-                </button>
-              </div>
+              <RoleToggle variant="hero" />
             </div>
 
-            {/* VARIANT A: Worker-Focused Hero */}
-            {heroVariant === 'worker' && (
+            {/* Worker-Focused Hero */}
+            <RoleSection role="worker" fallback={!isRoleEnabled || role === null ? (
+              <div className="text-center">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
+                  Work on Your Terms.
+                  <br />
+                  <span className="text-[#111]">Get Paid with Confidence.</span>
+                </h1>
+                <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
+                  Choose your path above to see personalized content.
+                </p>
+              </div>
+            ) : null}>
+            {(
               <div className="text-center">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
                   Earn from Anywhere.
@@ -198,14 +187,16 @@ export default function HomePage() {
                 {/* CTAs */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
                   <Link 
-                    href="/register?type=worker"
+                    href={withRoleParam("/register?type=worker", 'worker')}
+                    onClick={() => handleCTAClick('Get Remote Work', 'worker')}
                     className="inline-flex items-center justify-center gap-2 bg-[#111] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                   >
                     Get Remote Work
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                   <Link 
-                    href="/worker/discover"
+                    href={withRoleParam("/worker/discover", 'worker')}
+                    onClick={() => handleCTAClick('Browse Jobs', 'worker')}
                     className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold border-2 border-[#111] hover:bg-slate-50 transition-all"
                   >
                     Browse Jobs
@@ -230,9 +221,11 @@ export default function HomePage() {
                 </div>
               </div>
             )}
+            </RoleSection>
 
-            {/* VARIANT B: Employer-Focused Hero */}
-            {heroVariant === 'employer' && (
+            {/* Client-Focused Hero */}
+            <RoleSection role="client">
+            {(
               <div className="text-center">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
                   Hire Talent Fast.
@@ -247,14 +240,16 @@ export default function HomePage() {
                 {/* CTAs */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
                   <Link 
-                    href="/register?type=client"
+                    href={withRoleParam("/register?type=client", 'client')}
+                    onClick={() => handleCTAClick('Hire a Worker', 'client')}
                     className="inline-flex items-center justify-center gap-2 bg-[#111] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                   >
                     Hire a Worker
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                   <Link 
-                    href="/workers"
+                    href={withRoleParam("/workers", 'client')}
+                    onClick={() => handleCTAClick('Browse Talent', 'client')}
                     className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold border-2 border-[#111] hover:bg-slate-50 transition-all"
                   >
                     Browse Talent
@@ -279,11 +274,13 @@ export default function HomePage() {
                 </div>
               </div>
             )}
+            </RoleSection>
           </div>
         </div>
       </section>
 
       {/* What You Can Do */}
+      <RoleSection role="both">
       <section className="py-16 bg-slate-900 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid sm:grid-cols-3 gap-8 text-center">
@@ -317,8 +314,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      </RoleSection>
 
-      {/* Live Opportunities */}
+      {/* Live Opportunities - Worker View */}
+      <RoleSection role="worker">
       <section className="py-20 lg:py-28 bg-white border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
@@ -336,7 +335,7 @@ export default function HomePage() {
               </p>
             </div>
             <Link 
-              href="/jobs"
+              href={withRoleParam("/worker/discover", 'worker')}
               className="inline-flex items-center gap-2 text-[#111] font-semibold hover:text-sky-600 transition-colors"
             >
               View all opportunities
@@ -349,7 +348,8 @@ export default function HomePage() {
             {SAMPLE_JOBS.map((job, i) => (
               <Link
                 key={i}
-                href="/register"
+                href={withRoleParam("/register?type=worker", 'worker')}
+                onClick={() => handleCTAClick('Job Card', 'worker')}
                 className="group p-6 bg-white border border-slate-200 rounded-xl hover:border-slate-300 hover:shadow-lg transition-all"
               >
                 <div className="flex items-start justify-between mb-4">
@@ -403,7 +403,8 @@ export default function HomePage() {
               Sign up free to see company details and apply to opportunities
             </p>
             <Link
-              href="/register"
+              href={withRoleParam("/register?type=worker", 'worker')}
+              onClick={() => handleCTAClick('Create Free Account', 'worker')}
               className="inline-flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-xl font-medium hover:bg-slate-800 transition-all"
             >
               Create Free Account
@@ -412,8 +413,36 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      </RoleSection>
+
+      {/* Live Opportunities - Client View */}
+      <RoleSection role="client">
+      <section className="py-20 lg:py-28 bg-white border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] tracking-tight mb-4">
+              Ready to hire talent?
+            </h2>
+            <p className="text-[#333] text-lg">
+              Post your first job and get proposals from verified professionals.
+            </p>
+          </div>
+          <div className="text-center">
+            <Link
+              href={withRoleParam("/projects/create", 'client')}
+              onClick={() => handleCTAClick('Post a Job', 'client')}
+              className="inline-flex items-center gap-2 bg-[#111] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl"
+            >
+              Post Your First Job
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+      </RoleSection>
 
       {/* Two-Column Value Prop */}
+      <RoleSection role="both">
       <section className="py-20 lg:py-28 bg-slate-50 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-8">
@@ -452,7 +481,8 @@ export default function HomePage() {
               </ul>
 
               <Link 
-                href="/register?type=worker"
+                href={withRoleParam("/register?type=worker", 'worker')}
+                onClick={() => handleCTAClick('Start Earning', 'worker')}
                 className="inline-flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-slate-800 transition-all"
               >
                 Start Earning
@@ -495,7 +525,8 @@ export default function HomePage() {
               </ul>
 
               <Link 
-                href="/register?type=client"
+                href={withRoleParam("/register?type=client", 'client')}
+                onClick={() => handleCTAClick('Post a Requirement', 'client')}
                 className="inline-flex items-center gap-2 bg-white text-slate-900 px-5 py-2.5 rounded-lg font-medium hover:bg-slate-100 transition-all"
               >
                 Post a Requirement
@@ -505,8 +536,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      </RoleSection>
 
       {/* Why 2ndShift */}
+      <RoleSection role="both">
       <section className="py-20 lg:py-28 bg-white border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -560,8 +593,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      </RoleSection>
 
       {/* How It Works */}
+      <RoleSection role="both">
       <section className="py-20 lg:py-28 bg-slate-900 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -606,8 +641,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      </RoleSection>
 
       {/* Future Vision */}
+      <RoleSection role="both">
       <section className="py-20 lg:py-28 bg-white border-t border-slate-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-50 text-purple-700 rounded-full text-sm font-medium mb-6">
@@ -642,7 +679,8 @@ export default function HomePage() {
           </div>
 
           <Link
-            href="/register"
+            href={withRoleParam("/register", role)}
+            onClick={() => role && handleCTAClick('Join Early Access', role)}
             className="inline-flex items-center gap-2 bg-[#111] text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl"
           >
             Join Early Access
@@ -654,8 +692,10 @@ export default function HomePage() {
           </p>
         </div>
       </section>
+      </RoleSection>
 
       {/* CTA Section */}
+      <RoleSection role="both">
       <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4 drop-shadow-lg">
@@ -666,14 +706,16 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
-              href="/register?type=worker"
+              href={withRoleParam("/register?type=worker", 'worker')}
+              onClick={() => handleCTAClick('I want to earn', 'worker')}
               className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
             >
               I want to earn
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link 
-              href="/register?type=client"
+              href={withRoleParam("/register?type=client", 'client')}
+              onClick={() => handleCTAClick('I want to hire', 'client')}
               className="inline-flex items-center justify-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-sky-700 transition-all shadow-lg hover:shadow-xl"
             >
               I want to hire
@@ -682,6 +724,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      </RoleSection>
 
       {/* Footer */}
       <footer className="py-16 bg-white border-t border-slate-200">
@@ -713,7 +756,7 @@ export default function HomePage() {
               <h4 className="font-bold text-[#111] mb-4">For Professionals</h4>
               <ul className="space-y-3 text-sm">
                 <li><Link href="/for-workers" className="text-[#333] hover:text-[#111] transition-colors">Why 2ndShift</Link></li>
-                <li><Link href="/worker/discover" className="text-[#333] hover:text-[#111] transition-colors">Find Work</Link></li>
+                <li><Link href={withRoleParam("/worker/discover", 'worker')} className="text-[#333] hover:text-[#111] transition-colors">Find Work</Link></li>
                 <li><Link href="/features" className="text-[#333] hover:text-[#111] transition-colors">How Shifts Work</Link></li>
                 <li><Link href="/pricing" className="text-[#333] hover:text-[#111] transition-colors">Pricing</Link></li>
               </ul>
@@ -723,7 +766,7 @@ export default function HomePage() {
               <h4 className="font-bold text-[#111] mb-4">For Employers</h4>
               <ul className="space-y-3 text-sm">
                 <li><Link href="/employers" className="text-[#333] hover:text-[#111] transition-colors">Why 2ndShift</Link></li>
-                <li><Link href="/workers" className="text-[#333] hover:text-[#111] transition-colors">Find Talent</Link></li>
+                <li><Link href={withRoleParam("/workers", 'client')} className="text-[#333] hover:text-[#111] transition-colors">Find Talent</Link></li>
                 <li><Link href="/features" className="text-[#333] hover:text-[#111] transition-colors">How It Works</Link></li>
                 <li><Link href="/about" className="text-[#333] hover:text-[#111] transition-colors">About Us</Link></li>
               </ul>
