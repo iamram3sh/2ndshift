@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { 
   ArrowRight, Server, Code, Database, Zap, Shield, 
   Clock, IndianRupee, CheckCircle, Filter, Search,
-  Python, Coffee, Globe, Layers
+  Coffee, Globe, Layers
 } from 'lucide-react'
 import { PROGRAMMING_MICROTASKS } from '@/data/highValueProgrammingTasks'
 import { HIGH_VALUE_CATEGORIES } from '@/lib/constants/highValueCategories'
