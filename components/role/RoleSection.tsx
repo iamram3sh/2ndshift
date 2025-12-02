@@ -1,14 +1,16 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useId } from 'react'
 import { useRole } from './RoleContextProvider'
 import { isRoleHomeEnabled } from '@/lib/role/feature-flag'
+import { trackRoleSectionView } from '@/lib/analytics/roleEvents'
 
 interface RoleSectionProps {
   role: 'worker' | 'client' | 'both'
   fallback?: React.ReactNode
   children: React.ReactNode
   className?: string
+  sectionId?: string // Optional identifier for analytics
 }
 
 /**
@@ -17,10 +19,20 @@ interface RoleSectionProps {
  * @param role - 'worker' | 'client' | 'both' - Which role(s) should see this content
  * @param fallback - Optional content to show when role doesn't match
  * @param children - Content to render when role matches
+ * @param sectionId - Optional identifier for analytics tracking (auto-generated if not provided)
  */
-export function RoleSection({ role, fallback = null, children, className }: RoleSectionProps) {
+export function RoleSection({ role, fallback = null, children, className, sectionId }: RoleSectionProps) {
   const { role: currentRole } = useRole()
   const isEnabled = isRoleHomeEnabled()
+  const autoSectionId = useId()
+  const finalSectionId = sectionId || autoSectionId
+
+  // Track section view when role matches and feature is enabled
+  useEffect(() => {
+    if (isEnabled && currentRole && currentRole === role && role !== 'both') {
+      trackRoleSectionView(currentRole, finalSectionId)
+    }
+  }, [isEnabled, currentRole, role, finalSectionId])
 
   // If feature is disabled, always show content
   if (!isEnabled) {

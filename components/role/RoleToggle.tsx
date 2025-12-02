@@ -57,6 +57,11 @@ export function RoleToggle({ variant = 'hero', onRoleChange, className = '' }: R
     const source = variant === 'hero' ? 'hero' : 'header'
     setRole(selectedRole, source)
     onRoleChange?.(selectedRole)
+    
+    // Smooth scroll to top on role change for better UX
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
   }
 
   // Hero variant - large side-by-side buttons

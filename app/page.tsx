@@ -160,7 +160,7 @@ export default function HomePage() {
             </div>
 
             {/* Worker-Focused Hero */}
-            <RoleSection role="worker" fallback={!isRoleEnabled || role === null ? (
+            <RoleSection role="worker" sectionId="hero-worker" fallback={!isRoleEnabled || role === null ? (
               <div className="text-center">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
                   Work on Your Terms.
@@ -224,7 +224,7 @@ export default function HomePage() {
             </RoleSection>
 
             {/* Client-Focused Hero */}
-            <RoleSection role="client">
+            <RoleSection role="client" sectionId="hero-client">
             {(
               <div className="text-center">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
@@ -317,7 +317,7 @@ export default function HomePage() {
       </RoleSection>
 
       {/* Live Opportunities - Worker View */}
-      <RoleSection role="worker">
+      <RoleSection role="worker" sectionId="opportunities-worker">
       <section className="py-20 lg:py-28 bg-white border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
@@ -416,7 +416,7 @@ export default function HomePage() {
       </RoleSection>
 
       {/* Live Opportunities - Client View */}
-      <RoleSection role="client">
+      <RoleSection role="client" sectionId="opportunities-client">
       <section className="py-20 lg:py-28 bg-white border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">

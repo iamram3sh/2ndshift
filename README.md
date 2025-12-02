@@ -22,6 +22,10 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_key
 RAZORPAY_KEY_ID=your_razorpay_key
 RAZORPAY_KEY_SECRET=your_razorpay_secret
 NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+# Feature Flags
+FEATURE_ROLE_HOME=true  # Enable role-targeted homepage (default: true)
+# Set to 'false' to disable role-based content filtering
 ```
 
 ### 3. Run Development Server
@@ -115,6 +119,7 @@ Add these in Vercel Dashboard → Settings → Environment Variables:
 - `RAZORPAY_KEY_ID`
 - `RAZORPAY_KEY_SECRET`
 - `NEXT_PUBLIC_APP_URL`
+- `FEATURE_ROLE_HOME` (optional, defaults to `true` - set to `false` to disable)
 
 ---
 
@@ -135,6 +140,8 @@ Add these in Vercel Dashboard → Settings → Environment Variables:
 ## 📄 Documentation
 
 - **[Launch Playbook](docs/LAUNCH_PLAYBOOK.md)** - Complete 14-day launch guide
+- **[Role-Targeted Homepage](docs/ROLE_HOME_IMPLEMENTATION.md)** - Role-based content filtering
+- **[SSR & SEO Guide](docs/ROLE_HOME_SSR_SEO.md)** - Server-side rendering and SEO considerations
 
 ---
 

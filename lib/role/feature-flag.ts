@@ -1,9 +1,12 @@
 /**
  * Feature Flag for Role-Targeted Homepage
  * Controls the role-based content filtering on homepage
+ * 
+ * Default: true (enabled)
+ * To disable: Set FEATURE_ROLE_HOME=false in environment variables
  */
 
-export const FEATURE_ROLE_HOME = process.env.FEATURE_ROLE_HOME === 'true' || false
+export const FEATURE_ROLE_HOME = process.env.FEATURE_ROLE_HOME !== 'false'
 
 /**
  * Check if role-targeted homepage is enabled
