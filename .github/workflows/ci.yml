@@ -56,9 +56,25 @@ jobs:
           DATABASE_URL: postgresql://test:test@localhost:5432/test_2ndshift
           JWT_SECRET: test-secret
           REFRESH_SECRET: test-refresh-secret
+          # Supabase environment variables for integration tests
+          # NOTE: Using placeholder values for now - will be replaced with real credentials when ready for production
+          # Tests that require real Supabase connections may be skipped or mocked
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co' }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-service-role-key' }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key' }}
 
       - name: Check test coverage
         run: npm run test:coverage
+        env:
+          DATABASE_URL: postgresql://test:test@localhost:5432/test_2ndshift
+          JWT_SECRET: test-secret
+          REFRESH_SECRET: test-refresh-secret
+          # Supabase environment variables for integration tests
+          # NOTE: Using placeholder values for now - will be replaced with real credentials when ready for production
+          # Tests that require real Supabase connections may be skipped or mocked
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co' }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-service-role-key' }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key' }}
 
   build:
     runs-on: ubuntu-latest
