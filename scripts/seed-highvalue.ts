@@ -5,6 +5,7 @@
 
 import { createClient } from '@supabase/supabase-js'
 import * as dotenv from 'dotenv'
+import { HIGH_VALUE_MICROTASKS } from '../data/highValueMicrotasks'
 
 dotenv.config()
 
@@ -18,8 +19,32 @@ if (!supabaseUrl || !supabaseKey) {
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-// High-value microtasks data
-const HIGH_VALUE_MICROTASKS = [
+// Category mapping from our microtask categories to database slugs
+const CATEGORY_SLUG_MAP: Record<string, string> = {
+  'devops': 'devops',
+  'cloud': 'cloud',
+  'networking': 'networking',
+  'security': 'security',
+  'ai': 'ai',
+  'data': 'data',
+  'sre': 'sre',
+  'database': 'database',
+  'programming': 'programming'
+}
+
+// Convert HIGH_VALUE_MICROTASKS to seed format
+const SEED_MICROTASKS = HIGH_VALUE_MICROTASKS.map(task => ({
+  title: task.title,
+  category: task.category,
+  complexity: task.complexity === 'low' ? 'beginner' : task.complexity === 'medium' ? 'intermediate' : task.complexity === 'high' ? 'advanced' : 'expert',
+  delivery_window: task.delivery_window,
+  base_price_min: task.price_min,
+  base_price_max: task.price_max,
+  commission: task.default_commission_percent
+}))
+
+// Legacy format for backward compatibility (will be removed)
+const HIGH_VALUE_MICROTASKS_LEGACY = [
   // DevOps (10 tasks)
   { title: 'CI/CD Pipeline Fix', category: 'DevOps', complexity: 'intermediate', delivery_window: '6-24h', base_price_min: 5000, base_price_max: 15000, commission: 8 },
   { title: 'Dockerfile Optimization', category: 'DevOps', complexity: 'intermediate', delivery_window: '6-24h', base_price_min: 3000, base_price_max: 8000, commission: 8 },
@@ -91,23 +116,26 @@ async function seedHighValueMicrotasks() {
   // First, get or create categories
   const categoryMap: Record<string, string> = {}
   
-  for (const task of HIGH_VALUE_MICROTASKS) {
+  for (const task of SEED_MICROTASKS) {
+    const categorySlug = CATEGORY_SLUG_MAP[task.category] || task.category.toLowerCase().replace(/\s+/g, '-')
+    
     if (!categoryMap[task.category]) {
       const { data: existing } = await supabase
         .from('categories')
         .select('id')
-        .eq('slug', task.category.toLowerCase().replace(/\s+/g, '-'))
+        .eq('slug', categorySlug)
         .single()
       
       if (existing) {
         categoryMap[task.category] = existing.id
       } else {
+        const categoryName = task.category.charAt(0).toUpperCase() + task.category.slice(1).replace(/([A-Z])/g, ' $1')
         const { data: newCat, error } = await supabase
           .from('categories')
           .insert({
-            slug: task.category.toLowerCase().replace(/\s+/g, '-'),
-            name: task.category,
-            description: `${task.category} high-value microtasks`,
+            slug: categorySlug,
+            name: categoryName,
+            description: `${categoryName} high-value microtasks`,
             is_active: true
           })
           .select('id')
@@ -144,7 +172,7 @@ async function seedHighValueMicrotasks() {
     }
   }
   
-  console.log(`✅ Seeded ${HIGH_VALUE_MICROTASKS.length} high-value microtasks`)
+  console.log(`✅ Seeded ${SEED_MICROTASKS.length} high-value microtasks`)
 }
 
 async function seedWorkers() {

@@ -30,35 +30,35 @@ const VALUE_PROPS = [
 
 const SAMPLE_JOBS = [
   {
-    title: 'React Native Developer',
-    skills: ['React Native', 'TypeScript', 'Firebase'],
-    budget: '₹40,000 - ₹60,000',
-    duration: '2-3 weeks',
-    type: 'Project',
+    title: 'API Memory Leak Debugging',
+    skills: ['Backend', 'Performance', 'Debugging'],
+    budget: '₹8,000 - ₹20,000',
+    duration: '3-7 days',
+    type: 'High-Value Task',
     posted: 'Just now',
   },
   {
-    title: 'UI/UX Designer',
-    skills: ['Figma', 'UI Design', 'Prototyping'],
-    budget: '₹25,000 - ₹40,000',
-    duration: '1-2 weeks',
-    type: 'Project',
+    title: 'AWS Security Audit',
+    skills: ['AWS', 'Security', 'IAM'],
+    budget: '₹15,000 - ₹35,000',
+    duration: '1-4 weeks',
+    type: 'High-Value Task',
     posted: '1h ago',
   },
   {
-    title: 'Backend Developer',
-    skills: ['Node.js', 'PostgreSQL', 'AWS'],
-    budget: '₹800 - ₹1,200/hr',
-    duration: 'Ongoing',
-    type: 'Part-time',
+    title: 'CI/CD Pipeline Fix',
+    skills: ['Jenkins', 'GitHub Actions', 'Docker'],
+    budget: '₹5,000 - ₹15,000',
+    duration: '3-7 days',
+    type: 'High-Value Task',
     posted: '2h ago',
   },
   {
-    title: 'Full Stack Engineer',
-    skills: ['React', 'Python', 'Docker'],
-    budget: '₹1.2L - ₹1.8L/month',
-    duration: '6+ months',
-    type: 'Full-time',
+    title: 'Database Query Optimization',
+    skills: ['PostgreSQL', 'MySQL', 'Optimization'],
+    budget: '₹12,000 - ₹30,000',
+    duration: '3-7 days',
+    type: 'High-Value Task',
     posted: '3h ago',
   },
 ]
@@ -393,21 +393,29 @@ export default function HomePage() {
       </section>
       </RoleSection>
 
-      {/* What You Can Do */}
+      {/* High-Value Microtasks */}
       <RoleSection role="both">
       <section className="py-16 bg-slate-900 border-t border-slate-800 relative">
         <div className="absolute inset-0 bg-[rgba(2,6,23,0.55)]"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+              High-Value Technical Work
+            </h2>
+            <p className="text-white/90 text-lg max-w-2xl mx-auto" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+              Premium microtasks across 9 expert categories. Complex technical challenges that require senior-level expertise.
+            </p>
+          </div>
           <div className="grid sm:grid-cols-3 gap-8 text-center">
             <div>
               <div className="w-12 h-12 bg-sky-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Coffee className="w-6 h-6 text-sky-400" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>Quick Tasks</h3>
+              <h3 className="text-lg font-semibold text-white mb-2" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>High-Value Microtasks</h3>
               <p className="text-white text-sm" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>
                 {role === 'worker' 
-                  ? 'CI/CD fixes, Dockerfile updates, automation scripts. High-value microtasks that showcase expertise.'
-                  : 'DevOps fixes, cloud audits, automation packs. Get expert solutions in hours, not days.'
+                  ? 'CI/CD fixes, API debugging, cloud audits, security hardening. Premium microtasks that showcase expertise.'
+                  : 'DevOps fixes, cloud audits, security reviews, performance optimization. Get expert solutions fast.'
                 }
               </p>
             </div>
@@ -415,18 +423,18 @@ export default function HomePage() {
               <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Calendar className="w-6 h-6 text-emerald-400" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Project-Based</h3>
+              <h3 className="text-lg font-semibold text-white mb-2">Complex Projects</h3>
               <p className="text-white text-sm">
-                App development, website redesign, marketing campaigns. Fixed price, clear timeline.
+                Architecture refactoring, system migrations, AI/LLM implementations. Fixed price, clear timeline, expert delivery.
               </p>
             </div>
             <div>
               <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Users className="w-6 h-6 text-purple-400" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Full-Time Hire</h3>
+              <h3 className="text-lg font-semibold text-white mb-2">Expert Consultation</h3>
               <p className="text-white text-sm">
-                Need a dedicated team member? Hire full-time with all compliance handled.
+                Need ongoing expert guidance? Hire senior professionals part-time or full-time with all compliance handled.
               </p>
             </div>
           </div>
@@ -446,10 +454,10 @@ export default function HomePage() {
                 Open Opportunities
               </div>
               <h2 className="text-3xl lg:text-4xl font-bold text-[#111] tracking-tight">
-                Work that fits your life
+                High-value microtasks
               </h2>
               <p className="text-[#333] mt-2">
-                From quick gigs to full-time roles. Choose what works for you.
+                Premium technical tasks across DevOps, Cloud, Security, AI, Programming, and more.
               </p>
             </div>
             <Link 
@@ -485,10 +493,10 @@ export default function HomePage() {
                     </div>
                   </div>
                   <span className={`px-2.5 py-1 text-xs font-medium rounded-lg ${
-                    job.type === 'Full-time' 
-                      ? 'text-purple-700 bg-purple-50 border border-purple-200'
-                      : job.type === 'Part-time'
+                    job.type === 'High-Value Task'
                       ? 'text-emerald-700 bg-emerald-50 border border-emerald-200'
+                      : job.type === 'Project'
+                      ? 'text-purple-700 bg-purple-50 border border-purple-200'
                       : 'text-sky-700 bg-sky-50 border border-sky-200'
                   }`}>
                     {job.type}
@@ -890,7 +898,7 @@ export default function HomePage() {
       {/* CTA Section - Worker */}
       <RoleSection role="worker">
       <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800 relative" data-role="worker">
-        <div className="absolute inset-0 bg-[rgba(2,6,23,0.55)]"></div>
+        <div className="absolute inset-0 bg-[rgba(2,6,23,0.6)]"></div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
             Ready to start earning?
@@ -929,9 +937,9 @@ export default function HomePage() {
       {/* CTA Section - Client */}
       <RoleSection role="client">
       <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800 relative" data-role="client">
-        <div className="absolute inset-0 bg-[rgba(2,6,23,0.55)]"></div>
+        <div className="absolute inset-0 bg-[rgba(2,6,23,0.6)]"></div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4 drop-shadow-lg" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+          <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
             Ready to hire talent?
           </h2>
           <p className="text-lg text-white mb-10 max-w-2xl mx-auto font-semibold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.4)' }}>
@@ -967,12 +975,13 @@ export default function HomePage() {
 
       {/* CTA Section - No Role Selected */}
       <RoleSection role="both" fallback={
-        <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4 drop-shadow-lg" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+        <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800 relative">
+          <div className="absolute inset-0 bg-[rgba(2,6,23,0.6)]"></div>
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
               Ready to get started?
             </h2>
-            <p className="text-lg text-white/95 mb-10 max-w-2xl mx-auto font-medium" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+            <p className="text-lg text-white mb-10 max-w-2xl mx-auto font-semibold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.4)' }}>
               Choose your path above to see personalized content.
             </p>
           </div>

@@ -207,27 +207,27 @@ export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'w
               <div className="w-12 h-12 bg-sky-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Coffee className="w-6 h-6 text-sky-400" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Quick Tasks</h3>
+              <h3 className="text-lg font-semibold text-white mb-2">High-Value Microtasks</h3>
               <p className="text-white text-sm">
-                Logo design, bug fixes, content writing. Get small tasks done in hours, not days.
+                CI/CD fixes, API debugging, cloud audits, security hardening. Premium technical tasks delivered fast.
               </p>
             </div>
             <div>
               <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Calendar className="w-6 h-6 text-emerald-400" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Project-Based</h3>
+              <h3 className="text-lg font-semibold text-white mb-2">Complex Projects</h3>
               <p className="text-white text-sm">
-                App development, website redesign, marketing campaigns. Fixed price, clear timeline.
+                Architecture refactoring, system migrations, AI/LLM implementations. Fixed price, clear timeline, expert delivery.
               </p>
             </div>
             <div>
               <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Users className="w-6 h-6 text-purple-400" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Full-Time Hire</h3>
+              <h3 className="text-lg font-semibold text-white mb-2">Expert Consultation</h3>
               <p className="text-white text-sm">
-                Need a dedicated team member? Hire full-time with all compliance handled.
+                Ongoing expert guidance and consultation. Part-time or full-time engagement with all compliance handled.
               </p>
             </div>
           </div>

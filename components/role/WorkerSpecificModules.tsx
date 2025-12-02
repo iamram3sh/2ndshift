@@ -27,61 +27,61 @@ export function StarterPacksSection({ role, onCTAClick }: WorkerSpecificModulesP
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl lg:text-4xl font-bold text-[#111] tracking-tight mb-4">
-            Quick-start opportunities
+            High-value microtasks
           </h2>
           <p className="text-lg text-[#333] max-w-2xl mx-auto">
-            Get started fast with these verified, ready-to-start projects. Perfect for building your reputation.
+            Premium technical tasks that showcase expertise. DevOps, Cloud, Security, AI, Programming, and more.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
             {
-              title: 'Logo Design',
-              skills: ['Figma', 'Illustrator'],
-              budget: '₹5,000 - ₹10,000',
-              duration: '2-3 days',
-              type: 'Quick Task',
+              title: 'CI/CD Pipeline Fix',
+              skills: ['Jenkins', 'GitHub Actions', 'Docker'],
+              budget: '₹5,000 - ₹15,000',
+              duration: '3-7 days',
+              type: 'High-Value Task',
               color: 'sky'
             },
             {
-              title: 'Bug Fixes',
-              skills: ['React', 'JavaScript'],
-              budget: '₹3,000 - ₹8,000',
-              duration: '1-2 days',
-              type: 'Quick Task',
+              title: 'API Memory Leak Debugging',
+              skills: ['Backend', 'Performance', 'Debugging'],
+              budget: '₹8,000 - ₹20,000',
+              duration: '3-7 days',
+              type: 'High-Value Task',
               color: 'emerald'
             },
             {
-              title: 'Content Writing',
-              skills: ['SEO', 'Copywriting'],
-              budget: '₹2,000 - ₹5,000',
-              duration: '1 week',
-              type: 'Quick Task',
+              title: 'AWS Security Audit',
+              skills: ['AWS', 'Security', 'IAM'],
+              budget: '₹15,000 - ₹35,000',
+              duration: '1-4 weeks',
+              type: 'High-Value Task',
               color: 'purple'
             },
             {
-              title: 'UI/UX Design',
-              skills: ['Figma', 'Prototyping'],
-              budget: '₹15,000 - ₹25,000',
-              duration: '1-2 weeks',
-              type: 'Project',
+              title: 'Database Query Optimization',
+              skills: ['PostgreSQL', 'MySQL', 'Optimization'],
+              budget: '₹12,000 - ₹30,000',
+              duration: '3-7 days',
+              type: 'High-Value Task',
               color: 'amber'
             },
             {
-              title: 'API Development',
-              skills: ['Node.js', 'PostgreSQL'],
-              budget: '₹20,000 - ₹40,000',
-              duration: '2-3 weeks',
-              type: 'Project',
+              title: 'RAG Pipeline Setup',
+              skills: ['AI/LLM', 'Vector DB', 'RAG'],
+              budget: '₹25,000 - ₹60,000',
+              duration: '1-4 weeks',
+              type: 'High-Value Task',
               color: 'indigo'
             },
             {
-              title: 'Mobile App',
-              skills: ['React Native', 'Firebase'],
-              budget: '₹50,000+',
-              duration: '1-2 months',
-              type: 'Project',
+              title: 'Kubernetes Deployment Patch',
+              skills: ['Kubernetes', 'DevOps', 'Container'],
+              budget: '₹10,000 - ₹25,000',
+              duration: '3-7 days',
+              type: 'High-Value Task',
               color: 'rose'
             },
           ].map((job, i) => (
@@ -96,8 +96,8 @@ export function StarterPacksSection({ role, onCTAClick }: WorkerSpecificModulesP
                   {job.title}
                 </h3>
                 <span className={`px-2 py-1 text-xs font-medium rounded-lg ${
-                  job.type === 'Quick Task'
-                    ? 'text-sky-700 bg-sky-50 border border-sky-200'
+                  job.type === 'High-Value Task'
+                    ? 'text-emerald-700 bg-emerald-50 border border-emerald-200'
                     : 'text-purple-700 bg-purple-50 border border-purple-200'
                 }`}>
                   {job.type}
@@ -118,7 +118,7 @@ export function StarterPacksSection({ role, onCTAClick }: WorkerSpecificModulesP
                     {job.duration}
                   </div>
                   <div className="text-xs text-slate-500 mt-1">
-                    Platform fee: 5-10% (first 3 jobs: 0%)
+                    Commission: 8-18% based on complexity
                   </div>
                 </div>
                 <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-sky-600 transition-colors" />
@@ -322,16 +322,16 @@ export function WorkerSuccessStoriesSection({ role, onCTAClick }: WorkerSpecific
           {[
             {
               name: 'Priya S.',
-              role: 'UI/UX Designer',
-              quote: 'Started part-time while working my day job. Now earning ₹80k/month working 20 hours/week. The zero platform fees make a huge difference.',
-              earnings: '₹80,000/month',
+              role: 'DevOps Engineer',
+              quote: 'Started part-time while working my day job. Now earning ₹1.2L/month working 20 hours/week on high-value DevOps tasks. The premium rates make a huge difference.',
+              earnings: '₹1.2L/month',
               rating: 5
             },
             {
               name: 'Rahul K.',
-              role: 'Full Stack Developer',
-              quote: 'Left my corporate job to freelance full-time. Best decision ever. I work on projects I love, set my own hours, and earn more than before.',
-              earnings: '₹1.2L/month',
+              role: 'Senior Backend Engineer',
+              quote: 'Left my corporate job to freelance full-time. Best decision ever. I work on complex programming challenges I love, set my own hours, and earn more than before.',
+              earnings: '₹1.8L/month',
               rating: 5
             },
           ].map((story, i) => (
