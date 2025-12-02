@@ -9,7 +9,7 @@ import { supabaseAdmin } from '@/lib/supabase/admin'
 import { z } from 'zod'
 
 const availabilitySchema = z.object({
-  availability: z.record(z.any()).optional(),
+  availability: z.record(z.string(), z.any()).optional(),
   open_to_work: z.boolean().optional(),
   priority_tier: z.enum(['standard', 'priority', 'elite']).optional(),
 })

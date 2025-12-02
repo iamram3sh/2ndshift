@@ -13,7 +13,7 @@ import { z } from 'zod'
 
 const createRequestSchema = z.object({
   job_id: z.string().uuid(),
-  flags: z.record(z.any()).optional(),
+  flags: z.record(z.string(), z.any()).optional(),
   escalate_after_minutes: z.number().int().positive().optional(),
 })
 
