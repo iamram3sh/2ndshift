@@ -11,9 +11,16 @@ import { Home, ArrowLeft } from 'lucide-react'
 interface HomeButtonProps {
   variant?: 'icon' | 'text' | 'full'
   className?: string
+  href?: string
+  label?: string
 }
 
-export default function HomeButton({ variant = 'full', className = '' }: HomeButtonProps) {
+export default function HomeButton({ 
+  variant = 'full', 
+  className = '',
+  href = '/worker',
+  label = 'Dashboard'
+}: HomeButtonProps) {
   const baseClasses = "inline-flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all hover:shadow-md"
   
   const variants = {
@@ -24,7 +31,7 @@ export default function HomeButton({ variant = 'full', className = '' }: HomeBut
 
   return (
     <Link
-      href="/worker"
+      href={href}
       className={`${baseClasses} ${variants[variant]} ${className}`}
     >
       {variant === 'icon' ? (
@@ -33,7 +40,7 @@ export default function HomeButton({ variant = 'full', className = '' }: HomeBut
         <>
           <ArrowLeft className="w-4 h-4" />
           <Home className="w-4 h-4" />
-          <span>Dashboard</span>
+          <span>{label}</span>
         </>
       )}
     </Link>
