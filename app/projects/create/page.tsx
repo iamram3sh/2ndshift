@@ -189,8 +189,8 @@ export default function CreateProjectPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           projectId: project.id,
-          amount: budget,
-          clientId: user.id,
+          amount: parseFloat(formData.budget),
+          clientId: currentUser.id,
           hasMilestones: formData.projectType === 'milestone',
           milestones: formData.projectType === 'milestone' ? milestones : undefined,
         }),
