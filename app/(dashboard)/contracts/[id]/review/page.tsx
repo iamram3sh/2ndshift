@@ -95,7 +95,7 @@ export default function ContractReviewPage() {
         .from('reviews')
         .select('id')
         .eq('contract_id', contractId)
-        .eq('reviewer_id', authUser.id)
+        .eq('reviewer_id', currentUser.id)
         .single()
 
       if (existingReview) {
