@@ -66,7 +66,9 @@ export function PriceBreakdown({
         <span>•</span>
         <span className="flex items-center gap-1">
           Platform fee: {breakdown.client_commission_percent ? `${breakdown.client_commission_percent.toFixed(0)}%` : '₹49'}
-          <Info className="w-3 h-3" title="Platform commission and escrow fee" />
+          <span title="Platform commission and escrow fee">
+            <Info className="w-3 h-3" />
+          </span>
         </span>
         <span>•</span>
         <span>Worker receives: ₹{breakdown.worker_receives?.toFixed(0)}</span>
@@ -86,7 +88,9 @@ export function PriceBreakdown({
           <div className="flex items-center justify-between text-slate-600">
             <span className="flex items-center gap-1">
               Escrow Fee ({breakdown.escrow_fee_percent?.toFixed(1)}%):
-              <Info className="w-3 h-3" title="Payment protection fee" />
+              <span title="Payment protection fee">
+                <Info className="w-3 h-3" />
+              </span>
             </span>
             <span className="text-xs">+₹{breakdown.escrow_fee.toFixed(2)}</span>
           </div>
@@ -96,7 +100,9 @@ export function PriceBreakdown({
           <div className="flex items-center justify-between text-slate-600">
             <span className="flex items-center gap-1">
               Platform Fee {breakdown.client_commission_percent ? `(${breakdown.client_commission_percent.toFixed(1)}%)` : '(Flat ₹49)'}:
-              <Info className="w-3 h-3" title="Platform commission" />
+              <span title="Platform commission">
+                <Info className="w-3 h-3" />
+              </span>
             </span>
             <span className="text-xs">+₹{breakdown.client_commission.toFixed(2)}</span>
           </div>
@@ -106,7 +112,9 @@ export function PriceBreakdown({
           <div className="flex items-center justify-between text-slate-600">
             <span className="flex items-center gap-1">
               Worker Commission ({breakdown.worker_commission_percent?.toFixed(1)}%):
-              <Info className="w-3 h-3" title="Deducted from worker payout" />
+              <span title="Deducted from worker payout">
+                <Info className="w-3 h-3" />
+              </span>
             </span>
             <span className="text-xs">-₹{breakdown.worker_commission.toFixed(2)}</span>
           </div>
