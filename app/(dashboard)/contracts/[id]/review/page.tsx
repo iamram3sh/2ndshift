@@ -15,9 +15,16 @@ export default function ContractReviewPage() {
   const [contract, setContract] = useState<Contract | null>(null)
   const [otherUser, setOtherUser] = useState<User | null>(null)
   const [currentUserId, setCurrentUserId] = useState<string>('')
+  const [userType, setUserType] = useState<'worker' | 'client' | null>(null)
   const [hasReviewed, setHasReviewed] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [reviewSubmitted, setReviewSubmitted] = useState(false)
+
+  const getDashboardPath = () => {
+    if (userType === 'worker') return '/worker'
+    if (userType === 'client') return '/client'
+    return '/'
+  }
 
   useEffect(() => {
     checkAuthAndFetchContract()
@@ -46,14 +53,27 @@ export default function ContractReviewPage() {
       if (contractError) throw contractError
       if (!contractData) {
         alert('Contract not found')
-        router.push('/dashboard')
+        // Get user type from profile
+        const { data: profile } = await supabase
+          .from('users')
+          .select('user_type')
+          .eq('id', authUser.id)
+          .single()
+        if (profile?.user_type === 'worker') {
+          router.push('/worker')
+        } else if (profile?.user_type === 'client') {
+          router.push('/client')
+        } else {
+          router.push('/')
+        }
         return
       }
 
       // Check if contract is completed
       if (contractData.status !== 'completed') {
         alert('You can only review completed contracts')
-        router.push('/dashboard')
+        const isWorker = contractData.worker_id === authUser.id
+        router.push(isWorker ? '/worker' : '/client')
         return
       }
 
@@ -61,6 +81,7 @@ export default function ContractReviewPage() {
 
       // Determine who to review (the other party)
       const isWorker = contractData.worker_id === authUser.id
+      setUserType(isWorker ? 'worker' : 'client')
       const revieweeId = isWorker ? (contractData as any).project.client_id : contractData.worker_id
 
       // Get the other user's details
@@ -152,7 +173,7 @@ export default function ContractReviewPage() {
               Your feedback helps build trust in our community.
             </p>
             <button
-              onClick={() => router.push('/dashboard')}
+              onClick={() => router.push(getDashboardPath())}
               className="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition"
             >
               Return to Dashboard
@@ -176,7 +197,7 @@ export default function ContractReviewPage() {
               You have already submitted a review for this contract.
             </p>
             <button
-              onClick={() => router.push('/dashboard')}
+              onClick={() => router.push(getDashboardPath())}
               className="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition"
             >
               Return to Dashboard

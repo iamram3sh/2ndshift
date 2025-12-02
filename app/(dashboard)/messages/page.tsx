@@ -158,7 +158,15 @@ function MessagesContent() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
               <button
-                onClick={() => router.push('/dashboard')}
+                onClick={() => {
+                  if (user?.user_type === 'worker') {
+                    router.push('/worker')
+                  } else if (user?.user_type === 'client') {
+                    router.push('/client')
+                  } else {
+                    router.push('/')
+                  }
+                }}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition"
               >
                 <ArrowLeft className="w-5 h-5" />
