@@ -5,7 +5,8 @@ import {
   ArrowRight, Briefcase, Shield, CheckCircle, Users, 
   Zap, Lock, Star, Building2, Layers, Timer,
   Calendar, Coffee, Sparkles, Heart, IndianRupee,
-  Mail, MapPin, Linkedin, Twitter, Target, Menu, X, ArrowUpRight
+  Mail, MapPin, Linkedin, Twitter, Target, Menu, X, ArrowUpRight,
+  BadgeCheck, Wallet
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
