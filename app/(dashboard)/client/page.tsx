@@ -112,7 +112,7 @@ export default function ClientDashboard() {
     // Check if user is a client
     if (currentUser.role !== 'client') {
       const routes: Record<string, string> = {
-        worker: '/dashboard/worker',
+        worker: '/worker',
         admin: '/dashboard/admin',
         superadmin: '/dashboard/admin'
       }

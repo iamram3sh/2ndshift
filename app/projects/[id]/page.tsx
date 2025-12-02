@@ -257,7 +257,7 @@ export default function ProjectDetailPage() {
           workerId={currentUser.id}
           clientId={project.client_id}
           onApplySuccess={() => {
-            router.push('/dashboard/worker')
+            router.push('/worker')
           }}
         />
       )}

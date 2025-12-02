@@ -64,12 +64,12 @@ export default function LoginPage() {
       
       if (result.data?.user) {
         const routes: Record<string, string> = {
-          worker: '/dashboard/worker',
-          client: '/dashboard/client',
+          worker: '/worker',
+          client: '/client',
           admin: '/dashboard/admin',
           superadmin: '/dashboard/admin'
         }
-        router.push(routes[result.data.user.role] || '/dashboard/worker')
+        router.push(routes[result.data.user.role] || '/worker')
       }
     } catch (error: any) {
       setMessage(error.message || 'Sign in failed. Please check your credentials.')

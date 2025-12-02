@@ -100,7 +100,7 @@ export default function WorkerDashboard() {
     // Check if user is a worker
     if (currentUser.role !== 'worker') {
       const routes: Record<string, string> = {
-        client: '/dashboard/client',
+        client: '/client',
         admin: '/dashboard/admin',
         superadmin: '/dashboard/admin'
       }
