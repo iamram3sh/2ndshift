@@ -178,7 +178,7 @@ export default function HomePage() {
                   <span className="text-[#111]">Get Paid with Confidence.</span>
                 </h1>
                 <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
-                  Choose your path below to see personalized content.
+                  DevOps, Cloud, Networking, Security, AI, Data, SRE, DB & Programming — delivered by certified Indian professionals.
                 </p>
 
                 {/* CTAs - Single Source */}
@@ -212,18 +212,7 @@ export default function HomePage() {
             ) : null}
 
             {/* Worker-Focused Hero */}
-            <RoleSection role="worker" sectionId="hero-worker" fallback={!isRoleEnabled || role === null ? (
-              <div className="text-center">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
-                  Work on Your Terms.
-                  <br />
-                  <span className="text-[#111]">Get Paid with Confidence.</span>
-                </h1>
-                <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
-                  Choose your path above to see personalized content.
-                </p>
-              </div>
-            ) : null}>
+            <RoleSection role="worker" sectionId="hero-worker" fallback={null}>
             {(
               <div className="text-center">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">

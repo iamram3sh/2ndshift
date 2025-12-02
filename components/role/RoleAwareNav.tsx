@@ -24,29 +24,29 @@ export function RoleAwareNav({ isMobile = false, onLinkClick }: RoleAwareNavProp
   const { role } = useRole()
   const isEnabled = isRoleHomeEnabled()
 
-  // If feature disabled or no role selected, show default nav
+  // If feature disabled or no role selected, show universal nav
   if (!isEnabled || !role) {
     return (
       <div className={isMobile ? 'space-y-1' : 'flex items-center gap-1'}>
         <Link 
-          href="/for-workers" 
+          href="/jobs" 
           onClick={onLinkClick}
           className={isMobile 
             ? "block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg font-medium"
             : "px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors"
           }
         >
-          For Professionals
+          Jobs
         </Link>
         <Link 
-          href="/employers" 
+          href="/pricing" 
           onClick={onLinkClick}
           className={isMobile 
             ? "block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg font-medium"
             : "px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors"
           }
         >
-          For Employers
+          Starter Packs
         </Link>
         <Link 
           href="/features" 
