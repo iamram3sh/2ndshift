@@ -220,6 +220,11 @@ export function EarningsCalculatorSection({ role, onCTAClick }: WorkerSpecificMo
   const monthlyEarnings = hours * rate * 4
   const yearlyEarnings = monthlyEarnings * 12
 
+  const handleClick = (ctaName: string) => {
+    onCTAClick?.(ctaName)
+    trackRoleCTA('worker', ctaName)
+  }
+
   return (
     <section className="py-20 lg:py-28 bg-slate-900 border-t border-slate-800" data-role="worker">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -280,7 +285,7 @@ export function EarningsCalculatorSection({ role, onCTAClick }: WorkerSpecificMo
           <div className="text-center mt-8">
             <Link
               href={withRoleParam("/register?type=worker", role)}
-              onClick={() => onCTAClick?.('Earnings Calculator CTA')}
+              onClick={() => handleClick('Earnings Calculator CTA')}
               className="inline-flex items-center gap-2 bg-white text-[#111] px-6 py-3 rounded-lg font-semibold hover:bg-slate-100 transition-all"
             >
               Start Earning Today
