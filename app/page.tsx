@@ -57,6 +57,7 @@ const SAMPLE_JOBS = [
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [heroVariant, setHeroVariant] = useState<'worker' | 'employer'>('worker')
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10)
@@ -162,57 +163,173 @@ export default function HomePage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-4 py-1.5 mb-8 animate-fade-in">
-              <Sparkles className="w-4 h-4 text-emerald-600" />
-              <span className="text-sm font-medium text-emerald-700">
-                Now open for early access
-              </span>
-            </div>
-
-            {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-slate-900 tracking-tight mb-6 animate-slide-up">
-              Get work done.
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-indigo-600">
-                Without the hassle.
-              </span>
-            </h1>
-
-            {/* Subheadline */}
-            <p className="text-lg lg:text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed animate-slide-up delay-100">
-              Whether you need a quick task done or a full-time team member, 
-              find verified professionals who fit your budget and timeline. 
-              <span className="font-medium text-slate-800"> All tax compliance included.</span>
-            </p>
-
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-slide-up delay-200">
-              <Link 
-                href="/register?type=client"
-                className="group inline-flex items-center justify-center gap-2 bg-slate-900 text-white px-6 py-3.5 rounded-xl font-medium hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10"
+            {/* Variant Toggle */}
+            <div className="inline-flex items-center bg-white border border-slate-200 rounded-xl p-1 shadow-sm mb-8">
+              <button
+                onClick={() => setHeroVariant('worker')}
+                className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
+                  heroVariant === 'worker'
+                    ? 'bg-slate-900 text-white'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
               >
-                I want to hire
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
-              <Link 
-                href="/register?type=worker"
-                className="group inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-6 py-3.5 rounded-xl font-medium border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all"
+                For Workers
+              </button>
+              <button
+                onClick={() => setHeroVariant('employer')}
+                className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
+                  heroVariant === 'employer'
+                    ? 'bg-slate-900 text-white'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
               >
-                I want to work
-                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </Link>
+                For Employers
+              </button>
             </div>
 
-            {/* Trust Indicators */}
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 animate-slide-up delay-300">
-              {VALUE_PROPS.map((item, i) => (
-                <span key={i} className="flex items-center gap-2 text-sm text-slate-600">
-                  <item.icon className="w-4 h-4 text-emerald-600" />
-                  {item.label}
-                </span>
-              ))}
-            </div>
+            {/* VARIANT A: Worker-Focused Hero */}
+            {heroVariant === 'worker' && (
+              <>
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-4 py-1.5 mb-8 animate-fade-in">
+                  <Sparkles className="w-4 h-4 text-emerald-600" />
+                  <span className="text-sm font-medium text-emerald-700">
+                    Get paid within 24 hours • Zero fees
+                  </span>
+                </div>
+
+                {/* Headline Options (6-8 words each):
+                    Option 1 (Active): "Earn money on your terms. Get paid within 24 hours."
+                    Option 2: "Find part-time work that fits your schedule perfectly."
+                    Option 3: "Work when you want. Get paid faster than anywhere else."
+                */}
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-slate-900 tracking-tight mb-6 animate-slide-up">
+                  Earn money on your terms.
+                  <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-sky-600">
+                    Get paid within 24 hours.
+                  </span>
+                </h1>
+
+                {/* Supporting Lines */}
+                <p className="text-lg lg:text-xl text-slate-600 mb-4 max-w-2xl mx-auto leading-relaxed animate-slide-up delay-100">
+                  Connect with verified employers across India. Work part-time, earn full-time.
+                </p>
+                <p className="text-base text-slate-500 mb-10 max-w-2xl mx-auto animate-slide-up delay-100">
+                  Zero platform fees. Instant payments. Complete tax compliance handled for you.
+                </p>
+
+                {/* CTAs */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-slide-up delay-200">
+                  <Link 
+                    href="/register?type=worker"
+                    className="group inline-flex items-center justify-center gap-2 bg-slate-900 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10"
+                  >
+                    Start Earning Now
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
+                  <Link 
+                    href="/worker/discover"
+                    className="group inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-8 py-3.5 rounded-xl font-medium border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all"
+                  >
+                    Browse Available Jobs
+                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </Link>
+                </div>
+
+                {/* Trust Indicators */}
+                <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 animate-slide-up delay-300">
+                  <span className="flex items-center gap-2 text-sm text-slate-600">
+                    <Clock className="w-4 h-4 text-emerald-600" />
+                    Paid within 24 hours
+                  </span>
+                  <span className="flex items-center gap-2 text-sm text-slate-600">
+                    <Shield className="w-4 h-4 text-emerald-600" />
+                    Zero platform fees
+                  </span>
+                  <span className="flex items-center gap-2 text-sm text-slate-600">
+                    <BadgeCheck className="w-4 h-4 text-emerald-600" />
+                    Verified employers only
+                  </span>
+                  <span className="flex items-center gap-2 text-sm text-slate-600">
+                    <FileCheck className="w-4 h-4 text-emerald-600" />
+                    Tax compliance included
+                  </span>
+                </div>
+              </>
+            )}
+
+            {/* VARIANT B: Employer-Focused Hero */}
+            {heroVariant === 'employer' && (
+              <>
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-full px-4 py-1.5 mb-8 animate-fade-in">
+                  <Zap className="w-4 h-4 text-sky-600" />
+                  <span className="text-sm font-medium text-sky-700">
+                    Hire in under 1 hour • Replacement guarantee
+                  </span>
+                </div>
+
+                {/* Headline Options (6-8 words each):
+                    Option 1 (Active): "Hire verified part-time workers. Get started in under one hour."
+                    Option 2: "Find verified workers fast. Hire in under one hour guaranteed."
+                    Option 3: "Post a job, get matched. Hire verified workers in one hour."
+                */}
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-slate-900 tracking-tight mb-6 animate-slide-up">
+                  Hire verified part-time workers.
+                  <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-indigo-600">
+                    Get started in under one hour.
+                  </span>
+                </h1>
+
+                {/* Supporting Lines */}
+                <p className="text-lg lg:text-xl text-slate-600 mb-4 max-w-2xl mx-auto leading-relaxed animate-slide-up delay-100">
+                  Connect with pre-verified professionals across India. Post a job, get matched instantly.
+                </p>
+                <p className="text-base text-slate-500 mb-10 max-w-2xl mx-auto animate-slide-up delay-100">
+                  Replacement guarantee if not satisfied. All compliance and payments handled automatically.
+                </p>
+
+                {/* CTAs */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-slide-up delay-200">
+                  <Link 
+                    href="/register?type=client"
+                    className="group inline-flex items-center justify-center gap-2 bg-slate-900 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10"
+                  >
+                    Post a Job Now
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </Link>
+                  <Link 
+                    href="/workers"
+                    className="group inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-8 py-3.5 rounded-xl font-medium border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all"
+                  >
+                    Browse Verified Talent
+                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </Link>
+                </div>
+
+                {/* Trust Indicators */}
+                <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 animate-slide-up delay-300">
+                  <span className="flex items-center gap-2 text-sm text-slate-600">
+                    <Zap className="w-4 h-4 text-sky-600" />
+                    Hire in under 1 hour
+                  </span>
+                  <span className="flex items-center gap-2 text-sm text-slate-600">
+                    <Shield className="w-4 h-4 text-sky-600" />
+                    Replacement guarantee
+                  </span>
+                  <span className="flex items-center gap-2 text-sm text-slate-600">
+                    <BadgeCheck className="w-4 h-4 text-sky-600" />
+                    Verified workers only
+                  </span>
+                  <span className="flex items-center gap-2 text-sm text-slate-600">
+                    <FileCheck className="w-4 h-4 text-sky-600" />
+                    Complete compliance
+                  </span>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -226,7 +343,7 @@ export default function HomePage() {
                 <Coffee className="w-6 h-6 text-sky-400" />
               </div>
               <h3 className="text-lg font-semibold text-white mb-2">Quick Tasks</h3>
-              <p className="text-slate-400 text-sm">
+              <p className="text-white text-sm">
                 Logo design, bug fixes, content writing. Get small tasks done in hours, not days.
               </p>
             </div>
@@ -235,7 +352,7 @@ export default function HomePage() {
                 <Calendar className="w-6 h-6 text-emerald-400" />
               </div>
               <h3 className="text-lg font-semibold text-white mb-2">Project-Based</h3>
-              <p className="text-slate-400 text-sm">
+              <p className="text-white text-sm">
                 App development, website redesign, marketing campaigns. Fixed price, clear timeline.
               </p>
             </div>
@@ -244,7 +361,7 @@ export default function HomePage() {
                 <Users className="w-6 h-6 text-purple-400" />
               </div>
               <h3 className="text-lg font-semibold text-white mb-2">Full-Time Hire</h3>
-              <p className="text-slate-400 text-sm">
+              <p className="text-white text-sm">
                 Need a dedicated team member? Hire full-time with all compliance handled.
               </p>
             </div>
@@ -406,7 +523,7 @@ export default function HomePage() {
                 <br />
                 <span className="text-sky-400">Stay within budget.</span>
               </h3>
-              <p className="text-slate-300 mb-8">
+              <p className="text-white mb-8">
                 From one-time tasks to building your dream team. 
                 Find the right talent without the recruitment overhead.
               </p>
@@ -422,7 +539,7 @@ export default function HomePage() {
                     <CheckCircle className="w-5 h-5 text-sky-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <div className="font-medium text-white">{item.label}</div>
-                      <div className="text-sm text-slate-400">{item.desc}</div>
+                      <div className="text-sm text-white">{item.desc}</div>
                     </div>
                   </li>
                 ))}
@@ -502,7 +619,7 @@ export default function HomePage() {
             <h2 className="text-3xl lg:text-4xl font-semibold text-white tracking-tight mb-4">
               Simple process
             </h2>
-            <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+            <p className="text-lg text-white max-w-2xl mx-auto">
               Get started in minutes. No complicated onboarding.
             </p>
           </div>
@@ -529,12 +646,12 @@ export default function HomePage() {
               },
             ].map((item, i) => (
               <div key={i} className="text-center">
-                <div className="text-5xl font-bold text-slate-700 mb-4">{item.step}</div>
+                <div className="text-5xl font-bold text-slate-600 mb-4">{item.step}</div>
                 <div className="w-14 h-14 bg-sky-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
                   <item.icon className="w-7 h-7 text-sky-400" />
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-2">{item.title}</h3>
-                <p className="text-slate-400">{item.description}</p>
+                <p className="text-white">{item.description}</p>
               </div>
             ))}
           </div>
@@ -595,7 +712,7 @@ export default function HomePage() {
           <h2 className="text-3xl lg:text-4xl font-semibold text-white tracking-tight mb-4">
             Ready to get started?
           </h2>
-          <p className="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">
+          <p className="text-lg text-white mb-10 max-w-2xl mx-auto">
             Join 2ndShift today. It&apos;s free to create an account.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
