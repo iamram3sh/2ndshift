@@ -22,6 +22,7 @@ import {
   ClientTestimonialSection,
   PricingCTASection
 } from '@/components/role/ClientSpecificModules'
+import { PricingSection } from '@/components/revenue/PricingSection'
 
 export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'worker' | null }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -236,6 +237,7 @@ export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'w
         <AIJobWizardSection role={role || initialRole || 'client'} onCTAClick={(name) => handleCTAClick(name, 'client')} />
         <EscrowExplainerSection role={role || initialRole || 'client'} onCTAClick={(name) => handleCTAClick(name, 'client')} />
         <ClientTestimonialSection role={role || initialRole || 'client'} onCTAClick={(name) => handleCTAClick(name, 'client')} />
+        <PricingSection role="client" />
         <PricingCTASection role={role || initialRole || 'client'} onCTAClick={(name) => handleCTAClick(name, 'client')} />
       </RoleSection>
 

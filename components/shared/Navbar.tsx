@@ -5,6 +5,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase/client'
 import { User, LogOut, Layers, Bell, Zap, Menu, X, Home, Briefcase, Users, ChevronDown } from 'lucide-react'
+import { ShiftsHeaderIndicator } from '@/components/revenue/ShiftsHeaderIndicator'
 import type { User as UserType } from '@/types/database.types'
 
 export function Navbar() {
@@ -197,6 +198,14 @@ export function Navbar() {
           <div className="flex items-center gap-3">
             {user ? (
               <>
+                {/* Shifts Indicator for Workers */}
+                {user.user_type === 'worker' && (
+                  <>
+                    <ShiftsHeaderIndicator userId={user.id} />
+                    <div className="h-6 w-px bg-slate-200 hidden sm:block" />
+                  </>
+                )}
+                
                 <button className="relative p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
                   <Bell className="w-5 h-5" />
                   <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />

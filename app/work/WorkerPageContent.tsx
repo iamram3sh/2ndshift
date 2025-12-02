@@ -21,6 +21,7 @@ import {
   EarningsCalculatorSection,
   WorkerSuccessStoriesSection
 } from '@/components/role/WorkerSpecificModules'
+import { PricingSection } from '@/components/revenue/PricingSection'
 
 const SAMPLE_JOBS = [
   {
@@ -340,6 +341,7 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
         <VerificationExplainerSection role={role || initialRole || 'worker'} onCTAClick={(name) => handleCTAClick(name, 'worker')} />
         <EarningsCalculatorSection role={role || initialRole || 'worker'} onCTAClick={(name) => handleCTAClick(name, 'worker')} />
         <WorkerSuccessStoriesSection role={role || initialRole || 'worker'} onCTAClick={(name) => handleCTAClick(name, 'worker')} />
+        <PricingSection role="worker" />
       </RoleSection>
 
       {/* Why 2ndShift - Shared */}
