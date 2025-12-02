@@ -211,7 +211,6 @@ async function main() {
         price_fixed: microtask.base_price_max,
         price_currency: 'INR',
         delivery_window: microtask.delivery_window,
-        required_skills: ['React', 'TypeScript'],
       },
     });
     jobs.push(job);
