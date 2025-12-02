@@ -9,7 +9,6 @@ import { ShiftsModal } from '@/components/shifts/ShiftsModal'
 import { BuyCreditsModalV1 } from '@/components/revenue/BuyCreditsModalV1'
 import { SubscriptionUpsell } from '@/components/revenue/SubscriptionUpsell'
 import { CommissionCalculator } from '@/components/revenue/CommissionCalculator'
-import { Sparkles } from 'lucide-react'
 import { CommissionBreakdown } from '@/components/revenue/CommissionBreakdown'
 import { SubscriptionUpsellSection } from '@/components/revenue/SubscriptionUpsellSection'
 import { 
