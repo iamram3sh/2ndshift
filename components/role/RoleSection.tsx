@@ -29,7 +29,8 @@ export function RoleSection({ role, fallback = null, children, className, sectio
 
   // Track section view when role matches and feature is enabled
   useEffect(() => {
-    if (isEnabled && currentRole && currentRole === role && role !== 'both') {
+    // Only track for worker/client roles, not 'both'
+    if (isEnabled && currentRole && (role === 'worker' || role === 'client') && currentRole === role) {
       trackRoleSectionView(currentRole, finalSectionId)
     }
   }, [isEnabled, currentRole, role, finalSectionId])
