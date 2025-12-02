@@ -76,7 +76,11 @@ export default function AdminSourcingPage() {
   const fetchRequests = async () => {
     try {
       const result = await apiClient.getSourcingRequests()
-      setRequests(result.data?.requests || [])
+      if (result.data && 'requests' in result.data) {
+        setRequests((result.data as any).requests || [])
+      } else {
+        setRequests([])
+      }
     } catch (error) {
       console.error('Error fetching requests:', error)
     }
@@ -96,14 +100,18 @@ export default function AdminSourcingPage() {
         limit: 10,
       })
       
-      setWorkers(result.data?.workers?.map((w: any) => ({
-        id: w.user_id,
-        name: w.user?.full_name || 'Unknown',
-        headline: w.user?.profile?.headline || '',
-        skills: w.user?.profile?.skills || [],
-        verified_level: w.user?.profile?.verified_level || 'none',
-        score: w.user?.profile?.score || 0,
-      })) || [])
+      if (result.data && 'workers' in result.data) {
+        setWorkers((result.data as any).workers?.map((w: any) => ({
+          id: w.user_id,
+          name: w.user?.full_name || 'Unknown',
+          headline: w.user?.profile?.headline || '',
+          skills: w.user?.profile?.skills || [],
+          verified_level: w.user?.profile?.verified_level || 'none',
+          score: w.user?.profile?.score || 0,
+        })) || [])
+      } else {
+        setWorkers([])
+      }
     } catch (error) {
       console.error('Error fetching workers:', error)
     }
