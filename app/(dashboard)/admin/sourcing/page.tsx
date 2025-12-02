@@ -76,7 +76,7 @@ export default function AdminSourcingPage() {
   const fetchRequests = async () => {
     try {
       const result = await apiClient.getSourcingRequests()
-      if (result.data && 'requests' in result.data) {
+      if (result.data && typeof result.data === 'object' && 'requests' in result.data) {
         setRequests((result.data as any).requests || [])
       } else {
         setRequests([])
@@ -100,7 +100,7 @@ export default function AdminSourcingPage() {
         limit: 10,
       })
       
-      if (result.data && 'workers' in result.data) {
+      if (result.data && typeof result.data === 'object' && 'workers' in result.data) {
         setWorkers((result.data as any).workers?.map((w: any) => ({
           id: w.user_id,
           name: w.user?.full_name || 'Unknown',
