@@ -336,10 +336,10 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
 
       {/* Worker-Specific Modules */}
       <RoleSection role="worker" ssrRole={initialRole || 'worker'}>
-        <StarterPacksSection role={role} onCTAClick={(name) => handleCTAClick(name, 'worker')} />
-        <VerificationExplainerSection role={role} onCTAClick={(name) => handleCTAClick(name, 'worker')} />
-        <EarningsCalculatorSection role={role} onCTAClick={(name) => handleCTAClick(name, 'worker')} />
-        <WorkerSuccessStoriesSection role={role} onCTAClick={(name) => handleCTAClick(name, 'worker')} />
+        <StarterPacksSection role={role || initialRole || 'worker'} onCTAClick={(name) => handleCTAClick(name, 'worker')} />
+        <VerificationExplainerSection role={role || initialRole || 'worker'} onCTAClick={(name) => handleCTAClick(name, 'worker')} />
+        <EarningsCalculatorSection role={role || initialRole || 'worker'} onCTAClick={(name) => handleCTAClick(name, 'worker')} />
+        <WorkerSuccessStoriesSection role={role || initialRole || 'worker'} onCTAClick={(name) => handleCTAClick(name, 'worker')} />
       </RoleSection>
 
       {/* Why 2ndShift - Shared */}

@@ -232,11 +232,11 @@ export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'w
 
       {/* Client-Specific Modules */}
       <RoleSection role="client" ssrRole={initialRole || 'client'}>
-        <HiringModelsSection role={role} onCTAClick={(name) => handleCTAClick(name, 'client')} />
-        <AIJobWizardSection role={role} onCTAClick={(name) => handleCTAClick(name, 'client')} />
-        <EscrowExplainerSection role={role} onCTAClick={(name) => handleCTAClick(name, 'client')} />
-        <ClientTestimonialSection role={role} onCTAClick={(name) => handleCTAClick(name, 'client')} />
-        <PricingCTASection role={role} onCTAClick={(name) => handleCTAClick(name, 'client')} />
+        <HiringModelsSection role={role || initialRole || 'client'} onCTAClick={(name) => handleCTAClick(name, 'client')} />
+        <AIJobWizardSection role={role || initialRole || 'client'} onCTAClick={(name) => handleCTAClick(name, 'client')} />
+        <EscrowExplainerSection role={role || initialRole || 'client'} onCTAClick={(name) => handleCTAClick(name, 'client')} />
+        <ClientTestimonialSection role={role || initialRole || 'client'} onCTAClick={(name) => handleCTAClick(name, 'client')} />
+        <PricingCTASection role={role || initialRole || 'client'} onCTAClick={(name) => handleCTAClick(name, 'client')} />
       </RoleSection>
 
       {/* Why 2ndShift - Shared */}
