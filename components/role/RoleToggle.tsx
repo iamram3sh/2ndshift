@@ -22,6 +22,11 @@ export function RoleToggle({ variant = 'hero', onRoleChange, className = '' }: R
   const workerButtonRef = useRef<HTMLButtonElement>(null)
   const clientButtonRef = useRef<HTMLButtonElement>(null)
 
+  // Handle SSR - return null if feature disabled or during initial render
+  if (!isEnabled) {
+    return null
+  }
+
   // Announce role changes to screen readers
   useEffect(() => {
     if (announcementRef.current && role) {
@@ -52,11 +57,6 @@ export function RoleToggle({ variant = 'hero', onRoleChange, className = '' }: R
     const source = variant === 'hero' ? 'hero' : 'header'
     setRole(selectedRole, source)
     onRoleChange?.(selectedRole)
-  }
-
-  // If feature is disabled, don't render
-  if (!isEnabled) {
-    return null
   }
 
   // Hero variant - large side-by-side buttons
