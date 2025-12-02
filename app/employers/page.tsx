@@ -504,7 +504,7 @@ export default function EmployersPage() {
             <h2 className="text-3xl font-semibold text-white mb-4">
               See how much you can save
             </h2>
-            <p className="text-lg text-slate-400">
+            <p className="text-lg text-white">
               Enter your project details to compare costs.
             </p>
           </div>

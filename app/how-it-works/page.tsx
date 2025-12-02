@@ -326,7 +326,7 @@ export default function HowItWorksPage() {
             <h2 className="text-3xl lg:text-4xl font-semibold text-white mb-4">
               We handle all the compliance
             </h2>
-            <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+            <p className="text-lg text-white max-w-2xl mx-auto">
               No more spreadsheets, no more paperwork. Every transaction is fully compliant with Indian tax laws.
             </p>
           </div>
@@ -336,7 +336,7 @@ export default function HowItWorksPage() {
               <div key={i} className="p-6 bg-white/5 rounded-xl border border-white/10">
                 <feature.icon className="w-10 h-10 text-sky-400 mb-4" />
                 <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
-                <p className="text-slate-400 text-sm">{feature.description}</p>
+                <p className="text-white text-sm">{feature.description}</p>
               </div>
             ))}
           </div>

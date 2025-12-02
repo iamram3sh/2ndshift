@@ -152,190 +152,139 @@ export default function HomePage() {
         )}
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-50 to-white"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-100/40 via-transparent to-transparent"></div>
-        
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
+      {/* Hero Section - Professional Conversion-Focused */}
+      <section className="relative pt-24 lg:pt-32 pb-16 lg:pb-24 bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto">
             {/* Variant Toggle */}
-            <div className="inline-flex items-center bg-white border border-slate-200 rounded-xl p-1 shadow-sm mb-8">
-              <button
-                onClick={() => setHeroVariant('worker')}
-                className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
-                  heroVariant === 'worker'
-                    ? 'bg-slate-900 text-white'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                For Workers
-              </button>
-              <button
-                onClick={() => setHeroVariant('employer')}
-                className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
-                  heroVariant === 'employer'
-                    ? 'bg-slate-900 text-white'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                For Employers
-              </button>
+            <div className="flex justify-center mb-8">
+              <div className="inline-flex items-center bg-slate-100 rounded-lg p-1 shadow-sm">
+                <button
+                  onClick={() => setHeroVariant('worker')}
+                  className={`px-6 py-2.5 rounded-md text-sm font-semibold transition-all ${
+                    heroVariant === 'worker'
+                      ? 'bg-white text-[#111] shadow-sm'
+                      : 'text-[#333] hover:text-[#111]'
+                  }`}
+                >
+                  I Want Remote Work
+                </button>
+                <button
+                  onClick={() => setHeroVariant('employer')}
+                  className={`px-6 py-2.5 rounded-md text-sm font-semibold transition-all ${
+                    heroVariant === 'employer'
+                      ? 'bg-white text-[#111] shadow-sm'
+                      : 'text-[#333] hover:text-[#111]'
+                  }`}
+                >
+                  I Want to Hire
+                </button>
+              </div>
             </div>
 
             {/* VARIANT A: Worker-Focused Hero */}
             {heroVariant === 'worker' && (
-              <>
-                {/* Badge */}
-                <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-4 py-1.5 mb-8 animate-fade-in">
-                  <Sparkles className="w-4 h-4 text-emerald-600" />
-                  <span className="text-sm font-medium text-emerald-700">
-                    Get paid within 24 hours • Zero fees
-                  </span>
-                </div>
-
-                {/* Headline Options (6-8 words each):
-                    Option 1 (Active): "Earn money on your terms. Get paid within 24 hours."
-                    Option 2: "Find part-time work that fits your schedule perfectly."
-                    Option 3: "Work when you want. Get paid faster than anywhere else."
-                */}
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-slate-900 tracking-tight mb-6 animate-slide-up">
-                  Earn money on your terms.
+              <div className="text-center">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
+                  Earn from Anywhere.
                   <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-sky-600">
-                    Get paid within 24 hours.
-                  </span>
+                  <span className="text-[#111]">Build a Second Income with Skills You Already Have.</span>
                 </h1>
 
-                {/* Supporting Lines */}
-                <p className="text-lg lg:text-xl text-slate-600 mb-4 max-w-2xl mx-auto leading-relaxed animate-slide-up delay-100">
-                  Connect with verified employers across India. Work part-time, earn full-time.
-                </p>
-                <p className="text-base text-slate-500 mb-10 max-w-2xl mx-auto animate-slide-up delay-100">
-                  Zero platform fees. Instant payments. Complete tax compliance handled for you.
+                <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
+                  Remote-friendly micro jobs & projects from real clients. No fake ratings. No false promises.
                 </p>
 
                 {/* CTAs */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-slide-up delay-200">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
                   <Link 
                     href="/register?type=worker"
-                    className="group inline-flex items-center justify-center gap-2 bg-slate-900 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10"
+                    className="inline-flex items-center justify-center gap-2 bg-[#111] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                   >
-                    Start Earning Now
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                    Get Remote Work
+                    <ArrowRight className="w-5 h-5" />
                   </Link>
                   <Link 
                     href="/worker/discover"
-                    className="group inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-8 py-3.5 rounded-xl font-medium border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all"
+                    className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold border-2 border-[#111] hover:bg-slate-50 transition-all"
                   >
-                    Browse Available Jobs
-                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    Browse Jobs
+                    <ArrowUpRight className="w-5 h-5" />
                   </Link>
                 </div>
 
                 {/* Trust Indicators */}
-                <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 animate-slide-up delay-300">
-                  <span className="flex items-center gap-2 text-sm text-slate-600">
+                <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#333]">
+                  <span className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-emerald-600" />
                     Paid within 24 hours
                   </span>
-                  <span className="flex items-center gap-2 text-sm text-slate-600">
+                  <span className="flex items-center gap-2">
                     <Shield className="w-4 h-4 text-emerald-600" />
                     Zero platform fees
                   </span>
-                  <span className="flex items-center gap-2 text-sm text-slate-600">
+                  <span className="flex items-center gap-2">
                     <BadgeCheck className="w-4 h-4 text-emerald-600" />
-                    Verified employers only
-                  </span>
-                  <span className="flex items-center gap-2 text-sm text-slate-600">
-                    <FileCheck className="w-4 h-4 text-emerald-600" />
-                    Tax compliance included
+                    Verified clients only
                   </span>
                 </div>
-              </>
+              </div>
             )}
 
             {/* VARIANT B: Employer-Focused Hero */}
             {heroVariant === 'employer' && (
-              <>
-                {/* Badge */}
-                <div className="inline-flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-full px-4 py-1.5 mb-8 animate-fade-in">
-                  <Zap className="w-4 h-4 text-sky-600" />
-                  <span className="text-sm font-medium text-sky-700">
-                    Hire in under 1 hour • Replacement guarantee
-                  </span>
-                </div>
-
-                {/* Headline Options (6-8 words each):
-                    Option 1 (Active): "Hire verified part-time workers. Get started in under one hour."
-                    Option 2: "Find verified workers fast. Hire in under one hour guaranteed."
-                    Option 3: "Post a job, get matched. Hire verified workers in one hour."
-                */}
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-slate-900 tracking-tight mb-6 animate-slide-up">
-                  Hire verified part-time workers.
+              <div className="text-center">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
+                  Hire Talent Fast.
                   <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-indigo-600">
-                    Get started in under one hour.
-                  </span>
+                  <span className="text-[#111]">Zero Noise. Only Verified Workers.</span>
                 </h1>
 
-                {/* Supporting Lines */}
-                <p className="text-lg lg:text-xl text-slate-600 mb-4 max-w-2xl mx-auto leading-relaxed animate-slide-up delay-100">
-                  Connect with pre-verified professionals across India. Post a job, get matched instantly.
-                </p>
-                <p className="text-base text-slate-500 mb-10 max-w-2xl mx-auto animate-slide-up delay-100">
-                  Replacement guarantee if not satisfied. All compliance and payments handled automatically.
+                <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
+                  Get remote workers, micro-teams, and on-demand task execution within hours.
                 </p>
 
                 {/* CTAs */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-slide-up delay-200">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
                   <Link 
                     href="/register?type=client"
-                    className="group inline-flex items-center justify-center gap-2 bg-slate-900 text-white px-8 py-3.5 rounded-xl font-medium hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10"
+                    className="inline-flex items-center justify-center gap-2 bg-[#111] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                   >
-                    Post a Job Now
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                    Hire a Worker
+                    <ArrowRight className="w-5 h-5" />
                   </Link>
                   <Link 
                     href="/workers"
-                    className="group inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-8 py-3.5 rounded-xl font-medium border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all"
+                    className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold border-2 border-[#111] hover:bg-slate-50 transition-all"
                   >
-                    Browse Verified Talent
-                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    Browse Talent
+                    <ArrowUpRight className="w-5 h-5" />
                   </Link>
                 </div>
 
                 {/* Trust Indicators */}
-                <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 animate-slide-up delay-300">
-                  <span className="flex items-center gap-2 text-sm text-slate-600">
+                <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#333]">
+                  <span className="flex items-center gap-2">
                     <Zap className="w-4 h-4 text-sky-600" />
                     Hire in under 1 hour
                   </span>
-                  <span className="flex items-center gap-2 text-sm text-slate-600">
+                  <span className="flex items-center gap-2">
                     <Shield className="w-4 h-4 text-sky-600" />
                     Replacement guarantee
                   </span>
-                  <span className="flex items-center gap-2 text-sm text-slate-600">
+                  <span className="flex items-center gap-2">
                     <BadgeCheck className="w-4 h-4 text-sky-600" />
                     Verified workers only
                   </span>
-                  <span className="flex items-center gap-2 text-sm text-slate-600">
-                    <FileCheck className="w-4 h-4 text-sky-600" />
-                    Complete compliance
-                  </span>
                 </div>
-              </>
+              </div>
             )}
           </div>
         </div>
       </section>
 
       {/* What You Can Do */}
-      <section className="py-16 bg-slate-900">
+      <section className="py-16 bg-slate-900 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid sm:grid-cols-3 gap-8 text-center">
             <div>
@@ -370,7 +319,7 @@ export default function HomePage() {
       </section>
 
       {/* Live Opportunities */}
-      <section className="py-20 lg:py-28">
+      <section className="py-20 lg:py-28 bg-white border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
@@ -379,16 +328,16 @@ export default function HomePage() {
                 <span className="flex h-2 w-2 rounded-full bg-sky-500 animate-pulse"></span>
                 Open Opportunities
               </div>
-              <h2 className="text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-[#111] tracking-tight">
                 Work that fits your life
               </h2>
-              <p className="text-slate-600 mt-2">
+              <p className="text-[#333] mt-2">
                 From quick gigs to full-time roles. Choose what works for you.
               </p>
             </div>
             <Link 
               href="/jobs"
-              className="inline-flex items-center gap-2 text-slate-900 font-medium hover:text-sky-600 transition-colors"
+              className="inline-flex items-center gap-2 text-[#111] font-semibold hover:text-sky-600 transition-colors"
             >
               View all opportunities
               <ArrowRight className="w-4 h-4" />
@@ -406,11 +355,11 @@ export default function HomePage() {
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-slate-900 group-hover:text-sky-600 transition-colors">
+                      <h3 className="font-semibold text-[#111] group-hover:text-sky-600 transition-colors">
                         {job.title}
                       </h3>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-500">
+                    <div className="flex items-center gap-2 text-sm text-[#333]">
                       <Timer className="w-3.5 h-3.5" />
                       <span>{job.duration}</span>
                       <span>•</span>
@@ -438,7 +387,7 @@ export default function HomePage() {
 
                 <div className="flex items-center justify-between pt-4 border-t border-slate-100">
                   <div>
-                    <div className="text-lg font-semibold text-slate-900">{job.budget}</div>
+                    <div className="text-lg font-semibold text-[#111]">{job.budget}</div>
                   </div>
                   <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-sky-100 transition-colors">
                     <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-sky-600 transition-colors" />
@@ -450,7 +399,7 @@ export default function HomePage() {
 
           {/* Sign Up CTA */}
           <div className="text-center mt-10 p-6 bg-slate-50 rounded-2xl border border-slate-200">
-            <p className="text-slate-600 mb-4">
+            <p className="text-[#333] mb-4">
               Sign up free to see company details and apply to opportunities
             </p>
             <Link
@@ -465,7 +414,7 @@ export default function HomePage() {
       </section>
 
       {/* Two-Column Value Prop */}
-      <section className="py-20 lg:py-28 bg-slate-50">
+      <section className="py-20 lg:py-28 bg-slate-50 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-8">
             {/* For Professionals */}
@@ -475,12 +424,12 @@ export default function HomePage() {
                 For Professionals
               </div>
 
-              <h3 className="text-2xl lg:text-3xl font-semibold text-slate-900 mb-4">
+              <h3 className="text-2xl lg:text-3xl font-bold text-[#111] mb-4">
                 Use your skills.
                 <br />
                 <span className="text-sky-600">Earn on your terms.</span>
               </h3>
-              <p className="text-slate-600 mb-8">
+              <p className="text-[#333] mb-8">
                 Turn your free time into income. Work on projects you love, 
                 with clients who value your expertise.
               </p>
@@ -495,8 +444,8 @@ export default function HomePage() {
                   <li key={i} className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
                     <div>
-                      <div className="font-medium text-slate-900">{item.label}</div>
-                      <div className="text-sm text-slate-500">{item.desc}</div>
+                      <div className="font-semibold text-[#111]">{item.label}</div>
+                      <div className="text-sm text-[#333]">{item.desc}</div>
                     </div>
                   </li>
                 ))}
@@ -558,13 +507,13 @@ export default function HomePage() {
       </section>
 
       {/* Why 2ndShift */}
-      <section className="py-20 lg:py-28">
+      <section className="py-20 lg:py-28 bg-white border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight mb-4">
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] tracking-tight mb-4">
               Why choose 2ndShift?
             </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="text-lg text-[#333] max-w-2xl mx-auto">
               We built the platform we wished existed. Here&apos;s what makes us different.
             </p>
           </div>
@@ -602,10 +551,10 @@ export default function HomePage() {
                 description: 'Real people, not bots. WhatsApp, email, or call - we\'re here when you need help.' 
               },
             ].map((feature, i) => (
-              <div key={i} className="p-6 bg-slate-50 rounded-xl border border-slate-200 hover:border-slate-300 transition-colors">
+              <div key={i} className="p-6 bg-white rounded-xl border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all">
                 <feature.icon className="w-10 h-10 text-sky-600 mb-4" />
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">{feature.title}</h3>
-                <p className="text-slate-600 text-sm">{feature.description}</p>
+                <h3 className="text-lg font-bold text-[#111] mb-2">{feature.title}</h3>
+                <p className="text-[#333] text-sm">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -613,10 +562,10 @@ export default function HomePage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 lg:py-28 bg-slate-900">
+      <section className="py-20 lg:py-28 bg-slate-900 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-semibold text-white tracking-tight mb-4">
+            <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4">
               Simple process
             </h2>
             <p className="text-lg text-white max-w-2xl mx-auto">
@@ -659,18 +608,18 @@ export default function HomePage() {
       </section>
 
       {/* Future Vision */}
-      <section className="py-20 lg:py-28">
+      <section className="py-20 lg:py-28 bg-white border-t border-slate-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-50 text-purple-700 rounded-full text-sm font-medium mb-6">
             <Sparkles className="w-4 h-4" />
             Our Vision
           </div>
           
-          <h2 className="text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight mb-6">
+          <h2 className="text-3xl lg:text-4xl font-bold text-[#111] tracking-tight mb-6">
             The future of work in India
           </h2>
           
-          <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+          <p className="text-lg text-[#333] mb-8 leading-relaxed">
             We believe everyone deserves the freedom to work on their own terms. 
             Whether you&apos;re a developer coding on weekends, a designer exploring freelance, 
             or a company looking for the perfect hire - 2ndShift is building the platform 
@@ -678,38 +627,38 @@ export default function HomePage() {
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 mb-10">
-            <div className="px-4 py-2 bg-slate-100 rounded-lg text-sm text-slate-700">
+            <div className="px-4 py-2 bg-slate-100 rounded-lg text-sm text-[#333] font-medium">
               🎯 Skill-based matching
             </div>
-            <div className="px-4 py-2 bg-slate-100 rounded-lg text-sm text-slate-700">
+            <div className="px-4 py-2 bg-slate-100 rounded-lg text-sm text-[#333] font-medium">
               🛡️ Payment protection
             </div>
-            <div className="px-4 py-2 bg-slate-100 rounded-lg text-sm text-slate-700">
+            <div className="px-4 py-2 bg-slate-100 rounded-lg text-sm text-[#333] font-medium">
               📋 Full compliance
             </div>
-            <div className="px-4 py-2 bg-slate-100 rounded-lg text-sm text-slate-700">
+            <div className="px-4 py-2 bg-slate-100 rounded-lg text-sm text-[#333] font-medium">
               ⭐ Trust & transparency
             </div>
           </div>
 
           <Link
             href="/register"
-            className="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-xl text-lg font-medium hover:bg-slate-800 transition-all"
+            className="inline-flex items-center gap-2 bg-[#111] text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl"
           >
             Join Early Access
             <ArrowRight className="w-5 h-5" />
           </Link>
           
-          <p className="text-sm text-slate-500 mt-4">
+          <p className="text-sm text-[#333] mt-4">
             Free to join. First 100 users get lifetime benefits.
           </p>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800">
+      <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-semibold text-white tracking-tight mb-4">
+          <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4">
             Ready to get started?
           </h2>
           <p className="text-lg text-white mb-10 max-w-2xl mx-auto">
@@ -718,14 +667,14 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               href="/register?type=worker"
-              className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-xl font-medium hover:bg-slate-100 transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
             >
               I want to earn
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link 
               href="/register?type=client"
-              className="inline-flex items-center justify-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-xl font-medium hover:bg-sky-700 transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-sky-700 transition-all shadow-lg hover:shadow-xl"
             >
               I want to hire
               <ArrowRight className="w-4 h-4" />
@@ -744,16 +693,16 @@ export default function HomePage() {
                 <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
                   <Layers className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-lg font-semibold text-slate-900">2ndShift</span>
+                <span className="text-lg font-semibold text-[#111]">2ndShift</span>
               </Link>
-              <p className="text-sm text-slate-500 mb-4">
+              <p className="text-sm text-[#333] mb-4">
                 Work on your terms.<br />Get paid with confidence.
               </p>
               <div className="flex gap-3">
-                <a href="#" className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors">
+                <a href="#" className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-[#333] hover:bg-slate-200 transition-colors">
                   <Twitter className="w-4 h-4" />
                 </a>
-                <a href="#" className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors">
+                <a href="#" className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-[#333] hover:bg-slate-200 transition-colors">
                   <Linkedin className="w-4 h-4" />
                 </a>
               </div>
@@ -761,37 +710,37 @@ export default function HomePage() {
 
             {/* Links */}
             <div>
-              <h4 className="font-semibold text-slate-900 mb-4">For Professionals</h4>
+              <h4 className="font-bold text-[#111] mb-4">For Professionals</h4>
               <ul className="space-y-3 text-sm">
-                <li><Link href="/for-workers" className="text-slate-600 hover:text-slate-900 transition-colors">Why 2ndShift</Link></li>
-                <li><Link href="/worker/discover" className="text-slate-600 hover:text-slate-900 transition-colors">Find Work</Link></li>
-                <li><Link href="/features" className="text-slate-600 hover:text-slate-900 transition-colors">How Shifts Work</Link></li>
-                <li><Link href="/pricing" className="text-slate-600 hover:text-slate-900 transition-colors">Pricing</Link></li>
+                <li><Link href="/for-workers" className="text-[#333] hover:text-[#111] transition-colors">Why 2ndShift</Link></li>
+                <li><Link href="/worker/discover" className="text-[#333] hover:text-[#111] transition-colors">Find Work</Link></li>
+                <li><Link href="/features" className="text-[#333] hover:text-[#111] transition-colors">How Shifts Work</Link></li>
+                <li><Link href="/pricing" className="text-[#333] hover:text-[#111] transition-colors">Pricing</Link></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold text-slate-900 mb-4">For Employers</h4>
+              <h4 className="font-bold text-[#111] mb-4">For Employers</h4>
               <ul className="space-y-3 text-sm">
-                <li><Link href="/employers" className="text-slate-600 hover:text-slate-900 transition-colors">Why 2ndShift</Link></li>
-                <li><Link href="/workers" className="text-slate-600 hover:text-slate-900 transition-colors">Find Talent</Link></li>
-                <li><Link href="/features" className="text-slate-600 hover:text-slate-900 transition-colors">How It Works</Link></li>
-                <li><Link href="/about" className="text-slate-600 hover:text-slate-900 transition-colors">About Us</Link></li>
+                <li><Link href="/employers" className="text-[#333] hover:text-[#111] transition-colors">Why 2ndShift</Link></li>
+                <li><Link href="/workers" className="text-[#333] hover:text-[#111] transition-colors">Find Talent</Link></li>
+                <li><Link href="/features" className="text-[#333] hover:text-[#111] transition-colors">How It Works</Link></li>
+                <li><Link href="/about" className="text-[#333] hover:text-[#111] transition-colors">About Us</Link></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold text-slate-900 mb-4">Legal</h4>
+              <h4 className="font-bold text-[#111] mb-4">Legal</h4>
               <ul className="space-y-3 text-sm">
-                <li><Link href="/terms" className="text-slate-600 hover:text-slate-900 transition-colors">Terms</Link></li>
-                <li><Link href="/privacy" className="text-slate-600 hover:text-slate-900 transition-colors">Privacy</Link></li>
-                <li><Link href="/security" className="text-slate-600 hover:text-slate-900 transition-colors">Security</Link></li>
+                <li><Link href="/terms" className="text-[#333] hover:text-[#111] transition-colors">Terms</Link></li>
+                <li><Link href="/privacy" className="text-[#333] hover:text-[#111] transition-colors">Privacy</Link></li>
+                <li><Link href="/security" className="text-[#333] hover:text-[#111] transition-colors">Security</Link></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold text-slate-900 mb-4">Contact</h4>
-              <ul className="space-y-3 text-sm text-slate-600">
+              <h4 className="font-bold text-[#111] mb-4">Contact</h4>
+              <ul className="space-y-3 text-sm text-[#333]">
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
                   hello@2ndshift.in
@@ -806,10 +755,10 @@ export default function HomePage() {
 
           {/* Bottom */}
           <div className="pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-[#333]">
               © 2025 2ndShift. All rights reserved.
             </p>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-[#333]">
               Made with ❤️ in India
             </p>
           </div>

@@ -312,7 +312,7 @@ export default function JobsPage() {
                 <Bell className="w-4 h-4" />
                 <h3 className="font-semibold text-sm">Job Alerts</h3>
               </div>
-              <p className="text-xs text-slate-400 mb-4">
+              <p className="text-xs text-white mb-4">
                 Get notified when new jobs match your skills
               </p>
               {alertSubmitted ? (
@@ -327,7 +327,7 @@ export default function JobsPage() {
                     value={emailForAlerts}
                     onChange={(e) => setEmailForAlerts(e.target.value)}
                     placeholder="Enter your email"
-                    className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-white/30 mb-3"
+                    className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-sm text-white placeholder:text-slate-300 focus:outline-none focus:ring-1 focus:ring-white/30 mb-3"
                     required
                   />
                   <button 
@@ -493,7 +493,7 @@ export default function JobsPage() {
           <h2 className="text-2xl lg:text-3xl font-semibold text-white mb-4">
             Ready to start earning?
           </h2>
-          <p className="text-slate-400 mb-8">
+          <p className="text-white mb-8">
             Create your free profile in 2 minutes. Get verified in 24 hours.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -514,7 +514,7 @@ export default function JobsPage() {
           </div>
           
           {/* Trust */}
-          <div className="flex flex-wrap items-center justify-center gap-6 mt-10 text-sm text-slate-400">
+          <div className="flex flex-wrap items-center justify-center gap-6 mt-10 text-sm text-white">
             <span className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-emerald-400" />
               Free to join

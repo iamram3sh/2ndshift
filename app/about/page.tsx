@@ -140,7 +140,7 @@ export default function AboutPage() {
             {STATS.map((stat, i) => (
               <div key={i} className="text-center">
                 <div className="text-3xl lg:text-4xl font-bold text-white mb-1">{stat.value}</div>
-                <div className="text-slate-400">{stat.label}</div>
+                <div className="text-white">{stat.label}</div>
               </div>
             ))}
           </div>

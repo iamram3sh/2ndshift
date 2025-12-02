@@ -338,7 +338,7 @@ export default function PricingPage() {
             <h2 className="text-3xl lg:text-4xl font-semibold text-white mb-4">
               Boost with Shifts
             </h2>
-            <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+            <p className="text-lg text-white max-w-2xl mx-auto">
               {userType === 'worker'
                 ? 'Stand out from the competition. Boost applications, get featured, and message clients directly.'
                 : 'Find talent faster. Feature your jobs, get AI recommendations, and invite top professionals.'}
@@ -356,11 +356,11 @@ export default function PricingPage() {
                 }`}
               >
                 <div className="text-3xl font-bold mb-1">{pkg.shifts}</div>
-                <div className={`text-sm mb-4 ${pkg.popular ? 'text-amber-100' : 'text-slate-400'}`}>
+                <div className={`text-sm mb-4 ${pkg.popular ? 'text-amber-100' : 'text-white'}`}>
                   Shifts
                 </div>
                 <div className="text-2xl font-semibold mb-1">₹{pkg.price}</div>
-                <div className={`text-xs ${pkg.popular ? 'text-amber-100' : 'text-slate-400'}`}>
+                <div className={`text-xs ${pkg.popular ? 'text-amber-100' : 'text-white'}`}>
                   ₹{pkg.perShift.toFixed(2)}/shift
                 </div>
                 {pkg.save && (

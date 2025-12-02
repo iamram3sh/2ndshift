@@ -142,13 +142,13 @@ body {
   line-height: 1.6;
 }
 
-/* Typography */
+/* Typography - Enforced High Contrast */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: -0.025em;
   line-height: 1.2;
-  color: var(--text-primary);
+  color: #111 !important; /* Enforced heading color */
 }
 
 h1 { font-size: 3.5rem; font-weight: 700; letter-spacing: -0.03em; }
@@ -164,8 +164,21 @@ h6 { font-size: 1rem; }
   h3 { font-size: 1.5rem; }
 }
 
-p {
-  color: var(--text-secondary);
+p, body, span, div, li, td, th {
+  color: #333 !important; /* Enforced body text color */
+}
+
+/* Override for dark backgrounds */
+.bg-slate-900 h1, .bg-slate-900 h2, .bg-slate-900 h3, 
+.bg-slate-900 h4, .bg-slate-900 h5, .bg-slate-900 h6,
+.bg-slate-800 h1, .bg-slate-800 h2, .bg-slate-800 h3,
+.bg-slate-800 h4, .bg-slate-800 h5, .bg-slate-800 h6 {
+  color: #ffffff !important;
+}
+
+.bg-slate-900 p, .bg-slate-900 span, .bg-slate-900 div,
+.bg-slate-800 p, .bg-slate-800 span, .bg-slate-800 div {
+  color: #ffffff !important;
 }
 
 /* Selection */
@@ -651,4 +664,73 @@ p {
 
 .scroll-mt-20 {
   scroll-margin-top: 5rem;
+}
+
+/* ============================================
+   ENFORCED TYPOGRAPHY UTILITIES
+   ============================================ */
+
+/* Heading utilities - enforce #111 */
+.text-heading {
+  color: #111 !important;
+}
+
+/* Body text utilities - enforce #333 */
+.text-body {
+  color: #333 !important;
+}
+
+/* Section separator utility */
+.section-separator {
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Consistent card styling */
+.card-consistent {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-consistent:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  transform: translateY(-2px);
+}
+
+/* Consistent button styling */
+.btn-primary-consistent {
+  background: #111;
+  color: #ffffff;
+  padding: 0.875rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.btn-primary-consistent:hover {
+  background: #333;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  transform: translateY(-1px);
+}
+
+.btn-secondary-consistent {
+  background: #ffffff;
+  color: #111;
+  padding: 0.875rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border: 2px solid #111;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-secondary-consistent:hover {
+  background: #f8fafc;
+  border-color: #333;
 }

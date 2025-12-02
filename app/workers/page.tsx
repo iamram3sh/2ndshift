@@ -354,7 +354,7 @@ function WorkersPageContent() {
             {STATS.map((stat, i) => (
               <div key={i} className="text-center">
                 <div className="text-2xl lg:text-3xl font-semibold text-white">{stat.value}</div>
-                <div className="text-sm text-slate-400 mt-1">{stat.label}</div>
+                <div className="text-sm text-white mt-1">{stat.label}</div>
               </div>
             ))}
           </div>

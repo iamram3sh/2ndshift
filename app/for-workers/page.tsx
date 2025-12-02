@@ -232,7 +232,7 @@ export default function ForWorkersPage() {
                 <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
                   <Layers className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-lg font-semibold text-slate-900">2ndShift</span>
+                <span className="text-lg font-semibold text-[#111]">2ndShift</span>
               </Link>
               
               <div className="hidden lg:flex items-center gap-1">
@@ -252,7 +252,7 @@ export default function ForWorkersPage() {
             </div>
 
             <div className="flex items-center gap-3">
-              <Link href="/login" className="hidden sm:block px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900">
+              <Link href="/login" className="hidden sm:block px-4 py-2 text-sm font-medium text-[#333] hover:text-[#111]">
                 Sign in
               </Link>
               <Link 
@@ -323,7 +323,7 @@ export default function ForWorkersPage() {
 
             {/* Earnings Preview */}
             <div className="bg-white rounded-2xl p-8 shadow-xl">
-              <h3 className="text-lg font-semibold text-slate-900 mb-6">How professionals earn on 2ndShift</h3>
+              <h3 className="text-lg font-bold text-[#111] mb-6">How professionals earn on 2ndShift</h3>
               
               <div className="space-y-5">
                 {SUCCESS_STORIES.map((story, i) => (
@@ -362,8 +362,8 @@ export default function ForWorkersPage() {
               onClick={() => setActiveTab('benefits')}
               className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 activeTab === 'benefits'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white text-[#111] shadow-sm'
+                  : 'text-[#333] hover:text-[#111]'
               }`}
             >
               Why Join?
@@ -372,8 +372,8 @@ export default function ForWorkersPage() {
               onClick={() => setActiveTab('shifts')}
               className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 activeTab === 'shifts'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white text-[#111] shadow-sm'
+                  : 'text-[#333] hover:text-[#111]'
               }`}
             >
               Shifts Credits
@@ -382,8 +382,8 @@ export default function ForWorkersPage() {
               onClick={() => setActiveTab('comparison')}
               className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 activeTab === 'comparison'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white text-[#111] shadow-sm'
+                  : 'text-[#333] hover:text-[#111]'
               }`}
             >
               Compare Options
@@ -397,10 +397,10 @@ export default function ForWorkersPage() {
         <section className="py-20">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-semibold text-slate-900 mb-4">
+              <h2 className="text-3xl font-bold text-[#111] mb-4">
                 Why professionals choose 2ndShift
               </h2>
-              <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              <p className="text-lg text-[#333] max-w-2xl mx-auto">
                 We handle the hard parts of freelancing so you can focus on doing great work.
               </p>
             </div>
@@ -411,8 +411,8 @@ export default function ForWorkersPage() {
                   <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-4">
                     <benefit.icon className="w-6 h-6 text-emerald-600" />
                   </div>
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2">{benefit.title}</h3>
-                  <p className="text-slate-600 text-sm mb-3">{benefit.description}</p>
+                  <h3 className="text-lg font-bold text-[#111] mb-2">{benefit.title}</h3>
+                  <p className="text-[#333] text-sm mb-3">{benefit.description}</p>
                   <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
                     <CheckCircle className="w-3 h-3" />
                     {benefit.highlight}
@@ -433,10 +433,10 @@ export default function ForWorkersPage() {
                 <Zap className="w-4 h-4" />
                 Premium Currency
               </div>
-              <h2 className="text-3xl font-semibold text-slate-900 mb-4">
+              <h2 className="text-3xl font-bold text-[#111] mb-4">
                 What are Shifts?
               </h2>
-              <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              <p className="text-lg text-[#333] max-w-2xl mx-auto">
                 Shifts are credits that help you stand out, get more visibility, and land better projects. 
                 Think of them as your competitive edge.
               </p>
