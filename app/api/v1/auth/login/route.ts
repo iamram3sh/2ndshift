@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
         id: user.id,
         email: user.email,
         name: user.full_name,
-        role: user.user_type,
+        role: user.user_type, // Map user_type to role for frontend
       },
     });
   } catch (error: any) {

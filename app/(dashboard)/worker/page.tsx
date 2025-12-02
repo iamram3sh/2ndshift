@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { ShiftsModal } from '@/components/shifts/ShiftsModal'
 import { 
   Briefcase, Clock, DollarSign, User, LogOut, Search, 
@@ -78,31 +79,59 @@ export default function WorkerDashboard() {
   }, [])
 
   const checkAuth = async () => {
-    const { data: { user: authUser } } = await supabase.auth.getUser()
+    // Check authentication using v1 API
+    const result = await apiClient.getCurrentUser()
     
-    if (!authUser) {
+    if (result.error || !result.data?.user) {
       router.push('/login')
       return
     }
 
-    const { data: profile } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', authUser.id)
-      .single()
-
-    if (profile) {
-      if (profile.user_type !== 'worker') {
-        router.push(`/${profile.user_type}`)
-        return
+    const currentUser = result.data.user
+    
+    // Check if user is a worker
+    if (currentUser.role !== 'worker') {
+      const routes: Record<string, string> = {
+        client: '/dashboard/client',
+        admin: '/dashboard/admin',
+        superadmin: '/dashboard/admin'
       }
-      setUser(profile)
-      await fetchWorkerProfile(authUser.id)
+      router.push(routes[currentUser.role] || '/login')
+      return
     }
+
+    // Set user data
+    setUser({
+      id: currentUser.id,
+      email: currentUser.email,
+      full_name: currentUser.name || '',
+      user_type: 'worker',
+    } as UserType)
+
+    // Fetch worker profile and other data
+    await fetchWorkerProfile(currentUser.id)
     setIsLoading(false)
   }
 
   const fetchWorkerProfile = async (userId: string) => {
+    // Try profiles table first (v1 schema)
+    const { data: profileData } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('user_id', userId)
+      .single()
+
+    if (profileData) {
+      setWorkerProfile(profileData as any)
+      // Calculate profile completion for v1 schema
+      if (profileData.skills && Array.isArray(profileData.skills)) {
+        const completion = Math.min(100, (profileData.skills.length / 5) * 100)
+        setProfileCompletion(Math.round(completion))
+      }
+      return
+    }
+
+    // Fallback to worker_profiles (legacy)
     const { data } = await supabase
       .from('worker_profiles')
       .select('*')
@@ -203,21 +232,25 @@ export default function WorkerDashboard() {
   }
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
+    await apiClient.logout()
+    localStorage.removeItem('access_token')
     router.push('/')
   }
 
-  useEffect(() => { checkAuth() }, [])
+  useEffect(() => { 
+    checkAuth() 
+  }, [])
 
+  // Fetch data when user is set
   useEffect(() => {
-    if (user) {
+    if (user && !isLoading) {
       fetchProjects()
       fetchApplications()
       fetchContracts()
       fetchEarnings()
       fetchShiftsBalance(user.id)
     }
-  }, [user, fetchShiftsBalance])
+  }, [user, isLoading])
 
   const getSkillMatch = (projectSkills: string[]) => {
     if (!workerProfile?.skills?.length) return 0

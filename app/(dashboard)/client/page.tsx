@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { ShiftsModal } from '@/components/shifts/ShiftsModal'
 import { 
   Briefcase, DollarSign, User, LogOut, Plus, Clock,
@@ -64,51 +65,86 @@ export default function ClientDashboard() {
   const [showShiftsModal, setShowShiftsModal] = useState(false)
   const [shiftsBalance, setShiftsBalance] = useState(0)
 
-  // Fetch Shifts balance
-  const fetchShiftsBalance = useCallback(async (userId: string) => {
+  // Fetch Shifts balance (credits)
+  const fetchShiftsBalance = useCallback(async () => {
     try {
-      const response = await fetch(`/api/shifts/balance?userId=${userId}`)
-      const data = await response.json()
-      if (response.ok) {
-        setShiftsBalance(data.balance || 0)
-        setStats(prev => ({ ...prev, shiftsBalance: data.balance || 0 }))
+      const result = await apiClient.getCreditsBalance()
+      if (result.data) {
+        const balance = result.data.balance || 0
+        setShiftsBalance(balance)
+        setStats(prev => ({ ...prev, shiftsBalance: balance }))
       }
     } catch (err) {
-      console.error('Error fetching Shifts balance:', err)
+      console.error('Error fetching credits balance:', err)
     }
   }, [])
 
   const checkAuth = async () => {
-    const { data: { user: authUser } } = await supabase.auth.getUser()
+    // Check authentication using v1 API
+    const result = await apiClient.getCurrentUser()
     
-    if (!authUser) {
+    if (result.error || !result.data?.user) {
       router.push('/login')
       return
     }
 
-    const { data: profile } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', authUser.id)
-      .single()
-
-    if (profile) {
-      if (profile.user_type !== 'client') {
-        router.push(`/${profile.user_type}`)
-        return
+    const currentUser = result.data.user
+    
+    // Check if user is a client
+    if (currentUser.role !== 'client') {
+      const routes: Record<string, string> = {
+        worker: '/dashboard/worker',
+        admin: '/dashboard/admin',
+        superadmin: '/dashboard/admin'
       }
-      setUser(profile)
-      await Promise.all([
-        fetchProjects(authUser.id),
-        fetchApplications(authUser.id),
-        fetchContracts(authUser.id),
-        fetchShiftsBalance(authUser.id)
-      ])
+      router.push(routes[currentUser.role] || '/login')
+      return
     }
+
+    // Set user data
+    setUser({
+      id: currentUser.id,
+      email: currentUser.email,
+      full_name: currentUser.name || '',
+      user_type: 'client',
+    } as UserType)
+
+    // Fetch dashboard data
+    await Promise.all([
+      fetchProjects(currentUser.id),
+      fetchApplications(currentUser.id),
+      fetchContracts(currentUser.id),
+      fetchShiftsBalance()
+    ])
+    
     setIsLoading(false)
   }
 
   const fetchProjects = async (userId: string) => {
+    // Try jobs table first (v1 schema)
+    const { data: jobsData } = await supabase
+      .from('jobs')
+      .select('*')
+      .eq('client_id', userId)
+      .order('created_at', { ascending: false })
+
+    if (jobsData && jobsData.length > 0) {
+      const projectsWithCounts = await Promise.all(
+        jobsData.map(async (job) => {
+          const { count, data: apps } = await supabase
+            .from('applications')
+            .select('*, worker:users!applications_worker_id_fkey(*)', { count: 'exact' })
+            .eq('project_id', job.id)
+            .limit(5)
+          
+          return { ...job, applicationCount: count || 0, applications: apps || [] }
+        })
+      )
+      setProjects(projectsWithCounts as any)
+      return
+    }
+
+    // Fallback to projects table (legacy)
     const { data } = await supabase
       .from('projects')
       .select('*')
@@ -201,7 +237,8 @@ export default function ClientDashboard() {
   }
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
+    await apiClient.logout()
+    localStorage.removeItem('access_token')
     router.push('/')
   }
 
