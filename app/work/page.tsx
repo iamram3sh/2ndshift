@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Find Remote Work in India | 2ndShift',
     description: 'Earn from anywhere with verified remote jobs. Get paid within 24 hours. Zero platform fees.',
-    url: 'https://2ndshift.com/worker',
+    url: 'https://2ndshift.com/work',
     type: 'website',
   },
   alternates: {
-    canonical: 'https://2ndshift.com/worker',
+    canonical: 'https://2ndshift.com/work',
   },
 }
 

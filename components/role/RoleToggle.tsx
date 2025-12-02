@@ -59,7 +59,7 @@ export function RoleToggle({ variant = 'hero', onRoleChange, className = '' }: R
     const source = variant === 'hero' ? 'hero' : 'header'
     
     // Navigate to role-specific route for better SEO and SSR
-    const targetRoute = selectedRole === 'worker' ? '/worker' : '/client'
+    const targetRoute = selectedRole === 'worker' ? '/work' : '/clients'
     router.push(targetRoute)
     
     // Also set role for context (will be overridden by route-based detection)

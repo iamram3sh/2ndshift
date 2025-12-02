@@ -14,8 +14,8 @@ import type { UserRole } from '@/lib/utils/roleAwareLinks'
  * on pages that don't need the role context.
  * 
  * Automatically detects route-based role:
- * - /client → initialRole='client'
- * - /worker → initialRole='worker'
+ * - /clients → initialRole='client'
+ * - /work → initialRole='worker'
  * - / → initialRole=null (neutral homepage)
  */
 export function RoleProviderWrapper({ children }: { children: React.ReactNode }) {
@@ -23,10 +23,10 @@ export function RoleProviderWrapper({ children }: { children: React.ReactNode })
   const pathname = usePathname()
   
   // Detect route-based role for SSR hydration
-  // This allows /client and /worker routes to have correct initial role
+  // This allows /clients and /work routes to have correct initial role
   const getInitialRoleFromRoute = (): UserRole | null => {
-    if (pathname === '/client') return 'client'
-    if (pathname === '/worker') return 'worker'
+    if (pathname === '/clients') return 'client'
+    if (pathname === '/work') return 'worker'
     return null
   }
   
