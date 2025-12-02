@@ -3,6 +3,7 @@
 import { Info, TrendingUp } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import apiClient from '@/lib/apiClient'
+import { useTranslation } from '@/lib/i18n'
 
 interface PriceBreakdownProps {
   price: number
@@ -21,6 +22,7 @@ export function PriceBreakdown({
   isMicrotask = false,
   compact = false,
 }: PriceBreakdownProps) {
+  const { t } = useTranslation()
   const [breakdown, setBreakdown] = useState<any>(null)
   const [loading, setLoading] = useState(false)
 
@@ -81,7 +83,7 @@ export function PriceBreakdown({
     <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg">
       <div className="flex items-center gap-2 mb-2">
         <TrendingUp className="w-4 h-4 text-slate-600" />
-        <span className="text-sm font-semibold text-slate-900">Price Breakdown</span>
+        <span className="text-sm font-semibold text-slate-900">{t('pricing.breakdown')}</span>
       </div>
       
       <div className="space-y-1.5 text-xs">
@@ -128,11 +130,11 @@ export function PriceBreakdown({
 
         <div className="pt-2 border-t border-slate-200 mt-2">
           <div className="flex items-center justify-between mb-1">
-            <span className="font-medium text-slate-900">Client Pays:</span>
+            <span className="font-medium text-slate-900">{t('pricing.clientPays', { total: breakdown.client_pays?.toFixed(0) || price.toString() })}</span>
             <span className="font-bold text-slate-900">₹{breakdown.client_pays?.toFixed(0) || price}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="font-medium text-slate-900">Worker Receives:</span>
+            <span className="font-medium text-slate-900">{t('pricing.workerReceives', { worker_payout: breakdown.worker_receives?.toFixed(0) || price.toString() })}</span>
             <span className="font-bold text-emerald-600">₹{breakdown.worker_receives?.toFixed(0) || price}</span>
           </div>
         </div>

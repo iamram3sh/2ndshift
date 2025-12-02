@@ -1,0 +1,172 @@
+{
+  "credits": {
+    "title": "Shift Credits",
+    "balanceLabel": "Balance",
+    "tooltip": "Use Shift Credits to apply to jobs. Credits reduce low-quality bids and help you get hired faster.",
+    "buyButton": "Buy Credits",
+    "modal": {
+      "header": "Buy Shift Credits",
+      "subheader": "Apply to jobs instantly. Credits reduce spam and boost your visibility.",
+      "plans": {
+        "49": { "title": "₹49 — 10 credits", "tagline": "Quick tryout", "cta": "Buy ₹49" },
+        "99": { "title": "₹99 — 25 credits", "tagline": "Small pack", "cta": "Buy ₹99" },
+        "199": { "title": "₹199 — 60 credits", "tagline": "Monthly starter", "cta": "Buy ₹199" },
+        "399": { "title": "₹399 — 140 credits", "tagline": "Power pack", "cta": "Buy ₹399" }
+      },
+      "confirm": "Confirm purchase of {plan_name} for ₹{amount}?",
+      "success": "Credits purchased — ₹{amount} added to your balance.",
+      "error": "Purchase failed. Try again or contact support.",
+      "empty": {
+        "headline": "No credits yet",
+        "body": "You need Shift Credits to apply for jobs. Buy credits now or upgrade to a subscription (credits included).",
+        "cta": "Buy Credits"
+      },
+      "usageNote": "When you apply to a job, {credits_per_application} credits are reserved. If your proposal is withdrawn or the client does not view it within 72 hours, credits will be refunded automatically.",
+      "expiryNote": "Credits expire after 12 months of inactivity."
+    }
+  },
+  "pricing": {
+    "breakdown": "Price breakdown",
+    "clientPays": "Client pays: ₹{total}",
+    "platformFee": "Platform fee: ₹{platform_fee} ({platform_percent}%)",
+    "escrowFee": "Escrow fee: ₹{escrow_fee} ({escrow_percent}%)",
+    "workerReceives": "Worker receives: ₹{worker_payout}",
+    "note": "Prices shown are estimates. Final amounts display at checkout.",
+    "tooltips": {
+      "platformFeeTitle": "Platform fee — what 2ndShift charges to run payments, support, escrow, and talent verification.",
+      "platformFeeBody": "This fee helps us run escrow, vet talent, and provide dispute resolution. It's taken from the job total per platform configuration.",
+      "escrowTitle": "Escrow processing fee",
+      "escrowBody": "A small fee for secure payment handling and instant payouts where available.",
+      "workerPayoutTitle": "Estimated payout to worker",
+      "workerPayoutBody": "The amount the worker receives after platform fees are deducted. Taxes or local withholding may apply."
+    },
+    "applyButton": "Apply (cost: {credits_per_application} credits)",
+    "clientCheckout": {
+      "title": "Confirm payment & fund escrow",
+      "body": "You will be charged ₹{total}. Platform fee: ₹{platform_fee}. Escrow: ₹{escrow_fee}. Worker will receive: ₹{worker_payout}.",
+      "confirm": "Fund Escrow & Post Job"
+    }
+  },
+  "subscriptions": {
+    "worker": {
+      "starter": {
+        "title": "Starter",
+        "tagline": "Launch your side income",
+        "bullets": [
+          "40 Shift Credits every month",
+          "Verified badge (basic)",
+          "Priority in AI matching",
+          "Standard payout timing"
+        ],
+        "price": "₹199 / month",
+        "cta": "Start Starter"
+      },
+      "pro": {
+        "title": "Pro",
+        "tagline": "More applications, more wins",
+        "bullets": [
+          "100 Shift Credits monthly",
+          "Verified badge (professional)",
+          "Ranking boost in search",
+          "Instant payout (T+0) option",
+          "10% discount on profile boosts"
+        ],
+        "price": "₹499 / month",
+        "cta": "Start Pro"
+      },
+      "elite": {
+        "title": "Elite",
+        "tagline": "Premium visibility & limitless applications",
+        "bullets": [
+          "Unlimited standard applications",
+          "Verified badge (premium)",
+          "Featured placements and priority support",
+          "Dedicated account manager (email)",
+          "Advanced analytics & job insights"
+        ],
+        "price": "₹999 / month",
+        "cta": "Start Elite"
+      }
+    },
+    "client": {
+      "growth": {
+        "title": "Growth",
+        "tagline": "Zero platform fee for your hires",
+        "bullets": [
+          "0% client commission on job payments",
+          "Unlimited job posts",
+          "Faster matching & priority support",
+          "1 seat included (add seats)"
+        ],
+        "price": "₹999 / month",
+        "cta": "Start Growth"
+      },
+      "agency": {
+        "title": "Pro Agency",
+        "tagline": "Scale hiring for teams",
+        "bullets": [
+          "Multi-seat support (5 seats)",
+          "Access to Verified-Only talent pool",
+          "Dedicated account manager & SLA",
+          "Lower escrow & priority handling"
+        ],
+        "price": "₹2,999 / month",
+        "cta": "Start Agency"
+      },
+      "footerNote": "Subscriptions auto-renew monthly. Cancel anytime. Fees are non-refundable for partial months unless otherwise stated in the terms."
+    }
+  },
+  "badges": {
+    "basic": { "label": "Basic Verified", "tooltip": "Identity confirmed. Suitable for most microtasks." },
+    "professional": { "label": "Professional Verified", "tooltip": "Skills and a microtask test verified. Higher visibility and priority for relevant jobs." },
+    "premium": { "label": "Premium Verified", "tooltip": "In-depth technical assessment passed + work sample validated. Eligible for high-ticket assignments." },
+    "availability": { "label": "Available Now", "tooltip": "Actively accepting tasks and ready to start within the selected delivery window." },
+    "speed": { "label": "Fast Responder", "tooltip": "Average response time < 2 hours. Shown for workers who respond quickly." },
+    "instantPayout": { "label": "Instant Payout", "tooltip": "Eligible for instant payout option (subject to worker subscription or fees)." }
+  },
+  "notifications": {
+    "creditsPurchaseSubject": "Credits purchased — ₹{amount} added to your 2ndShift balance",
+    "jobFundedSubject": "Your job \"{title}\" is funded and live",
+    "applyNotification": "{worker_name} applied to your job \"{job_title}\".",
+    "deliveryNotification": "{worker_name} delivered \"{job_title}\". Review & approve to release escrow."
+  },
+  "errors": {
+    "insufficientCredits": {
+      "title": "Not enough Shift Credits",
+      "body": "You need {credits_per_application} credits to apply. Buy credits or upgrade your subscription.",
+      "cta": "Buy Credits"
+    },
+    "paymentFailed": {
+      "title": "Payment failed",
+      "body": "We couldn't process your payment. Try again or contact support.",
+      "cta": "Try again"
+    },
+    "accessDenied": {
+      "title": "Access restricted",
+      "body": "This page is for {role}s only. Switch to the correct role or contact support.",
+      "cta": "Switch role"
+    }
+  },
+  "helpSnippets": {
+    "whatAreCredits": "Credits are the application currency — they limit spam, reward serious applicants, and improve match quality.",
+    "howIsFeeCalculated": "A percentage of the job total, configurable per platform. It covers escrow, dispute resolution, and verification services.",
+    "whatIsEscrow": "Escrow holds payment securely until job completion. It protects both client and worker.",
+    "whyVerify": "Verified profiles get higher visibility, bigger jobs, and higher earnings."
+  },
+  "analytics": {
+    "events": [
+      "credits.purchase",
+      "credits.reserve",
+      "job.posted",
+      "job.applied",
+      "job.assigned",
+      "job.funded",
+      "job.delivered",
+      "job.approved",
+      "subscription.started",
+      "profile.boosted",
+      "verification.started",
+      "verification.passed"
+    ]
+  }
+}

@@ -3,6 +3,7 @@
 import { Calculator, Info, TrendingDown } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import apiClient from '@/lib/apiClient'
+import { useTranslation } from '@/lib/i18n'
 
 interface CommissionCalculatorProps {
   price: number
@@ -21,6 +22,7 @@ export function CommissionCalculator({
   isMicroTask = false,
   onCalculationChange,
 }: CommissionCalculatorProps) {
+  const { t } = useTranslation()
   const [calculation, setCalculation] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -82,7 +84,7 @@ export function CommissionCalculator({
     <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl">
       <div className="flex items-center gap-2 mb-3">
         <Calculator className="w-5 h-5 text-slate-600" />
-        <h4 className="font-semibold text-slate-900">Payout Breakdown</h4>
+        <h4 className="font-semibold text-slate-900">{t('pricing.breakdown')}</h4>
       </div>
 
       <div className="space-y-2 text-sm">
@@ -94,8 +96,11 @@ export function CommissionCalculator({
         {calculation.breakdown?.escrow_fee > 0 && (
           <div className="flex items-center justify-between text-slate-600">
             <span className="flex items-center gap-1">
-              Escrow Fee ({calculation.breakdown.escrow_fee_percent?.toFixed(1)}%):
-              <span title="Payment protection fee">
+              {t('pricing.escrowFee', { 
+                escrow_fee: calculation.breakdown.escrow_fee.toFixed(2),
+                escrow_percent: calculation.breakdown.escrow_fee_percent?.toFixed(1) || '0'
+              })}:
+              <span title={t('pricing.tooltips.escrowBody')}>
                 <Info className="w-3 h-3" />
               </span>
             </span>
@@ -135,13 +140,13 @@ export function CommissionCalculator({
 
         <div className="pt-2 border-t border-slate-200">
           <div className="flex items-center justify-between mb-1">
-            <span className="font-medium text-slate-900">Worker Receives:</span>
+            <span className="font-medium text-slate-900">{t('pricing.workerReceives', { worker_payout: calculation.breakdown?.worker_receives?.toFixed(2) || '0.00' })}</span>
             <span className="font-bold text-emerald-600 text-lg">
               ₹{calculation.breakdown?.worker_receives?.toFixed(2) || '0.00'}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="font-medium text-slate-900">Client Pays:</span>
+            <span className="font-medium text-slate-900">{t('pricing.clientPays', { total: calculation.breakdown?.client_pays?.toFixed(2) || '0.00' })}</span>
             <span className="font-bold text-slate-900 text-lg">
               ₹{calculation.breakdown?.client_pays?.toFixed(2) || '0.00'}
             </span>

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { X, Zap, Check, Loader2, Shield } from 'lucide-react'
 import apiClient from '@/lib/apiClient'
 import { trackCreditsPurchased } from '@/lib/analytics/events'
+import { useTranslation } from '@/lib/i18n'
 
 interface Package {
   id: string
@@ -31,6 +32,7 @@ export function BuyCreditsModalV1({
   currentBalance = 0,
   onPurchaseComplete,
 }: BuyCreditsModalV1Props) {
+  const { t } = useTranslation()
   const [packages, setPackages] = useState<Package[]>([])
   const [loading, setLoading] = useState(true)
   const [purchasing, setPurchasing] = useState<string | null>(null)
@@ -146,7 +148,7 @@ export function BuyCreditsModalV1({
         <div className="p-6">
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
-              {error}
+              {t('credits.modal.error')}
             </div>
           )}
 
@@ -194,7 +196,7 @@ export function BuyCreditsModalV1({
                       {purchasing === pkg.id ? (
                         <Loader2 className="w-4 h-4 animate-spin mx-auto" />
                       ) : (
-                        'Buy Now'
+                        t('credits.modal.plans.49.cta').replace('₹49', formatPrice(pkg.price_inr))
                       )}
                     </button>
                   </div>
@@ -204,26 +206,15 @@ export function BuyCreditsModalV1({
           )}
 
           <div className="mt-8 p-4 bg-slate-50 rounded-lg">
-            <h3 className="font-semibold text-slate-900 mb-2">What are Shift Credits?</h3>
-            <ul className="space-y-1 text-sm text-slate-600">
-              <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                <span>3 Credits per job application</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                <span>Refunded if client doesn't view your proposal</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                <span>Use for profile boosts and featured listings</span>
-              </li>
-            </ul>
+            <h3 className="font-semibold text-slate-900 mb-2">{t('credits.tooltip')}</h3>
+            <p className="text-sm text-slate-600 mb-2">{t('helpSnippets.whatAreCredits')}</p>
+            <p className="text-xs text-slate-500 mt-2">{t('credits.modal.usageNote', { credits_per_application: '3' })}</p>
+            <p className="text-xs text-slate-500 mt-1">{t('credits.modal.expiryNote')}</p>
           </div>
 
           <div className="mt-4 flex items-center justify-center gap-2 text-xs text-slate-500">
             <Shield className="w-4 h-4" />
-            <span>Secure payment via demo mode (staging)</span>
+            <span>{t('pricing.note')}</span>
           </div>
         </div>
       </div>

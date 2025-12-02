@@ -2,6 +2,7 @@
 
 import { Shield, Award, Crown, Info } from 'lucide-react'
 import { useState } from 'react'
+import { useTranslation } from '@/lib/i18n'
 
 interface VerificationBadgeInfoProps {
   verifiedLevel: number
@@ -12,12 +13,14 @@ export function VerificationBadgeInfo({
   verifiedLevel,
   badges = [],
 }: VerificationBadgeInfoProps) {
+  const { t } = useTranslation()
   const [showInfo, setShowInfo] = useState(false)
 
   const badgeTiers = [
     {
       level: 1,
-      name: 'Basic',
+      name: t('badges.basic.label'),
+      tooltip: t('badges.basic.tooltip'),
       icon: Shield,
       color: 'text-blue-600',
       bgColor: 'bg-blue-50',
@@ -29,7 +32,8 @@ export function VerificationBadgeInfo({
     },
     {
       level: 2,
-      name: 'Professional',
+      name: t('badges.professional.label'),
+      tooltip: t('badges.professional.tooltip'),
       icon: Award,
       color: 'text-purple-600',
       bgColor: 'bg-purple-50',
@@ -42,7 +46,8 @@ export function VerificationBadgeInfo({
     },
     {
       level: 3,
-      name: 'Premium',
+      name: t('badges.premium.label'),
+      tooltip: t('badges.premium.tooltip'),
       icon: Crown,
       color: 'text-amber-600',
       bgColor: 'bg-amber-50',
@@ -67,7 +72,7 @@ export function VerificationBadgeInfo({
         } ${currentTier.color} border-current/20 hover:border-current/40`}
       >
         <currentTier.icon className="w-4 h-4" />
-        <span className="font-medium text-sm">{currentTier.name} Verified</span>
+        <span className="font-medium text-sm" title={currentTier.tooltip}>{currentTier.name}</span>
         <Info className="w-3.5 h-3.5 opacity-60" />
       </button>
 

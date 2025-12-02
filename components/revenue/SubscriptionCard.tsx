@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Check, Crown, Zap, Loader2, ArrowRight } from 'lucide-react'
 import apiClient from '@/lib/apiClient'
+import { useTranslation } from '@/lib/i18n'
 
 interface SubscriptionPlan {
   id: string
@@ -28,7 +29,24 @@ export function SubscriptionCard({
   currentPlanId,
   onSubscribe,
 }: SubscriptionCardProps) {
+  const { t } = useTranslation()
   const [isSubscribing, setIsSubscribing] = useState(false)
+  
+  // Map plan slugs to i18n keys
+  const getPlanKey = (slug: string) => {
+    const slugLower = slug.toLowerCase()
+    if (userType === 'worker') {
+      if (slugLower.includes('starter')) return 'subscriptions.worker.starter'
+      if (slugLower.includes('pro')) return 'subscriptions.worker.pro'
+      if (slugLower.includes('elite')) return 'subscriptions.worker.elite'
+    } else {
+      if (slugLower.includes('growth')) return 'subscriptions.client.growth'
+      if (slugLower.includes('agency')) return 'subscriptions.client.agency'
+    }
+    return null
+  }
+  
+  const planKey = getPlanKey(plan.slug)
 
   const handleSubscribe = async () => {
     if (plan.id === currentPlanId) return
@@ -71,12 +89,21 @@ export function SubscriptionCard({
 
       <div className="mb-4">
         <div className="flex items-center gap-2 mb-2">
-          {plan.name.toLowerCase().includes('expert') || plan.name.toLowerCase().includes('enterprise') ? (
+          {plan.name.toLowerCase().includes('expert') || plan.name.toLowerCase().includes('enterprise') || plan.name.toLowerCase().includes('elite') ? (
             <Crown className="w-5 h-5 text-amber-500" />
           ) : (
             <Zap className="w-5 h-5 text-slate-600" />
           )}
-          <h3 className="text-xl font-semibold text-slate-900">{plan.name}</h3>
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900">
+              {planKey ? t(`${planKey}.title`) : plan.name}
+            </h3>
+            {planKey && (
+              <p className="text-xs text-slate-500 mt-0.5">
+                {t(`${planKey}.tagline`)}
+              </p>
+            )}
+          </div>
         </div>
         <div className="flex items-baseline gap-1">
           {priceInRupees === 0 ? (
@@ -108,12 +135,25 @@ export function SubscriptionCard({
       </div>
 
       <ul className="space-y-2 mb-6">
-        {plan.features.map((feature, i) => (
-          <li key={i} className="flex items-start gap-2">
-            <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-            <span className="text-sm text-slate-700">{feature}</span>
-          </li>
-        ))}
+        {(() => {
+          if (planKey) {
+            const bulletsKey = `${planKey}.bullets`
+            const bullets = t(bulletsKey)
+            const features = Array.isArray(bullets) ? bullets : plan.features
+            return features.map((feature: string, i: number) => (
+              <li key={i} className="flex items-start gap-2">
+                <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                <span className="text-sm text-slate-700">{feature}</span>
+              </li>
+            ))
+          }
+          return plan.features.map((feature: string, i: number) => (
+            <li key={i} className="flex items-start gap-2">
+              <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+              <span className="text-sm text-slate-700">{feature}</span>
+            </li>
+          ))
+        })()}
       </ul>
 
       <button
@@ -134,7 +174,7 @@ export function SubscriptionCard({
           'Current Plan'
         ) : (
           <>
-            Subscribe Now
+            {planKey ? t(`${planKey}.cta`) : 'Subscribe Now'}
             <ArrowRight className="w-4 h-4" />
           </>
         )}
