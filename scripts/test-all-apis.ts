@@ -34,7 +34,7 @@ async function makeRequest(
   method: string = 'GET',
   body?: any,
   token?: string
-): Promise<{ status: number; data: any }> {
+): Promise<{ status: number; data: any; duration: number }> {
   const startTime = Date.now();
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ async function testAuthentication() {
   // Register client
   const timestamp = Date.now();
   const clientEmail = `test-client-${timestamp}@example.com`;
-  const { status: regClientStatus, data: regClientData } = await makeRequest(
+  const { status: regClientStatus, data: regClientData, duration: regClientDuration } = await makeRequest(
     '/auth/register',
     'POST',
     {
@@ -149,7 +149,7 @@ async function testAuthentication() {
       name: 'Test Client',
     }
   );
-  recordResult('/auth/register (client)', 'POST', regClientStatus);
+  recordResult('/auth/register (client)', 'POST', regClientStatus, undefined, regClientDuration);
   if (regClientStatus === 200) {
     clientToken = regClientData.access_token;
     clientId = regClientData.user.id;
@@ -157,7 +157,7 @@ async function testAuthentication() {
 
   // Register worker
   const workerEmail = `test-worker-${timestamp}@example.com`;
-  const { status: regWorkerStatus, data: regWorkerData } = await makeRequest(
+  const { status: regWorkerStatus, data: regWorkerData, duration: regWorkerDuration } = await makeRequest(
     '/auth/register',
     'POST',
     {
@@ -167,7 +167,7 @@ async function testAuthentication() {
       name: 'Test Worker',
     }
   );
-  recordResult('/auth/register (worker)', 'POST', regWorkerStatus);
+  recordResult('/auth/register (worker)', 'POST', regWorkerStatus, undefined, regWorkerDuration);
   if (regWorkerStatus === 200) {
     workerToken = regWorkerData.access_token;
     workerId = regWorkerData.user.id;
@@ -183,7 +183,7 @@ async function testAuthentication() {
 
   // Register admin
   const adminEmail = `test-admin-${timestamp}@example.com`;
-  const { status: regAdminStatus, data: regAdminData } = await makeRequest(
+  const { status: regAdminStatus, data: regAdminData, duration: regAdminDuration } = await makeRequest(
     '/auth/register',
     'POST',
     {
@@ -193,14 +193,14 @@ async function testAuthentication() {
       name: 'Test Admin',
     }
   );
-  recordResult('/auth/register (admin)', 'POST', regAdminStatus);
+  recordResult('/auth/register (admin)', 'POST', regAdminStatus, undefined, regAdminDuration);
   if (regAdminStatus === 200) {
     adminToken = regAdminData.access_token;
     adminId = regAdminData.user.id;
   }
 
   // Login
-  const { status: loginStatus } = await makeRequest(
+  const { status: loginStatus, duration: loginDuration } = await makeRequest(
     '/auth/login',
     'POST',
     {
@@ -208,18 +208,18 @@ async function testAuthentication() {
       password: 'password123',
     }
   );
-  recordResult('/auth/login', 'POST', loginStatus);
+  recordResult('/auth/login', 'POST', loginStatus, undefined, loginDuration);
 
   // Get current user
-  const { status: meStatus } = await makeRequest('/auth/me', 'GET', undefined, clientToken);
-  recordResult('/auth/me', 'GET', meStatus);
+  const { status: meStatus, duration: meDuration } = await makeRequest('/auth/me', 'GET', undefined, clientToken);
+  recordResult('/auth/me', 'GET', meStatus, undefined, meDuration);
 }
 
 async function testJobs() {
   console.log('\n💼 Testing Jobs Endpoints...');
 
   // Create job
-  const { status: createStatus, data: createData } = await makeRequest(
+  const { status: createStatus, data: createData, duration: createDuration } = await makeRequest(
     '/jobs',
     'POST',
     {
@@ -232,22 +232,22 @@ async function testJobs() {
     },
     clientToken
   );
-  recordResult('/jobs (create)', 'POST', createStatus);
+  recordResult('/jobs (create)', 'POST', createStatus, undefined, createDuration);
   if (createStatus === 201) {
     jobId = createData.job.id;
   }
 
   // List jobs
-  const { status: listStatus } = await makeRequest('/jobs?status=open', 'GET', undefined, clientToken);
-  recordResult('/jobs (list)', 'GET', listStatus);
+  const { status: listStatus, duration: listDuration } = await makeRequest('/jobs?status=open', 'GET', undefined, clientToken);
+  recordResult('/jobs (list)', 'GET', listStatus, undefined, listDuration);
 
   // Get job details
   if (jobId) {
-    const { status: getStatus } = await makeRequest(`/jobs/${jobId}`, 'GET', undefined, clientToken);
-    recordResult('/jobs/:id', 'GET', getStatus);
+    const { status: getStatus, duration: getDuration } = await makeRequest(`/jobs/${jobId}`, 'GET', undefined, clientToken);
+    recordResult('/jobs/:id', 'GET', getStatus, undefined, getDuration);
 
     // Apply to job
-    const { status: applyStatus, data: applyData } = await makeRequest(
+    const { status: applyStatus, data: applyData, duration: applyDuration } = await makeRequest(
       `/jobs/${jobId}/apply`,
       'POST',
       {
@@ -256,23 +256,23 @@ async function testJobs() {
       },
       workerToken
     );
-    recordResult('/jobs/:id/apply', 'POST', applyStatus);
+    recordResult('/jobs/:id/apply', 'POST', applyStatus, undefined, applyDuration);
     if (applyStatus === 201) {
       applicationId = applyData.application.id;
     }
 
     // Accept proposal
     if (applicationId) {
-      const { status: acceptStatus } = await makeRequest(
+      const { status: acceptStatus, duration: acceptDuration } = await makeRequest(
         `/jobs/${jobId}/accept-proposal`,
         'POST',
         { application_id: applicationId },
         clientToken
       );
-      recordResult('/jobs/:id/accept-proposal', 'POST', acceptStatus);
+      recordResult('/jobs/:id/accept-proposal', 'POST', acceptStatus, undefined, acceptDuration);
 
       // Deliver job
-      const { status: deliverStatus } = await makeRequest(
+      const { status: deliverStatus, duration: deliverDuration } = await makeRequest(
         `/jobs/${jobId}/deliver`,
         'POST',
         {
@@ -281,7 +281,7 @@ async function testJobs() {
         },
         workerToken
       );
-      recordResult('/jobs/:id/deliver', 'POST', deliverStatus);
+      recordResult('/jobs/:id/deliver', 'POST', deliverStatus, undefined, deliverDuration);
 
       // Create escrow for approval
       await supabaseAdmin
@@ -295,13 +295,13 @@ async function testJobs() {
         });
 
       // Approve job
-      const { status: approveStatus } = await makeRequest(
+      const { status: approveStatus, duration: approveDuration } = await makeRequest(
         `/jobs/${jobId}/approve`,
         'POST',
         undefined,
         clientToken
       );
-      recordResult('/jobs/:id/approve', 'POST', approveStatus);
+      recordResult('/jobs/:id/approve', 'POST', approveStatus, undefined, approveDuration);
     }
   }
 }
@@ -310,33 +310,33 @@ async function testCredits() {
   console.log('\n💰 Testing Credits Endpoints...');
 
   // Get balance
-  const { status: balanceStatus } = await makeRequest('/credits/balance', 'GET', undefined, workerToken);
-  recordResult('/credits/balance', 'GET', balanceStatus);
+  const { status: balanceStatus, duration: balanceDuration } = await makeRequest('/credits/balance', 'GET', undefined, workerToken);
+  recordResult('/credits/balance', 'GET', balanceStatus, undefined, balanceDuration);
 
   // Purchase credits
-  const { status: purchaseStatus } = await makeRequest(
+  const { status: purchaseStatus, duration: purchaseDuration } = await makeRequest(
     '/credits/purchase',
     'POST',
     { amount: 50, currency: 'INR' },
     workerToken
   );
-  recordResult('/credits/purchase', 'POST', purchaseStatus);
+  recordResult('/credits/purchase', 'POST', purchaseStatus, undefined, purchaseDuration);
 }
 
 async function testCategories() {
   console.log('\n📂 Testing Categories Endpoints...');
 
   // List categories
-  const { status: listStatus } = await makeRequest('/categories', 'GET');
-  recordResult('/categories', 'GET', listStatus);
+  const { status: listStatus, duration: listCatDuration } = await makeRequest('/categories', 'GET');
+  recordResult('/categories', 'GET', listStatus, undefined, listCatDuration);
 
   // List microtasks
   if (categoryId) {
-    const { status: microtasksStatus } = await makeRequest(
+    const { status: microtasksStatus, duration: microtasksDuration } = await makeRequest(
       `/categories/${categoryId}/microtasks`,
       'GET'
     );
-    recordResult('/categories/:id/microtasks', 'GET', microtasksStatus);
+    recordResult('/categories/:id/microtasks', 'GET', microtasksStatus, undefined, microtasksDuration);
   }
 }
 
@@ -345,47 +345,47 @@ async function testMatching() {
 
   if (jobId) {
     // Auto-match
-    const { status: autoMatchStatus } = await makeRequest(
+    const { status: autoMatchStatus, duration: autoMatchDuration } = await makeRequest(
       '/matching/auto-match',
       'POST',
       { job_id: jobId },
       clientToken
     );
-    recordResult('/matching/auto-match', 'POST', autoMatchStatus);
+    recordResult('/matching/auto-match', 'POST', autoMatchStatus, undefined, autoMatchDuration);
   }
 
   // Suggest workers
-  const { status: suggestStatus } = await makeRequest(
+  const { status: suggestStatus, duration: suggestDuration } = await makeRequest(
     '/matching/suggest-workers',
     'POST',
     { raw_text: 'Need a React developer' },
     clientToken
   );
-  recordResult('/matching/suggest-workers', 'POST', suggestStatus);
+  recordResult('/matching/suggest-workers', 'POST', suggestStatus, undefined, suggestDuration);
 }
 
 async function testMissingTasks() {
   console.log('\n🔎 Testing Missing Tasks Endpoints...');
 
-  const { status } = await makeRequest(
+  const { status, duration: missingTasksDuration } = await makeRequest(
     '/missing-tasks',
     'POST',
     { raw_text: 'I need a custom AI chatbot integration' },
     clientToken
   );
-  recordResult('/missing-tasks', 'POST', status);
+  recordResult('/missing-tasks', 'POST', status, undefined, missingTasksDuration);
 }
 
 async function testAdmin() {
   console.log('\n👑 Testing Admin Endpoints...');
 
   // List all jobs
-  const { status: jobsStatus } = await makeRequest('/admin/jobs', 'GET', undefined, adminToken);
-  recordResult('/admin/jobs', 'GET', jobsStatus);
+  const { status: jobsStatus, duration: adminJobsDuration } = await makeRequest('/admin/jobs', 'GET', undefined, adminToken);
+  recordResult('/admin/jobs', 'GET', jobsStatus, undefined, adminJobsDuration);
 
   // List all users
-  const { status: usersStatus } = await makeRequest('/admin/users', 'GET', undefined, adminToken);
-  recordResult('/admin/users', 'GET', usersStatus);
+  const { status: usersStatus, duration: adminUsersDuration } = await makeRequest('/admin/users', 'GET', undefined, adminToken);
+  recordResult('/admin/users', 'GET', usersStatus, undefined, adminUsersDuration);
 }
 
 function generateReport() {
