@@ -2,7 +2,7 @@
 
 import { Shield, Award, Crown, Info } from 'lucide-react'
 import { useState } from 'react'
-import { useTranslation } from '@/lib/i18n'
+import { useTranslation, tString } from '@/lib/i18n'
 
 interface VerificationBadgeInfoProps {
   verifiedLevel: number
@@ -19,8 +19,8 @@ export function VerificationBadgeInfo({
   const badgeTiers = [
     {
       level: 1,
-      name: t('badges.basic.label'),
-      tooltip: t('badges.basic.tooltip'),
+      name: tString('badges.basic.label'),
+      tooltip: tString('badges.basic.tooltip'),
       icon: Shield,
       color: 'text-blue-600',
       bgColor: 'bg-blue-50',
@@ -32,8 +32,8 @@ export function VerificationBadgeInfo({
     },
     {
       level: 2,
-      name: t('badges.professional.label'),
-      tooltip: t('badges.professional.tooltip'),
+      name: tString('badges.professional.label'),
+      tooltip: tString('badges.professional.tooltip'),
       icon: Award,
       color: 'text-purple-600',
       bgColor: 'bg-purple-50',
@@ -46,8 +46,8 @@ export function VerificationBadgeInfo({
     },
     {
       level: 3,
-      name: t('badges.premium.label'),
-      tooltip: t('badges.premium.tooltip'),
+      name: tString('badges.premium.label'),
+      tooltip: tString('badges.premium.tooltip'),
       icon: Crown,
       color: 'text-amber-600',
       bgColor: 'bg-amber-50',

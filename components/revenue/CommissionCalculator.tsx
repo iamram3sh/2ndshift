@@ -3,7 +3,7 @@
 import { Calculator, Info, TrendingDown } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import apiClient from '@/lib/apiClient'
-import { useTranslation } from '@/lib/i18n'
+import { useTranslation, tString } from '@/lib/i18n'
 
 interface CommissionCalculatorProps {
   price: number
@@ -100,7 +100,7 @@ export function CommissionCalculator({
                 escrow_fee: calculation.breakdown.escrow_fee.toFixed(2),
                 escrow_percent: calculation.breakdown.escrow_fee_percent?.toFixed(1) || '0'
               })}:
-              <span title={t('pricing.tooltips.escrowBody')}>
+              <span title={tString('pricing.tooltips.escrowBody')}>
                 <Info className="w-3 h-3" />
               </span>
             </span>

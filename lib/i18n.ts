@@ -19,7 +19,22 @@ const translations: Record<string, any> = {
  * @param params - Optional parameters to replace placeholders (e.g., {amount: "100"})
  * @returns Translated string or array with placeholders replaced
  */
-export function t(key: TranslationKey, params?: TranslationParams): string | string[] {
+export function t(key: TranslationKey, params?: TranslationParams): string | string[]
+
+/**
+ * Get translation as string only (throws if array)
+ * @param key - Translation key
+ * @param params - Optional parameters
+ * @returns Translated string
+ */
+export function tString(key: TranslationKey, params?: TranslationParams): string {
+  const result = t(key, params)
+  if (typeof result === 'string') {
+    return result
+  }
+  console.warn(`Translation for key "${key}" returned an array, expected string`)
+  return Array.isArray(result) ? result.join(', ') : key
+}
   const locale = currentLocale
   const localeTranslations = translations[locale] || translations.en
 
