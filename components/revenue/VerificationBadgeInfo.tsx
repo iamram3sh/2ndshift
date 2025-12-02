@@ -122,7 +122,7 @@ export function VerificationBadgeInfo({
 
             <div className="mt-4 pt-4 border-t border-slate-200">
               <a
-                href="/worker/profile/verification"
+                href="/worker/verification"
                 className="text-xs text-sky-600 font-medium hover:text-sky-700"
               >
                 Upgrade verification →

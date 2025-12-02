@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { 
   Search, Filter, Bookmark, Clock, DollarSign, Calendar,
   TrendingUp, Zap, Star, ArrowLeft, Bell, Shield, Lock
@@ -46,27 +47,42 @@ export default function WorkerJobDiscoveryPage() {
   }, [user, filters])
 
   const checkAuth = async () => {
-    const { data: { user: authUser } } = await supabase.auth.getUser()
-    
-    if (!authUser) {
-      router.push('/login')
-      return
-    }
-
-    const { data: profile } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', authUser.id)
-      .single()
-
-    if (profile) {
-      if (profile.user_type !== 'worker') {
-        router.push(`/${profile.user_type}`)
+    try {
+      // Use v1 API for authentication
+      const result = await apiClient.getCurrentUser()
+      
+      if (result.error || !result.data?.user) {
+        router.push('/login')
+        setIsLoading(false)
         return
       }
-      setUser(profile)
+
+      const currentUser = result.data.user
+      
+      // Check if user is a worker
+      if (currentUser.role !== 'worker') {
+        const routes: Record<string, string> = {
+          client: '/client',
+          admin: '/dashboard/admin',
+          superadmin: '/dashboard/admin'
+        }
+        router.push(routes[currentUser.role] || '/login')
+        setIsLoading(false)
+        return
+      }
+
+      setUser({
+        id: currentUser.id,
+        email: currentUser.email,
+        full_name: currentUser.name || '',
+        user_type: 'worker',
+      } as UserType)
+    } catch (error) {
+      console.error('Error checking auth:', error)
+      router.push('/login')
+    } finally {
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }
 
   const fetchProjects = async () => {

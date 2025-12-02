@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { User, Mail, Shield, ArrowLeft, Save } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -22,28 +23,51 @@ export default function ProfilePage() {
   })
 
   const checkAuth = async () => {
-    const { data: { user: authUser } } = await supabase.auth.getUser()
-    
-    if (!authUser) {
+    try {
+      // Use v1 API for authentication
+      const result = await apiClient.getCurrentUser()
+      
+      if (result.error || !result.data?.user) {
+        router.push('/login')
+        return
+      }
+
+      const currentUser = result.data.user
+      
+      // Fetch full profile from database
+      const { data: profile } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', currentUser.id)
+        .single()
+
+      if (profile) {
+        setUser(profile)
+        setFormData({
+          full_name: profile.full_name || '',
+          phone: profile.phone || '',
+          pan_number: profile.pan_number || ''
+        })
+      } else {
+        // Fallback to API user data
+        setUser({
+          id: currentUser.id,
+          email: currentUser.email,
+          full_name: currentUser.name || '',
+          user_type: currentUser.role as 'worker' | 'client' | 'admin',
+        } as UserType)
+        setFormData({
+          full_name: currentUser.name || '',
+          phone: '',
+          pan_number: ''
+        })
+      }
+    } catch (error) {
+      console.error('Error checking auth:', error)
       router.push('/login')
-      return
+    } finally {
+      setIsLoading(false)
     }
-
-    const { data: profile } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', authUser.id)
-      .single()
-
-    if (profile) {
-      setUser(profile)
-      setFormData({
-        full_name: profile.full_name || '',
-        phone: profile.phone || '',
-        pan_number: profile.pan_number || ''
-      })
-    }
-    setIsLoading(false)
   }
 
   const handleSave = async (e: React.FormEvent) => {

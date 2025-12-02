@@ -6,7 +6,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import VerificationDashboard from '@/components/verification/VerificationDashboard'
 import HomeButton from '@/components/worker/HomeButton'
 
@@ -21,23 +21,36 @@ export default function WorkerVerificationPage() {
 
   const checkAuth = async () => {
     try {
-      const { data: { user: authUser } } = await supabase.auth.getUser()
-      if (!authUser) {
+      // Use v1 API for authentication
+      const result = await apiClient.getCurrentUser()
+      
+      if (result.error || !result.data?.user) {
         router.push('/login')
         return
       }
 
-      const { data: userData } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', authUser.id)
-        .single()
-
-      if (userData) {
-        setUser(userData)
+      const currentUser = result.data.user
+      
+      // Check if user is a worker
+      if (currentUser.role !== 'worker') {
+        const routes: Record<string, string> = {
+          client: '/client',
+          admin: '/dashboard/admin',
+          superadmin: '/dashboard/admin'
+        }
+        router.push(routes[currentUser.role] || '/login')
+        return
       }
+
+      setUser({
+        id: currentUser.id,
+        email: currentUser.email,
+        full_name: currentUser.name || '',
+        user_type: 'worker',
+      })
     } catch (error) {
       console.error('Error checking auth:', error)
+      router.push('/login')
     } finally {
       setLoading(false)
     }
