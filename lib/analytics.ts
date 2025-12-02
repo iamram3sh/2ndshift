@@ -83,9 +83,9 @@ export const usePageTracking = () => {
   }
 }
 
-// Declare gtag for TypeScript
+// Declare gtag for TypeScript (optional, as it may not be loaded)
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void
+    gtag?: (...args: any[]) => void
   }
 }
