@@ -235,19 +235,29 @@ export function Navbar() {
               </>
             ) : (
               <>
-                <Link
-                  href={role ? `/login?role=${role}` : '/login'}
-                  className="hidden sm:block px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900"
-                  onClick={() => {
-                    if (!role && typeof window !== 'undefined') {
-                      if (window.gtag) {
-                        window.gtag('event', 'login_shown', { role: null })
+                {role ? (
+                  <Link
+                    href={`/login?role=${role}`}
+                    className="hidden sm:block px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900"
+                  >
+                    Sign in
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => {
+                      // Open role picker modal or navigate to login with role picker
+                      if (typeof window !== 'undefined') {
+                        window.location.href = '/login'
+                        if (window.gtag) {
+                          window.gtag('event', 'login_shown', { role: null })
+                        }
                       }
-                    }
-                  }}
-                >
-                  Sign in
-                </Link>
+                    }}
+                    className="hidden sm:block px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900"
+                  >
+                    Sign in
+                  </button>
+                )}
                 <Link
                   href="/register"
                   className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-all"

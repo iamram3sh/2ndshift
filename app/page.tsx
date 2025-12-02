@@ -188,7 +188,7 @@ export default function HomePage() {
                 {/* CTAs */}
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-12 justify-center mb-8">
                   <Link 
-                    href={withRoleParam("/login?role=worker", 'worker')}
+                    href="/worker?role=worker"
                     onClick={() => {
                       handleCTAClick('I want to work', 'worker')
                       setRole('worker', 'hero')
@@ -200,7 +200,7 @@ export default function HomePage() {
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                   <Link 
-                    href={withRoleParam("/login?role=client", 'client')}
+                    href="/client?role=client"
                     onClick={() => {
                       handleCTAClick('I want to hire', 'client')
                       setRole('client', 'hero')
@@ -249,7 +249,7 @@ export default function HomePage() {
                 {/* CTAs */}
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-12 justify-center mb-8">
                   <Link 
-                    href={withRoleParam("/login?role=client", 'client')}
+                    href="/client?role=client"
                     onClick={() => {
                       handleCTAClick('I want to hire', 'client')
                       setRole('client', 'hero')
@@ -261,7 +261,7 @@ export default function HomePage() {
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                   <Link 
-                    href={withRoleParam("/login?role=worker", 'worker')}
+                    href="/worker?role=worker"
                     onClick={() => {
                       handleCTAClick('I want to work', 'worker')
                       setRole('worker', 'hero')
@@ -798,21 +798,27 @@ export default function HomePage() {
           <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
             Ready to start earning?
           </h2>
-          <p className="text-lg text-white mb-10 max-w-2xl mx-auto" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.4)', fontWeight: 600 }}>
+          <p className="text-lg text-white mb-10 max-w-2xl mx-auto font-semibold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.4)' }}>
             Join 2ndShift today. It&apos;s free to create an account.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
-              href={withRoleParam("/login?role=worker", 'worker')}
-              onClick={() => handleCTAClick('Get Started Free', 'worker')}
+              href="/worker?role=worker"
+              onClick={() => {
+                handleCTAClick('Get Started Free', 'worker')
+                setRole('worker', 'hero')
+              }}
               className="inline-flex items-center justify-center gap-2 bg-white text-[#0b1220] px-8 py-4 rounded-lg font-bold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
             >
               Get Started Free
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link 
-              href={withRoleParam("/worker/discover", 'worker')}
-              onClick={() => handleCTAClick('Browse Jobs', 'worker')}
+              href="/worker/discover?role=worker"
+              onClick={() => {
+                handleCTAClick('Browse Jobs', 'worker')
+                setRole('worker', 'hero')
+              }}
               className="inline-flex items-center justify-center gap-2 bg-white text-[#0b1220] px-8 py-4 rounded-lg font-bold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
             >
               Browse Jobs
@@ -836,16 +842,22 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
-              href={withRoleParam("/login?role=client", 'client')}
-              onClick={() => handleCTAClick('Get Started Free', 'client')}
+              href="/client?role=client"
+              onClick={() => {
+                handleCTAClick('Get Started Free', 'client')
+                setRole('client', 'hero')
+              }}
               className="inline-flex items-center justify-center gap-2 bg-white text-[#0b1220] px-8 py-4 rounded-lg font-bold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
             >
               Get Started Free
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link 
-              href={withRoleParam("/workers", 'client')}
-              onClick={() => handleCTAClick('Browse Talent', 'client')}
+              href="/workers?role=client"
+              onClick={() => {
+                handleCTAClick('Browse Talent', 'client')
+                setRole('client', 'hero')
+              }}
               className="inline-flex items-center justify-center gap-2 bg-white text-[#0b1220] px-8 py-4 rounded-lg font-bold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
             >
               Browse Talent

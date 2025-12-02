@@ -90,6 +90,7 @@ export default function LoginPage() {
         trackEvent('login_success', { role: result.data.user.role })
         if (result.data.user.role === 'worker' || result.data.user.role === 'client') {
           trackRoleSelected(result.data.user.role, 'login')
+          setRole(result.data.user.role, 'login')
         }
         router.push(targetRoute)
       }
@@ -116,32 +117,31 @@ export default function LoginPage() {
           {/* Header */}
           {!selectedRole ? (
             <RolePicker />
-          ) : (
+          ) : null}
+
+          {/* Role-Specific Forms */}
+          {selectedRole === 'worker' && <WorkerSignInForm />}
+          {selectedRole === 'client' && <ClientSignInForm />}
+          
+          {/* Fallback form for when no role is selected but form is shown */}
+          {!selectedRole && (
             <>
-              <h1 className="text-2xl font-semibold text-slate-900 mb-2">
-                Welcome back, {selectedRole === 'worker' ? 'Professional' : 'Client'}
-              </h1>
-              <p className="text-slate-600 mb-8">Sign in to your {selectedRole} account to continue</p>
-            </>
-          )}
+              {/* Messages */}
+              {successMessage && (
+                <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-700 flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                  <span>{successMessage}</span>
+                </div>
+              )}
 
-          {/* Messages */}
-          {successMessage && (
-            <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-700 flex items-start gap-3">
-              <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-              <span>{successMessage}</span>
-            </div>
-          )}
+              {message && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
+                  {message}
+                </div>
+              )}
 
-          {message && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
-              {message}
-            </div>
-          )}
-
-          {/* Form */}
-          {selectedRole && (
-            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 Email address

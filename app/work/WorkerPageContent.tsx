@@ -22,6 +22,7 @@ import {
   WorkerSuccessStoriesSection
 } from '@/components/role/WorkerSpecificModules'
 import { PricingSection } from '@/components/revenue/PricingSection'
+import { SimpleProcessWorker } from '@/components/auth/SimpleProcessWorker'
 
 const SAMPLE_JOBS = [
   {
@@ -401,52 +402,9 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
       </section>
       </RoleSection>
 
-      {/* How It Works - Shared */}
-      <RoleSection role="both">
-      <section className="py-20 lg:py-28 bg-slate-900 border-t border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4">
-              Simple process
-            </h2>
-            <p className="text-lg text-white max-w-2xl mx-auto">
-              Get started in minutes. No complicated onboarding.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                step: '01',
-                title: 'Create free account',
-                description: 'Sign up in 2 minutes. Add your skills or post your requirement.',
-                icon: Users,
-              },
-              {
-                step: '02',
-                title: 'Get matched',
-                description: 'Our AI finds the best matches. Review profiles, chat, and decide.',
-                icon: Target,
-              },
-              {
-                step: '03',
-                title: 'Start working',
-                description: 'Agree on terms, we handle the paperwork. Get work done.',
-                icon: Zap,
-              },
-            ].map((item, i) => (
-              <div key={i} className="text-center">
-                <div className="text-5xl font-bold text-slate-600 mb-4">{item.step}</div>
-                <div className="w-14 h-14 bg-sky-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <item.icon className="w-7 h-7 text-sky-400" />
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-2">{item.title}</h3>
-                <p className="text-white">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Simple Process - Worker Only */}
+      <RoleSection role="worker" ssrRole={initialRole || 'worker'}>
+        <SimpleProcessWorker />
       </RoleSection>
 
       {/* CTA Section - Worker-Specific */}
