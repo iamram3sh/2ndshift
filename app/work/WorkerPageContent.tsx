@@ -14,6 +14,13 @@ import { RoleAwareNav } from '@/components/role/RoleAwareNav'
 import { withRoleParam } from '@/lib/utils/roleAwareLinks'
 import { trackRoleCTA } from '@/lib/analytics/roleEvents'
 import { isRoleHomeEnabled } from '@/lib/role/feature-flag'
+import { RoleSection } from '@/components/role/RoleSection'
+import { 
+  StarterPacksSection, 
+  VerificationExplainerSection, 
+  EarningsCalculatorSection,
+  WorkerSuccessStoriesSection
+} from '@/components/role/WorkerSpecificModules'
 
 const SAMPLE_JOBS = [
   {
@@ -50,7 +57,7 @@ const SAMPLE_JOBS = [
   },
 ]
 
-export function WorkerPageContent() {
+export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'worker' | null }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const { role } = useRole()
@@ -135,8 +142,9 @@ export function WorkerPageContent() {
         )}
       </nav>
 
-      {/* Worker-Focused Hero - NO RoleSection wrapper, directly rendered */}
-      <section className="relative pt-24 lg:pt-32 pb-16 lg:pb-24 bg-white border-b border-slate-200">
+      {/* Worker-Focused Hero */}
+      <RoleSection role="worker" ssrRole={initialRole || 'worker'}>
+      <section className="relative pt-24 lg:pt-32 pb-16 lg:pb-24 bg-white border-b border-slate-200" data-role="worker">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
             <div className="flex justify-center mb-8">
@@ -191,8 +199,10 @@ export function WorkerPageContent() {
           </div>
         </div>
       </section>
+      </RoleSection>
 
-      {/* What You Can Do */}
+      {/* What You Can Do - Shared */}
+      <RoleSection role="both">
       <section className="py-16 bg-slate-900 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid sm:grid-cols-3 gap-8 text-center">
@@ -226,9 +236,11 @@ export function WorkerPageContent() {
           </div>
         </div>
       </section>
+      </RoleSection>
 
-      {/* Worker Opportunities Section - Directly rendered, no client content */}
-      <section className="py-20 lg:py-28 bg-white border-t border-slate-200">
+      {/* Worker Opportunities Section */}
+      <RoleSection role="worker" ssrRole={initialRole || 'worker'}>
+      <section className="py-20 lg:py-28 bg-white border-t border-slate-200" data-role="worker">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
             <div>
@@ -320,92 +332,18 @@ export function WorkerPageContent() {
           </div>
         </div>
       </section>
+      </RoleSection>
 
-      {/* Two-Column Value Prop - Worker-focused */}
-      <section className="py-20 lg:py-28 bg-slate-50 border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-8">
-            <div className="bg-white p-8 lg:p-10 rounded-2xl border border-slate-200 shadow-sm">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-sky-50 text-sky-700 rounded-lg text-sm font-medium mb-6">
-                <Briefcase className="w-4 h-4" />
-                For Professionals
-              </div>
+      {/* Worker-Specific Modules */}
+      <RoleSection role="worker" ssrRole={initialRole || 'worker'}>
+        <StarterPacksSection role={role} onCTAClick={(name) => handleCTAClick(name, 'worker')} />
+        <VerificationExplainerSection role={role} onCTAClick={(name) => handleCTAClick(name, 'worker')} />
+        <EarningsCalculatorSection role={role} onCTAClick={(name) => handleCTAClick(name, 'worker')} />
+        <WorkerSuccessStoriesSection role={role} onCTAClick={(name) => handleCTAClick(name, 'worker')} />
+      </RoleSection>
 
-              <h3 className="text-2xl lg:text-3xl font-bold text-[#111] mb-4">
-                Use your skills.
-                <br />
-                <span className="text-sky-600">Earn on your terms.</span>
-              </h3>
-              <p className="text-[#333] mb-8">
-                Turn your free time into income. Work on projects you love, 
-                with clients who value your expertise.
-              </p>
-
-              <ul className="space-y-4 mb-8">
-                {[
-                  { label: 'Work when you want', desc: 'Evening, weekends, or full-time - you decide' },
-                  { label: 'Get paid securely', desc: 'Escrow protection ensures you always get paid' },
-                  { label: 'No tax headaches', desc: 'TDS handled, Form 16A provided automatically' },
-                  { label: 'Build your reputation', desc: 'Verified reviews help you land better projects' },
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <div className="font-semibold text-[#111]">{item.label}</div>
-                      <div className="text-sm text-[#333]">{item.desc}</div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-
-              <Link 
-                href={withRoleParam("/register?type=worker", 'worker')}
-                onClick={() => handleCTAClick('Start Earning', 'worker')}
-                className="inline-flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-slate-800 transition-all"
-              >
-                Start Earning
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-
-            <div className="bg-slate-900 p-8 lg:p-10 rounded-2xl text-white">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 text-white rounded-lg text-sm font-medium mb-6">
-                <Zap className="w-4 h-4" />
-                Why Choose 2ndShift
-              </div>
-
-              <h3 className="text-2xl lg:text-3xl font-semibold mb-4">
-                Get paid faster.
-                <br />
-                <span className="text-sky-400">Zero fees.</span>
-              </h3>
-              <p className="text-white mb-8">
-                We built the platform for workers. No platform fees, 
-                instant payments, and all compliance handled.
-              </p>
-
-              <ul className="space-y-4">
-                {[
-                  { label: 'Paid within 24 hours', desc: 'Get your money fast, no waiting' },
-                  { label: 'Zero platform fees', desc: 'Keep 100% of what you earn' },
-                  { label: 'EarlyPay access', desc: 'Access earned money before project completion' },
-                  { label: 'Verified clients', desc: 'Work with trusted businesses only' },
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-sky-400 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <div className="font-medium text-white">{item.label}</div>
-                      <div className="text-sm text-white">{item.desc}</div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Why 2ndShift */}
+      {/* Why 2ndShift - Shared */}
+      <RoleSection role="both">
       <section className="py-20 lg:py-28 bg-white border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -459,8 +397,10 @@ export function WorkerPageContent() {
           </div>
         </div>
       </section>
+      </RoleSection>
 
-      {/* How It Works */}
+      {/* How It Works - Shared */}
+      <RoleSection role="both">
       <section className="py-20 lg:py-28 bg-slate-900 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -505,14 +445,16 @@ export function WorkerPageContent() {
           </div>
         </div>
       </section>
+      </RoleSection>
 
-      {/* CTA Section */}
-      <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
+      {/* CTA Section - Worker-Specific */}
+      <RoleSection role="worker" ssrRole={initialRole || 'worker'}>
+      <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800" data-role="worker">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4 drop-shadow-lg">
+          <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4 drop-shadow-lg" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
             Ready to get started?
           </h2>
-          <p className="text-lg text-white/95 mb-10 max-w-2xl mx-auto font-medium">
+          <p className="text-lg text-white/95 mb-10 max-w-2xl mx-auto font-medium" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
             Join 2ndShift today. It&apos;s free to create an account.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -535,6 +477,7 @@ export function WorkerPageContent() {
           </div>
         </div>
       </section>
+      </RoleSection>
 
       {/* Footer */}
       <footer className="py-16 bg-white border-t border-slate-200">
