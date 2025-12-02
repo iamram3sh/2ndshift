@@ -19,7 +19,6 @@ import { withRoleParam } from '@/lib/utils/roleAwareLinks'
 import { trackRoleCTA } from '@/lib/analytics/roleEvents'
 import { isRoleHomeEnabled } from '@/lib/role/feature-flag'
 import { HIGH_VALUE_CATEGORIES } from '@/lib/constants/highValueCategories'
-import Link from 'next/link'
 
 // What makes us different
 const VALUE_PROPS = [
