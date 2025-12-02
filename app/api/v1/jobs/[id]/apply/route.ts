@@ -28,7 +28,7 @@ export async function POST(
       // Get job
       const { data: job, error: jobError } = await supabaseAdmin
         .from('jobs')
-        .select('id, status, client_id, price_fixed')
+        .select('id, status, client_id, price_fixed, title')
         .eq('id', jobId)
         .single();
 
