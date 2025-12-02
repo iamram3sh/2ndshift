@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import { useRole } from './RoleContextProvider'
 import { isRoleHomeEnabled } from '@/lib/role/feature-flag'
 import { Briefcase, Users } from 'lucide-react'
@@ -16,6 +17,7 @@ interface RoleToggleProps {
  * Supports hero (large buttons) and header (compact pill) variants
  */
 export function RoleToggle({ variant = 'hero', onRoleChange, className = '' }: RoleToggleProps) {
+  const router = useRouter()
   const { role, setRole } = useRole()
   const isEnabled = isRoleHomeEnabled()
   const announcementRef = useRef<HTMLDivElement>(null)
@@ -55,13 +57,14 @@ export function RoleToggle({ variant = 'hero', onRoleChange, className = '' }: R
     if (!isEnabled) return
     
     const source = variant === 'hero' ? 'hero' : 'header'
+    
+    // Navigate to role-specific route for better SEO and SSR
+    const targetRoute = selectedRole === 'worker' ? '/worker' : '/client'
+    router.push(targetRoute)
+    
+    // Also set role for context (will be overridden by route-based detection)
     setRole(selectedRole, source)
     onRoleChange?.(selectedRole)
-    
-    // Smooth scroll to top on role change for better UX
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
   }
 
   // Hero variant - large side-by-side buttons

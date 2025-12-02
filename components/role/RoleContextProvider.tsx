@@ -23,13 +23,19 @@ export const defaultContextValue: RoleContextValue = {
 
 export const RoleContext = createContext<RoleContextValue>(defaultContextValue)
 
-export function RoleContextProvider({ children }: { children: React.ReactNode }) {
+interface RoleContextProviderProps {
+  children: React.ReactNode
+  initialRole?: UserRole | null // SSR-injected role (from route or server)
+}
+
+export function RoleContextProvider({ children, initialRole }: RoleContextProviderProps) {
   // This component should only be rendered when feature is enabled
   // RoleProviderWrapper ensures this
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
-  const [role, setRoleState] = useState<UserRole | null>(null)
+  // Initialize with initialRole if provided (SSR), otherwise null
+  const [role, setRoleState] = useState<UserRole | null>(initialRole ?? null)
   const [persisted, setPersisted] = useState(false)
   const [isInitialized, setIsInitialized] = useState(false)
   const isEnabled = isRoleHomeEnabled()
@@ -46,6 +52,7 @@ export function RoleContextProvider({ children }: { children: React.ReactNode })
       return
     }
 
+    // Precedence: query param (highest) > initialRole (SSR) > localStorage > null
     // Check query param first (highest precedence)
     const queryRole = getRoleFromQuery()
     if (queryRole) {
@@ -53,6 +60,14 @@ export function RoleContextProvider({ children }: { children: React.ReactNode })
       setPersisted(false) // Query param doesn't count as persisted
       setIsInitialized(true)
       trackRoleSelected(queryRole, 'query')
+      return
+    }
+
+    // If no query param, use initialRole if provided (from SSR/route)
+    if (initialRole) {
+      setRoleState(initialRole)
+      setPersisted(false) // SSR role doesn't count as persisted
+      setIsInitialized(true)
       return
     }
 
@@ -66,7 +81,7 @@ export function RoleContextProvider({ children }: { children: React.ReactNode })
     }
 
     setIsInitialized(true)
-  }, [isEnabled, searchParams])
+  }, [isEnabled, searchParams, initialRole])
 
   // Update role when query param changes (client-side only)
   useEffect(() => {
