@@ -534,6 +534,45 @@ export default function WorkerDashboard() {
               </div>
             </div>
 
+            {/* Talent Packs / Starter Packs */}
+            <div className="border-t border-slate-200 pt-8 mb-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-[#111]">
+                  Quick-Start Opportunities
+                </h2>
+                <Link href="/worker/discover" className="text-sm text-[#333] hover:text-[#111] font-semibold transition-colors">
+                  View all →
+                </Link>
+              </div>
+              <div className="grid md:grid-cols-3 gap-4">
+                {[
+                  { title: 'Logo Design', budget: '₹5,000 - ₹10,000', duration: '2-3 days', skills: ['Figma', 'Illustrator'] },
+                  { title: 'Bug Fixes', budget: '₹3,000 - ₹8,000', duration: '1-2 days', skills: ['React', 'JavaScript'] },
+                  { title: 'Content Writing', budget: '₹2,000 - ₹5,000', duration: '1 week', skills: ['SEO', 'Copywriting'] },
+                ].map((pack, i) => (
+                  <Link
+                    key={i}
+                    href="/worker/discover"
+                    className="block p-4 bg-white border border-slate-200 rounded-xl hover:border-sky-300 hover:shadow-lg transition-all"
+                  >
+                    <h3 className="font-semibold text-[#111] mb-2">{pack.title}</h3>
+                    <div className="text-sm text-emerald-600 font-medium mb-2">{pack.budget}</div>
+                    <div className="text-xs text-[#333] mb-2">{pack.duration}</div>
+                    <div className="flex flex-wrap gap-1 mb-2">
+                      {pack.skills.map(skill => (
+                        <span key={skill} className="px-2 py-0.5 bg-slate-100 text-[#333] rounded text-xs">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="text-xs text-slate-500">
+                      Platform fee: 5-10% (first 3: 0%)
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
             {/* Recommended Jobs */}
             <div className="border-t border-slate-200 pt-8">
               <div className="flex items-center justify-between mb-6">

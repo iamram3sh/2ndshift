@@ -49,8 +49,12 @@ export function CommissionCalculator({
       }
 
       if (result.data) {
-        setCalculation(result.data)
-        onCalculationChange?.(result.data)
+        // Handle new API response structure with breakdown object
+        const calcData = result.data.breakdown ? result.data : {
+          breakdown: result.data
+        }
+        setCalculation(calcData)
+        onCalculationChange?.(calcData)
       }
     } catch (err: any) {
       setError(err.message || 'Calculation failed')
@@ -84,41 +88,41 @@ export function CommissionCalculator({
       <div className="space-y-2 text-sm">
         <div className="flex items-center justify-between">
           <span className="text-slate-600">Job Price:</span>
-          <span className="font-medium text-slate-900">₹{price.toLocaleString()}</span>
+          <span className="font-medium text-slate-900">₹{calculation.breakdown?.job_price?.toLocaleString() || price.toLocaleString()}</span>
         </div>
 
-        {calculation.workerCommissionAmount > 0 && (
+        {calculation.breakdown?.escrow_fee > 0 && (
           <div className="flex items-center justify-between text-slate-600">
             <span className="flex items-center gap-1">
-              Worker Commission ({calculation.workerCommissionPercent}%):
-              <Info className="w-3 h-3" title="Deducted from worker payout" />
-            </span>
-            <span className="font-medium text-red-600">
-              -₹{calculation.workerCommissionAmount.toFixed(2)}
-            </span>
-          </div>
-        )}
-
-        {calculation.clientCommissionAmount > 0 && (
-          <div className="flex items-center justify-between text-slate-600">
-            <span className="flex items-center gap-1">
-              Client Commission ({calculation.clientCommissionPercent}%):
-              <Info className="w-3 h-3" title="Added to client payment" />
-            </span>
-            <span className="font-medium text-red-600">
-              +₹{calculation.clientCommissionAmount.toFixed(2)}
-            </span>
-          </div>
-        )}
-
-        {calculation.escrowFeeAmount > 0 && (
-          <div className="flex items-center justify-between text-slate-600">
-            <span className="flex items-center gap-1">
-              Escrow Fee ({calculation.escrowFeePercent}%):
+              Escrow Fee ({calculation.breakdown.escrow_fee_percent?.toFixed(1)}%):
               <Info className="w-3 h-3" title="Payment protection fee" />
             </span>
             <span className="font-medium text-red-600">
-              +₹{calculation.escrowFeeAmount.toFixed(2)}
+              +₹{calculation.breakdown.escrow_fee.toFixed(2)}
+            </span>
+          </div>
+        )}
+
+        {calculation.breakdown?.client_commission > 0 && (
+          <div className="flex items-center justify-between text-slate-600">
+            <span className="flex items-center gap-1">
+              Client Commission {calculation.breakdown.client_commission_percent ? `(${calculation.breakdown.client_commission_percent.toFixed(1)}%)` : '(Flat ₹49)'}:
+              <Info className="w-3 h-3" title="Added to client payment" />
+            </span>
+            <span className="font-medium text-red-600">
+              +₹{calculation.breakdown.client_commission.toFixed(2)}
+            </span>
+          </div>
+        )}
+
+        {calculation.breakdown?.worker_commission > 0 && (
+          <div className="flex items-center justify-between text-slate-600">
+            <span className="flex items-center gap-1">
+              Worker Commission ({calculation.breakdown.worker_commission_percent?.toFixed(1)}%):
+              <Info className="w-3 h-3" title="Deducted from worker payout" />
+            </span>
+            <span className="font-medium text-red-600">
+              -₹{calculation.breakdown.worker_commission.toFixed(2)}
             </span>
           </div>
         )}
@@ -127,24 +131,24 @@ export function CommissionCalculator({
           <div className="flex items-center justify-between mb-1">
             <span className="font-medium text-slate-900">Worker Receives:</span>
             <span className="font-bold text-emerald-600 text-lg">
-              ₹{calculation.netWorkerPayout.toFixed(2)}
+              ₹{calculation.breakdown?.worker_receives?.toFixed(2) || '0.00'}
             </span>
           </div>
           <div className="flex items-center justify-between">
             <span className="font-medium text-slate-900">Client Pays:</span>
             <span className="font-bold text-slate-900 text-lg">
-              ₹{calculation.netClientPayment.toFixed(2)}
+              ₹{calculation.breakdown?.client_pays?.toFixed(2) || '0.00'}
             </span>
           </div>
         </div>
 
-        {calculation.workerCommissionPercent > 0 && (
+        {calculation.breakdown?.worker_commission_percent > 0 && (
           <div className="mt-3 p-2 bg-amber-50 border border-amber-200 rounded-lg">
             <div className="flex items-start gap-2">
               <TrendingDown className="w-4 h-4 text-amber-600 mt-0.5" />
               <div className="text-xs text-amber-800">
                 <strong>Tip:</strong> Get verified or subscribe to reduce commission to{' '}
-                {calculation.workerCommissionPercent === 10 ? '5%' : '0%'}
+                {calculation.breakdown.worker_commission_percent >= 10 ? '5%' : '0%'}
               </div>
             </div>
           </div>

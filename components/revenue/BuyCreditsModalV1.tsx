@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { X, Zap, Check, Loader2, Shield } from 'lucide-react'
 import apiClient from '@/lib/apiClient'
+import { trackCreditsPurchased } from '@/lib/analytics/events'
 
 interface Package {
   id: string
@@ -82,6 +83,16 @@ export function BuyCreditsModalV1({
 
       // In demo mode, credits are auto-added
       if (result.data?.demo || result.data?.status === 'completed') {
+        // Track analytics
+        if (typeof window !== 'undefined') {
+          const { trackCreditsPurchased } = await import('@/lib/analytics/events')
+          trackCreditsPurchased(
+            pkg.price_inr / 100,
+            pkg.shifts_amount,
+            pkg.id
+          )
+        }
+
         // Refresh balance
         const balanceResult = await apiClient.getCreditsBalance()
         if (balanceResult.data) {
@@ -106,7 +117,12 @@ export function BuyCreditsModalV1({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="buy-credits-title"
+    >
       <div className="bg-white rounded-2xl shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between z-10">
           <div className="flex items-center gap-3">
@@ -114,7 +130,7 @@ export function BuyCreditsModalV1({
               <Zap className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-slate-900">Buy Shift Credits</h2>
+              <h2 id="buy-credits-title" className="text-2xl font-bold text-slate-900">Buy Shift Credits</h2>
               <p className="text-sm text-slate-500">Current balance: {currentBalance} Credits</p>
             </div>
           </div>

@@ -13,6 +13,7 @@ import JobAlertsManager from '@/components/worker/JobAlertsManager'
 import JobAlertModal from '@/components/worker/JobAlertModal'
 import { PaymentVerifiedBadge } from '@/components/badges/PaymentBadges'
 import HomeButton from '@/components/worker/HomeButton'
+import { PriceBreakdown } from '@/components/jobs/PriceBreakdown'
 
 export default function WorkerJobDiscoveryPage() {
   const router = useRouter()
@@ -387,6 +388,18 @@ export default function WorkerJobDiscoveryPage() {
                             )}
                             Budget
                           </div>
+                          {/* Price Breakdown - Compact */}
+                          {user && (
+                            <div className="mt-2">
+                              <PriceBreakdown
+                                price={project.budget}
+                                jobId={project.id}
+                                workerId={user.id}
+                                clientId={project.client_id}
+                                compact
+                              />
+                            </div>
+                          )}
                         </div>
                       </div>
 

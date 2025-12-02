@@ -318,39 +318,6 @@ class ApiClient {
   }
 
   async subscribeToPlan(planId: string) {
-    return this.request<{ subscription: any }>('/subscriptions/subscribe', {
-      method: 'POST',
-      body: JSON.stringify({ plan_id: planId }),
-    });
-  }
-
-  // Commissions
-  async calculateCommission(params: {
-    price: number;
-    worker_id?: string;
-    client_id?: string;
-    is_microtask?: boolean;
-  }) {
-    return this.request<{ breakdown: any }>('/commissions/calc', {
-      params: params as any,
-    });
-  }
-
-  // Escrows
-  async releaseEscrow(escrowId: string) {
-    return this.request<{ escrow: any }>(`/escrows/${escrowId}/release`, {
-      method: 'POST',
-    });
-  }
-}
-
-export const apiClient = new ApiClient();
-export default apiClient;
-      requireAuth: false,
-    });
-  }
-
-  async subscribeToPlan(planId: string) {
     return this.request<{ subscription: any; demo: boolean; message: string }>('/subscriptions/subscribe', {
       method: 'POST',
       body: JSON.stringify({ plan_id: planId }),
@@ -365,17 +332,7 @@ export default apiClient;
     client_id?: string;
     is_microtask?: boolean;
   }) {
-    return this.request<{
-      workerCommissionPercent: number;
-      workerCommissionAmount: number;
-      clientCommissionPercent: number;
-      clientCommissionAmount: number;
-      escrowFeePercent: number;
-      escrowFeeAmount: number;
-      netWorkerPayout: number;
-      netClientPayment: number;
-      totalPlatformRevenue: number;
-    }>('/commissions/calc', {
+    return this.request<{ breakdown: any; is_microtask?: boolean }>('/commissions/calc', {
       params: params as any,
     });
   }

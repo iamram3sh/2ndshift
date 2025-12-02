@@ -117,6 +117,9 @@ export function StarterPacksSection({ role, onCTAClick }: WorkerSpecificModulesP
                     <Clock className="w-3 h-3" />
                     {job.duration}
                   </div>
+                  <div className="text-xs text-slate-500 mt-1">
+                    Platform fee: 5-10% (first 3 jobs: 0%)
+                  </div>
                 </div>
                 <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-sky-600 transition-colors" />
               </div>

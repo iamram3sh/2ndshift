@@ -3,9 +3,12 @@
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { ArrowLeft, Clock, Calendar, User, Briefcase } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import { JobApplyModal } from '@/components/jobs/JobApplyModal'
+import { PriceBreakdown } from '@/components/jobs/PriceBreakdown'
 import type { Project, User as UserType } from '@/types/database.types'
 
 export default function ProjectDetailPage() {
@@ -16,18 +19,21 @@ export default function ProjectDetailPage() {
   const [currentUser, setCurrentUser] = useState<UserType | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [applying, setApplying] = useState(false)
+  const [showApplyModal, setShowApplyModal] = useState(false)
 
   const checkCurrentUser = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    
-    if (user) {
-      const { data: profile } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', user.id)
-        .single()
-      
-      if (profile) setCurrentUser(profile)
+    try {
+      const result = await apiClient.getCurrentUser()
+      if (result.data?.user) {
+        setCurrentUser({
+          id: result.data.user.id,
+          email: result.data.user.email,
+          full_name: result.data.user.name || '',
+          user_type: result.data.user.role as 'worker' | 'client' | 'admin',
+        } as UserType)
+      }
+    } catch (err) {
+      console.error('Error fetching current user:', err)
     }
   }
 
@@ -59,7 +65,7 @@ export default function ProjectDetailPage() {
     checkCurrentUser()
   }, [params.id])
 
-  const handleApply = async () => {
+  const handleApply = () => {
     if (!currentUser) {
       router.push('/login')
       return
@@ -75,44 +81,7 @@ export default function ProjectDetailPage() {
       return
     }
 
-    setApplying(true)
-    
-    try {
-      // Check if already applied
-      const { data: existingApplication } = await supabase
-        .from('applications')
-        .select('id')
-        .eq('project_id', params.id)
-        .eq('worker_id', currentUser.id)
-        .single()
-
-      if (existingApplication) {
-        alert('You have already applied to this project')
-        setApplying(false)
-        return
-      }
-
-      // Create application
-      const { error } = await supabase
-        .from('applications')
-        .insert({
-          project_id: params.id,
-          worker_id: currentUser.id,
-          status: 'pending',
-          cover_letter: '', // Could add a modal for cover letter
-          proposed_rate: project.budget
-        })
-
-      if (error) throw error
-
-      alert('Application submitted successfully!')
-      router.push('/worker')
-    } catch (error: any) {
-      console.error('Application error:', error)
-      alert(error.message || 'Failed to submit application. Please try again.')
-    } finally {
-      setApplying(false)
-    }
+    setShowApplyModal(true)
   }
 
   if (isLoading) {
@@ -174,7 +143,15 @@ export default function ProjectDetailPage() {
               </CardHeader>
               <CardContent>
                 <h3 className="font-semibold text-gray-900 mb-2">Description</h3>
-                <p className="text-gray-700 whitespace-pre-wrap">{project.description}</p>
+                <p className="text-gray-700 whitespace-pre-wrap mb-4">{project.description}</p>
+                
+                {/* Price Breakdown */}
+                <PriceBreakdown
+                  price={project.budget}
+                  jobId={params.id as string}
+                  workerId={currentUser?.user_type === 'worker' ? currentUser.id : undefined}
+                  clientId={project.client_id}
+                />
               </CardContent>
             </Card>
 
@@ -268,6 +245,22 @@ export default function ProjectDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Job Apply Modal */}
+      {currentUser && project && (
+        <JobApplyModal
+          isOpen={showApplyModal}
+          onClose={() => setShowApplyModal(false)}
+          jobId={params.id as string}
+          jobPrice={project.budget}
+          jobTitle={project.title}
+          workerId={currentUser.id}
+          clientId={project.client_id}
+          onApplySuccess={() => {
+            router.push('/dashboard/worker')
+          }}
+        />
+      )}
     </div>
   )
 }

@@ -114,6 +114,9 @@ export default function MicroJobPacks() {
               <div className="mb-6">
                 <div className="text-3xl font-bold text-[#111]">₹{pack.price.toLocaleString()}</div>
                 <div className="text-sm text-[#333]">One-time payment</div>
+                <div className="text-xs text-slate-500 mt-1">
+                  Platform fee: 4% · Escrow fee: 2%
+                </div>
               </div>
 
               <Link
