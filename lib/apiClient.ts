@@ -54,9 +54,9 @@ class ApiClient {
     }
 
     // Add auth header if required
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...fetchOptions.headers,
+      ...(fetchOptions.headers as Record<string, string> || {}),
     };
 
     if (requireAuth) {
@@ -77,10 +77,13 @@ class ApiClient {
       if (response.status === 401 && requireAuth) {
         const newToken = await this.refreshToken();
         if (newToken) {
-          headers['Authorization'] = `Bearer ${newToken}`;
+          const retryHeaders: Record<string, string> = {
+            ...headers,
+            'Authorization': `Bearer ${newToken}`,
+          };
           const retryResponse = await fetch(url, {
             ...fetchOptions,
-            headers,
+            headers: retryHeaders,
             credentials: 'include',
           });
           const retryData = await retryResponse.json();
