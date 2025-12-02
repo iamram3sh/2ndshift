@@ -51,8 +51,8 @@ export async function POST(request: NextRequest) {
         }
 
         // Get ID document URL from evidence
-        const evidence = verification.evidence || {}
-        const idDocumentUrl = evidence.government_id?.url || evidence.government_id?.signedUrl
+        const existingEvidence = verification.evidence || {}
+        const idDocumentUrl = existingEvidence.government_id?.url || existingEvidence.government_id?.signedUrl
 
         if (!idDocumentUrl) {
           return NextResponse.json(
@@ -92,17 +92,19 @@ export async function POST(request: NextRequest) {
         }
 
         // Update verification with selfie and face match result
-        const evidence = verification.evidence || {}
-        evidence.selfie = {
-          url: uploadResult.signedUrl,
-          filePath: uploadResult.filePath,
-          uploadedAt: new Date().toISOString()
-        }
-        evidence.faceMatch = {
-          similarityScore: faceMatchResult.similarityScore,
-          verified: faceMatchResult.verified,
-          requiresManualReview: faceMatchResult.requiresManualReview,
-          matchedAt: new Date().toISOString()
+        const evidence = {
+          ...existingEvidence,
+          selfie: {
+            url: uploadResult.signedUrl,
+            filePath: uploadResult.filePath,
+            uploadedAt: new Date().toISOString()
+          },
+          faceMatch: {
+            similarityScore: faceMatchResult.similarityScore,
+            verified: faceMatchResult.verified,
+            requiresManualReview: faceMatchResult.requiresManualReview,
+            matchedAt: new Date().toISOString()
+          }
         }
 
         // Determine new status
