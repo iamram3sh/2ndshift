@@ -19,28 +19,14 @@ const translations: Record<string, any> = {
  * @param params - Optional parameters to replace placeholders (e.g., {amount: "100"})
  * @returns Translated string or array with placeholders replaced
  */
-export function t(key: TranslationKey, params?: TranslationParams): string | string[]
-
-/**
- * Get translation as string only (throws if array)
- * @param key - Translation key
- * @param params - Optional parameters
- * @returns Translated string
- */
-export function tString(key: TranslationKey, params?: TranslationParams): string {
-  const result = t(key, params)
-  if (typeof result === 'string') {
-    return result
-  }
-  console.warn(`Translation for key "${key}" returned an array, expected string`)
-  return Array.isArray(result) ? result.join(', ') : key
-}
+export function t(key: TranslationKey, params?: TranslationParams): string | string[] {
   const locale = currentLocale
   const localeTranslations = translations[locale] || translations.en
 
   // Navigate nested object using dot notation
   const keys = key.split('.')
   let value: any = localeTranslations
+  let found = true
 
   for (const k of keys) {
     if (value && typeof value === 'object' && k in value) {
@@ -48,8 +34,13 @@ export function tString(key: TranslationKey, params?: TranslationParams): string
     } else {
       // Fallback to key if translation not found
       console.warn(`Translation missing for key: ${key}`)
-      return key
+      found = false
+      break
     }
+  }
+
+  if (!found) {
+    return key
   }
 
   // If value is an array, return it as-is (for bullets, etc.)
@@ -71,6 +62,21 @@ export function tString(key: TranslationKey, params?: TranslationParams): string
   }
 
   return value
+}
+
+/**
+ * Get translation as string only (converts arrays to comma-separated strings)
+ * @param key - Translation key
+ * @param params - Optional parameters
+ * @returns Translated string
+ */
+export function tString(key: TranslationKey, params?: TranslationParams): string {
+  const result = t(key, params)
+  if (typeof result === 'string') {
+    return result
+  }
+  console.warn(`Translation for key "${key}" returned an array, expected string`)
+  return Array.isArray(result) ? result.join(', ') : key
 }
 
 /**
