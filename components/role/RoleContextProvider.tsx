@@ -24,13 +24,15 @@ const defaultContextValue: RoleContextValue = {
 const RoleContext = createContext<RoleContextValue>(defaultContextValue)
 
 export function RoleContextProvider({ children }: { children: React.ReactNode }) {
-  // These hooks are safe to use even during SSR - they'll return safe defaults
+  // This component should only be rendered when feature is enabled
+  // RoleProviderWrapper ensures this
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
   const [role, setRoleState] = useState<UserRole | null>(null)
   const [persisted, setPersisted] = useState(false)
   const [isInitialized, setIsInitialized] = useState(false)
+  const isEnabled = isRoleHomeEnabled()
 
   // Initialize role on mount (client-side only)
   useEffect(() => {
@@ -39,7 +41,7 @@ export function RoleContextProvider({ children }: { children: React.ReactNode })
       return
     }
 
-    if (!isRoleHomeEnabled()) {
+    if (!isEnabled) {
       setIsInitialized(true)
       return
     }
@@ -64,12 +66,12 @@ export function RoleContextProvider({ children }: { children: React.ReactNode })
     }
 
     setIsInitialized(true)
-  }, [searchParams])
+  }, [isEnabled, searchParams])
 
   // Update role when query param changes (client-side only)
   useEffect(() => {
     if (typeof window === 'undefined') return
-    if (!isRoleHomeEnabled()) return
+    if (!isEnabled) return
 
     const queryRole = getRoleFromQuery()
     if (queryRole && queryRole !== role) {
@@ -82,11 +84,11 @@ export function RoleContextProvider({ children }: { children: React.ReactNode })
         trackRoleSelected(queryRole, 'query')
       }
     }
-  }, [searchParams, role])
+  }, [isEnabled, searchParams, role])
 
   const setRole = useCallback((newRole: UserRole, source: RoleSource = 'hero') => {
     if (typeof window === 'undefined') return
-    if (!isRoleHomeEnabled()) return
+    if (!isEnabled) return
 
     const previousRole = role
     setRoleState(newRole)
@@ -104,11 +106,11 @@ export function RoleContextProvider({ children }: { children: React.ReactNode })
     } else {
       trackRoleSelected(newRole, source)
     }
-  }, [role, searchParams, pathname, router])
+  }, [isEnabled, role, searchParams, pathname, router])
 
   const clearRole = useCallback(() => {
     if (typeof window === 'undefined') return
-    if (!isRoleHomeEnabled()) return
+    if (!isEnabled) return
 
     setRoleState(null)
     setPersisted(false)
@@ -118,7 +120,7 @@ export function RoleContextProvider({ children }: { children: React.ReactNode })
     params.delete('role')
     const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname
     router.replace(newUrl, { scroll: false })
-  }, [searchParams, pathname, router])
+  }, [isEnabled, searchParams, pathname, router])
 
   // Always provide context, even during initialization
   // This prevents SSR errors while still allowing proper initialization
