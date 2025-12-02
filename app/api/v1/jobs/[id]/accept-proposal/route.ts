@@ -94,19 +94,34 @@ export async function POST(
           job_id: jobId,
           worker_id: application.worker_id,
           status: 'assigned',
+          started_at: new Date().toISOString(),
         })
         .select()
         .single();
 
       if (assignError) {
         console.error('Error creating assignment:', assignError);
+        return NextResponse.json(
+          { error: 'Failed to create assignment' },
+          { status: 500 }
+        );
       }
 
-      // Update job status
+      // Update assignment status to in_progress
       await supabaseAdmin
+        .from('assignments')
+        .update({ status: 'in_progress' })
+        .eq('id', assignment.id);
+
+      // Update job status
+      const { error: jobUpdateError } = await supabaseAdmin
         .from('jobs')
         .update({ status: 'assigned' })
         .eq('id', jobId);
+
+      if (jobUpdateError) {
+        console.error('Error updating job status:', jobUpdateError);
+      }
 
       // Create notification for worker
       await supabaseAdmin
@@ -120,8 +135,16 @@ export async function POST(
           },
         });
 
+      // Get updated job
+      const { data: updatedJob } = await supabaseAdmin
+        .from('jobs')
+        .select('*')
+        .eq('id', jobId)
+        .single();
+
       return NextResponse.json({
         message: 'Proposal accepted',
+        job: updatedJob,
         assignment,
       });
     } catch (error: any) {

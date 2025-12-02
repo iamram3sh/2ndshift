@@ -17,7 +17,7 @@ const createJobSchema = z.object({
   price_fixed: z.number().positive().optional(),
   price_currency: z.string().default('INR'),
   delivery_deadline: z.string().datetime().optional(),
-  delivery_window: z.enum(['6-24h', '3-7d', '1-4w', '1-6m']).optional(),
+  delivery_window: z.enum(['sixTo24h', 'threeTo7d', 'oneTo4w', 'oneTo6m']).optional(),
   required_skills: z.array(z.string()).optional(),
   urgency: z.enum(['low', 'normal', 'urgent', 'critical']).default('normal'),
 });

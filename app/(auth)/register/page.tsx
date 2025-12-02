@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { Briefcase, Users, Mail, Lock, User, ArrowRight, Layers, Shield, CheckCircle, Zap, Eye, EyeOff } from 'lucide-react'
 
 export default function RegisterPage() {
@@ -57,31 +58,19 @@ export default function RegisterPage() {
     setMessage('')
     
     try {
-      const { data, error } = await supabase.auth.signUp({
+      // Use v1 API for registration
+      const result = await apiClient.register({
+        role: formData.userType,
         email: formData.email.trim().toLowerCase(),
         password: formData.password,
-        options: {
-          data: {
-            full_name: formData.fullName.trim(),
-            user_type: formData.userType
-          },
-          emailRedirectTo: `${window.location.origin}/auth/callback`
-        }
+        name: formData.fullName.trim(),
       })
       
-      if (error) throw error
+      if (result.error) {
+        throw new Error(result.error.message || 'Registration failed')
+      }
       
-      if (data.user) {
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        
-        await supabase.from('users').insert({
-          id: data.user.id,
-          email: formData.email.trim().toLowerCase(),
-          full_name: formData.fullName.trim(),
-          user_type: formData.userType,
-          profile_visibility: 'public'
-        })
-        
+      if (result.data?.user) {
         setMessage('Account created successfully! Redirecting...')
         setTimeout(() => router.push('/login'), 2000)
       }

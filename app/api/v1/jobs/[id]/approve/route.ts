@@ -51,9 +51,33 @@ export async function POST(
         );
       }
 
-      // Get escrow
-      const escrow = job.escrow as any;
-      if (!escrow || escrow.status !== 'funded') {
+      // Get or create escrow
+      let escrow = job.escrow as any;
+      if (!escrow) {
+        // Create escrow if it doesn't exist (for demo)
+        const contractAmount = job.price_fixed || 0;
+        const { data: newEscrow, error: escrowCreateError } = await supabaseAdmin
+          .from('escrows')
+          .insert({
+            job_id: jobId,
+            client_id: clientId,
+            amount: contractAmount,
+            currency: job.price_currency || 'INR',
+            status: 'funded', // Auto-fund in demo mode
+          })
+          .select()
+          .single();
+        
+        if (escrowCreateError || !newEscrow) {
+          return NextResponse.json(
+            { error: 'Failed to create escrow' },
+            { status: 500 }
+          );
+        }
+        escrow = newEscrow;
+      }
+
+      if (escrow.status !== 'funded') {
         return NextResponse.json(
           { error: 'Escrow not funded' },
           { status: 400 }
@@ -131,8 +155,18 @@ export async function POST(
           },
         });
 
+      // Update job status
+      await supabaseAdmin
+        .from('jobs')
+        .update({ status: 'completed' })
+        .eq('id', jobId);
+
       return NextResponse.json({
         message: 'Job approved and escrow released',
+        job: {
+          id: jobId,
+          status: 'completed',
+        },
         commission: commissionResult,
       });
     } catch (error) {

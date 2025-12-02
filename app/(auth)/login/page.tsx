@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { Mail, Lock, ArrowRight, Layers, Shield, CheckCircle, Eye, EyeOff } from 'lucide-react'
 
 export default function LoginPage() {
@@ -51,32 +52,24 @@ export default function LoginPage() {
     setMessage('')
     
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: formData.email.trim().toLowerCase(),
-        password: formData.password
-      })
+      // Use v1 API for login
+      const result = await apiClient.login(
+        formData.email.trim().toLowerCase(),
+        formData.password
+      )
       
-      if (error) throw error
+      if (result.error) {
+        throw new Error(result.error.message || 'Login failed')
+      }
       
-      if (data.user) {
-        const response = await fetch('/api/auth/get-profile', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: data.user.id })
-        })
-        
-        if (response.ok) {
-          const result = await response.json()
-          if (result.profile?.user_type) {
-            const routes: Record<string, string> = {
-              worker: '/worker',
-              client: '/client',
-              admin: '/admin',
-              superadmin: '/admin'
-            }
-            router.push(routes[result.profile.user_type] || '/worker')
-          }
+      if (result.data?.user) {
+        const routes: Record<string, string> = {
+          worker: '/dashboard/worker',
+          client: '/dashboard/client',
+          admin: '/dashboard/admin',
+          superadmin: '/dashboard/admin'
         }
+        router.push(routes[result.data.user.role] || '/dashboard/worker')
       }
     } catch (error: any) {
       setMessage(error.message || 'Sign in failed. Please check your credentials.')

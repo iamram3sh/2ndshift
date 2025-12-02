@@ -6,11 +6,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireRole, AuthenticatedRequest } from '@/lib/auth/middleware';
 import { supabaseAdmin } from '@/lib/supabase/admin';
+import { uploadFile } from '@/lib/storage/demo';
 import { z } from 'zod';
 
 const deliverSchema = z.object({
   delivery_notes: z.string().optional(),
   attachments: z.array(z.string().url()).optional(),
+  files: z.array(z.any()).optional(), // For file uploads
 });
 
 export async function POST(
@@ -39,7 +41,7 @@ export async function POST(
         );
       }
 
-      if (assignment.status !== 'in_progress') {
+      if (assignment.status !== 'in_progress' && assignment.status !== 'assigned') {
         return NextResponse.json(
           { error: 'Job is not in progress' },
           { status: 400 }
@@ -62,6 +64,14 @@ export async function POST(
         );
       }
 
+      // Handle file uploads if provided
+      let attachmentUrls = validated.attachments || [];
+      if (validated.files && Array.isArray(validated.files)) {
+        // In a real implementation, files would be uploaded via FormData
+        // For now, we'll accept file URLs or handle via separate upload endpoint
+        attachmentUrls = [...attachmentUrls, ...validated.files];
+      }
+
       // Update job status
       await supabaseAdmin
         .from('jobs')
@@ -78,12 +88,20 @@ export async function POST(
             job_id: jobId,
             worker_id: workerId,
             delivery_notes: validated.delivery_notes,
-            attachments: validated.attachments,
+            attachments: attachmentUrls,
           },
         });
 
+      // Get updated job
+      const { data: updatedJob } = await supabaseAdmin
+        .from('jobs')
+        .select('*')
+        .eq('id', jobId)
+        .single();
+
       return NextResponse.json({
         message: 'Job delivered successfully',
+        job: updatedJob,
       });
     } catch (error: any) {
       if (error instanceof z.ZodError) {

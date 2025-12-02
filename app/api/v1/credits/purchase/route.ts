@@ -33,9 +33,60 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // TODO: Create payment intent with Razorpay/Stripe
-      // For now, return stub payment intent
-      const paymentIntentId = `pi_${crypto.randomUUID()}`;
+      // Use demo payment in non-production or if allowed
+      const useDemoPayment = process.env.NODE_ENV !== 'production' || process.env.ALLOW_DEMO_PAYMENTS === 'true';
+
+      let paymentIntentId: string;
+      let paymentStatus = 'pending';
+
+      if (useDemoPayment) {
+        // Use demo payment simulator
+        const demoResponse = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/payments/demo`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            amount: packageData.price_inr,
+            currency: 'INR',
+            description: `Purchase ${packageData.shifts_amount} Shift Credits`,
+          }),
+        });
+
+        if (demoResponse.ok) {
+          const demoData = await demoResponse.json();
+          paymentIntentId = demoData.payment_id;
+          paymentStatus = 'completed'; // Demo payments auto-complete
+          
+          // Auto-credit the user in demo mode
+          const { data: credits } = await supabaseAdmin
+            .from('shift_credits')
+            .select('balance')
+            .eq('user_id', authReq.userId)
+            .single();
+
+          if (credits) {
+            await supabaseAdmin
+              .from('shift_credits')
+              .update({ balance: (credits.balance || 0) + packageData.shifts_amount })
+              .eq('user_id', authReq.userId);
+
+            // Create transaction record
+            await supabaseAdmin
+              .from('credit_transactions')
+              .insert({
+                user_id: authReq.userId,
+                change: packageData.shifts_amount,
+                reason: 'purchase',
+                reference_id: paymentIntentId,
+                meta: { package_id: validated.package_id, demo: true },
+              });
+          }
+        } else {
+          paymentIntentId = `pi_${crypto.randomUUID()}`;
+        }
+      } else {
+        // TODO: Create payment intent with Razorpay/Stripe
+        paymentIntentId = `pi_${crypto.randomUUID()}`;
+      }
 
       // Store purchase record
       const { data: purchase, error: purchaseError } = await supabaseAdmin
@@ -46,7 +97,7 @@ export async function POST(request: NextRequest) {
           shifts_amount: packageData.shifts_amount,
           amount_paid: packageData.price_inr,
           razorpay_order_id: paymentIntentId,
-          status: 'pending',
+          status: paymentStatus,
         })
         .select()
         .single();
@@ -63,9 +114,11 @@ export async function POST(request: NextRequest) {
         purchase_id: purchase.id,
         amount: packageData.price_inr,
         credits: packageData.shifts_amount,
-        // TODO: Return actual payment provider client secret/key
-        client_secret: 'stub_client_secret',
-        message: 'Payment intent created. Replace with actual Razorpay/Stripe integration.',
+        status: paymentStatus,
+        demo: useDemoPayment,
+        message: useDemoPayment 
+          ? 'Demo payment completed. Credits added to account.'
+          : 'Payment intent created. Replace with actual Razorpay/Stripe integration.',
       });
     } catch (error: any) {
       if (error instanceof z.ZodError) {

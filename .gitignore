@@ -3,12 +3,7 @@
 # dependencies
 /node_modules
 /.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+.pnp.js
 
 # testing
 /coverage
@@ -28,10 +23,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# local env files
+.env*.local
+.env
 
 # vercel
 .vercel
@@ -40,12 +35,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Documentation - ensure these are tracked
-!docs/
-!docs/**/*.md
-!database/
-!database/**/*.sql
-!database/**/*.md
+# tmp uploads (demo storage)
+/tmp/uploads
+/tmp
 
-# Temporary test files created by Rovo Dev
-tmp_rovodev_*
+# playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
