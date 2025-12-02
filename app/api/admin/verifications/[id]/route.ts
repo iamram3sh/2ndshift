@@ -20,12 +20,13 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return withAuth(request, async (req) => {
     try {
       const userId = req.userId!
-      const verificationId = params.id
+      const { id } = await params
+      const verificationId = id
 
       // Verify admin access
       const { data: user } = await supabase
@@ -116,12 +117,13 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return withAuth(request, async (req) => {
     try {
       const userId = req.userId!
-      const verificationId = params.id
+      const { id } = await params
+      const verificationId = id
 
       // Verify admin access
       const { data: user } = await supabase
