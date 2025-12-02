@@ -76,7 +76,7 @@ export default function ContractReviewPage() {
       setContract(contractData as any)
 
       // Determine who to review (the other party)
-      const isWorker = contractData.worker_id === authUser.id
+      const isWorker = contractData.worker_id === currentUser.id
       setUserType(isWorker ? 'worker' : 'client')
       const revieweeId = isWorker ? (contractData as any).project.client_id : contractData.worker_id
 
