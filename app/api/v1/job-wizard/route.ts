@@ -39,6 +39,15 @@ export async function POST(request: NextRequest) {
         backend: ['api', 'backend', 'microservices', 'graphql', 'rest'],
         networking: ['network', 'vpn', 'dns', 'load balancer', 'firewall'],
         data: ['data', 'etl', 'pipeline', 'database', 'warehouse'],
+        programming: [
+          'api', 'backend', 'memory leak', 'performance', 'slow', 'error logs',
+          'code refactor', 'concurrency', 'thread', 'deadlock', 'race condition',
+          'microservices', 'monolith', 'migration', 'legacy code', 'production crash',
+          'core dump', 'scalability', 'high load', 'bottleneck', 'optimization',
+          'java', 'golang', 'rust', 'c++', 'node.js', 'nestjs', 'express',
+          'kafka', 'grpc', 'queue', 'orm', 'database query', 'auth', 'security',
+          'rate limiting', 'caching', 'middleware', 'api gateway'
+        ],
       }
 
       let suggestedCategory = 'DevOps'
@@ -48,7 +57,12 @@ export async function POST(request: NextRequest) {
         const matches = terms.filter(term => requirement.includes(term)).length
         if (matches > maxMatches) {
           maxMatches = matches
-          suggestedCategory = category.charAt(0).toUpperCase() + category.slice(1)
+          // Special handling for programming category
+          if (category === 'programming') {
+            suggestedCategory = 'Programming'
+          } else {
+            suggestedCategory = category.charAt(0).toUpperCase() + category.slice(1)
+          }
         }
       }
 
@@ -64,11 +78,26 @@ export async function POST(request: NextRequest) {
         estimatedPrice = 30000
       }
 
-      // Get matching microtasks
-      const { data: microtasks } = await supabaseAdmin
+      // Get matching microtasks (prioritize Programming category if suggested)
+      let microtasksQuery = supabaseAdmin
         .from('microtasks')
-        .select('id, title, base_price_min, base_price_max')
+        .select('id, title, base_price_min, base_price_max, category:categories(slug)')
         .limit(3)
+      
+      if (suggestedCategory === 'Programming') {
+        // Try to get Programming microtasks first
+        const { data: programmingCategory } = await supabaseAdmin
+          .from('categories')
+          .select('id')
+          .eq('slug', 'programming')
+          .single()
+        
+        if (programmingCategory) {
+          microtasksQuery = microtasksQuery.eq('category_id', programmingCategory.id)
+        }
+      }
+      
+      const { data: microtasks } = await microtasksQuery
 
       // Get top 3 workers (demo - in production, use matching algorithm)
       const { data: workers } = await supabaseAdmin

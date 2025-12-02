@@ -18,6 +18,8 @@ import { RoleAwareNav } from '@/components/role/RoleAwareNav'
 import { withRoleParam } from '@/lib/utils/roleAwareLinks'
 import { trackRoleCTA } from '@/lib/analytics/roleEvents'
 import { isRoleHomeEnabled } from '@/lib/role/feature-flag'
+import { HIGH_VALUE_CATEGORIES } from '@/lib/constants/highValueCategories'
+import Link from 'next/link'
 
 // What makes us different
 const VALUE_PROPS = [
@@ -182,7 +184,7 @@ export default function HomePage() {
                 </h1>
 
                 <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
-                  Remote-friendly micro jobs & projects from real clients. No fake ratings. No false promises.
+                  DevOps, Cloud, Networking, Security, AI, Data, SRE, DB & Programming — delivered by certified Indian professionals.
                 </p>
 
                 {/* CTAs */}
@@ -243,7 +245,7 @@ export default function HomePage() {
                 </h1>
 
                 <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
-                  Get remote workers, micro-teams, and on-demand task execution within hours.
+                  DevOps, Cloud, Networking, Security, AI, Data, SRE, DB & Programming — delivered by certified Indian professionals.
                 </p>
 
                 {/* CTAs */}
@@ -295,6 +297,52 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* High-Value Categories */}
+      <RoleSection role="both">
+      <section className="py-20 lg:py-28 bg-white border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] tracking-tight mb-4">
+              High-Value Expert Categories
+            </h2>
+            <p className="text-lg text-[#333] max-w-2xl mx-auto">
+              Hire verified, senior IT pros for high-value technical work.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {HIGH_VALUE_CATEGORIES.map((category) => {
+              const Icon = category.icon
+              return (
+                <Link
+                  key={category.id}
+                  href={`/category/${category.slug}`}
+                  className="group p-6 bg-white border-2 border-slate-200 rounded-xl hover:border-sky-300 hover:shadow-lg transition-all"
+                >
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-12 h-12 bg-sky-50 rounded-lg flex items-center justify-center group-hover:bg-sky-100 transition-colors">
+                      <Icon className="w-6 h-6 text-sky-600" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-[#111] mb-1 group-hover:text-sky-600 transition-colors">
+                        {category.name}
+                      </h3>
+                      <p className="text-sm text-[#333] mb-2">
+                        {category.description}
+                      </p>
+                      <p className="text-xs text-slate-500 font-medium">
+                        {category.example} · {category.priceRange}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+      </RoleSection>
 
       {/* What You Can Do */}
       <RoleSection role="both">

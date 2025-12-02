@@ -148,6 +148,7 @@ const CATEGORIES = [
   { id: 'security', label: 'Security', count: 12 },
   { id: 'data', label: 'Data Engineering', count: 15 },
   { id: 'mobile', label: 'Mobile', count: 9 },
+  { id: 'programming', label: 'Senior Backend & Systems Programming', count: 20 },
 ]
 
 function formatTimeAgo(date: Date): string {

@@ -127,7 +127,7 @@ export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'w
               </h1>
 
               <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
-                Get remote workers, micro-teams, and on-demand task execution within hours.
+                DevOps, Cloud, Networking, Security, AI, Data, SRE, DB & Programming — delivered by certified Indian professionals.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">

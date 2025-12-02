@@ -161,7 +161,7 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
               </h1>
 
               <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
-                Remote-friendly micro jobs & projects from real clients. No fake ratings. No false promises.
+                DevOps, Cloud, Networking, Security, AI, Data, SRE, DB & Programming — delivered by certified Indian professionals.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">

@@ -58,6 +58,18 @@ const IT_DELIVERABLE_TEMPLATES = [
     'React/Next.js component debugging',
     'UI/UX improvements',
     'Cross-browser compatibility fixes'
+  ]},
+  { icon: Code, category: 'Senior Backend & Systems Programming', items: [
+    'API memory leak debugging and performance tuning',
+    'High-performance backend optimization (Java/Golang/Python)',
+    'Concurrency and thread-safety fixes',
+    'Legacy monolith to microservices refactoring',
+    'Distributed systems debugging (Kafka, gRPC, queues)',
+    'Database/ORM performance bottleneck fixes',
+    'Production crash and core dump analysis',
+    'High-load API scalability tuning',
+    'Auth/security hardening for backend services',
+    'Rust/Golang backend module implementation'
   ]}
 ]
 
