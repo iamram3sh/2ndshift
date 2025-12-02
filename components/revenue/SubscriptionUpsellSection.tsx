@@ -31,7 +31,9 @@ export function SubscriptionUpsellSection({
       const result = await apiClient.getSubscriptionPlans(userType)
       if (result.data) {
         // Show only paid plans (skip free plan)
-        setPlans(result.data.plans.filter((p: any) => p.price_monthly_inr > 0).slice(0, 2))
+        if (result.data && typeof result.data === 'object' && 'plans' in result.data) {
+          setPlans((result.data as any).plans.filter((p: any) => p.price_monthly_inr > 0).slice(0, 2))
+        }
       }
     } catch (error) {
       console.error('Error fetching plans:', error)

@@ -101,11 +101,11 @@ export default function VerificationPage() {
           .eq('id', user.id)
       }
 
-      alert('Document uploaded successfully!')
+      window.alert('Document uploaded successfully!')
       fetchData()
     } catch (error) {
       console.error('Error uploading document:', error)
-      alert('Failed to upload document. Storage may need configuration.')
+      window.alert('Failed to upload document. Storage may need configuration.')
     } finally {
       setUploading(false)
     }
@@ -113,7 +113,7 @@ export default function VerificationPage() {
 
   const handleSubmitVerification = async () => {
     if (!user.government_id_url) {
-      alert('Please upload your Government ID first')
+      window.alert('Please upload your Government ID first')
       return
     }
 
@@ -139,11 +139,11 @@ export default function VerificationPage() {
         .update({ verification_status: 'pending' })
         .eq('id', user.id)
 
-      alert('Verification request submitted! We\'ll review it within 24 hours.')
+      window.alert('Verification request submitted! We\'ll review it within 24 hours.')
       fetchData()
     } catch (error) {
       console.error('Error submitting verification:', error)
-      alert('Failed to submit verification request')
+      window.alert('Failed to submit verification request')
     }
   }
 

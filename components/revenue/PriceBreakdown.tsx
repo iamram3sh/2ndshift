@@ -41,8 +41,8 @@ export function PriceBreakdown({
         is_microtask: isMicrotask,
       })
 
-      if (result.data?.breakdown) {
-        setBreakdown(result.data.breakdown)
+      if (result.data && typeof result.data === 'object' && 'breakdown' in result.data) {
+        setBreakdown((result.data as any).breakdown)
       }
     } catch (err) {
       console.error('Failed to fetch breakdown:', err)

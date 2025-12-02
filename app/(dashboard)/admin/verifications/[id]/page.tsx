@@ -105,13 +105,13 @@ export default function AdminVerificationDetailPage() {
 
       if (response.ok) {
         await fetchVerification()
-        alert('Verification approved successfully!')
+        window.alert('Verification approved successfully!')
       } else {
         const data = await response.json()
-        alert(data.error || 'Failed to approve')
+        window.alert(data.error || 'Failed to approve')
       }
     } catch (error: any) {
-      alert(error.message || 'Failed to approve')
+      window.alert(error.message || 'Failed to approve')
     } finally {
       setProcessing(false)
     }
@@ -119,7 +119,7 @@ export default function AdminVerificationDetailPage() {
 
   const handleReject = async () => {
     if (!rejectionReason) {
-      alert('Please provide a rejection reason')
+      window.alert('Please provide a rejection reason')
       return
     }
 
@@ -139,13 +139,13 @@ export default function AdminVerificationDetailPage() {
 
       if (response.ok) {
         await fetchVerification()
-        alert('Verification rejected')
+        window.alert('Verification rejected')
       } else {
         const data = await response.json()
-        alert(data.error || 'Failed to reject')
+        window.alert(data.error || 'Failed to reject')
       }
     } catch (error: any) {
-      alert(error.message || 'Failed to reject')
+      window.alert(error.message || 'Failed to reject')
     } finally {
       setProcessing(false)
     }

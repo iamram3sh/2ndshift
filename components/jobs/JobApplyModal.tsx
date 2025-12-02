@@ -47,7 +47,9 @@ export function JobApplyModal({
     try {
       const result = await apiClient.getCreditsBalance()
       if (result.data) {
-        setCreditsBalance(result.data.balance || 0)
+        if (result.data && typeof result.data === 'object' && 'balance' in result.data) {
+          setCreditsBalance((result.data as any).balance || 0)
+        }
       }
     } catch (err) {
       console.error('Error fetching credits:', err)
@@ -57,8 +59,8 @@ export function JobApplyModal({
   const fetchCreditsRequired = async () => {
     try {
       const result = await apiClient.getPlatformConfig()
-      if (result.data?.credits_per_application) {
-        setCreditsRequired(parseInt(result.data.credits_per_application) || 3)
+      if (result.data && typeof result.data === 'object' && 'credits_per_application' in result.data) {
+        setCreditsRequired(parseInt((result.data as any).credits_per_application) || 3)
       }
     } catch (err) {
       console.error('Error fetching config:', err)

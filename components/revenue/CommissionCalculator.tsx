@@ -50,13 +50,13 @@ export function CommissionCalculator({
         return
       }
 
-      if (result.data) {
+      if (result.data && typeof result.data === 'object') {
         // Handle new API response structure with breakdown object
-        const calcData = result.data.breakdown ? result.data : {
+        const calcData = ('breakdown' in result.data && result.data.breakdown) ? result.data : {
           breakdown: result.data
         }
-        setCalculation(calcData)
-        onCalculationChange?.(calcData)
+        setCalculation(calcData as any)
+        onCalculationChange?.(calcData as any)
       }
     } catch (err: any) {
       setError(err.message || 'Calculation failed')

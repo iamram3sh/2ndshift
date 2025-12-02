@@ -31,8 +31,8 @@ export function CommissionBreakdown({
         client_id: clientId,
         is_microtask: isMicrotask,
       })
-      if (result.data) {
-        setBreakdown(result.data.breakdown)
+      if (result.data && typeof result.data === 'object' && 'breakdown' in result.data) {
+        setBreakdown((result.data as any).breakdown)
       }
       setLoading(false)
     }

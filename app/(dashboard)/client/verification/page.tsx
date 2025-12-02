@@ -107,12 +107,12 @@ export default function ClientVerificationPage() {
       const data = await response.json()
       if (data.success) {
         await fetchVerificationStatus()
-        alert('Payment method verified successfully!')
+        window.alert('Payment method verified successfully!')
       } else {
-        alert(data.error || 'Verification failed')
+        window.alert(data.error || 'Verification failed')
       }
     } catch (error: any) {
-      alert(error.message || 'Verification failed')
+      window.alert(error.message || 'Verification failed')
     } finally {
       setProcessing(false)
     }

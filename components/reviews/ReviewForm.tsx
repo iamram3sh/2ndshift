@@ -20,7 +20,7 @@ export function ReviewForm({ contractId, revieweeId, onSubmit, onCancel }: Revie
     e.preventDefault()
     
     if (rating === 0) {
-      alert('Please select a rating')
+      window.alert('Please select a rating')
       return
     }
 

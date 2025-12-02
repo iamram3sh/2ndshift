@@ -57,14 +57,14 @@ export function SubscriptionCard({
       if (result.data) {
         onSubscribe?.(plan.id)
         if (result.data.demo) {
-          alert('Demo subscription activated! In production, this would integrate with Razorpay/Stripe.')
+          window.alert('Demo subscription activated! In production, this would integrate with Razorpay/Stripe.')
         }
       } else {
         alert(result.error?.message || 'Failed to subscribe')
       }
     } catch (error) {
       console.error('Subscribe error:', error)
-      alert('Failed to subscribe')
+      window.alert('Failed to subscribe')
     } finally {
       setIsSubscribing(false)
     }

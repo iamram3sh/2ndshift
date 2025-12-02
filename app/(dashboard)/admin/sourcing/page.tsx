@@ -131,10 +131,10 @@ export default function AdminSourcingPage() {
         throw new Error(result.error.message || 'Failed to contact worker')
       }
 
-      alert(`[DEMO] Contact sent via ${method}`)
+      window.alert(`[DEMO] Contact sent via ${method}`)
       await fetchRequests()
     } catch (error: any) {
-      alert(error.message || 'Failed to contact worker')
+      window.alert(error.message || 'Failed to contact worker')
     } finally {
       setContacting(null)
     }

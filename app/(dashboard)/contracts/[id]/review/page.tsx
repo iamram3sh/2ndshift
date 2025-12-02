@@ -54,7 +54,7 @@ export default function ContractReviewPage() {
 
       if (contractError) throw contractError
       if (!contractData) {
-        alert('Contract not found')
+        window.alert('Contract not found')
         // Redirect based on user role
         const routes: Record<string, string> = {
           worker: '/worker',
@@ -67,7 +67,7 @@ export default function ContractReviewPage() {
 
       // Check if contract is completed
       if (contractData.status !== 'completed') {
-        alert('You can only review completed contracts')
+        window.alert('You can only review completed contracts')
         const isWorker = contractData.worker_id === currentUser.id
         router.push(isWorker ? '/worker' : '/client')
         return
@@ -104,7 +104,7 @@ export default function ContractReviewPage() {
 
     } catch (error) {
       console.error('Error:', error)
-      alert('Error loading contract details')
+      window.alert('Error loading contract details')
     } finally {
       setIsLoading(false)
     }
@@ -143,7 +143,7 @@ export default function ContractReviewPage() {
       setReviewSubmitted(true)
     } catch (error) {
       console.error('Error submitting review:', error)
-      alert('Failed to submit review. Please try again.')
+      window.alert('Failed to submit review. Please try again.')
     }
   }
 
@@ -230,7 +230,7 @@ export default function ContractReviewPage() {
             {(contract as any)?.project?.title}
           </h3>
           <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-            <span>Contract Amount: ₹{contract?.contract_amount.toLocaleString()}</span>
+            <span>Contract Amount: ?{contract?.contract_amount.toLocaleString()}</span>
             <span>•</span>
             <span>Completed: {contract?.completed_at ? new Date(contract.completed_at).toLocaleDateString() : 'N/A'}</span>
           </div>

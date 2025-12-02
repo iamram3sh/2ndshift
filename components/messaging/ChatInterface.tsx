@@ -162,7 +162,7 @@ export function ChatInterface({ conversationId, currentUserId, otherUserId, onBa
       }
     } catch (error) {
       console.error('Error sending message:', error)
-      alert('Failed to send message. Please try again.')
+      window.alert('Failed to send message. Please try again.')
     } finally {
       setIsSending(false)
     }

@@ -80,7 +80,7 @@ export default function WorkerDashboard() {
     try {
       const result = await apiClient.getCreditsBalance()
       if (result.data) {
-        const balance = result.data.balance || 0
+        const balance = (result.data && typeof result.data === 'object' && 'balance' in result.data) ? (result.data as any).balance || 0 : 0
         setShiftsBalance(balance)
         setStats(prev => ({ ...prev, shiftsBalance: balance }))
       }

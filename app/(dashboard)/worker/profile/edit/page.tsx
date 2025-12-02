@@ -255,14 +255,14 @@ export default function EditWorkerProfilePage() {
       }
 
       console.log('Worker profile updated successfully')
-      alert('Profile updated successfully!')
+      window.alert('Profile updated successfully!')
       router.push('/worker')
     } catch (error: any) {
       console.error('Error saving profile:', error)
       
       // Show detailed error message
       const errorMessage = error?.message || 'Unknown error occurred'
-      alert(`Failed to save profile\n\nError: ${errorMessage}\n\nPlease check the browser console for more details.`)
+      window.alert(`Failed to save profile\n\nError: ${errorMessage}\n\nPlease check the browser console for more details.`)
     } finally {
       setSaving(false)
     }
@@ -294,11 +294,11 @@ export default function EditWorkerProfilePage() {
         .update({ profile_photo_url: publicUrl })
         .eq('id', user.id)
 
-      alert('Photo uploaded successfully!')
+      window.alert('Photo uploaded successfully!')
       fetchProfile()
     } catch (error) {
       console.error('Error uploading photo:', error)
-      alert('Failed to upload photo. You may need to set up Supabase Storage first.')
+      window.alert('Failed to upload photo. You may need to set up Supabase Storage first.')
     }
   }
 

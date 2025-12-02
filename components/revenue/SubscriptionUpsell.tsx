@@ -23,8 +23,10 @@ export function SubscriptionUpsell({ userType, currentPlan, onSubscribe }: Subsc
       const result = await apiClient.getSubscriptionPlans(userType)
       if (result.data) {
         // Filter to show only paid plans (Pro/Elite for workers, Growth/Agency for clients)
-        const paidPlans = result.data.plans.filter((p: any) => p.price_monthly_inr > 0)
-        setPlans(paidPlans.slice(0, 2)) // Show top 2 plans
+        if (result.data && typeof result.data === 'object' && 'plans' in result.data) {
+          const paidPlans = (result.data as any).plans.filter((p: any) => p.price_monthly_inr > 0)
+          setPlans(paidPlans.slice(0, 2)) // Show top 2 plans
+        }
       }
     } catch (err) {
       console.error('Error fetching plans:', err)

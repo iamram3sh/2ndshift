@@ -72,12 +72,12 @@ export default function ProjectDetailPage() {
     }
 
     if (currentUser.user_type !== 'worker') {
-      alert('Only workers can apply to projects')
+      window.alert('Only workers can apply to projects')
       return
     }
 
     if (!project) {
-      alert('Project not found')
+      window.alert('Project not found')
       return
     }
 

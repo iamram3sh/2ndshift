@@ -153,7 +153,7 @@ export default function VerificationQueue() {
       fetchVerificationRequests()
     } catch (error) {
       console.error('Error handling verification:', error)
-      alert('Failed to process verification')
+      window.alert('Failed to process verification')
     }
   }
 

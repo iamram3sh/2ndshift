@@ -83,7 +83,7 @@ export default function SuperAdminPage() {
 
   const handleAddStaff = async () => {
     if (!newStaffEmail) {
-      alert('Please enter an email address')
+      window.alert('Please enter an email address')
       return
     }
 
@@ -94,9 +94,9 @@ export default function SuperAdminPage() {
       .eq('email', newStaffEmail)
 
     if (error) {
-      alert('Error adding staff: ' + error.message)
+      window.alert('Error adding staff: ' + error.message)
     } else {
-      alert('Staff member added successfully!')
+      window.alert('Staff member added successfully!')
       setNewStaffEmail('')
       setShowAddStaff(false)
       fetchStaff()
@@ -112,9 +112,9 @@ export default function SuperAdminPage() {
       .eq('id', userId)
 
     if (error) {
-      alert('Error removing staff: ' + error.message)
+      window.alert('Error removing staff: ' + error.message)
     } else {
-      alert('Staff member removed')
+      window.alert('Staff member removed')
       fetchStaff()
     }
   }

@@ -56,7 +56,7 @@ export function BuyCreditsModal({
       // Get user from auth
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
-        alert('Please sign in to purchase Shifts')
+        window.alert('Please sign in to purchase Shifts')
         return
       }
       userId = user.id
@@ -102,11 +102,11 @@ export function BuyCreditsModal({
               })
 
               if (verifyResponse.ok) {
-                alert('Shifts purchased successfully!')
+                window.alert('Shifts purchased successfully!')
                 onPurchaseComplete?.()
                 onClose()
               } else {
-                alert('Payment verification failed')
+                window.alert('Payment verification failed')
               }
             },
             prefill: {
@@ -123,11 +123,11 @@ export function BuyCreditsModal({
         }
         document.body.appendChild(script)
       } else {
-        alert(data.error || 'Failed to create order')
+        window.alert(data.error || 'Failed to create order')
       }
     } catch (error) {
       console.error('Error purchasing:', error)
-      alert('Failed to process purchase')
+      window.alert('Failed to process purchase')
     } finally {
       setPurchasing(null)
     }

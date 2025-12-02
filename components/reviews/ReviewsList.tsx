@@ -96,7 +96,7 @@ export function ReviewsList({ userId, currentUserId, showStats = true }: Reviews
       fetchReviews()
     } catch (error) {
       console.error('Error responding to review:', error)
-      alert('Failed to submit response. Please try again.')
+      window.alert('Failed to submit response. Please try again.')
     }
   }
 
@@ -120,10 +120,10 @@ export function ReviewsList({ userId, currentUserId, showStats = true }: Reviews
 
       if (error) throw error
 
-      alert('Review has been flagged for admin review. Thank you!')
+      window.alert('Review has been flagged for admin review. Thank you!')
     } catch (error) {
       console.error('Error flagging review:', error)
-      alert('Failed to flag review. Please try again.')
+      window.alert('Failed to flag review. Please try again.')
     }
   }
 
