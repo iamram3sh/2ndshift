@@ -12,6 +12,7 @@ import RecommendedJobs from '@/components/worker/RecommendedJobs'
 import JobAlertsManager from '@/components/worker/JobAlertsManager'
 import JobAlertModal from '@/components/worker/JobAlertModal'
 import { PaymentVerifiedBadge } from '@/components/badges/PaymentBadges'
+import HomeButton from '@/components/worker/HomeButton'
 
 export default function WorkerJobDiscoveryPage() {
   const router = useRouter()
@@ -205,31 +206,29 @@ export default function WorkerJobDiscoveryPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
-        <div className="text-lg text-gray-600 dark:text-gray-400">Loading...</div>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="flex items-center gap-3">
+          <div className="w-5 h-5 border-2 border-slate-300 border-t-[#111] rounded-full animate-spin" />
+          <span className="text-[#333]">Loading...</span>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
+    <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-white dark:bg-slate-800 shadow-sm border-b dark:border-slate-700">
+      <div className="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <button
-                onClick={() => router.push('/worker')}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition"
-              >
-                <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-              </button>
+              <HomeButton variant="icon" />
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-                  <Zap className="w-8 h-8 text-indigo-600" />
+                <h1 className="text-3xl font-bold text-[#111] flex items-center gap-3">
+                  <Zap className="w-8 h-8 text-sky-600" />
                   Job Discovery
                 </h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <p className="text-sm text-[#333] mt-1">
                   Find your perfect project with AI-powered recommendations
                 </p>
               </div>
@@ -240,24 +239,24 @@ export default function WorkerJobDiscoveryPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Search and Filters */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 mb-6 border border-slate-200 dark:border-slate-700">
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-6 border border-slate-200">
           <div className="flex flex-col lg:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
-                <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-[#333]" />
                 <input
                   type="text"
                   placeholder="Search by title, description, or skills..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-white"
+                  className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-[#111] placeholder:text-[#333]"
                 />
               </div>
             </div>
             <button
               onClick={handleSearch}
-              className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition flex items-center gap-2 justify-center"
+              className="px-6 py-3 bg-[#111] text-white rounded-lg hover:bg-[#333] transition-all flex items-center gap-2 justify-center font-semibold shadow-lg hover:shadow-xl"
             >
               <Search className="w-5 h-5" />
               Search
@@ -265,10 +264,10 @@ export default function WorkerJobDiscoveryPage() {
           </div>
 
           {/* Advanced Filters */}
-          <div className="mt-4 pt-4 border-t dark:border-slate-700">
+          <div className="mt-4 pt-4 border-t border-slate-200">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-xs font-semibold text-[#111] mb-1">
                   Min Budget (₹)
                 </label>
                 <input
@@ -276,11 +275,11 @@ export default function WorkerJobDiscoveryPage() {
                   value={filters.minBudget}
                   onChange={(e) => setFilters(prev => ({ ...prev, minBudget: e.target.value }))}
                   placeholder="5000"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-white text-sm"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm text-[#111] placeholder:text-[#333]"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-xs font-semibold text-[#111] mb-1">
                   Max Budget (₹)
                 </label>
                 <input
@@ -288,11 +287,11 @@ export default function WorkerJobDiscoveryPage() {
                   value={filters.maxBudget}
                   onChange={(e) => setFilters(prev => ({ ...prev, maxBudget: e.target.value }))}
                   placeholder="100000"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-white text-sm"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm text-[#111] placeholder:text-[#333]"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-xs font-semibold text-[#111] mb-1">
                   Min Duration (hrs)
                 </label>
                 <input
@@ -300,17 +299,17 @@ export default function WorkerJobDiscoveryPage() {
                   value={filters.minDuration}
                   onChange={(e) => setFilters(prev => ({ ...prev, minDuration: e.target.value }))}
                   placeholder="10"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-white text-sm"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm text-[#111] placeholder:text-[#333]"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-xs font-semibold text-[#111] mb-1">
                   Sort By
                 </label>
                 <select
                   value={filters.sortBy}
                   onChange={(e) => setFilters(prev => ({ ...prev, sortBy: e.target.value as any }))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-white text-sm"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm text-[#111] placeholder:text-[#333]"
                 >
                   <option value="newest">Newest First</option>
                   <option value="budget_high">Budget: High to Low</option>
@@ -322,13 +321,13 @@ export default function WorkerJobDiscoveryPage() {
             <div className="mt-3 flex gap-2">
               <button
                 onClick={clearFilters}
-                className="px-4 py-2 text-sm border border-gray-300 dark:border-slate-600 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition text-gray-700 dark:text-gray-300"
+                className="px-4 py-2 text-sm border border-slate-200 rounded-lg hover:bg-slate-50 transition text-[#111] font-medium"
               >
                 Clear Filters
               </button>
-              <div className="text-sm text-gray-600 dark:text-gray-400 flex items-center">
-                Showing {projects.length} projects
-              </div>
+                <div className="text-sm text-[#333] flex items-center font-medium">
+                  Showing {projects.length} projects
+                </div>
             </div>
           </div>
         </div>
@@ -340,19 +339,19 @@ export default function WorkerJobDiscoveryPage() {
             {user && <RecommendedJobs workerId={user.id} />}
 
             {/* All Projects */}
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm p-6 border border-slate-200 dark:border-slate-700">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                <TrendingUp className="w-6 h-6 text-indigo-600" />
+            <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
+              <h3 className="text-xl font-bold text-[#111] mb-6 flex items-center gap-2">
+                <TrendingUp className="w-6 h-6 text-sky-600" />
                 All Available Projects
               </h3>
 
               {projects.length === 0 ? (
                 <div className="text-center py-12">
-                  <Search className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-                  <p className="text-gray-500 dark:text-gray-400">No projects match your filters</p>
+                  <Search className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+                  <p className="text-[#333] font-medium mb-2">No projects match your filters</p>
                   <button
                     onClick={clearFilters}
-                    className="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+                    className="mt-4 px-6 py-2 bg-[#111] text-white rounded-lg hover:bg-[#333] transition-all font-semibold shadow-lg"
                   >
                     Clear Filters
                   </button>
@@ -362,13 +361,13 @@ export default function WorkerJobDiscoveryPage() {
                   {projects.map((project) => (
                     <div
                       key={project.id}
-                      className="border border-gray-200 dark:border-slate-600 rounded-lg p-5 hover:shadow-lg hover:border-indigo-300 dark:hover:border-indigo-600 transition group"
+                      className="border border-slate-200 rounded-xl p-6 hover:shadow-lg hover:border-sky-300 transition-all group bg-white"
                     >
                       <div className="flex justify-between items-start mb-3">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <h4 
-                              className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 cursor-pointer"
+                              className="text-lg font-bold text-[#111] group-hover:text-sky-600 cursor-pointer transition-colors"
                               onClick={() => router.push(`/projects/${project.id}`)}
                             >
                               {project.title}
@@ -379,10 +378,10 @@ export default function WorkerJobDiscoveryPage() {
                           </div>
                         </div>
                         <div className="text-right ml-4">
-                          <div className="text-xl font-bold text-green-600 dark:text-green-400">
+                          <div className="text-xl font-bold text-emerald-600">
                             ₹{project.budget.toLocaleString()}
                           </div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center justify-end gap-1">
+                          <div className="text-xs text-[#333] flex items-center justify-end gap-1 font-medium">
                             {(project as any).escrow_enabled && (
                               <Lock className="w-3 h-3 text-emerald-500" />
                             )}
@@ -391,30 +390,30 @@ export default function WorkerJobDiscoveryPage() {
                         </div>
                       </div>
 
-                      <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
+                      <p className="text-[#333] mb-4 line-clamp-2 leading-relaxed">
                         {project.description}
                       </p>
 
                       <div className="flex flex-wrap items-center justify-between gap-4">
-                        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                          <span className="flex items-center gap-1">
+                        <div className="flex flex-wrap items-center gap-4 text-sm text-[#333] font-medium">
+                          <span className="flex items-center gap-1.5">
                             <Clock className="w-4 h-4" />
                             {project.duration_hours}h
                           </span>
                           {project.deadline && (
-                            <span className="flex items-center gap-1">
+                            <span className="flex items-center gap-1.5">
                               <Calendar className="w-4 h-4" />
                               {new Date(project.deadline).toLocaleDateString()}
                             </span>
                           )}
-                          <div className="flex flex-wrap gap-1">
+                          <div className="flex flex-wrap gap-1.5">
                             {project.required_skills.slice(0, 3).map(skill => (
-                              <span key={skill} className="px-2 py-1 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded text-xs">
+                              <span key={skill} className="px-2.5 py-1 bg-slate-100 text-[#111] rounded-md text-xs font-medium">
                                 {skill}
                               </span>
                             ))}
                             {project.required_skills.length > 3 && (
-                              <span className="px-2 py-1 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded text-xs">
+                              <span className="px-2.5 py-1 bg-slate-100 text-[#111] rounded-md text-xs font-medium">
                                 +{project.required_skills.length - 3}
                               </span>
                             )}
@@ -426,15 +425,15 @@ export default function WorkerJobDiscoveryPage() {
                             onClick={() => toggleSaveProject(project.id)}
                             className={`p-2 rounded-lg transition ${
                               savedProjects.has(project.id)
-                                ? 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-400'
-                                : 'bg-gray-100 text-gray-600 dark:bg-slate-700 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-600'
+                                ? 'bg-amber-100 text-amber-600'
+                                : 'bg-slate-100 text-[#333] hover:bg-slate-200'
                             }`}
                           >
                             <Bookmark className={`w-4 h-4 ${savedProjects.has(project.id) ? 'fill-current' : ''}`} />
                           </button>
                           <button
                             onClick={() => router.push(`/projects/${project.id}`)}
-                            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm"
+                            className="px-4 py-2 bg-[#111] text-white rounded-lg hover:bg-[#333] transition-all text-sm font-semibold shadow-lg hover:shadow-xl"
                           >
                             View Details
                           </button>

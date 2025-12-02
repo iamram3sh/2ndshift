@@ -236,8 +236,8 @@ export default function WorkerDashboard() {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="flex items-center gap-3">
-          <div className="w-5 h-5 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin" />
-          <span className="text-slate-600">Loading dashboard...</span>
+          <div className="w-5 h-5 border-2 border-slate-300 border-t-[#111] rounded-full animate-spin" />
+          <span className="text-[#333]">Loading dashboard...</span>
         </div>
       </div>
     )
@@ -254,20 +254,20 @@ export default function WorkerDashboard() {
                 <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
                   <Layers className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-lg font-semibold text-slate-900">2ndShift</span>
+                <span className="text-lg font-semibold text-[#111]">2ndShift</span>
               </Link>
               
               <div className="hidden md:flex items-center gap-1">
-                <Link href="/worker" className="px-3 py-2 text-sm font-medium text-slate-900 bg-slate-100 rounded-lg">
+                <Link href="/worker" className="px-3 py-2 text-sm font-semibold text-[#111] bg-slate-100 rounded-lg">
                   Dashboard
                 </Link>
-                <Link href="/worker/discover" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-lg">
+                <Link href="/worker/discover" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111] rounded-lg transition-colors">
                   Find Work
                 </Link>
-                <Link href="/messages" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-lg">
+                <Link href="/messages" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111] rounded-lg transition-colors">
                   Messages
                 </Link>
-                <Link href="/worker/profile/edit" className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 rounded-lg">
+                <Link href="/worker/profile/edit" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111] rounded-lg transition-colors">
                   Profile
                 </Link>
               </div>
@@ -283,7 +283,7 @@ export default function WorkerDashboard() {
                 <span>{shiftsBalance} Shifts</span>
               </button>
 
-              <button className="relative p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
+              <button className="relative p-2 text-[#333] hover:text-[#111] hover:bg-slate-100 rounded-lg transition-colors">
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
@@ -292,16 +292,16 @@ export default function WorkerDashboard() {
               
               <button
                 onClick={() => router.push('/worker/profile/edit')}
-                className="flex items-center gap-2 text-slate-700 hover:text-slate-900"
+                className="flex items-center gap-2 text-[#333] hover:text-[#111] transition-colors"
               >
-                <div className="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center text-sm font-medium text-slate-600">
+                <div className="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center text-sm font-semibold text-[#111]">
                   {user?.full_name?.charAt(0) || 'U'}
                 </div>
               </button>
               
               <button
                 onClick={handleSignOut}
-                className="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                className="p-2 text-[#333] hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
               >
                 <LogOut className="w-5 h-5" />
               </button>
@@ -312,12 +312,12 @@ export default function WorkerDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8 border-b border-slate-200 pb-6">
           <div>
-            <h1 className="text-2xl font-semibold text-slate-900">
+            <h1 className="text-3xl font-bold text-[#111]">
               Welcome back, {user?.full_name?.split(' ')[0]}
             </h1>
-            <p className="text-slate-600 mt-1">
+            <p className="text-[#333] mt-2 text-lg">
               Here&apos;s what&apos;s happening with your work today
             </p>
           </div>
@@ -325,7 +325,7 @@ export default function WorkerDashboard() {
           <div className="flex items-center gap-3">
             <Link
               href="/worker/discover"
-              className="inline-flex items-center gap-2 bg-slate-900 text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-slate-800 transition-all"
+              className="inline-flex items-center gap-2 bg-[#111] text-white px-6 py-3 rounded-lg text-sm font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl"
             >
               <Search className="w-4 h-4" />
               Find Work
@@ -371,59 +371,59 @@ export default function WorkerDashboard() {
         )}
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white p-5 rounded-xl border border-slate-200">
-            <div className="flex items-center justify-between mb-3">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <DollarSign className="w-5 h-5 text-emerald-600" />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-lg transition-all">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-emerald-100 rounded-lg">
+                <DollarSign className="w-6 h-6 text-emerald-600" />
               </div>
-              <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+              <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">
                 +12%
               </span>
             </div>
-            <div className="text-2xl font-semibold text-slate-900">
+            <div className="text-3xl font-bold text-[#111] mb-1">
               ₹{stats.totalEarnings.toLocaleString()}
             </div>
-            <div className="text-sm text-slate-500 mt-1">Total Earnings</div>
+            <div className="text-sm text-[#333] font-medium">Total Earnings</div>
           </div>
           
-          <div className="bg-white p-5 rounded-xl border border-slate-200">
-            <div className="flex items-center justify-between mb-3">
-              <div className="p-2 bg-sky-100 rounded-lg">
-                <Briefcase className="w-5 h-5 text-sky-600" />
+          <div className="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-lg transition-all">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-sky-100 rounded-lg">
+                <Briefcase className="w-6 h-6 text-sky-600" />
               </div>
             </div>
-            <div className="text-2xl font-semibold text-slate-900">
+            <div className="text-3xl font-bold text-[#111] mb-1">
               {stats.activeContracts}
             </div>
-            <div className="text-sm text-slate-500 mt-1">Active Projects</div>
+            <div className="text-sm text-[#333] font-medium">Active Projects</div>
           </div>
           
-          <div className="bg-white p-5 rounded-xl border border-slate-200">
-            <div className="flex items-center justify-between mb-3">
-              <div className="p-2 bg-amber-100 rounded-lg">
-                <Star className="w-5 h-5 text-amber-600" />
+          <div className="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-lg transition-all">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-amber-100 rounded-lg">
+                <Star className="w-6 h-6 text-amber-600" />
               </div>
             </div>
-            <div className="text-2xl font-semibold text-slate-900">
+            <div className="text-3xl font-bold text-[#111] mb-1">
               {stats.avgRating}
             </div>
-            <div className="text-sm text-slate-500 mt-1">Avg. Rating</div>
+            <div className="text-sm text-[#333] font-medium">Avg. Rating</div>
           </div>
           
-          <div className="bg-white p-5 rounded-xl border border-slate-200">
-            <div className="flex items-center justify-between mb-3">
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <Eye className="w-5 h-5 text-purple-600" />
+          <div className="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-lg transition-all">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-purple-100 rounded-lg">
+                <Eye className="w-6 h-6 text-purple-600" />
               </div>
-              <span className="text-xs font-medium text-purple-600 bg-purple-50 px-2 py-1 rounded-full">
+              <span className="text-xs font-semibold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full">
                 +8%
               </span>
             </div>
-            <div className="text-2xl font-semibold text-slate-900">
+            <div className="text-3xl font-bold text-[#111] mb-1">
               {stats.profileViews}
             </div>
-            <div className="text-sm text-slate-500 mt-1">Profile Views</div>
+            <div className="text-sm text-[#333] font-medium">Profile Views</div>
           </div>
         </div>
 
@@ -476,13 +476,13 @@ export default function WorkerDashboard() {
             </div>
 
             {/* Recommended Jobs */}
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-slate-900">
+            <div className="border-t border-slate-200 pt-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-[#111]">
                   Recommended for you
                 </h2>
-                <Link href="/worker/discover" className="text-sm text-slate-600 hover:text-slate-900 font-medium">
-                  View all
+                <Link href="/worker/discover" className="text-sm text-[#333] hover:text-[#111] font-semibold transition-colors">
+                  View all →
                 </Link>
               </div>
               
@@ -493,39 +493,39 @@ export default function WorkerDashboard() {
                     <Link
                       key={project.id}
                       href={`/projects/${project.id}`}
-                      className="block bg-white border border-slate-200 rounded-xl p-5 hover:border-slate-300 hover:shadow-md transition-all group"
+                      className="block bg-white border border-slate-200 rounded-xl p-6 hover:border-sky-300 hover:shadow-lg transition-all group"
                     >
-                      <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-medium text-slate-900 group-hover:text-sky-600 transition-colors">
+                          <div className="flex items-center gap-2 mb-2">
+                            <h3 className="font-bold text-lg text-[#111] group-hover:text-sky-600 transition-colors">
                               {project.title}
                             </h3>
                             {skillMatch >= 70 && (
-                              <span className="px-2 py-0.5 text-xs font-medium text-emerald-700 bg-emerald-50 rounded-full border border-emerald-200">
+                              <span className="px-2.5 py-1 text-xs font-semibold text-emerald-700 bg-emerald-50 rounded-full border border-emerald-200">
                                 {skillMatch}% Match
                               </span>
                             )}
                           </div>
-                          <p className="text-sm text-slate-600 line-clamp-1">
+                          <p className="text-sm text-[#333] line-clamp-2 leading-relaxed">
                             {project.description}
                           </p>
                         </div>
                         <div className="text-right ml-4">
-                          <div className="text-lg font-semibold text-slate-900">
+                          <div className="text-xl font-bold text-[#111]">
                             ₹{project.budget.toLocaleString()}
                           </div>
                         </div>
                       </div>
                       
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500">
-                        <span className="flex items-center gap-1">
+                      <div className="flex flex-wrap items-center gap-4 text-sm text-[#333] pt-4 border-t border-slate-100">
+                        <span className="flex items-center gap-1.5 font-medium">
                           <Timer className="w-4 h-4" />
                           {project.duration_hours}h
                         </span>
                         <div className="flex flex-wrap gap-1.5">
                           {project.required_skills.slice(0, 3).map(skill => (
-                            <span key={skill} className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-xs">
+                            <span key={skill} className="px-2.5 py-1 bg-slate-100 text-[#333] rounded-md text-xs font-medium">
                               {skill}
                             </span>
                           ))}
@@ -538,45 +538,45 @@ export default function WorkerDashboard() {
             </div>
 
             {/* Active Contracts */}
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-slate-900">Active Contracts</h2>
+            <div className="border-t border-slate-200 pt-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-[#111]">Active Contracts</h2>
               </div>
               
               {contracts.length === 0 ? (
-                <div className="bg-white border border-slate-200 rounded-xl p-8 text-center">
-                  <Briefcase className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                  <p className="text-slate-600 font-medium">No active contracts</p>
-                  <p className="text-sm text-slate-500 mt-1">Apply to projects to start working</p>
+                <div className="bg-white border border-slate-200 rounded-xl p-12 text-center">
+                  <Briefcase className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+                  <p className="text-[#111] font-bold text-lg mb-2">No active contracts</p>
+                  <p className="text-sm text-[#333] mb-6">Apply to projects to start working</p>
                   <Link
                     href="/worker/discover"
-                    className="inline-flex items-center gap-2 text-sm text-sky-600 font-medium mt-4 hover:text-sky-700"
+                    className="inline-flex items-center gap-2 bg-[#111] text-white px-6 py-3 rounded-lg text-sm font-semibold hover:bg-[#333] transition-all shadow-lg"
                   >
                     Browse opportunities
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {contracts.map((contract) => (
-                    <div key={contract.id} className="bg-white border border-slate-200 rounded-xl p-5">
-                      <div className="flex items-center justify-between mb-3">
+                    <div key={contract.id} className="bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-all">
+                      <div className="flex items-center justify-between mb-4">
                         <div>
-                          <h4 className="font-medium text-slate-900">
+                          <h4 className="font-bold text-lg text-[#111] mb-1">
                             Contract #{contract.id.slice(0, 8)}
                           </h4>
-                          <span className="text-sm text-slate-500">
+                          <span className="text-sm text-[#333] font-medium">
                             {contract.status === 'active' ? 'In Progress' : 'Pending'}
                           </span>
                         </div>
                         <div className="text-right">
-                          <div className="text-lg font-semibold text-emerald-600">
+                          <div className="text-2xl font-bold text-emerald-600">
                             ₹{contract.worker_payout.toLocaleString()}
                           </div>
-                          <span className="text-xs text-slate-500">Your payout</span>
+                          <span className="text-xs text-[#333]">Your payout</span>
                         </div>
                       </div>
-                      <button className="text-sm text-slate-600 hover:text-slate-900 font-medium">
+                      <button className="text-sm text-[#333] hover:text-[#111] font-semibold transition-colors">
                         View Details →
                       </button>
                     </div>
@@ -589,49 +589,49 @@ export default function WorkerDashboard() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Quick Stats */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <h3 className="font-semibold text-slate-900 mb-4">This Month</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-600">Hours Worked</span>
-                  <span className="font-semibold text-slate-900">{stats.hoursThisMonth}h</span>
+            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+              <h3 className="font-bold text-lg text-[#111] mb-6">This Month</h3>
+              <div className="space-y-5">
+                <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                  <span className="text-sm text-[#333] font-medium">Hours Worked</span>
+                  <span className="font-bold text-lg text-[#111]">{stats.hoursThisMonth}h</span>
+                </div>
+                <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                  <span className="text-sm text-[#333] font-medium">Projects Completed</span>
+                  <span className="font-bold text-lg text-[#111]">{stats.completedProjects}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-600">Projects Completed</span>
-                  <span className="font-semibold text-slate-900">{stats.completedProjects}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-600">Success Rate</span>
-                  <span className="font-semibold text-emerald-600">{stats.acceptanceRate}%</span>
+                  <span className="text-sm text-[#333] font-medium">Success Rate</span>
+                  <span className="font-bold text-lg text-emerald-600">{stats.acceptanceRate}%</span>
                 </div>
               </div>
             </div>
 
             {/* Applications */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-slate-900">Recent Applications</h3>
-                <span className="text-xs text-slate-500">{applications.length} total</span>
+            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="font-bold text-lg text-[#111]">Recent Applications</h3>
+                <span className="text-xs text-[#333] font-medium bg-slate-100 px-2.5 py-1 rounded-full">{applications.length} total</span>
               </div>
               
               {applications.length === 0 ? (
-                <p className="text-sm text-slate-500 text-center py-4">
+                <p className="text-sm text-[#333] text-center py-6">
                   No applications yet
                 </p>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {applications.slice(0, 4).map((app) => (
-                    <div key={app.id} className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
-                        {app.status === 'pending' && <Clock className="w-4 h-4 text-amber-500" />}
-                        {app.status === 'accepted' && <CheckCircle className="w-4 h-4 text-emerald-500" />}
-                        {app.status === 'rejected' && <XCircle className="w-4 h-4 text-red-500" />}
+                    <div key={app.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                      <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0">
+                        {app.status === 'pending' && <Clock className="w-5 h-5 text-amber-500" />}
+                        {app.status === 'accepted' && <CheckCircle className="w-5 h-5 text-emerald-500" />}
+                        {app.status === 'rejected' && <XCircle className="w-5 h-5 text-red-500" />}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-900 truncate">
+                        <p className="text-sm font-bold text-[#111] truncate">
                           {app.project?.title || 'Project'}
                         </p>
-                        <p className="text-xs text-slate-500 capitalize">{app.status}</p>
+                        <p className="text-xs text-[#333] capitalize font-medium">{app.status}</p>
                       </div>
                     </div>
                   ))}
@@ -657,24 +657,24 @@ export default function WorkerDashboard() {
             </div>
 
             {/* Quick Links */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <h3 className="font-semibold text-slate-900 mb-4">Quick Links</h3>
+            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+              <h3 className="font-bold text-lg text-[#111] mb-6">Quick Links</h3>
               <div className="space-y-2">
-                <Link href="/worker/profile/edit" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                  <User className="w-5 h-5 text-slate-400" />
-                  <span className="text-sm text-slate-700">Edit Profile</span>
+                <Link href="/worker/profile/edit" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
+                  <User className="w-5 h-5 text-[#333] group-hover:text-[#111]" />
+                  <span className="text-sm text-[#333] font-medium group-hover:text-[#111]">Edit Profile</span>
                 </Link>
-                <Link href="/worker/profile/verification" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                  <Shield className="w-5 h-5 text-slate-400" />
-                  <span className="text-sm text-slate-700">Verification Status</span>
+                <Link href="/worker/profile/verification" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
+                  <Shield className="w-5 h-5 text-[#333] group-hover:text-[#111]" />
+                  <span className="text-sm text-[#333] font-medium group-hover:text-[#111]">Verification Status</span>
                 </Link>
-                <Link href="/messages" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                  <MessageSquare className="w-5 h-5 text-slate-400" />
-                  <span className="text-sm text-slate-700">Messages</span>
+                <Link href="/messages" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
+                  <MessageSquare className="w-5 h-5 text-[#333] group-hover:text-[#111]" />
+                  <span className="text-sm text-[#333] font-medium group-hover:text-[#111]">Messages</span>
                 </Link>
-                <Link href="/settings" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                  <Settings className="w-5 h-5 text-slate-400" />
-                  <span className="text-sm text-slate-700">Settings</span>
+                <Link href="/settings" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
+                  <Settings className="w-5 h-5 text-[#333] group-hover:text-[#111]" />
+                  <span className="text-sm text-[#333] font-medium group-hover:text-[#111]">Settings</span>
                 </Link>
               </div>
             </div>

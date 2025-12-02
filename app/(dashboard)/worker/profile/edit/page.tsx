@@ -7,6 +7,7 @@ import { Camera, Mail, Phone, MapPin, Calendar, User, Briefcase, Award, Globe, S
 import { IndustrySelector } from '@/components/categories/IndustrySelector'
 import { SkillSelector } from '@/components/categories/SkillSelector'
 import { SuggestCategoryModal } from '@/components/categories/SuggestCategoryModal'
+import HomeButton from '@/components/worker/HomeButton'
 
 export default function EditWorkerProfilePage() {
   const router = useRouter()
@@ -263,38 +264,36 @@ export default function EditWorkerProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
-        <div className="text-lg">Loading...</div>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="flex items-center gap-3">
+          <div className="w-5 h-5 border-2 border-slate-300 border-t-[#111] rounded-full animate-spin" />
+          <span className="text-[#333]">Loading...</span>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 py-8">
-      <div className="max-w-4xl mx-auto px-4">
+    <div className="min-h-screen bg-slate-50 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-6 flex items-center gap-4">
-          <button
-            onClick={() => router.push('/worker')}
-            className="p-2 hover:bg-gray-200 dark:hover:bg-slate-700 rounded-lg transition"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
+        <div className="mb-8 flex items-center gap-4 border-b border-slate-200 pb-6">
+          <HomeButton variant="icon" />
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Edit Profile</h1>
-            <p className="text-gray-600 dark:text-gray-400">Complete your profile to increase your chances</p>
+            <h1 className="text-3xl font-bold text-[#111]">Edit Profile</h1>
+            <p className="text-[#333] mt-1">Complete your profile to increase your chances</p>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 space-y-8">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 space-y-8">
           {/* Profile Photo */}
           <div id="photo">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <h3 className="text-lg font-bold text-[#111] mb-4 flex items-center gap-2">
               <Camera className="w-5 h-5" />
               Profile Photo
             </h3>
             <div className="flex items-center gap-6">
-              <div className="w-24 h-24 rounded-full bg-gray-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden">
+              <div className="w-24 h-24 rounded-full bg-slate-200 flex items-center justify-center overflow-hidden">
                 {user?.profile_photo_url ? (
                   <img src={user.profile_photo_url} alt="Profile" className="w-full h-full object-cover" />
                 ) : (
@@ -315,7 +314,7 @@ export default function EditWorkerProfilePage() {
                 >
                   Upload Photo
                 </button>
-                <p className="text-sm text-gray-500 mt-2">JPG, PNG or GIF. Max 5MB.</p>
+                <p className="text-sm text-[#333] mt-2">JPG, PNG or GIF. Max 5MB.</p>
               </div>
             </div>
           </div>
@@ -429,7 +428,7 @@ export default function EditWorkerProfilePage() {
               onSuggestNew={() => setShowSuggestModal(true)}
               showSuggestOption={true}
             />
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm text-[#333] mt-2">
               Select your primary industry. This helps clients find you for relevant projects.
             </p>
           </div>
@@ -510,7 +509,7 @@ export default function EditWorkerProfilePage() {
               maxSkills={20}
               onSuggestNew={() => setShowSuggestModal(true)}
             />
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm text-[#333] mt-2">
               Skills are filtered based on your selected industry. Can't find a skill? Suggest it!
             </p>
           </div>
@@ -525,7 +524,7 @@ export default function EditWorkerProfilePage() {
               placeholder="Tell clients about your experience, expertise, and what makes you unique..."
               className="w-full px-4 py-2 border rounded-lg dark:bg-slate-700"
             />
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm text-[#333] mt-2">
               {formData.bio.length} / 100 characters minimum
             </p>
           </div>
@@ -584,7 +583,7 @@ export default function EditWorkerProfilePage() {
           <div className="flex justify-end gap-4 pt-6 border-t">
             <button
               onClick={() => router.push('/worker')}
-              className="px-6 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 transition"
+              className="px-6 py-2 border rounded-lg hover:bg-gray-100  transition"
             >
               Cancel
             </button>
