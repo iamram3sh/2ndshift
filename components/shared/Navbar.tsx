@@ -6,11 +6,13 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase/client'
 import { User, LogOut, Layers, Bell, Zap, Menu, X, Home, Briefcase, Users, ChevronDown } from 'lucide-react'
 import { ShiftsHeaderIndicator } from '@/components/revenue/ShiftsHeaderIndicator'
+import { useRole } from '@/components/role/RoleContextProvider'
 import type { User as UserType } from '@/types/database.types'
 
 export function Navbar() {
   const router = useRouter()
   const pathname = usePathname()
+  const { role } = useRole()
   const [user, setUser] = useState<UserType | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
@@ -234,8 +236,15 @@ export function Navbar() {
             ) : (
               <>
                 <Link
-                  href="/login"
+                  href={role ? `/login?role=${role}` : '/login'}
                   className="hidden sm:block px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900"
+                  onClick={() => {
+                    if (!role && typeof window !== 'undefined') {
+                      if (window.gtag) {
+                        window.gtag('event', 'login_shown', { role: null })
+                      }
+                    }
+                  }}
                 >
                   Sign in
                 </Link>

@@ -1,20 +1,37 @@
 'use client'
 
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import React, { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase/client'
 import apiClient from '@/lib/apiClient'
 import { Mail, Lock, ArrowRight, Layers, Shield, CheckCircle, Eye, EyeOff } from 'lucide-react'
+import { RolePicker } from '@/components/auth/RolePicker'
+import { useRole } from '@/components/role/RoleContextProvider'
+import { trackEvent } from '@/lib/analytics/events'
+import { trackRoleSelected } from '@/lib/analytics/roleEvents'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const { setRole } = useRole()
   const [formData, setFormData] = useState({ email: '', password: '' })
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [selectedRole, setSelectedRole] = useState<'worker' | 'client' | null>(null)
+
+  useEffect(() => {
+    const roleParam = searchParams?.get('role')
+    if (roleParam === 'worker' || roleParam === 'client') {
+      setSelectedRole(roleParam)
+      setRole(roleParam, 'query')
+      trackEvent('login_shown', { role: roleParam })
+      trackRoleSelected(roleParam, 'query')
+    }
+  }, [searchParams, setRole])
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -69,7 +86,10 @@ export default function LoginPage() {
           admin: '/dashboard/admin',
           superadmin: '/dashboard/admin'
         }
-        router.push(routes[result.data.user.role] || '/worker')
+        const targetRoute = routes[result.data.user.role] || '/worker'
+        trackEvent('login_success', { role: result.data.user.role })
+        trackRoleSelected(result.data.user.role as 'worker' | 'client', 'login')
+        router.push(targetRoute)
       }
     } catch (error: any) {
       setMessage(error.message || 'Sign in failed. Please check your credentials.')
@@ -92,8 +112,16 @@ export default function LoginPage() {
           </Link>
 
           {/* Header */}
-          <h1 className="text-2xl font-semibold text-slate-900 mb-2">Welcome back</h1>
-          <p className="text-slate-600 mb-8">Sign in to your account to continue</p>
+          {!selectedRole ? (
+            <RolePicker />
+          ) : (
+            <>
+              <h1 className="text-2xl font-semibold text-slate-900 mb-2">
+                Welcome back, {selectedRole === 'worker' ? 'Professional' : 'Client'}
+              </h1>
+              <p className="text-slate-600 mb-8">Sign in to your {selectedRole} account to continue</p>
+            </>
+          )}
 
           {/* Messages */}
           {successMessage && (
@@ -110,7 +138,8 @@ export default function LoginPage() {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          {selectedRole && (
+            <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 Email address
@@ -173,13 +202,29 @@ export default function LoginPage() {
               )}
             </button>
           </form>
+          )}
 
-          <p className="mt-8 text-center text-sm text-slate-600">
-            Don&apos;t have an account?{' '}
-            <Link href="/register" className="font-medium text-slate-900 hover:underline">
-              Create one
-            </Link>
-          </p>
+          {selectedRole && (
+            <>
+              <p className="mt-8 text-center text-sm text-slate-600">
+                Don&apos;t have an account?{' '}
+                <Link href={`/register?type=${selectedRole}`} className="font-medium text-slate-900 hover:underline">
+                  Create one
+                </Link>
+              </p>
+              <p className="mt-4 text-center text-sm text-slate-600">
+                <button
+                  onClick={() => {
+                    setSelectedRole(null)
+                    router.push('/login')
+                  }}
+                  className="text-slate-600 hover:text-slate-900 underline"
+                >
+                  Switch role
+                </button>
+              </p>
+            </>
+          )}
 
           <p className="mt-6 pt-6 border-t border-slate-200 text-xs text-center text-slate-500">
             By signing in, you agree to our{' '}
