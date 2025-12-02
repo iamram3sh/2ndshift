@@ -181,21 +181,6 @@ class ApiClient {
     });
   }
 
-  async createJob(data: {
-    title: string;
-    description: string;
-    price_fixed?: number;
-    delivery_window?: string;
-    status?: string;
-    category_id?: string;
-    microtask_id?: string;
-  }) {
-    return this.request<{ job: any }>('/jobs', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-  }
-
   async getJob(id: string) {
     return this.request<{ job: any }>(`/jobs/${id}`);
   }
