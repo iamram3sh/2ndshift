@@ -244,7 +244,7 @@ export default function EmployersPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-28 overflow-hidden">
+      <section className="relative py-20 lg:py-28 overflow-hidden border-t border-slate-800">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
         
@@ -357,7 +357,7 @@ export default function EmployersPage() {
       </section>
 
       {/* How It Works - Detailed */}
-      <section className="py-20 lg:py-28 bg-slate-50">
+      <section className="py-20 lg:py-28 bg-slate-50 border-t border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-semibold text-[#111] mb-4">
@@ -420,7 +420,7 @@ export default function EmployersPage() {
       </section>
 
       {/* Comparison Table */}
-      <section className="py-20 lg:py-28">
+      <section className="py-20 lg:py-28 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-semibold text-[#111] mb-4">
@@ -494,7 +494,7 @@ export default function EmployersPage() {
       </section>
 
       {/* ROI Calculator */}
-      <section className="py-20 lg:py-28 bg-slate-900">
+      <section className="py-20 lg:py-28 bg-slate-900 border-t border-slate-800">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/20 text-emerald-400 rounded-full text-sm font-medium mb-4">
@@ -585,7 +585,7 @@ export default function EmployersPage() {
       </section>
 
       {/* Common Concerns */}
-      <section className="py-20 lg:py-28">
+      <section className="py-20 lg:py-28 border-t border-slate-200">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-semibold text-[#111] mb-4">
@@ -627,7 +627,7 @@ export default function EmployersPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800">
+      <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-4xl font-semibold text-white mb-6">
             Ready to hire smarter?

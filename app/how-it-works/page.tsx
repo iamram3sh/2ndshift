@@ -217,7 +217,7 @@ export default function HowItWorksPage() {
       </nav>
 
       {/* Hero */}
-      <section className="py-16 lg:py-20 bg-slate-50">
+      <section className="py-16 lg:py-20 bg-slate-50 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl lg:text-4xl font-semibold text-[#111] mb-4">
             How 2ndShift Works
@@ -259,7 +259,7 @@ export default function HowItWorksPage() {
       </section>
 
       {/* Steps */}
-      <section className="py-16 lg:py-24">
+      <section className="py-16 lg:py-24 border-t border-slate-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-12">
             {steps.map((step, i) => (
@@ -316,7 +316,7 @@ export default function HowItWorksPage() {
       </section>
 
       {/* Compliance Section */}
-      <section className="py-16 lg:py-24 bg-slate-900">
+      <section className="py-16 lg:py-24 bg-slate-900 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 text-white rounded-full text-sm font-medium mb-4">
@@ -344,7 +344,7 @@ export default function HowItWorksPage() {
       </section>
 
       {/* Stats */}
-      <section className="py-16 lg:py-20 bg-slate-50">
+      <section className="py-16 lg:py-20 bg-slate-50 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
@@ -363,7 +363,7 @@ export default function HowItWorksPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 lg:py-20">
+      <section className="py-16 lg:py-20 border-t border-slate-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-4xl font-semibold text-[#111] mb-4">
             Ready to get started?

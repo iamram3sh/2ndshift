@@ -488,7 +488,7 @@ export default function JobsPage() {
       </div>
 
       {/* CTA Banner */}
-      <section className="py-16 bg-slate-900">
+      <section className="py-16 bg-slate-900 border-t border-slate-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl lg:text-3xl font-semibold text-white mb-4">
             Ready to start earning?

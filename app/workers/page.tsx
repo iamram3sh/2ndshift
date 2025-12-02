@@ -295,7 +295,7 @@ function WorkersPageContent() {
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-slate-900 py-16 lg:py-20">
+      <section className="bg-slate-900 py-16 lg:py-20 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-10">
             {selectedIndustryData ? (
@@ -613,7 +613,7 @@ function WorkersPageContent() {
       </div>
 
       {/* CTA Section */}
-      <section className="bg-slate-900 py-16">
+      <section className="bg-slate-900 py-16 border-t border-slate-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl lg:text-3xl font-semibold text-white mb-4">
             Ready to build your team?

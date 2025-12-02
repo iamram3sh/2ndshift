@@ -218,7 +218,7 @@ export default function PricingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="py-16 lg:py-20 bg-slate-50">
+      <section className="py-16 lg:py-20 bg-slate-50 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl lg:text-4xl font-semibold text-[#111] mb-4">
             Simple, transparent pricing
@@ -260,7 +260,7 @@ export default function PricingPage() {
       </section>
 
       {/* Plans */}
-      <section className="py-16 lg:py-20">
+      <section className="py-16 lg:py-20 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-8">
             {plans.map((plan, i) => (
@@ -328,7 +328,7 @@ export default function PricingPage() {
       </section>
 
       {/* Shifts Section */}
-      <section className="py-16 lg:py-20 bg-gradient-to-br from-slate-900 to-slate-800">
+      <section className="py-16 lg:py-20 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-500/20 text-amber-400 rounded-full text-sm font-medium mb-4">
@@ -390,7 +390,7 @@ export default function PricingPage() {
       </section>
 
       {/* Features Included */}
-      <section className="py-16 lg:py-20">
+      <section className="py-16 lg:py-20 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-semibold text-[#111] mb-4">
@@ -421,7 +421,7 @@ export default function PricingPage() {
       </section>
 
       {/* FAQs */}
-      <section className="py-16 lg:py-20 bg-slate-50">
+      <section className="py-16 lg:py-20 bg-slate-50 border-t border-slate-200">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-semibold text-[#111] mb-4">
