@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { Users, Briefcase, DollarSign, Shield, LogOut, TrendingUp } from 'lucide-react'
 import type { User as UserType } from '@/types/database.types'
 
@@ -20,29 +21,55 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true)
 
   const checkAuth = async () => {
-    const { data: { user: authUser } } = await supabase.auth.getUser()
-    
-    if (!authUser) {
-      router.push('/login')
-      return
-    }
-
-    const { data: profile } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', authUser.id)
-      .single()
-
-    if (profile) {
-      // Allow both admin and superadmin to access
-      if (!['admin', 'superadmin'].includes(profile.user_type)) {
-        router.push(`/${profile.user_type}`)
+    try {
+      // Use v1 API for authentication
+      const result = await apiClient.getCurrentUser()
+      
+      if (result.error || !result.data?.user) {
+        router.push('/login')
+        setIsLoading(false)
         return
       }
-      setUser(profile)
-      fetchStats()
+
+      const currentUser = result.data.user
+      
+      // Allow both admin and superadmin to access
+      if (!['admin', 'superadmin'].includes(currentUser.role)) {
+        const routes: Record<string, string> = {
+          worker: '/worker',
+          client: '/client',
+        }
+        router.push(routes[currentUser.role] || '/')
+        setIsLoading(false)
+        return
+      }
+
+      // Fetch full profile from database
+      const { data: profile } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', currentUser.id)
+        .single()
+
+      if (profile) {
+        setUser(profile)
+        fetchStats()
+      } else {
+        // Fallback to API user data
+        setUser({
+          id: currentUser.id,
+          email: currentUser.email,
+          full_name: currentUser.name || '',
+          user_type: currentUser.role as 'admin' | 'superadmin',
+        } as UserType)
+        fetchStats()
+      }
+    } catch (error) {
+      console.error('Error checking auth:', error)
+      router.push('/login')
+    } finally {
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }
 
   const fetchStats = async () => {
@@ -94,7 +121,7 @@ export default function AdminDashboard() {
   }, [])
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
+    await apiClient.logout()
     router.push('/')
   }
 

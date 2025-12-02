@@ -7,6 +7,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { Shield, CreditCard, Building, CheckCircle, Clock, AlertCircle } from 'lucide-react'
 import HomeButton from '@/components/worker/HomeButton'
 
@@ -19,30 +20,60 @@ export default function ClientVerificationPage() {
 
   useEffect(() => {
     checkAuth()
-    fetchVerificationStatus()
   }, [])
+
+  useEffect(() => {
+    if (user) {
+      fetchVerificationStatus()
+    }
+  }, [user])
 
   const checkAuth = async () => {
     try {
-      const { data: { user: authUser } } = await supabase.auth.getUser()
-      if (!authUser) {
+      // Use v1 API for authentication
+      const result = await apiClient.getCurrentUser()
+      
+      if (result.error || !result.data?.user) {
         router.push('/login')
+        setLoading(false)
         return
       }
 
+      const currentUser = result.data.user
+      
+      // Check if user is a client
+      if (currentUser.role !== 'client') {
+        const routes: Record<string, string> = {
+          worker: '/worker',
+          admin: '/dashboard/admin',
+          superadmin: '/dashboard/admin'
+        }
+        router.push(routes[currentUser.role] || '/')
+        setLoading(false)
+        return
+      }
+
+      // Fetch full profile from database
       const { data: userData } = await supabase
         .from('users')
         .select('*')
-        .eq('id', authUser.id)
+        .eq('id', currentUser.id)
         .single()
 
-      if (userData && userData.user_type === 'client') {
+      if (userData) {
         setUser(userData)
       } else {
-        router.push('/')
+        // Fallback to API user data
+        setUser({
+          id: currentUser.id,
+          email: currentUser.email,
+          full_name: currentUser.name || '',
+          user_type: 'client',
+        })
       }
     } catch (error) {
       console.error('Error checking auth:', error)
+      router.push('/login')
     } finally {
       setLoading(false)
     }

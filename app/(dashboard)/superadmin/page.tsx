@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { 
   Shield, 
   Users, 
@@ -36,28 +37,34 @@ export default function SuperAdminPage() {
   }, [])
 
   const checkSuperAdmin = async () => {
-    const { data: { user: authUser } } = await supabase.auth.getUser()
-    
-    if (!authUser) {
+    try {
+      // Use v1 API for authentication
+      const result = await apiClient.getCurrentUser()
+      
+      if (result.error || !result.data?.user) {
+        router.push('/login')
+        return
+      }
+
+      const currentUser = result.data.user
+      
+      // Only allow super admin
+      if (currentUser.role !== 'superadmin') {
+        const routes: Record<string, string> = {
+          worker: '/worker',
+          client: '/client',
+          admin: '/dashboard/admin',
+        }
+        router.push(routes[currentUser.role] || '/')
+        return
+      }
+
+      setIsSuperAdmin(true)
+      fetchStaff()
+    } catch (error) {
+      console.error('Error checking auth:', error)
       router.push('/login')
-      return
     }
-
-    const { data: profile } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', authUser.id)
-      .single()
-
-    // Only allow super admin (check email or special flag)
-    // For now, we'll check if user_type is 'superadmin'
-    if (!profile || profile.user_type !== 'superadmin') {
-      router.push('/') // Redirect non-superadmins
-      return
-    }
-
-    setIsSuperAdmin(true)
-    fetchStaff()
   }
 
   const fetchStaff = async () => {

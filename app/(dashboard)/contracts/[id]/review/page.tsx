@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { ReviewForm } from '@/components/reviews/ReviewForm'
 import { ArrowLeft, CheckCircle } from 'lucide-react'
 import type { Contract, User } from '@/types/database.types'
@@ -32,13 +33,14 @@ export default function ContractReviewPage() {
 
   const checkAuthAndFetchContract = async () => {
     try {
-      // Get current user
-      const { data: { user: authUser } } = await supabase.auth.getUser()
-      if (!authUser) {
+      // Use v1 API for authentication
+      const result = await apiClient.getCurrentUser()
+      if (result.error || !result.data?.user) {
         router.push('/login')
         return
       }
-      setCurrentUserId(authUser.id)
+      const currentUser = result.data.user
+      setCurrentUserId(currentUser.id)
 
       // Get contract details
       const { data: contractData, error: contractError } = await supabase
@@ -53,26 +55,20 @@ export default function ContractReviewPage() {
       if (contractError) throw contractError
       if (!contractData) {
         alert('Contract not found')
-        // Get user type from profile
-        const { data: profile } = await supabase
-          .from('users')
-          .select('user_type')
-          .eq('id', authUser.id)
-          .single()
-        if (profile?.user_type === 'worker') {
-          router.push('/worker')
-        } else if (profile?.user_type === 'client') {
-          router.push('/client')
-        } else {
-          router.push('/')
+        // Redirect based on user role
+        const routes: Record<string, string> = {
+          worker: '/worker',
+          client: '/client',
+          admin: '/dashboard/admin',
         }
+        router.push(routes[currentUser.role] || '/')
         return
       }
 
       // Check if contract is completed
       if (contractData.status !== 'completed') {
         alert('You can only review completed contracts')
-        const isWorker = contractData.worker_id === authUser.id
+        const isWorker = contractData.worker_id === currentUser.id
         router.push(isWorker ? '/worker' : '/client')
         return
       }

@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import apiClient from '@/lib/apiClient'
 import { 
   Search, Filter, MapPin, Star, Clock, CheckCircle, BadgeCheck, 
   Briefcase, Users, ChevronDown, ArrowRight, Zap, Shield, Award,
@@ -176,11 +177,11 @@ function WorkersPageContent() {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('/api/auth/get-profile')
-      const data = await response.json()
-      if (data.user) {
+      // Use v1 API for authentication
+      const result = await apiClient.getCurrentUser()
+      if (result.data?.user) {
         setIsLoggedIn(true)
-        setUserType(data.user.user_type)
+        setUserType(result.data.user.role as 'worker' | 'client' | 'admin')
       }
     } catch (error) {
       console.error('Error checking auth:', error)

@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { ConversationList } from '@/components/messaging/ConversationList'
 import { ChatInterface } from '@/components/messaging/ChatInterface'
 import { MessageSquare, ArrowLeft } from 'lucide-react'
@@ -38,23 +39,42 @@ function MessagesContent() {
   }
 
   const checkAuth = async () => {
-    const { data: { user: authUser } } = await supabase.auth.getUser()
-    
-    if (!authUser) {
+    try {
+      // Use v1 API for authentication
+      const result = await apiClient.getCurrentUser()
+      
+      if (result.error || !result.data?.user) {
+        router.push('/login')
+        setIsLoading(false)
+        return
+      }
+
+      const currentUser = result.data.user
+      
+      // Fetch full profile from database
+      const { data: profile } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', currentUser.id)
+        .single()
+
+      if (profile) {
+        setUser(profile)
+      } else {
+        // Fallback to API user data
+        setUser({
+          id: currentUser.id,
+          email: currentUser.email,
+          full_name: currentUser.name || '',
+          user_type: currentUser.role as 'worker' | 'client' | 'admin',
+        } as any)
+      }
+    } catch (error) {
+      console.error('Error checking auth:', error)
       router.push('/login')
-      return
+    } finally {
+      setIsLoading(false)
     }
-
-    const { data: profile } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', authUser.id)
-      .single()
-
-    if (profile) {
-      setUser(profile)
-    }
-    setIsLoading(false)
   }
 
   const startConversation = async (otherUserId: string) => {

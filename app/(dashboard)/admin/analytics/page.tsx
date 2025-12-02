@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { 
   TrendingUp, 
   Users, 
@@ -58,25 +59,31 @@ export default function AdminAnalyticsPage() {
   }, [timeRange])
 
   const checkAuthAndFetchAnalytics = async () => {
-    const { data: { user: authUser } } = await supabase.auth.getUser()
-    
-    if (!authUser) {
+    try {
+      // Use v1 API for authentication
+      const result = await apiClient.getCurrentUser()
+      
+      if (result.error || !result.data?.user) {
+        router.push('/login')
+        return
+      }
+
+      const currentUser = result.data.user
+      
+      if (!['admin', 'superadmin'].includes(currentUser.role)) {
+        const routes: Record<string, string> = {
+          worker: '/worker',
+          client: '/client',
+        }
+        router.push(routes[currentUser.role] || '/')
+        return
+      }
+
+      fetchAnalytics()
+    } catch (error) {
+      console.error('Error checking auth:', error)
       router.push('/login')
-      return
     }
-
-    const { data: profile } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', authUser.id)
-      .single()
-
-    if (!profile || profile.user_type !== 'admin') {
-      router.push('/')
-      return
-    }
-
-    fetchAnalytics()
   }
 
   const fetchAnalytics = async () => {

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { Users, Search, Filter, Download, ArrowLeft } from 'lucide-react'
 import type { User as UserType } from '@/types/database.types'
 
@@ -29,25 +30,31 @@ export default function AdminUsersPage() {
   }, [users, searchTerm, filterType])
 
   const checkAuthAndFetchUsers = async () => {
-    const { data: { user: authUser } } = await supabase.auth.getUser()
-    
-    if (!authUser) {
+    try {
+      // Use v1 API for authentication
+      const result = await apiClient.getCurrentUser()
+      
+      if (result.error || !result.data?.user) {
+        router.push('/login')
+        return
+      }
+
+      const currentUser = result.data.user
+      
+      if (!['admin', 'superadmin'].includes(currentUser.role)) {
+        const routes: Record<string, string> = {
+          worker: '/worker',
+          client: '/client',
+        }
+        router.push(routes[currentUser.role] || '/')
+        return
+      }
+
+      fetchUsers()
+    } catch (error) {
+      console.error('Error checking auth:', error)
       router.push('/login')
-      return
     }
-
-    const { data: profile } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', authUser.id)
-      .single()
-
-    if (!profile || profile.user_type !== 'admin') {
-      router.push('/')
-      return
-    }
-
-    fetchUsers()
   }
 
   const fetchUsers = async () => {

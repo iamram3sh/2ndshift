@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { Shield, CheckCircle, Clock, XCircle, ArrowLeft, AlertTriangle } from 'lucide-react'
 import { VerificationForm } from '@/components/verification/VerificationForm'
 import { VerificationBadge } from '@/components/verification/VerificationBadge'
@@ -20,24 +21,42 @@ export default function VerificationPage() {
   }, [])
 
   const checkAuth = async () => {
-    const { data: { user: authUser } } = await supabase.auth.getUser()
-    
-    if (!authUser) {
+    try {
+      // Use v1 API for authentication
+      const result = await apiClient.getCurrentUser()
+      
+      if (result.error || !result.data?.user) {
+        router.push('/login')
+        return
+      }
+
+      const currentUser = result.data.user
+      
+      // Fetch full profile from database
+      const { data: profile } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', currentUser.id)
+        .single()
+
+      if (profile) {
+        setUser(profile)
+        fetchVerifications(currentUser.id)
+      } else {
+        // Fallback to API user data
+        setUser({
+          id: currentUser.id,
+          email: currentUser.email,
+          full_name: currentUser.name || '',
+          user_type: currentUser.role as 'worker' | 'client' | 'admin',
+        } as User)
+      }
+    } catch (error) {
+      console.error('Error checking auth:', error)
       router.push('/login')
-      return
+    } finally {
+      setIsLoading(false)
     }
-
-    const { data: profile } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', authUser.id)
-      .single()
-
-    if (profile) {
-      setUser(profile)
-      fetchVerifications(authUser.id)
-    }
-    setIsLoading(false)
   }
 
   const fetchVerifications = async (userId: string) => {

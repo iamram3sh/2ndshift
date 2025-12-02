@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { Shield, Upload, CheckCircle, AlertCircle, ArrowLeft, FileText, Clock, XCircle } from 'lucide-react'
 import HomeButton from '@/components/worker/HomeButton'
 
@@ -19,16 +20,30 @@ export default function VerificationPage() {
 
   const fetchData = async () => {
     try {
-      const { data: { user: authUser } } = await supabase.auth.getUser()
-      if (!authUser) {
+      // Use v1 API for authentication
+      const result = await apiClient.getCurrentUser()
+      if (result.error || !result.data?.user) {
         router.push('/login')
+        return
+      }
+
+      const currentUser = result.data.user
+      
+      // Check if user is a worker
+      if (currentUser.role !== 'worker') {
+        const routes: Record<string, string> = {
+          client: '/client',
+          admin: '/dashboard/admin',
+          superadmin: '/dashboard/admin'
+        }
+        router.push(routes[currentUser.role] || '/login')
         return
       }
 
       const { data: userData } = await supabase
         .from('users')
         .select('*')
-        .eq('id', authUser.id)
+        .eq('id', currentUser.id)
         .single()
 
       if (userData) setUser(userData)
@@ -37,7 +52,7 @@ export default function VerificationPage() {
       const { data: verifyData } = await supabase
         .from('verification_requests')
         .select('*')
-        .eq('user_id', authUser.id)
+        .eq('user_id', currentUser.id)
         .eq('verification_type', 'identity')
         .order('created_at', { ascending: false })
         .limit(1)

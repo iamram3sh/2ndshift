@@ -7,6 +7,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { Shield, CheckCircle, XCircle, Clock, FileText, Video, User, ArrowLeft } from 'lucide-react'
 
 export default function AdminVerificationDetailPage() {
@@ -28,25 +29,48 @@ export default function AdminVerificationDetailPage() {
 
   const checkAuth = async () => {
     try {
-      const { data: { user: authUser } } = await supabase.auth.getUser()
-      if (!authUser) {
+      // Use v1 API for authentication
+      const result = await apiClient.getCurrentUser()
+      
+      if (result.error || !result.data?.user) {
         router.push('/login')
+        setLoading(false)
         return
       }
 
+      const currentUser = result.data.user
+      
+      if (!['admin', 'superadmin'].includes(currentUser.role)) {
+        const routes: Record<string, string> = {
+          worker: '/worker',
+          client: '/client',
+        }
+        router.push(routes[currentUser.role] || '/')
+        setLoading(false)
+        return
+      }
+
+      // Fetch full profile from database
       const { data: userData } = await supabase
         .from('users')
         .select('*')
-        .eq('id', authUser.id)
+        .eq('id', currentUser.id)
         .single()
 
-      if (userData && ['admin', 'superadmin'].includes(userData.user_type)) {
+      if (userData) {
         setUser(userData)
       } else {
-        router.push('/')
+        // Fallback to API user data
+        setUser({
+          id: currentUser.id,
+          email: currentUser.email,
+          full_name: currentUser.name || '',
+          user_type: currentUser.role as 'admin' | 'superadmin',
+        } as any)
       }
     } catch (error) {
       console.error('Error checking auth:', error)
+      router.push('/login')
     } finally {
       setLoading(false)
     }

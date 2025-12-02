@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { 
   ArrowLeft, Briefcase, Shield, Lock, ChevronRight, 
   CheckCircle, Info, Zap, Clock, Star, Plus, Trash2
@@ -138,10 +139,21 @@ export default function CreateProjectPage() {
     setIsLoading(true)
     setMessage('')
 
-    const { data: { user } } = await supabase.auth.getUser()
+    // Use v1 API for authentication
+    const result = await apiClient.getCurrentUser()
     
-    if (!user) {
+    if (result.error || !result.data?.user) {
       router.push('/login')
+      setIsLoading(false)
+      return
+    }
+
+    const currentUser = result.data.user
+    
+    // Check if user is a client
+    if (currentUser.role !== 'client') {
+      router.push('/login')
+      setIsLoading(false)
       return
     }
 
@@ -149,7 +161,7 @@ export default function CreateProjectPage() {
     const { data: project, error } = await supabase
       .from('projects')
       .insert({
-        client_id: user.id,
+        client_id: currentUser.id,
         title: formData.title,
         description: formData.description,
         budget: parseFloat(formData.budget),

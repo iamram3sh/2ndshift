@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
 import { 
   ArrowLeft, Settings, Bell, Lock, Shield, User, 
   Mail, Globe, Trash2, Save, Eye, EyeOff 
@@ -37,33 +38,62 @@ export default function SettingsPage() {
   })
 
   const checkAuth = async () => {
-    const { data: { user: authUser } } = await supabase.auth.getUser()
-    
-    if (!authUser) {
+    try {
+      // Use v1 API for authentication
+      const result = await apiClient.getCurrentUser()
+      
+      if (result.error || !result.data?.user) {
+        router.push('/login')
+        setIsLoading(false)
+        return
+      }
+
+      const currentUser = result.data.user
+      
+      // Fetch full profile from database
+      const { data: profile } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', currentUser.id)
+        .single()
+
+      if (profile) {
+        setUser(profile)
+        setFormData({
+          email: currentUser.email || '',
+          full_name: profile.full_name || '',
+          phone: profile.phone || '',
+          email_notifications: profile.email_notifications ?? true,
+          sms_notifications: profile.sms_notifications ?? false,
+          marketing_emails: profile.marketing_emails ?? false,
+          profile_visibility: (profile.profile_visibility as 'public' | 'private') || 'public',
+          show_earnings: profile.show_earnings ?? true,
+        })
+      } else {
+        // Fallback to API user data
+        setUser({
+          id: currentUser.id,
+          email: currentUser.email,
+          full_name: currentUser.name || '',
+          user_type: currentUser.role as 'worker' | 'client' | 'admin',
+        } as any)
+        setFormData({
+          email: currentUser.email || '',
+          full_name: currentUser.name || '',
+          phone: '',
+          email_notifications: true,
+          sms_notifications: false,
+          marketing_emails: false,
+          profile_visibility: 'public',
+          show_earnings: true,
+        })
+      }
+    } catch (error) {
+      console.error('Error checking auth:', error)
       router.push('/login')
-      return
+    } finally {
+      setIsLoading(false)
     }
-
-    const { data: profile } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', authUser.id)
-      .single()
-
-    if (profile) {
-      setUser(profile)
-      setFormData({
-        email: authUser.email || '',
-        full_name: profile.full_name || '',
-        phone: profile.phone || '',
-        email_notifications: profile.email_notifications ?? true,
-        sms_notifications: profile.sms_notifications ?? false,
-        marketing_emails: profile.marketing_emails ?? false,
-        profile_visibility: (profile.profile_visibility as 'public' | 'private') || 'public',
-        show_earnings: profile.show_earnings ?? true,
-      })
-    }
-    setIsLoading(false)
   }
 
   const handleSave = async (e: React.FormEvent) => {
