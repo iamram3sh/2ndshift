@@ -28,8 +28,8 @@ export function AvailabilityCard({ userId }: AvailabilityCardProps) {
   const fetchAvailability = async () => {
     try {
       const result = await apiClient.getAvailability()
-      if (result.data?.availability) {
-        const avail = result.data.availability
+      if (result.data && typeof result.data === 'object' && 'availability' in result.data) {
+        const avail = (result.data as any).availability
         setAvailability(avail)
         setFormData({
           open_to_work: avail.open_to_work || false,
@@ -56,13 +56,13 @@ export function AvailabilityCard({ userId }: AvailabilityCardProps) {
         },
       })
 
-      if (result.data) {
-        setAvailability(result.data.availability)
+      if (result.data && typeof result.data === 'object' && 'availability' in result.data) {
+        setAvailability((result.data as any).availability)
         setEditing(false)
       }
     } catch (error) {
       console.error('Error updating availability:', error)
-      alert('Failed to update availability')
+      window.alert('Failed to update availability')
     }
   }
 
