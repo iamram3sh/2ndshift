@@ -9,48 +9,8 @@
 
 import { Package, CheckCircle, Clock, Users } from 'lucide-react'
 import Link from 'next/link'
-
-interface MicroJobPack {
-  id: string
-  name: string
-  description: string
-  tasks: string[]
-  price: number
-  duration: string
-  workers: number
-  popular?: boolean
-}
-
-const MICRO_JOB_PACKS: MicroJobPack[] = [
-  {
-    id: 'web-basics',
-    name: 'Web Basics Pack',
-    description: 'Perfect for small businesses getting started online',
-    tasks: ['Landing page design', 'Basic SEO setup', 'Contact form integration', 'Mobile responsiveness'],
-    price: 15000,
-    duration: '1-2 weeks',
-    workers: 1,
-    popular: true,
-  },
-  {
-    id: 'content-creator',
-    name: 'Content Creator Pack',
-    description: 'Complete content package for your brand',
-    tasks: ['10 blog posts', 'Social media graphics (20)', 'Email templates (5)', 'Content calendar'],
-    price: 25000,
-    duration: '2-3 weeks',
-    workers: 2,
-  },
-  {
-    id: 'app-prototype',
-    name: 'App Prototype Pack',
-    description: 'Get your app idea to prototype stage',
-    tasks: ['UI/UX design', 'Frontend prototype', 'Backend API setup', 'Basic testing'],
-    price: 50000,
-    duration: '3-4 weeks',
-    workers: 3,
-  },
-]
+import { CLIENT_QUICK_PACKS } from '@/data/highValueTasks'
+import { formatCurrency } from '@/lib/utils/formatCurrency'
 
 export default function MicroJobPacks() {
   return (
@@ -66,14 +26,14 @@ export default function MicroJobPacks() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {MICRO_JOB_PACKS.map((pack) => (
+          {CLIENT_QUICK_PACKS.map((pack, index) => (
             <div
-              key={pack.id}
+              key={index}
               className={`p-6 bg-white rounded-xl border-2 ${
-                pack.popular ? 'border-sky-500 shadow-lg' : 'border-slate-200'
+                index === 0 ? 'border-sky-500 shadow-lg' : 'border-slate-200'
               } hover:shadow-xl transition-all`}
             >
-              {pack.popular && (
+              {index === 0 && (
                 <div className="inline-block px-3 py-1 bg-sky-100 text-sky-700 rounded-full text-xs font-semibold mb-4">
                   Most Popular
                 </div>
@@ -84,7 +44,7 @@ export default function MicroJobPacks() {
                   <Package className="w-6 h-6 text-sky-600" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-[#111]">{pack.name}</h3>
+                  <h3 className="text-xl font-bold text-[#111]">{pack.title}</h3>
                   <p className="text-sm text-[#333]">{pack.description}</p>
                 </div>
               </div>
@@ -98,21 +58,8 @@ export default function MicroJobPacks() {
                 ))}
               </ul>
 
-              <div className="flex items-center justify-between mb-6 pt-4 border-t border-slate-200">
-                <div className="flex items-center gap-4 text-sm text-[#333]">
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-4 h-4" />
-                    {pack.duration}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Users className="w-4 h-4" />
-                    {pack.workers} worker{pack.workers > 1 ? 's' : ''}
-                  </span>
-                </div>
-              </div>
-
               <div className="mb-6">
-                <div className="text-3xl font-bold text-[#111]">₹{pack.price.toLocaleString()}</div>
+                <div className="text-3xl font-bold text-[#111]">{formatCurrency(pack.price * 100)}</div>
                 <div className="text-sm text-[#333]">One-time payment</div>
                 <div className="text-xs text-slate-500 mt-1">
                   Platform fee: 4% · Escrow fee: 2%
@@ -120,7 +67,7 @@ export default function MicroJobPacks() {
               </div>
 
               <Link
-                href={`/projects/create?pack=${pack.id}`}
+                href={`/projects/create?pack=${pack.title.toLowerCase().replace(/\s+/g, '-')}`}
                 className="block w-full text-center bg-[#111] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#333] transition-all"
               >
                 Select This Pack

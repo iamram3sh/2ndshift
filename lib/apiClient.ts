@@ -343,6 +343,103 @@ class ApiClient {
       method: 'POST',
     });
   }
+
+  // Worker availability
+  async updateAvailability(data: {
+    availability?: Record<string, any>;
+    open_to_work?: boolean;
+    priority_tier?: 'standard' | 'priority' | 'elite';
+  }) {
+    return this.request('/workers/availability', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getAvailability() {
+    return this.request('/workers/availability', {
+      method: 'GET',
+    });
+  }
+
+  // Worker pool
+  async getWorkerPool(params: {
+    skill?: string;
+    tier?: string;
+    limit?: number;
+  }) {
+    const query = new URLSearchParams();
+    if (params.skill) query.append('skill', params.skill);
+    if (params.tier) query.append('tier', params.tier);
+    if (params.limit) query.append('limit', params.limit.toString());
+    return this.request(`/workers/pool?${query.toString()}`, {
+      method: 'GET',
+    });
+  }
+
+  // Sourcing requests
+  async getSourcingRequests(status?: string) {
+    const query = status ? `?status=${status}` : '';
+    return this.request(`/sourcing_requests${query}`, {
+      method: 'GET',
+    });
+  }
+
+  async createSourcingRequest(data: {
+    job_id: string;
+    flags?: Record<string, any>;
+    escalate_after_minutes?: number;
+  }) {
+    return this.request('/sourcing_requests', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async contactWorker(requestId: string, data: {
+    worker_id: string;
+    contact_method: 'email' | 'sms' | 'whatsapp' | 'push';
+    message?: string;
+  }) {
+    return this.request(`/sourcing_requests/${requestId}/contact`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  // Alerts
+  async getAlerts() {
+    return this.request('/alerts', {
+      method: 'GET',
+    });
+  }
+
+  async respondToAlert(data: {
+    alert_id: string;
+    job_id: string;
+    cover_text?: string;
+    proposed_price?: number;
+  }) {
+    return this.request('/alerts/respond', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  // Job escalation
+  async escalateJob(jobId: string) {
+    return this.request(`/jobs/${jobId}/escalate`, {
+      method: 'POST',
+    });
+  }
+
+  // AI Job Wizard
+  async generateJobSpec(requirement: string) {
+    return this.request('/job-wizard', {
+      method: 'POST',
+      body: JSON.stringify({ requirement }),
+    });
+  }
 }
 
 export const apiClient = new ApiClient();

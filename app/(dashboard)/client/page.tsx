@@ -11,6 +11,8 @@ import { SubscriptionUpsell } from '@/components/revenue/SubscriptionUpsell'
 import { CommissionCalculator } from '@/components/revenue/CommissionCalculator'
 import { CommissionBreakdown } from '@/components/revenue/CommissionBreakdown'
 import { SubscriptionUpsellSection } from '@/components/revenue/SubscriptionUpsellSection'
+import { AIJobWizard } from '@/components/jobs/AIJobWizard'
+import MicroJobPacks from '@/components/jobs/MicroJobPacks'
 import { 
   Briefcase, DollarSign, User, LogOut, Plus, Clock,
   Users, CheckCircle, TrendingUp, Eye, MessageSquare,

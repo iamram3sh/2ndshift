@@ -10,6 +10,9 @@ import { BuyCreditsModalV1 } from '@/components/revenue/BuyCreditsModalV1'
 import { VerificationBadge } from '@/components/revenue/VerificationBadge'
 import { SubscriptionUpsell } from '@/components/revenue/SubscriptionUpsell'
 import { VerificationBadgeInfo } from '@/components/revenue/VerificationBadgeInfo'
+import { AvailabilityCard } from '@/components/worker/AvailabilityCard'
+import { AlertsInbox } from '@/components/worker/AlertsInbox'
+import { WORKER_QUICK_TASKS } from '@/data/highValueTasks'
 import { CommissionBreakdown } from '@/components/revenue/CommissionBreakdown'
 import { SubscriptionUpsellSection } from '@/components/revenue/SubscriptionUpsellSection'
 import { 
@@ -493,6 +496,11 @@ export default function WorkerDashboard() {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
+            {/* Availability Card */}
+            {user && <AvailabilityCard userId={user.id} />}
+            
+            {/* Alerts Inbox */}
+            {user && <AlertsInbox userId={user.id} />}
             {/* Shifts Promo Card */}
             <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white">
               <div className="flex items-start justify-between">
@@ -549,26 +557,15 @@ export default function WorkerDashboard() {
                 </Link>
               </div>
               <div className="grid md:grid-cols-3 gap-4">
-                {[
-                  { title: 'Logo Design', budget: '₹5,000 - ₹10,000', duration: '2-3 days', skills: ['Figma', 'Illustrator'] },
-                  { title: 'Bug Fixes', budget: '₹3,000 - ₹8,000', duration: '1-2 days', skills: ['React', 'JavaScript'] },
-                  { title: 'Content Writing', budget: '₹2,000 - ₹5,000', duration: '1 week', skills: ['SEO', 'Copywriting'] },
-                ].map((pack, i) => (
+                {WORKER_QUICK_TASKS.slice(0, 3).map((task, i) => (
                   <Link
                     key={i}
                     href="/worker/discover"
                     className="block p-4 bg-white border border-slate-200 rounded-xl hover:border-sky-300 hover:shadow-lg transition-all"
                   >
-                    <h3 className="font-semibold text-[#111] mb-2">{pack.title}</h3>
-                    <div className="text-sm text-emerald-600 font-medium mb-2">{pack.budget}</div>
-                    <div className="text-xs text-[#333] mb-2">{pack.duration}</div>
-                    <div className="flex flex-wrap gap-1 mb-2">
-                      {pack.skills.map(skill => (
-                        <span key={skill} className="px-2 py-0.5 bg-slate-100 text-[#333] rounded text-xs">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
+                    <h3 className="font-semibold text-[#111] mb-2">{task}</h3>
+                    <div className="text-sm text-emerald-600 font-medium mb-2">High-value microtask</div>
+                    <div className="text-xs text-[#333] mb-2">Quick delivery</div>
                     <div className="text-xs text-slate-500">
                       Platform fee: 5-10% (first 3: 0%)
                     </div>
