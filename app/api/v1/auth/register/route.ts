@@ -39,16 +39,33 @@ export async function POST(request: NextRequest) {
     // Hash password
     const passwordHash = await hashPassword(validated.password);
 
-    // Create user in Supabase Auth (if using Supabase Auth)
-    // For now, we'll create directly in users table
-    // In production, you'd use Supabase Auth API first, then create user record
-    const userId = crypto.randomUUID();
+    // Create user in Supabase Auth first (required due to foreign key constraint)
+    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+      email: validated.email.toLowerCase(),
+      password: validated.password,
+      email_confirm: true, // Auto-confirm for demo/staging
+      user_metadata: {
+        full_name: validated.name,
+        user_type: validated.role,
+        phone: validated.phone,
+      },
+    });
 
-    // Insert user
+    if (authError || !authData?.user) {
+      console.error('Error creating auth user:', authError);
+      return NextResponse.json(
+        { error: authError?.message || 'Failed to create user account' },
+        { status: 500 }
+      );
+    }
+
+    const userId = authData.user.id;
+
+    // Insert user in users table (using auth user ID)
     const { data: user, error: userError } = await supabaseAdmin
       .from('users')
       .insert({
-        id: userId,
+        id: userId, // Use the auth user ID
         email: validated.email.toLowerCase(),
         full_name: validated.name,
         user_type: validated.role,
@@ -63,21 +80,42 @@ export async function POST(request: NextRequest) {
 
     if (userError || !user) {
       console.error('Error creating user:', userError);
+      // Clean up auth user if users table insert fails
+      await supabaseAdmin.auth.admin.deleteUser(userId);
       return NextResponse.json(
-        { error: 'Failed to create user' },
+        { error: 'Failed to create user profile' },
         { status: 500 }
       );
     }
 
     // Create profile if worker
     if (validated.role === 'worker') {
-      await supabaseAdmin
+      const { error: profileError } = await supabaseAdmin
         .from('profiles')
         .insert({
           user_id: userId,
           verified_level: 'none',
           score: 0,
         });
+
+      if (profileError) {
+        console.error('Error creating profile:', profileError);
+        // Don't fail registration if profile creation fails, just log it
+      }
+    }
+
+    // Initialize shift credits for all users
+    const { error: creditsError } = await supabaseAdmin
+      .from('shift_credits')
+      .insert({
+        user_id: userId,
+        balance: 0,
+        reserved: 0,
+      });
+
+    if (creditsError) {
+      console.error('Error initializing credits:', creditsError);
+      // Don't fail registration if credits initialization fails
     }
 
     // Generate tokens
