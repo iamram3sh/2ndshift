@@ -196,7 +196,10 @@ export function BuyCreditsModalV1({
                       {purchasing === pkg.id ? (
                         <Loader2 className="w-4 h-4 animate-spin mx-auto" />
                       ) : (
-                        t('credits.modal.plans.49.cta').replace('₹49', formatPrice(pkg.price_inr))
+                        (() => {
+                          const cta = t('credits.modal.plans.49.cta')
+                          return typeof cta === 'string' ? cta.replace('₹49', formatPrice(pkg.price_inr)) : 'Buy Now'
+                        })()
                       )}
                     </button>
                   </div>
