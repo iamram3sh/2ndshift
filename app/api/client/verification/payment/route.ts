@@ -173,7 +173,7 @@ export async function POST(request: NextRequest) {
         const requestInfo = extractRequestInfo(req)
         await logAuditEvent({
           user_id: userId,
-          action: 'verified',
+          action: 'approved',
           notes: `Payment method verified: ${provider}`,
           ...requestInfo
         })
