@@ -8,6 +8,7 @@ import { IndustrySelector } from '@/components/categories/IndustrySelector'
 import { SkillSelector } from '@/components/categories/SkillSelector'
 import { SuggestCategoryModal } from '@/components/categories/SuggestCategoryModal'
 import HomeButton from '@/components/worker/HomeButton'
+import OutcomeBasedSkillsSection from '@/components/worker/OutcomeBasedSkillsSection'
 
 export default function EditWorkerProfilePage() {
   const router = useRouter()
@@ -35,13 +36,17 @@ export default function EditWorkerProfilePage() {
     hourly_rate: '',
     experience_years: '',
     years_in_industry: '',
-    skills: [] as string[],
+    skills: [] as string[], // Legacy simple skills array
     languages: [] as string[],
     education: '',
     portfolio_url: '',
     linkedin_url: '',
     github_url: '',
-    website_url: ''
+    website_url: '',
+    // New outcome-based skills
+    outcomeSkills: [] as any[],
+    workingPattern: 'flexible' as 'night' | 'weekend' | 'task_based' | 'flexible',
+    availability: ''
   })
 
   useEffect(() => {
@@ -102,6 +107,13 @@ export default function EditWorkerProfilePage() {
 
       if (profileData) {
         setProfile(profileData)
+        
+        // Parse outcome-based skills from availability_hours JSONB or separate field
+        const availabilityData = profileData.availability_hours || {}
+        const outcomeSkills = availabilityData.outcome_skills || []
+        const workingPattern = availabilityData.working_pattern || 'flexible'
+        const availability = availabilityData.availability || ''
+        
         setFormData(prev => ({
           ...prev,
           industry_id: profileData.industry_id || '',
@@ -117,7 +129,10 @@ export default function EditWorkerProfilePage() {
           portfolio_url: profileData.portfolio_url || '',
           linkedin_url: profileData.linkedin_url || '',
           github_url: profileData.github_url || '',
-          website_url: profileData.website_url || ''
+          website_url: profileData.website_url || '',
+          outcomeSkills: outcomeSkills,
+          workingPattern: workingPattern,
+          availability: availability
         }))
       }
     } catch (error) {
@@ -199,6 +214,16 @@ export default function EditWorkerProfilePage() {
       if (formData.linkedin_url) profileData.linkedin_url = formData.linkedin_url
       if (formData.github_url) profileData.github_url = formData.github_url
       if (formData.website_url) profileData.website_url = formData.website_url
+      
+      // Store outcome-based skills in availability_hours JSONB field
+      // Get existing availability data from profile state or initialize empty
+      const existingAvailability = (profile && typeof profile.availability_hours === 'object' && profile.availability_hours) || {}
+      profileData.availability_hours = {
+        ...existingAvailability,
+        outcome_skills: formData.outcomeSkills || [],
+        working_pattern: formData.workingPattern || 'flexible',
+        availability: formData.availability || ''
+      }
 
       console.log('Upserting worker_profiles with data:', profileData)
 
@@ -495,12 +520,20 @@ export default function EditWorkerProfilePage() {
             </div>
           </div>
 
-          {/* Skills */}
+          {/* Outcome-Based Skills Section */}
           <div id="skills">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <Award className="w-5 h-5" />
-              Skills *
-            </h3>
+            <OutcomeBasedSkillsSection
+              skills={formData.outcomeSkills}
+              onSkillsChange={(skills) => setFormData({...formData, outcomeSkills: skills})}
+              workingPattern={formData.workingPattern}
+              onWorkingPatternChange={(pattern) => setFormData({...formData, workingPattern: pattern})}
+              availability={formData.availability}
+              onAvailabilityChange={(availability) => setFormData({...formData, availability})}
+            />
+          </div>
+
+          {/* Legacy Skills (Hidden but kept for backward compatibility) */}
+          <div className="hidden">
             <SkillSelector
               selectedSkills={formData.skills}
               onSkillsChange={(skills) => setFormData({...formData, skills})}
@@ -509,9 +542,6 @@ export default function EditWorkerProfilePage() {
               maxSkills={20}
               onSuggestNew={() => setShowSuggestModal(true)}
             />
-            <p className="text-sm text-[#333] mt-2">
-              Skills are filtered based on your selected industry. Can't find a skill? Suggest it!
-            </p>
           </div>
 
           {/* Bio */}

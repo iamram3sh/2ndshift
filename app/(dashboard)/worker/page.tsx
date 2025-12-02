@@ -664,9 +664,9 @@ export default function WorkerDashboard() {
                   <User className="w-5 h-5 text-[#333] group-hover:text-[#111]" />
                   <span className="text-sm text-[#333] font-medium group-hover:text-[#111]">Edit Profile</span>
                 </Link>
-                <Link href="/worker/profile/verification" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
+                <Link href="/worker/verification" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
                   <Shield className="w-5 h-5 text-[#333] group-hover:text-[#111]" />
-                  <span className="text-sm text-[#333] font-medium group-hover:text-[#111]">Verification Status</span>
+                  <span className="text-sm text-[#333] font-medium group-hover:text-[#111]">Verification</span>
                 </Link>
                 <Link href="/messages" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
                   <MessageSquare className="w-5 h-5 text-[#333] group-hover:text-[#111]" />

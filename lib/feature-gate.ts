@@ -105,6 +105,14 @@ export const FEATURES = {
     requiresSubscription: true,
     minPlan: 'client-enterprise',
   },
+  VERIFICATION_V2: {
+    id: 'verification_v2',
+    name: 'Verification System V2',
+    description: 'Enhanced 3-tier verification system',
+    shiftsCost: 0,
+    requiresSubscription: false,
+    minPlan: null,
+  },
 } as const
 
 export type FeatureId = keyof typeof FEATURES

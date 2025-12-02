@@ -31,6 +31,9 @@ export const rateLimitConfigs = {
   contactForm: { interval: 60 * 60 * 1000, maxRequests: 5 }, // 5 per hour
   api: { interval: 60 * 1000, maxRequests: 100 }, // 100 per minute
   projectCreate: { interval: 60 * 60 * 1000, maxRequests: 10 }, // 10 per hour
+  verificationUpload: { interval: 60 * 60 * 1000, maxRequests: 5 }, // 5 uploads per hour
+  verificationOTP: { interval: 60 * 60 * 1000, maxRequests: 3 }, // 3 OTP requests per hour
+  verificationFaceMatch: { interval: 24 * 60 * 60 * 1000, maxRequests: 3 }, // 3 face matches per day
 }
 
 export function rateLimit(
