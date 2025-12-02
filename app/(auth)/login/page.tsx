@@ -117,31 +117,35 @@ export default function LoginPage() {
           {/* Header */}
           {!selectedRole ? (
             <RolePicker />
-          ) : null}
+          ) : (
+            <div className="mb-6">
+              <h1 className="text-2xl font-bold text-slate-900 mb-2">
+                {selectedRole === 'worker' ? 'Welcome back, Professional' : 'Welcome back, Client'}
+              </h1>
+              <p className="text-sm text-slate-600">
+                {selectedRole === 'worker' 
+                  ? 'Sign in to your worker account' 
+                  : 'Sign in to your client account'}
+              </p>
+            </div>
+          )}
 
-          {/* Role-Specific Forms */}
-          {selectedRole === 'worker' && <WorkerSignInForm />}
-          {selectedRole === 'client' && <ClientSignInForm />}
-          
-          {/* Fallback form for when no role is selected but form is shown */}
-          {!selectedRole && (
-            <>
-              {/* Messages */}
-              {successMessage && (
-                <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-700 flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-                  <span>{successMessage}</span>
-                </div>
-              )}
+          {/* Messages */}
+          {successMessage && (
+            <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-700 flex items-start gap-3">
+              <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+              <span>{successMessage}</span>
+            </div>
+          )}
 
-              {message && (
-                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
-                  {message}
-                </div>
-              )}
+          {message && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
+              {message}
+            </div>
+          )}
 
-              {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 Email address
@@ -204,7 +208,6 @@ export default function LoginPage() {
               )}
             </button>
           </form>
-          )}
 
           {selectedRole && (
             <>
@@ -226,6 +229,15 @@ export default function LoginPage() {
                 </button>
               </p>
             </>
+          )}
+
+          {!selectedRole && (
+            <p className="mt-8 text-center text-sm text-slate-600">
+              Don&apos;t have an account?{' '}
+              <Link href="/register" className="font-medium text-slate-900 hover:underline">
+                Create one
+              </Link>
+            </p>
           )}
 
           <p className="mt-6 pt-6 border-t border-slate-200 text-xs text-center text-slate-500">
