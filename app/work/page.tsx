@@ -17,6 +17,6 @@ export const metadata: Metadata = {
 }
 
 export default function WorkerPage() {
-  return <WorkerPageContent />
+  return <WorkerPageContent initialRole="worker" />
 }
 

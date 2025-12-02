@@ -17,6 +17,6 @@ export const metadata: Metadata = {
 }
 
 export default function ClientPage() {
-  return <ClientPageContent />
+  return <ClientPageContent initialRole="client" />
 }
 

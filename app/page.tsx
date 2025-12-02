@@ -441,12 +441,11 @@ export default function HomePage() {
       </section>
       </RoleSection>
 
-      {/* Two-Column Value Prop */}
-      <RoleSection role="both">
-      <section className="py-20 lg:py-28 bg-slate-50 border-t border-slate-200">
+      {/* Two-Column Value Prop - Worker */}
+      <RoleSection role="worker">
+      <section className="py-20 lg:py-28 bg-slate-50 border-t border-slate-200" data-role="worker">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-8">
-            {/* For Professionals */}
             <div className="bg-white p-8 lg:p-10 rounded-2xl border border-slate-200 shadow-sm">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-sky-50 text-sky-700 rounded-lg text-sm font-medium mb-6">
                 <Briefcase className="w-4 h-4" />
@@ -490,7 +489,49 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* For Clients */}
+            <div className="bg-slate-900 p-8 lg:p-10 rounded-2xl text-white">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 text-white rounded-lg text-sm font-medium mb-6">
+                <Zap className="w-4 h-4" />
+                Why Choose 2ndShift
+              </div>
+
+              <h3 className="text-2xl lg:text-3xl font-semibold mb-4">
+                Get paid faster.
+                <br />
+                <span className="text-sky-400">Zero fees.</span>
+              </h3>
+              <p className="text-white mb-8">
+                We built the platform for workers. No platform fees, 
+                instant payments, and all compliance handled.
+              </p>
+
+              <ul className="space-y-4">
+                {[
+                  { label: 'Paid within 24 hours', desc: 'Get your money fast, no waiting' },
+                  { label: 'Zero platform fees', desc: 'Keep 100% of what you earn' },
+                  { label: 'EarlyPay access', desc: 'Access earned money before project completion' },
+                  { label: 'Verified clients', desc: 'Work with trusted businesses only' },
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-sky-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <div className="font-medium text-white">{item.label}</div>
+                      <div className="text-sm text-white">{item.desc}</div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      </RoleSection>
+
+      {/* Two-Column Value Prop - Client */}
+      <RoleSection role="client">
+      <section className="py-20 lg:py-28 bg-slate-50 border-t border-slate-200" data-role="client">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-8">
             <div className="bg-slate-900 p-8 lg:p-10 rounded-2xl text-white">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 text-white rounded-lg text-sm font-medium mb-6">
                 <Building2 className="w-4 h-4" />
@@ -532,6 +573,40 @@ export default function HomePage() {
                 Post a Requirement
                 <ArrowRight className="w-4 h-4" />
               </Link>
+            </div>
+
+            <div className="bg-white p-8 lg:p-10 rounded-2xl border border-slate-200 shadow-sm">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-sky-50 text-sky-700 rounded-lg text-sm font-medium mb-6">
+                <Briefcase className="w-4 h-4" />
+                Why Choose 2ndShift
+              </div>
+
+              <h3 className="text-2xl lg:text-3xl font-bold text-[#111] mb-4">
+                All compliance handled.
+                <br />
+                <span className="text-sky-600">Zero paperwork.</span>
+              </h3>
+              <p className="text-[#333] mb-8">
+                We handle TDS, GST, contracts, and all legal requirements. 
+                You focus on getting work done.
+              </p>
+
+              <ul className="space-y-4">
+                {[
+                  { label: 'Automatic TDS deduction', desc: 'We handle all tax compliance' },
+                  { label: 'Professional contracts', desc: 'Legally binding agreements included' },
+                  { label: 'Payment protection', desc: 'Escrow ensures quality work' },
+                  { label: 'Replacement guarantee', desc: 'Not satisfied? We find a replacement' },
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <div className="font-semibold text-[#111]">{item.label}</div>
+                      <div className="text-sm text-[#333]">{item.desc}</div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
@@ -694,14 +769,14 @@ export default function HomePage() {
       </section>
       </RoleSection>
 
-      {/* CTA Section */}
-      <RoleSection role="both">
-      <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
+      {/* CTA Section - Worker */}
+      <RoleSection role="worker">
+      <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800" data-role="worker">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4 drop-shadow-lg">
+          <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4 drop-shadow-lg" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
             Ready to get started?
           </h2>
-          <p className="text-lg text-white/95 mb-10 max-w-2xl mx-auto font-medium">
+          <p className="text-lg text-white/95 mb-10 max-w-2xl mx-auto font-medium" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
             Join 2ndShift today. It&apos;s free to create an account.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -710,20 +785,68 @@ export default function HomePage() {
               onClick={() => handleCTAClick('I want to earn', 'worker')}
               className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
             >
-              I want to earn
+              Get Started Free
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link 
-              href={withRoleParam("/register?type=client", 'client')}
-              onClick={() => handleCTAClick('I want to hire', 'client')}
+              href={withRoleParam("/worker/discover", 'worker')}
+              onClick={() => handleCTAClick('Browse Jobs', 'worker')}
               className="inline-flex items-center justify-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-sky-700 transition-all shadow-lg hover:shadow-xl"
             >
-              I want to hire
+              Browse Jobs
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
       </section>
+      </RoleSection>
+
+      {/* CTA Section - Client */}
+      <RoleSection role="client">
+      <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800" data-role="client">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4 drop-shadow-lg" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+            Ready to hire talent?
+          </h2>
+          <p className="text-lg text-white/95 mb-10 max-w-2xl mx-auto font-medium" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+            Join 2ndShift today. It&apos;s free to create an account.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link 
+              href={withRoleParam("/register?type=client", 'client')}
+              onClick={() => handleCTAClick('I want to hire', 'client')}
+              className="inline-flex items-center justify-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-sky-700 transition-all shadow-lg hover:shadow-xl"
+            >
+              Get Started Free
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link 
+              href={withRoleParam("/workers", 'client')}
+              onClick={() => handleCTAClick('Browse Talent', 'client')}
+              className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
+            >
+              Browse Talent
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+      </RoleSection>
+
+      {/* CTA Section - No Role Selected */}
+      <RoleSection role="both" fallback={
+        <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4 drop-shadow-lg" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+              Ready to get started?
+            </h2>
+            <p className="text-lg text-white/95 mb-10 max-w-2xl mx-auto font-medium" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+              Choose your path above to see personalized content.
+            </p>
+          </div>
+        </section>
+      }>
+        <div></div>
       </RoleSection>
 
       {/* Footer */}
