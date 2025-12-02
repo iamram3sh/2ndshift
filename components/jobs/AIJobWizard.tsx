@@ -48,15 +48,11 @@ export function AIJobWizard({ onJobCreated, onCancel }: AIJobWizardProps) {
     setLoading(true)
     try {
       // Create job using the generated spec
-      const jobResponse = await apiClient.request('/jobs', {
-        method: 'POST',
-        body: JSON.stringify({
-          title: result.job_spec.title,
-          description: result.job_spec.description,
-          price_fixed: result.job_spec.estimated_price_min,
-          delivery_window: result.job_spec.delivery_window,
-          status: 'draft',
-        }),
+      const jobResponse = await apiClient.createJob({
+        title: result.job_spec.title,
+        description: result.job_spec.description,
+        price_fixed: result.job_spec.estimated_price_min,
+        delivery_window: result.job_spec.delivery_window,
       })
 
       if (jobResponse.error) {
