@@ -59,9 +59,9 @@ export function AlertsInbox({ userId }: { userId: string }) {
 
       // Refresh alerts
       await fetchAlerts()
-      alert('Application submitted successfully!')
+      window.alert('Application submitted successfully!')
     } catch (error: any) {
-      alert(error.message || 'Failed to apply')
+      window.alert(error.message || 'Failed to apply')
     } finally {
       setResponding(null)
     }
