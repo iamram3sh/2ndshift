@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   return requireAuth(request, async (authReq) => {
     try {
       // Only admins and clients can query the pool
-      if (!['admin', 'client'].includes(authReq.userRole)) {
+      if (!authReq.userRole || !['admin', 'client'].includes(authReq.userRole)) {
         return NextResponse.json(
           { error: 'Unauthorized' },
           { status: 403 }
