@@ -17,13 +17,13 @@ export function Button({
   disabled,
   ...props
 }: ButtonProps) {
-  const baseStyles = 'font-semibold rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
+  const baseStyles = 'font-semibold rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95 focus:outline-none'
   
   const variants = {
-    primary: 'bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500',
-    secondary: 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-2 focus:ring-gray-500',
-    outline: 'border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 focus:ring-2 focus:ring-indigo-500',
-    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-2 focus:ring-red-500'
+    primary: 'bg-[var(--brand-primary)] text-white hover:bg-[var(--brand-primary-dark)] focus:ring-4 focus:ring-[var(--brand-primary-light)]/20 shadow-lg hover:shadow-xl',
+    secondary: 'bg-[var(--stone-600)] text-white hover:bg-[var(--stone-700)] focus:ring-4 focus:ring-[var(--stone-400)]/20 shadow-md hover:shadow-lg',
+    outline: 'border-2 border-[var(--brand-primary)] text-[var(--brand-primary)] hover:bg-[var(--brand-primary)] hover:text-white focus:ring-4 focus:ring-[var(--brand-primary-light)]/20 transition-colors',
+    danger: 'bg-[var(--error)] text-white hover:bg-[var(--error-light)] focus:ring-4 focus:ring-[var(--error-light)]/20 shadow-lg hover:shadow-xl'
   }
   
   const sizes = {

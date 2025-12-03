@@ -12,8 +12,9 @@ export function Card({ children, className, hover = false, onClick }: CardProps)
   return (
     <div
       className={clsx(
-        'bg-white rounded-xl shadow-sm border border-gray-200 p-6',
-        hover && 'hover:shadow-md transition-shadow cursor-pointer',
+        'bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-primary)] p-6 transition-all duration-300',
+        hover && 'hover:shadow-xl hover:border-[var(--brand-primary-light)] hover:scale-[1.02] cursor-pointer',
+        'shadow-sm hover:shadow-lg',
         className
       )}
       onClick={onClick}
@@ -28,11 +29,11 @@ export function CardHeader({ children, className }: { children: ReactNode; class
 }
 
 export function CardTitle({ children, className }: { children: ReactNode; className?: string }) {
-  return <h3 className={clsx('text-xl font-bold text-gray-900', className)}>{children}</h3>
+  return <h3 className={clsx('text-xl font-bold text-[var(--text-primary)]', className)}>{children}</h3>
 }
 
 export function CardDescription({ children, className }: { children: ReactNode; className?: string }) {
-  return <p className={clsx('text-gray-600', className)}>{children}</p>
+  return <p className={clsx('text-[var(--text-secondary)]', className)}>{children}</p>
 }
 
 export function CardContent({ children, className }: { children: ReactNode; className?: string }) {
