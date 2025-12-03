@@ -37,10 +37,10 @@ export default function ProgrammingCategoryPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-24 pb-16 bg-gradient-to-br from-slate-900 to-slate-800 border-b border-slate-800">
+      <section className="py-16 md:py-20 bg-gradient-to-br from-slate-900 to-slate-800 border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-sky-500/10 text-sky-400 rounded-full text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-sky-500/20 backdrop-blur-sm border border-sky-500/30 text-sky-300 rounded-full text-sm font-medium mb-6">
               <Server className="w-4 h-4" />
               Senior Backend & Systems Programming
             </div>
@@ -49,25 +49,25 @@ export default function ProgrammingCategoryPage() {
               {category?.name}
             </h1>
             
-            <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-white/95 mb-8 max-w-3xl mx-auto leading-relaxed">
               {category?.description}
             </p>
 
             <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <div className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg text-white text-sm">
-                <span className="font-medium">Complex backend & API work</span>
+              <div className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white text-sm">
+                <span className="font-medium">Complex Backend APIs</span>
               </div>
-              <div className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg text-white text-sm">
-                <span className="font-medium">Performance & architecture</span>
+              <div className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white text-sm">
+                <span className="font-medium">Performance & Architecture</span>
               </div>
-              <div className="px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg text-white text-sm">
-                <span className="font-medium">Production-critical fixes</span>
+              <div className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white text-sm">
+                <span className="font-medium">Production-Critical Fixes</span>
               </div>
             </div>
 
             <Link
               href="/projects/create?category=programming"
-              className="inline-flex items-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-sky-700 transition-all shadow-lg hover:shadow-xl"
+              className="inline-flex items-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
             >
               Post a Programming Task
               <ArrowRight className="w-5 h-5" />
@@ -166,7 +166,7 @@ export default function ProgrammingCategoryPage() {
       </section>
 
       {/* Microtasks Grid */}
-      <section className="py-16 bg-white">
+      <section className="py-16 md:py-20 bg-white border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-[#111] mb-2">
@@ -250,21 +250,30 @@ export default function ProgrammingCategoryPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
+      <section className="py-16 md:py-20 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4">
-            Need a custom programming task?
+            Ready to start earning?
           </h2>
-          <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
-            Post your requirement and get matched with verified programming experts.
+          <p className="text-lg text-white/95 mb-8 max-w-2xl mx-auto">
+            Join 2ndShift today. It's free to create an account and start working on high-value programming projects.
           </p>
-          <Link
-            href="/projects/create?category=programming"
-            className="inline-flex items-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-sky-700 transition-all shadow-lg hover:shadow-xl"
-          >
-            Post a Programming Task
-            <ArrowRight className="w-5 h-5" />
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/register?type=worker"
+              className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
+            >
+              Get Started Free
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+            <Link
+              href="/jobs"
+              className="inline-flex items-center justify-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-sky-700 transition-all shadow-lg hover:shadow-xl"
+            >
+              Browse Jobs
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
         </div>
       </section>
     </div>
