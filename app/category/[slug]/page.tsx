@@ -1,11 +1,11 @@
 'use client'
 
 import { use } from 'react'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowRight, Server } from 'lucide-react'
-import { HIGH_VALUE_CATEGORIES, getCategoryBySlug } from '@/lib/constants/highValueCategories'
+import { getCategoryBySlug } from '@/lib/constants/highValueCategories'
 import { getMicrotasksByCategory, type HighValueMicrotask } from '@/data/highValueMicrotasks'
+import { CategoryHero } from '@/components/category/CategoryHero'
+import { BottomCTA } from '@/components/category/BottomCTA'
 
 interface CategoryPageProps {
   params: Promise<{ slug: string }>
@@ -35,92 +35,13 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const microtaskCategory = categoryIdToMicrotaskCategory[category.id] || category.slug as HighValueMicrotask['category']
   const microtasks = getMicrotasksByCategory(microtaskCategory)
 
-  // Category-specific hero content
-  const categoryHeroContent: Record<string, { badge: string; tags: string[] }> = {
-    'devops': {
-      badge: 'CI/CD & Infrastructure Automation',
-      tags: ['Docker & Kubernetes', 'CI/CD Pipelines', 'Infrastructure as Code']
-    },
-    'cloud': {
-      badge: 'Multi-Cloud Solutions',
-      tags: ['AWS, Azure, GCP', 'Serverless Architecture', 'Cloud Security']
-    },
-    'networking': {
-      badge: 'Enterprise Network Infrastructure',
-      tags: ['Network Architecture', 'VPN & Security', 'Load Balancing']
-    },
-    'security': {
-      badge: 'Enterprise Security & Compliance',
-      tags: ['Security Audits', 'Penetration Testing', 'Compliance & Hardening']
-    },
-    'ai': {
-      badge: 'AI & LLM Engineering',
-      tags: ['LLM Fine-tuning', 'RAG Pipelines', 'Vector Databases']
-    },
-    'data': {
-      badge: 'Big Data & Analytics',
-      tags: ['ETL Pipelines', 'Data Warehousing', 'Real-time Streaming']
-    },
-    'sre': {
-      badge: 'Site Reliability & Observability',
-      tags: ['Monitoring & Alerting', 'Incident Response', 'System Reliability']
-    },
-    'db': {
-      badge: 'Database Architecture & Optimization',
-      tags: ['Query Optimization', 'Database Migrations', 'Replication & Scaling']
-    },
-    'database': {
-      badge: 'Database Architecture & Optimization',
-      tags: ['Query Optimization', 'Database Migrations', 'Replication & Scaling']
-    },
-    'programming': {
-      badge: 'Senior Backend & Systems Programming',
-      tags: ['Complex Backend APIs', 'Performance & Architecture', 'Production-Critical Fixes']
-    }
-  }
-
-  const heroContent = categoryHeroContent[category.id] || categoryHeroContent[category.slug] || {
-    badge: category.name,
-    tags: []
-  }
+  // Map category slug for CategoryHero (handle 'db' -> 'database')
+  const heroSlug = category.id === 'db' ? 'database' : category.slug
 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="py-16 md:py-20 bg-gradient-to-br from-slate-900 to-slate-800 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-sky-500/20 backdrop-blur-sm border border-sky-500/30 text-sky-300 rounded-full text-sm font-medium mb-6">
-              <category.icon className="w-4 h-4" />
-              {heroContent.badge}
-            </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6">
-              {category.name}
-            </h1>
-            <p className="text-xl text-white/95 mb-8 max-w-3xl mx-auto leading-relaxed">
-              {category.description}
-            </p>
-            
-            {heroContent.tags.length > 0 && (
-              <div className="flex flex-wrap justify-center gap-4 mb-8">
-                {heroContent.tags.map((tag, index) => (
-                  <div key={index} className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white text-sm">
-                    <span className="font-medium">{tag}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <Link
-              href={`/projects/create?category=${category.slug}`}
-              className="inline-flex items-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
-            >
-              Post a {category.name} Task
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
+      <CategoryHero slug={heroSlug} />
 
       {/* Microtasks Grid */}
       {microtasks.length > 0 && (
@@ -176,32 +97,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       )}
 
       {/* Bottom CTA Section */}
-      <section className="py-16 md:py-20 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4">
-            Ready to start earning?
-          </h2>
-          <p className="text-lg text-white/95 mb-8 max-w-2xl mx-auto">
-            Join 2ndShift today. It's free to create an account and start working on high-value {category.name.toLowerCase()} projects.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/register?type=worker"
-              className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
-            >
-              Get Started Free
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-            <Link
-              href="/jobs"
-              className="inline-flex items-center justify-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-sky-700 transition-all shadow-lg hover:shadow-xl"
-            >
-              Browse Jobs
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
+      <BottomCTA categoryName={category.name} />
     </div>
   )
 }

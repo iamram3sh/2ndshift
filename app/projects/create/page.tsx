@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
 import apiClient from '@/lib/apiClient'
 import { 
@@ -10,8 +10,9 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { CATEGORY_CONFIG, CategorySlug, getCategoryConfig } from '@/lib/config/categoryConfig'
 
-const SKILL_OPTIONS = [
+const GENERIC_SKILL_OPTIONS = [
   'JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'Java',
   'Design', 'Marketing', 'Content Writing', 'Data Analysis', 'SEO',
   'Video Editing', 'Graphic Design', 'Excel', 'SQL', 'Mobile App',
@@ -33,6 +34,7 @@ interface Milestone {
 
 export default function CreateProjectPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [step, setStep] = useState(1)
@@ -50,6 +52,11 @@ export default function CreateProjectPage() {
   })
   const [milestones, setMilestones] = useState<Milestone[]>([])
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  // Get category from query params and determine skills to show
+  const categoryParam = searchParams.get('category')
+  const categoryConfig = categoryParam ? getCategoryConfig(categoryParam) : null
+  const skillOptions = categoryConfig?.skills || GENERIC_SKILL_OPTIONS
 
   // Calculate platform fee and escrow amounts
   const budget = parseFloat(formData.budget) || 0
@@ -299,9 +306,14 @@ export default function CreateProjectPage() {
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-3">
                     Required Skills
+                    {categoryConfig && (
+                      <span className="ml-2 text-xs text-slate-500 font-normal">
+                        ({categoryConfig.title} skills)
+                      </span>
+                    )}
                   </label>
                   <div className="flex flex-wrap gap-2">
-                    {SKILL_OPTIONS.map(skill => (
+                    {skillOptions.map(skill => (
                       <button
                         key={skill}
                         type="button"

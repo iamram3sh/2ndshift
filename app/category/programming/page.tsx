@@ -3,13 +3,15 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { 
-  ArrowRight, Server, Code, Database, Zap, Shield, 
+  Code, Database, Zap, Shield, 
   Clock, IndianRupee, CheckCircle, Filter, Search,
   Coffee, Globe, Layers
 } from 'lucide-react'
 import { PROGRAMMING_MICROTASKS } from '@/data/highValueProgrammingTasks'
 import { HIGH_VALUE_CATEGORIES } from '@/lib/constants/highValueCategories'
 import { formatCurrency } from '@/lib/utils/formatCurrency'
+import { CategoryHero } from '@/components/category/CategoryHero'
+import { BottomCTA } from '@/components/category/BottomCTA'
 
 export default function ProgrammingCategoryPage() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('all')
@@ -37,44 +39,7 @@ export default function ProgrammingCategoryPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="py-16 md:py-20 bg-gradient-to-br from-slate-900 to-slate-800 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-sky-500/20 backdrop-blur-sm border border-sky-500/30 text-sky-300 rounded-full text-sm font-medium mb-6">
-              <Server className="w-4 h-4" />
-              Senior Backend & Systems Programming
-            </div>
-            
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6">
-              {category?.name}
-            </h1>
-            
-            <p className="text-xl text-white/95 mb-8 max-w-3xl mx-auto leading-relaxed">
-              {category?.description}
-            </p>
-
-            <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <div className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white text-sm">
-                <span className="font-medium">Complex Backend APIs</span>
-              </div>
-              <div className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white text-sm">
-                <span className="font-medium">Performance & Architecture</span>
-              </div>
-              <div className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white text-sm">
-                <span className="font-medium">Production-Critical Fixes</span>
-              </div>
-            </div>
-
-            <Link
-              href="/projects/create?category=programming"
-              className="inline-flex items-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
-            >
-              Post a Programming Task
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
+      <CategoryHero slug="programming" />
 
       {/* Stats Section */}
       <section className="py-12 bg-slate-50 border-b border-slate-200">
@@ -250,32 +215,7 @@ export default function ProgrammingCategoryPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-20 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4">
-            Ready to start earning?
-          </h2>
-          <p className="text-lg text-white/95 mb-8 max-w-2xl mx-auto">
-            Join 2ndShift today. It's free to create an account and start working on high-value programming projects.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/register?type=worker"
-              className="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
-            >
-              Get Started Free
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-            <Link
-              href="/jobs"
-              className="inline-flex items-center justify-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-sky-700 transition-all shadow-lg hover:shadow-xl"
-            >
-              Browse Jobs
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
+      <BottomCTA categoryName={category?.name} />
     </div>
   )
 }
