@@ -144,13 +144,13 @@ export function WorkerPageContent() {
             </div>
 
             <div className="text-center">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--text-primary)] tracking-tight mb-6 leading-tight">
                 Earn from Anywhere.
                 <br />
-                <span className="text-[#111]">Build a Second Income with Skills You Already Have.</span>
+                <span className="text-[var(--text-primary)]">Build a Second Income with Skills You Already Have.</span>
               </h1>
 
-              <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
+              <p className="text-lg lg:text-xl text-[var(--text-secondary)] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
                 Remote-friendly micro jobs & projects from real clients. No fake ratings. No false promises.
               </p>
 
@@ -158,7 +158,7 @@ export function WorkerPageContent() {
                 <Link 
                   href={withRoleParam("/register?type=worker", 'worker')}
                   onClick={() => handleCTAClick('Get Remote Work', 'worker')}
-                  className="inline-flex items-center justify-center gap-2 bg-[#111] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  className="inline-flex items-center justify-center gap-2 bg-[var(--brand-primary)] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[var(--brand-primary-dark)] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
                   Get Remote Work
                   <ArrowRight className="w-5 h-5" />
@@ -166,14 +166,14 @@ export function WorkerPageContent() {
                 <Link 
                   href={withRoleParam("/worker/discover", 'worker')}
                   onClick={() => handleCTAClick('Browse Jobs', 'worker')}
-                  className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold border-2 border-[#111] hover:bg-slate-50 transition-all"
+                  className="inline-flex items-center justify-center gap-2 bg-white text-[var(--text-primary)] px-8 py-4 rounded-lg font-semibold border-2 border-[var(--border-primary)] hover:bg-[var(--bg-secondary)] transition-all"
                 >
                   Browse Jobs
                   <ArrowUpRight className="w-5 h-5" />
                 </Link>
               </div>
 
-              <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#333]">
+              <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-[var(--text-secondary)]">
                 <span className="flex items-center gap-2">
                   <Timer className="w-4 h-4 text-emerald-600" />
                   Paid within 24 hours
@@ -236,16 +236,16 @@ export function WorkerPageContent() {
                 <span className="flex h-2 w-2 rounded-full bg-sky-500 animate-pulse"></span>
                 Open Opportunities
               </div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-[#111] tracking-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-[var(--text-primary)] tracking-tight">
                 Work that fits your life
               </h2>
-              <p className="text-[#333] mt-2">
+              <p className="text-[var(--text-secondary)] mt-2">
                 From quick gigs to full-time roles. Choose what works for you.
               </p>
             </div>
             <Link 
               href={withRoleParam("/worker/discover", 'worker')}
-              className="inline-flex items-center gap-2 text-[#111] font-semibold hover:text-sky-600 transition-colors"
+              className="inline-flex items-center gap-2 text-[var(--text-primary)] font-semibold hover:text-sky-600 transition-colors"
             >
               View all opportunities
               <ArrowRight className="w-4 h-4" />
@@ -263,11 +263,11 @@ export function WorkerPageContent() {
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-[#111] group-hover:text-sky-600 transition-colors">
+                      <h3 className="font-semibold text-[var(--text-primary)] group-hover:text-sky-600 transition-colors">
                         {job.title}
                       </h3>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-[#333]">
+                    <div className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
                       <Timer className="w-3.5 h-3.5" />
                       <span>{job.duration}</span>
                       <span>•</span>
@@ -295,7 +295,7 @@ export function WorkerPageContent() {
 
                 <div className="flex items-center justify-between pt-4 border-t border-slate-100">
                   <div>
-                    <div className="text-lg font-semibold text-[#111]">{job.budget}</div>
+                    <div className="text-lg font-semibold text-[var(--text-primary)]">{job.budget}</div>
                   </div>
                   <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-sky-100 transition-colors">
                     <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-sky-600 transition-colors" />
@@ -306,7 +306,7 @@ export function WorkerPageContent() {
           </div>
 
           <div className="text-center mt-10 p-6 bg-slate-50 rounded-2xl border border-slate-200">
-            <p className="text-[#333] mb-4">
+            <p className="text-[var(--text-secondary)] mb-4">
               Sign up free to see company details and apply to opportunities
             </p>
             <Link
@@ -331,12 +331,12 @@ export function WorkerPageContent() {
                 For Professionals
               </div>
 
-              <h3 className="text-2xl lg:text-3xl font-bold text-[#111] mb-4">
+              <h3 className="text-2xl lg:text-3xl font-bold text-[var(--text-primary)] mb-4">
                 Use your skills.
                 <br />
                 <span className="text-sky-600">Earn on your terms.</span>
               </h3>
-              <p className="text-[#333] mb-8">
+              <p className="text-[var(--text-secondary)] mb-8">
                 Turn your free time into income. Work on projects you love, 
                 with clients who value your expertise.
               </p>
@@ -351,8 +351,8 @@ export function WorkerPageContent() {
                   <li key={i} className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5 flex-shrink-0" />
                     <div>
-                      <div className="font-semibold text-[#111]">{item.label}</div>
-                      <div className="text-sm text-[#333]">{item.desc}</div>
+                      <div className="font-semibold text-[var(--text-primary)]">{item.label}</div>
+                      <div className="text-sm text-[var(--text-secondary)]">{item.desc}</div>
                     </div>
                   </li>
                 ))}
@@ -409,10 +409,10 @@ export function WorkerPageContent() {
       <section className="py-20 lg:py-28 bg-white border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#111] tracking-tight mb-4">
-              Why choose 2ndShift?
+            <h2 className="text-3xl lg:text-4xl font-bold text-[var(--text-primary)] tracking-tight mb-4">
+              Built for Indian professionals
             </h2>
-            <p className="text-lg text-[#333] max-w-2xl mx-auto">
+            <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
               We built the platform we wished existed. Here&apos;s what makes us different.
             </p>
           </div>
@@ -452,8 +452,8 @@ export function WorkerPageContent() {
             ].map((feature, i) => (
               <div key={i} className="p-6 bg-white rounded-xl border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all">
                 <feature.icon className="w-10 h-10 text-sky-600 mb-4" />
-                <h3 className="text-lg font-bold text-[#111] mb-2">{feature.title}</h3>
-                <p className="text-[#333] text-sm">{feature.description}</p>
+                <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">{feature.title}</h3>
+                <p className="text-[var(--text-secondary)] text-sm">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -519,7 +519,7 @@ export function WorkerPageContent() {
             <Link 
               href={withRoleParam("/register?type=worker", 'worker')}
               onClick={() => handleCTAClick('I want to earn', 'worker')}
-              className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
+              className="inline-flex items-center justify-center gap-2 bg-white text-[var(--text-primary)] px-8 py-4 rounded-lg font-semibold hover:bg-[var(--bg-secondary)] transition-all shadow-lg hover:shadow-xl"
             >
               Get Started Free
               <ArrowRight className="w-4 h-4" />
@@ -545,43 +545,43 @@ export function WorkerPageContent() {
                 <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
                   <Layers className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-lg font-semibold text-[#111]">2ndShift</span>
+                <span className="text-lg font-semibold text-[var(--text-primary)]">2ndShift</span>
               </Link>
-              <p className="text-sm text-[#333] mb-4">
+              <p className="text-sm text-[var(--text-secondary)] mb-4">
                 Work on your terms.<br />Get paid with confidence.
               </p>
               <div className="flex gap-3">
-                <a href="#" className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-[#333] hover:bg-slate-200 transition-colors">
+                <a href="#" className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-[var(--text-secondary)] hover:bg-slate-200 transition-colors">
                   <Twitter className="w-4 h-4" />
                 </a>
-                <a href="#" className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-[#333] hover:bg-slate-200 transition-colors">
+                <a href="#" className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-[var(--text-secondary)] hover:bg-slate-200 transition-colors">
                   <Linkedin className="w-4 h-4" />
                 </a>
               </div>
             </div>
 
             <div>
-              <h4 className="font-bold text-[#111] mb-4">For Professionals</h4>
+              <h4 className="font-bold text-[var(--text-primary)] mb-4">For Professionals</h4>
               <ul className="space-y-3 text-sm">
-                <li><Link href="/for-workers" className="text-[#333] hover:text-[#111] transition-colors">Why 2ndShift</Link></li>
-                <li><Link href={withRoleParam("/worker/discover", 'worker')} className="text-[#333] hover:text-[#111] transition-colors">Find Work</Link></li>
-                <li><Link href="/features" className="text-[#333] hover:text-[#111] transition-colors">How Shifts Work</Link></li>
-                <li><Link href="/pricing" className="text-[#333] hover:text-[#111] transition-colors">Pricing</Link></li>
+                <li><Link href="/for-workers" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">Why 2ndShift</Link></li>
+                <li><Link href={withRoleParam("/worker/discover", 'worker')} className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">Find Work</Link></li>
+                <li><Link href="/features" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">How Shifts Work</Link></li>
+                <li><Link href="/pricing" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">Pricing</Link></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-bold text-[#111] mb-4">Legal</h4>
+              <h4 className="font-bold text-[var(--text-primary)] mb-4">Legal</h4>
               <ul className="space-y-3 text-sm">
-                <li><Link href="/terms" className="text-[#333] hover:text-[#111] transition-colors">Terms</Link></li>
-                <li><Link href="/privacy" className="text-[#333] hover:text-[#111] transition-colors">Privacy</Link></li>
-                <li><Link href="/security" className="text-[#333] hover:text-[#111] transition-colors">Security</Link></li>
+                <li><Link href="/terms" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">Terms</Link></li>
+                <li><Link href="/privacy" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">Privacy</Link></li>
+                <li><Link href="/security" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">Security</Link></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-bold text-[#111] mb-4">Contact</h4>
-              <ul className="space-y-3 text-sm text-[#333]">
+              <h4 className="font-bold text-[var(--text-primary)] mb-4">Contact</h4>
+              <ul className="space-y-3 text-sm text-[var(--text-secondary)]">
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
                   hello@2ndshift.in
@@ -595,10 +595,10 @@ export function WorkerPageContent() {
           </div>
 
           <div className="pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-[#333]">
+            <p className="text-sm text-[var(--text-secondary)]">
               © 2025 2ndShift. All rights reserved.
             </p>
-            <p className="text-sm text-[#333]">
+            <p className="text-sm text-[var(--text-secondary)]">
               Made with ❤️ in India
             </p>
           </div>

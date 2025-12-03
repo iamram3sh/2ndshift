@@ -93,10 +93,10 @@ export function RoleToggle({ variant = 'hero', onRoleChange, className = '' }: R
             id="worker-tab"
             onClick={() => handleRoleSelect('worker')}
             onKeyDown={(e) => handleKeyDown(e, 'worker')}
-            className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all flex items-center gap-3 ${
+            className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all flex items-center gap-3 $\{
               role === 'worker'
-                ? 'bg-[#111] text-white shadow-lg'
-                : 'bg-white text-[#111] border-2 border-[#111] hover:bg-slate-50'
+                ? 'bg-[var(--brand-primary)] text-white shadow-lg'
+                : 'bg-white text-[var(--text-primary)] border-2 border-[var(--border-primary)] hover:bg-[var(--bg-secondary)]'
             }`}
           >
             <Briefcase className="w-5 h-5" />
@@ -113,8 +113,8 @@ export function RoleToggle({ variant = 'hero', onRoleChange, className = '' }: R
             onKeyDown={(e) => handleKeyDown(e, 'client')}
             className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all flex items-center gap-3 ${
               role === 'client'
-                ? 'bg-[#111] text-white shadow-lg'
-                : 'bg-white text-[#111] border-2 border-[#111] hover:bg-slate-50'
+                ? 'bg-[var(--brand-primary)] text-white shadow-lg'
+                : 'bg-white text-[var(--text-primary)] border-2 border-[var(--border-primary)] hover:bg-[var(--bg-secondary)]'
             }`}
           >
             <Users className="w-5 h-5" />

@@ -151,7 +151,7 @@ export default function HomePage() {
       </nav>
 
       {/* Hero Section - Professional Conversion-Focused */}
-      <section className="relative pt-24 lg:pt-32 pb-16 lg:pb-24 bg-white border-b border-slate-200">
+      <section className="relative pt-24 lg:pt-32 pb-16 lg:pb-24 bg-[var(--bg-primary)] border-b border-[var(--border-primary)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
             {/* Role Toggle */}
@@ -162,25 +162,25 @@ export default function HomePage() {
             {/* Worker-Focused Hero */}
             <RoleSection role="worker" sectionId="hero-worker" fallback={!isRoleEnabled || role === null ? (
               <div className="text-center">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--text-primary)] tracking-tight mb-6 leading-tight">
                   Work on Your Terms.
                   <br />
-                  <span className="text-[#111]">Get Paid with Confidence.</span>
+                  <span className="text-[var(--text-primary)]">Get Paid with Confidence.</span>
                 </h1>
-                <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
+                <p className="text-lg lg:text-xl text-[var(--text-secondary)] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
                   Choose your path above to see personalized content.
                 </p>
               </div>
             ) : null}>
             {(
               <div className="text-center">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--text-primary)] tracking-tight mb-6 leading-tight">
                   Earn from Anywhere.
                   <br />
-                  <span className="text-[#111]">Build a Second Income with Skills You Already Have.</span>
+                  <span className="text-[var(--text-primary)]">Build a Second Income with Skills You Already Have.</span>
                 </h1>
 
-                <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
+                <p className="text-lg lg:text-xl text-[var(--text-secondary)] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
                   Remote-friendly micro jobs & projects from real clients. No fake ratings. No false promises.
                 </p>
 
@@ -189,7 +189,7 @@ export default function HomePage() {
                   <Link 
                     href={withRoleParam("/register?type=worker", 'worker')}
                     onClick={() => handleCTAClick('Get Remote Work', 'worker')}
-                    className="inline-flex items-center justify-center gap-2 bg-[#111] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    className="inline-flex items-center justify-center gap-2 bg-[var(--brand-primary)] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[var(--brand-primary-dark)] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                   >
                     Get Remote Work
                     <ArrowRight className="w-5 h-5" />
@@ -197,7 +197,7 @@ export default function HomePage() {
                   <Link 
                     href={withRoleParam("/worker/discover", 'worker')}
                     onClick={() => handleCTAClick('Browse Jobs', 'worker')}
-                    className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold border-2 border-[#111] hover:bg-slate-50 transition-all"
+                    className="inline-flex items-center justify-center gap-2 bg-white text-[var(--text-primary)] px-8 py-4 rounded-lg font-semibold border-2 border-[var(--border-primary)] hover:bg-[var(--bg-secondary)] transition-all"
                   >
                     Browse Jobs
                     <ArrowUpRight className="w-5 h-5" />
@@ -227,13 +227,13 @@ export default function HomePage() {
             <RoleSection role="client" sectionId="hero-client">
             {(
               <div className="text-center">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--text-primary)] tracking-tight mb-6 leading-tight">
                   Hire Talent Fast.
                   <br />
-                  <span className="text-[#111]">Zero Noise. Only Verified Workers.</span>
+                  <span className="text-[var(--text-primary)]">Zero Noise. Only Verified Workers.</span>
                 </h1>
 
-                <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
+                <p className="text-lg lg:text-xl text-[var(--text-secondary)] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
                   Get remote workers, micro-teams, and on-demand task execution within hours.
                 </p>
 
@@ -242,7 +242,7 @@ export default function HomePage() {
                   <Link 
                     href={withRoleParam("/register?type=client", 'client')}
                     onClick={() => handleCTAClick('Hire a Worker', 'client')}
-                    className="inline-flex items-center justify-center gap-2 bg-[#111] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    className="inline-flex items-center justify-center gap-2 bg-[var(--brand-primary)] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[var(--brand-primary-dark)] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                   >
                     Hire a Worker
                     <ArrowRight className="w-5 h-5" />
@@ -250,7 +250,7 @@ export default function HomePage() {
                   <Link 
                     href={withRoleParam("/workers", 'client')}
                     onClick={() => handleCTAClick('Browse Talent', 'client')}
-                    className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold border-2 border-[#111] hover:bg-slate-50 transition-all"
+                    className="inline-flex items-center justify-center gap-2 bg-white text-[var(--text-primary)] px-8 py-4 rounded-lg font-semibold border-2 border-[var(--border-primary)] hover:bg-[var(--bg-secondary)] transition-all"
                   >
                     Browse Talent
                     <ArrowUpRight className="w-5 h-5" />
@@ -281,15 +281,15 @@ export default function HomePage() {
 
       {/* What You Can Do */}
       <RoleSection role="both">
-      <section className="py-16 bg-slate-900 border-t border-slate-800">
+      <section className="py-16 bg-[var(--bg-inverse)] border-t border-[var(--border-primary)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid sm:grid-cols-3 gap-8 text-center">
             <div>
               <div className="w-12 h-12 bg-sky-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Coffee className="w-6 h-6 text-sky-400" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Quick Tasks</h3>
-              <p className="text-white text-sm">
+              <h3 className="text-lg font-semibold text-[var(--text-inverse)] mb-2">Quick Tasks</h3>
+              <p className="text-[var(--text-inverse)] text-sm">
                 Logo design, bug fixes, content writing. Get small tasks done in hours, not days.
               </p>
             </div>
