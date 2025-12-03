@@ -13,8 +13,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       <div className="w-full">
         {label && (
           <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-          {label}
-        </label>
+            {label}
+          </label>
+        )}
         <input
           ref={ref}
           className={clsx(
