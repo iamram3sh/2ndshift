@@ -13,10 +13,10 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { clientId: string } }
+  context: { params: Promise<{ clientId: string }> }
 ) {
   try {
-    const { clientId } = params
+    const { clientId } = await context.params
 
     const { data: verification } = await supabase
       .from('client_verifications')
