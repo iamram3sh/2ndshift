@@ -71,7 +71,9 @@ export default function RegisterPage() {
       })
       
       if (result.error) {
-        throw new Error(result.error.message || 'Registration failed')
+        // Show detailed error message if available
+        const errorMessage = result.error.details || result.error.message || result.error.error || 'Registration failed'
+        throw new Error(errorMessage)
       }
       
       if (result.data?.user) {
@@ -95,7 +97,14 @@ export default function RegisterPage() {
         setTimeout(() => router.push(targetRoute), 1500)
       }
     } catch (error: any) {
-      setMessage(error.message || 'Registration failed. Please try again.')
+      console.error('Registration error:', error)
+      const errorMessage = error.message || error.details || 'Registration failed. Please try again.'
+      setMessage(errorMessage)
+      
+      // Log to console for debugging
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Full error:', error)
+      }
     } finally {
       setIsLoading(false)
     }

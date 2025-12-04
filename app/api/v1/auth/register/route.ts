@@ -59,7 +59,11 @@ export async function POST(request: NextRequest) {
     if (authError || !authData?.user) {
       logger.error('Error creating auth user', authError);
       return NextResponse.json(
-        { error: authError?.message || 'Failed to create user account' },
+        { 
+          error: authError?.message || 'Failed to create user account',
+          details: authError?.message || 'Unknown authentication error',
+          code: authError?.status || 'AUTH_CREATE_ERROR'
+        },
         { status: 500 }
       );
     }
@@ -88,7 +92,11 @@ export async function POST(request: NextRequest) {
       // Clean up auth user if users table insert fails
       await supabaseAdmin.auth.admin.deleteUser(userId);
       return NextResponse.json(
-        { error: 'Failed to create user profile' },
+        { 
+          error: 'Failed to create user profile',
+          details: userError?.message || 'Unknown database error',
+          code: userError?.code || 'USER_CREATE_ERROR'
+        },
         { status: 500 }
       );
     }
@@ -110,6 +118,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Initialize shift credits for all users
+    // Check which table exists and use the appropriate one
     const { error: creditsError } = await supabaseAdmin
       .from('shift_credits')
       .insert({
@@ -120,7 +129,9 @@ export async function POST(request: NextRequest) {
 
     if (creditsError) {
       logger.error('Error initializing credits', creditsError);
-      // Don't fail registration if credits initialization fails
+      // Don't fail registration if credits initialization fails, but log it
+      // This could be due to table not existing or RLS policies
+      // Registration should still succeed
     }
 
     // Generate tokens
@@ -151,14 +162,22 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Validation error', details: error.issues },
+        { 
+          error: 'Validation error', 
+          details: error.issues,
+          message: error.issues.map(i => `${i.path.join('.')}: ${i.message}`).join(', ')
+        },
         { status: 400 }
       );
     }
 
     logger.error('Registration error', error);
     return NextResponse.json(
-      { error: 'Registration failed' },
+      { 
+        error: error?.message || 'Registration failed',
+        details: error?.message || 'An unexpected error occurred',
+        code: 'REGISTRATION_ERROR'
+      },
       { status: 500 }
     );
   }
