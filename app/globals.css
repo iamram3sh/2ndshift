@@ -272,29 +272,34 @@ section.bg-gradient-to-br div:not([class*="bg-white"]):not([class*="bg-amber"]) 
 .pricing-shift-price,
 .pricing-shift-per-shift {
   color: #ffffff !important;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.6), 0 0 8px rgba(0,0,0,0.2) !important;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8), 0 0 12px rgba(0,0,0,0.4) !important;
+  font-weight: 600 !important;
 }
 
 .pricing-shift-popular-number,
 .pricing-shift-popular-price {
   color: #ffffff !important;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4) !important;
+  font-weight: 700 !important;
 }
 
 .pricing-shift-popular-label,
 .pricing-shift-popular-per-shift {
   color: #fef3c7 !important;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
+  font-weight: 500 !important;
 }
 
 .pricing-shift-save {
   color: #86efac !important;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.4) !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5) !important;
+  font-weight: 600 !important;
 }
 
 .pricing-shift-best-value {
   color: #fef3c7 !important;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3) !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4) !important;
+  font-weight: 600 !important;
 }
 
 .pricing-premium-badge {
@@ -403,8 +408,40 @@ section.bg-gradient-to-br div:not([class*="bg-white"]):not([class*="bg-amber"]) 
   color: #ffffff !important;
 }
 
-.pricing-shift-card *:not([class*="bg-white"]):not([class*="bg-amber"]) {
+/* Ensure all text in shift cards is visible with proper contrast */
+.pricing-shift-card * {
   color: inherit !important;
+}
+
+/* Override for specific shift card text classes - ensure maximum visibility */
+.pricing-shift-card .pricing-shift-number,
+.pricing-shift-card .pricing-shift-label,
+.pricing-shift-card .pricing-shift-price,
+.pricing-shift-card .pricing-shift-per-shift {
+  color: #ffffff !important;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8), 0 0 12px rgba(0,0,0,0.4) !important;
+}
+
+.pricing-shift-card .pricing-shift-popular-number,
+.pricing-shift-card .pricing-shift-popular-price {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4) !important;
+}
+
+.pricing-shift-card .pricing-shift-popular-label,
+.pricing-shift-card .pricing-shift-popular-per-shift {
+  color: #fef3c7 !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
+}
+
+.pricing-shift-card .pricing-shift-save {
+  color: #86efac !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5) !important;
+}
+
+.pricing-shift-card .pricing-shift-best-value {
+  color: #fef3c7 !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4) !important;
 }
 
 [data-role="worker"] h2, [data-role="worker"] p,

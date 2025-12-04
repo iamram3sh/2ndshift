@@ -8,6 +8,7 @@ const API_BASE = '/api/v1';
 interface RequestOptions extends RequestInit {
   params?: Record<string, string | number | boolean>;
   requireAuth?: boolean;
+  skipRedirectOn401?: boolean;
 }
 
 class ApiClient {
@@ -41,7 +42,7 @@ class ApiClient {
     endpoint: string,
     options: RequestOptions = {}
   ): Promise<{ data: T; error: null } | { data: null; error: any }> {
-    const { params, requireAuth = true, ...fetchOptions } = options;
+    const { params, requireAuth = true, skipRedirectOn401 = false, ...fetchOptions } = options;
 
     // Build URL with params
     let url = `${API_BASE}${endpoint}`;
@@ -91,8 +92,8 @@ class ApiClient {
             return { data: retryData, error: null };
           }
         }
-        // Refresh failed, redirect to login
-        if (typeof window !== 'undefined') {
+        // Refresh failed, redirect to login (unless skipRedirectOn401 is true)
+        if (!skipRedirectOn401 && typeof window !== 'undefined') {
           window.location.href = '/login';
         }
         return { data: null, error: { message: 'Unauthorized' } };
@@ -161,8 +162,11 @@ class ApiClient {
     return result;
   }
 
-  async getCurrentUser() {
-    return this.request<{ user: any }>('/auth/me');
+  async getCurrentUser(options?: { skipRedirect?: boolean }) {
+    return this.request<{ user: any }>('/auth/me', {
+      ...options,
+      skipRedirectOn401: options?.skipRedirect,
+    });
   }
 
   async refreshAccessToken() {

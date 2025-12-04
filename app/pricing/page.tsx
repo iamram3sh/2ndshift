@@ -184,11 +184,11 @@ export default function PricingPage() {
   const plans = userType === 'worker' ? WORKER_PLANS : CLIENT_PLANS
   const shiftPackages = userType === 'worker' ? SHIFT_PACKAGES_WORKERS : SHIFT_PACKAGES_CLIENTS
 
-  // Check if user is logged in
+  // Check if user is logged in (don't redirect if not logged in - pricing page is public)
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const result = await apiClient.getCurrentUser()
+        const result = await apiClient.getCurrentUser({ skipRedirect: true })
         if (result.data?.user) {
           setCurrentUser({
             id: result.data.user.id,
@@ -205,7 +205,7 @@ export default function PricingPage() {
           }
         }
       } catch (err) {
-        // User not logged in
+        // User not logged in - this is fine, pricing page is public
       } finally {
         setIsCheckingAuth(false)
       }
@@ -295,9 +295,10 @@ export default function PricingPage() {
                   ? 'bg-white text-[#111]'
                   : 'text-white hover:bg-white/10'
               }`}
+              style={userType !== 'client' ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : {}}
             >
               <span className="flex items-center gap-2">
-                <Building2 className="w-4 h-4" />
+                <Building2 className="w-4 h-4" style={userType !== 'client' ? { filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))' } : {}} />
                 For Employers
               </span>
             </button>
@@ -308,9 +309,10 @@ export default function PricingPage() {
                   ? 'bg-white text-[#111]'
                   : 'text-white hover:bg-white/10'
               }`}
+              style={userType !== 'worker' ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : {}}
             >
               <span className="flex items-center gap-2">
-                <Users className="w-4 h-4" />
+                <Users className="w-4 h-4" style={userType !== 'worker' ? { filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))' } : {}} />
                 For Professionals
               </span>
             </button>
@@ -413,7 +415,7 @@ export default function PricingPage() {
                 } ${
                   pkg.popular
                     ? 'bg-gradient-to-br from-amber-500 to-orange-500 shadow-xl'
-                    : 'bg-white/10 border border-white/20 hover:bg-white/15'
+                    : 'bg-white/15 border-2 border-white/30 hover:bg-white/20 backdrop-blur-sm'
                 }`}
                 style={{
                   animation: `fadeInUp 0.6s ease-out ${i * 0.1}s both`
@@ -460,7 +462,7 @@ export default function PricingPage() {
                 : 'Get Shifts Now'}
             </Button>
             {selectedShiftPackage !== null && (
-              <p className="mt-3 text-sm text-slate-300">
+              <p className="mt-3 text-sm text-white" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
                 Selected: {shiftPackages[selectedShiftPackage].shifts} Shifts for ₹{shiftPackages[selectedShiftPackage].price}
               </p>
             )}
