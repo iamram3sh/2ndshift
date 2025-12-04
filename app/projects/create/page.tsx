@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { Label } from '@/components/ui/label'
 import { CATEGORY_CONFIG, CategorySlug, getCategoryConfig } from '@/lib/config/categoryConfig'
 
 const GENERIC_SKILL_OPTIONS = [
@@ -278,13 +279,18 @@ export default function CreateProjectPage() {
               </div>
 
               <div className="space-y-6">
-                <Input
-                  label="Project Title"
-                  placeholder="e.g., Need a React Developer for E-commerce Website"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  error={errors.title}
-                />
+                <div className="space-y-2">
+                  <Label htmlFor="project_title">Project Title</Label>
+                  <Input
+                    id="project_title"
+                    placeholder="e.g., Need a React Developer for E-commerce Website"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  />
+                  {errors.title && (
+                    <p className="text-sm text-red-600">{errors.title}</p>
+                  )}
+                </div>
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -421,30 +427,41 @@ export default function CreateProjectPage() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-6">
-                    <Input
-                      label="Budget (₹)"
-                      type="number"
-                      placeholder="25000"
-                      value={formData.budget}
-                      onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                      error={errors.budget}
-                    />
+                    <div className="space-y-2">
+                      <Label htmlFor="budget">Budget (₹)</Label>
+                      <Input
+                        id="budget"
+                        type="number"
+                        placeholder="25000"
+                        value={formData.budget}
+                        onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                      />
+                      {errors.budget && (
+                        <p className="text-sm text-red-600">{errors.budget}</p>
+                      )}
+                    </div>
 
-                    <Input
-                      label="Estimated Duration (hours)"
-                      type="number"
-                      placeholder="40"
-                      value={formData.duration_hours}
-                      onChange={(e) => setFormData({ ...formData, duration_hours: e.target.value })}
-                    />
+                    <div className="space-y-2">
+                      <Label htmlFor="duration_hours">Estimated Duration (hours)</Label>
+                      <Input
+                        id="duration_hours"
+                        type="number"
+                        placeholder="40"
+                        value={formData.duration_hours}
+                        onChange={(e) => setFormData({ ...formData, duration_hours: e.target.value })}
+                      />
+                    </div>
                   </div>
 
-                  <Input
-                    label="Deadline (optional)"
-                    type="date"
-                    value={formData.deadline}
-                    onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
-                  />
+                  <div className="space-y-2">
+                    <Label htmlFor="deadline">Deadline (optional)</Label>
+                    <Input
+                      id="deadline"
+                      type="date"
+                      value={formData.deadline}
+                      onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
+                    />
+                  </div>
 
                   {/* Milestones (if milestone type selected) */}
                   {formData.projectType === 'milestone' && (
