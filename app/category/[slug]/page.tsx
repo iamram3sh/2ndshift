@@ -40,6 +40,29 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Breadcrumbs */}
+      <nav aria-label="breadcrumb" className="bg-slate-50 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <ol className="flex items-center space-x-2 text-sm">
+            <li>
+              <Link href="/" className="text-slate-600 hover:text-slate-900 transition-colors">
+                Home
+              </Link>
+            </li>
+            <li className="text-slate-400">/</li>
+            <li>
+              <Link href="/category" className="text-slate-600 hover:text-slate-900 transition-colors">
+                Category
+              </Link>
+            </li>
+            <li className="text-slate-400">/</li>
+            <li className="text-slate-900 font-medium" aria-current="page">
+              {category.name}
+            </li>
+          </ol>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <CategoryHero slug={heroSlug} />
 
@@ -86,6 +109,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                       </div>
                       <div className="text-xs text-slate-500 mt-1">
                         {task.delivery_window}
+                      </div>
+                      <div className="text-xs text-slate-600 mt-1">
+                        Commission: {task.default_commission_percent}% based on complexity
                       </div>
                     </div>
                   </div>

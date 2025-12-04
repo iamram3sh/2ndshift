@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { 
   ArrowRight, Briefcase, Shield, CheckCircle, Users, TrendingUp, 
   Award, Star, Zap, Lock, FileCheck, ChevronRight, Mail, Phone, 
@@ -64,6 +65,7 @@ const SAMPLE_JOBS = [
 ]
 
 export default function HomePage() {
+  const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [showRolePicker, setShowRolePicker] = useState(false)
@@ -146,9 +148,10 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 justify-center mb-8">
                 <Link 
                   href="/work?role=worker"
-                  onClick={() => {
+                  onClick={(e) => {
                     handleCTAClick('I want to work', 'worker')
                     setRole('worker', 'hero')
+                    // Let Next.js Link handle navigation - don't prevent default
                   }}
                   aria-label="I want to work — show worker signup"
                   className="inline-flex items-center justify-center gap-2 bg-[#0b63ff] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#0a56e6] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
@@ -158,9 +161,10 @@ export default function HomePage() {
                 </Link>
                 <Link 
                   href="/clients?role=client"
-                  onClick={() => {
+                  onClick={(e) => {
                     handleCTAClick('I want to hire', 'client')
                     setRole('client', 'hero')
+                    // Let Next.js Link handle navigation - don't prevent default
                   }}
                   aria-label="I want to hire — show client signup"
                   className="inline-flex items-center justify-center gap-2 bg-transparent text-[#0b1220] px-8 py-4 rounded-lg font-semibold border-2 border-[#0b1220] hover:bg-[#0b1220] hover:text-white transition-all"
@@ -232,6 +236,9 @@ export default function HomePage() {
                       </p>
                       <p className="text-xs text-slate-500 font-medium">
                         {category.example} · {category.priceRange}
+                      </p>
+                      <p className="text-xs text-slate-600 mt-1">
+                        Commission: 8-18% based on complexity
                       </p>
                     </div>
                   </div>

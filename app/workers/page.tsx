@@ -16,10 +16,8 @@ import type { Industry } from '@/types/categories'
 const SKILL_CATEGORIES = [
   { id: 'all', label: 'All Skills', icon: Users },
   { id: 'development', label: 'Development', icon: Code },
-  { id: 'design', label: 'Design', icon: Palette },
   { id: 'data', label: 'Data & Analytics', icon: Database },
   { id: 'devops', label: 'DevOps & Cloud', icon: Cloud },
-  { id: 'mobile', label: 'Mobile', icon: Smartphone },
   { id: 'qa', label: 'QA & Testing', icon: TestTube },
 ]
 

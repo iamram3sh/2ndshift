@@ -1,0 +1,204 @@
+{
+  "summary": "2ndShift production audit reveals critical role separation working correctly, but password reset flow broken (404), homepage role switching doesn't navigate to dedicated pages, and missing commission display verification. Core functionality works but UX friction points exist that could impact conversion.",
+  "issues": [
+    {
+      "id": "P0-001",
+      "title": "Password Reset Link Returns 404 - Broken Authentication Recovery",
+      "severity": "P0",
+      "path": "/login → Forgot? link → /forgot-password",
+      "steps": [
+        "Navigate to https://2ndshift.vercel.app/login",
+        "Click 'Forgot?' link next to Password field",
+        "Observe 404 error"
+      ],
+      "expected": "Password reset page loads or redirects to functional reset flow",
+      "actual": "404 Not Found - /forgot-password route does not exist",
+      "suggestion": "Create app/(auth)/forgot-password/page.tsx or redirect to existing reset flow. This is a conversion blocker - users cannot recover accounts.",
+      "owner": "frontend",
+      "screenshotPaths": ["qa-reports/audit/forgot-password-404.png"],
+      "risk": "conversion risk - users locked out of accounts cannot recover",
+      "effort": "small (<8h)"
+    },
+    {
+      "id": "P0-002",
+      "title": "Homepage Role CTAs Have href But onClick May Interfere With Navigation",
+      "severity": "P0",
+      "path": "/ → Click 'I want to work' or 'I want to hire'",
+      "steps": [
+        "Navigate to https://2ndshift.vercel.app/",
+        "Click 'I want to work' CTA",
+        "Observe if URL changes to /work?role=worker or stays at /",
+        "Check if content changes dynamically without navigation"
+      ],
+      "expected": "CTAs should navigate to /work?role=worker or /clients?role=client with full page navigation and URL change",
+      "actual": "CTAs have proper href attributes but onClick handlers update role context. Need to verify if navigation actually occurs or if onClick preventsDefault() is blocking it.",
+      "suggestion": "Verify navigation works correctly. If onClick preventsDefault(), remove it or ensure navigation happens. Test: clicking CTA should change URL, browser back button should work, bookmarking should work.",
+      "owner": "frontend",
+      "screenshotPaths": ["qa-reports/audit/homepage-role-cta.png"],
+      "risk": "conversion risk - if navigation doesn't work, breaks browser history, SEO impact, user expectations",
+      "effort": "small (<8h)"
+    },
+    {
+      "id": "P1-001",
+      "title": "Category Pages Missing Breadcrumbs",
+      "severity": "P1",
+      "path": "/category/devops",
+      "steps": [
+        "Navigate to https://2ndshift.vercel.app/category/devops",
+        "Check for breadcrumb navigation"
+      ],
+      "expected": "Breadcrumb like 'Home / Category / DevOps' with clickable Home link",
+      "actual": "No breadcrumb navigation present",
+      "suggestion": "Add breadcrumb component: <nav aria-label='breadcrumb'><ol><li><Link href='/'>Home</Link></li><li><Link href='/category'>Category</Link></li><li>DevOps</li></ol></nav>",
+      "owner": "frontend",
+      "screenshotPaths": ["qa-reports/audit/category-devops.png"],
+      "risk": "UX risk - users lose navigation context, harder to return home",
+      "effort": "small (<8h)"
+    },
+    {
+      "id": "P1-002",
+      "title": "Workers Page Shows Low-Value Categories Contradicting High-Value Positioning",
+      "severity": "P1",
+      "path": "/workers → Skill Categories filter",
+      "steps": [
+        "Navigate to https://2ndshift.vercel.app/workers",
+        "Check Skill Categories filter sidebar",
+        "Observe 'Design' and 'Mobile' categories"
+      ],
+      "expected": "Only high-value categories (DevOps, Cloud, Networking, Security, AI, Data, SRE, DB, Programming) should appear",
+      "actual": "Filter shows 'Design' and 'Mobile' which contradict the high-value IT microtask positioning",
+      "suggestion": "Remove 'Design' and 'Mobile' from Skill Categories filter on /workers page. Align with homepage messaging that explicitly lists only 9 high-value categories.",
+      "owner": "frontend",
+      "screenshotPaths": ["qa-reports/audit/workers-page-filters.png"],
+      "risk": "product-market fit risk - confuses positioning, dilutes brand message",
+      "effort": "small (<8h)"
+    },
+    {
+      "id": "P1-003",
+      "title": "Commission Display Present on Worker Page But Missing on Homepage Cards",
+      "severity": "P1",
+      "path": "Job cards on homepage vs /work?role=worker page",
+      "steps": [
+        "Navigate to homepage, check microtask cards",
+        "Navigate to /work?role=worker, check job cards",
+        "Compare commission display"
+      ],
+      "expected": "Commission should be consistently displayed on all job cards across all pages",
+      "actual": "Worker page (/work?role=worker) shows 'Commission: 8-18% based on complexity' on job cards. Homepage cards show only 'From ₹X,000' without commission. Inconsistent display may confuse users.",
+      "suggestion": "Add commission display to homepage job cards to match worker page format: 'Commission: 8-18% based on complexity' or 'Platform fee: X%'. Ensure consistency across all job listing pages.",
+      "owner": "frontend",
+      "screenshotPaths": ["qa-reports/audit/homepage-full.png", "qa-reports/audit/worker-page-commission.png"],
+      "risk": "UX risk - inconsistent information display reduces trust, users may be confused by different formats",
+      "effort": "small (<8h)"
+    },
+    {
+      "id": "P1-004",
+      "title": "Homepage Hero CTAs Spacing Needs Verification",
+      "severity": "P1",
+      "path": "/ → Hero section",
+      "steps": [
+        "Navigate to homepage",
+        "Inspect hero CTAs 'I want to work' and 'I want to hire'",
+        "Measure spacing between buttons"
+      ],
+      "expected": "CTAs should have >= 16px gap (preferably 24px) for visual separation",
+      "actual": "CTAs visible and distinct but exact spacing needs CSS verification",
+      "suggestion": "Verify CSS gap property: .hero-ctas { gap: 24px; } or margin between buttons >= 16px. Ensure mobile stacking maintains spacing.",
+      "owner": "frontend",
+      "screenshotPaths": ["qa-reports/audit/homepage-full.png"],
+      "risk": "UX risk - insufficient spacing reduces visual hierarchy and clickability",
+      "effort": "small (<8h)"
+    },
+    {
+      "id": "P2-001",
+      "title": "Console Errors - Network 404 for Forgot Password",
+      "severity": "P2",
+      "path": "Browser console on /login page",
+      "steps": [
+        "Open browser DevTools console",
+        "Navigate to /login",
+        "Click 'Forgot?' link",
+        "Check console for errors"
+      ],
+      "expected": "No 404 errors in console",
+      "actual": "404 error logged: GET /forgot-password?_rsc=17yrj 404",
+      "suggestion": "Fix P0-001 (create forgot-password route) will resolve this",
+      "owner": "frontend",
+      "screenshotPaths": [],
+      "risk": "performance/error risk - 404s logged, impacts error monitoring",
+      "effort": "small (<8h) - resolved by fixing P0-001"
+    }
+  ],
+  "quickWins": [
+    {
+      "title": "Fix Password Reset 404 - Create Forgot Password Page",
+      "action": "Create app/(auth)/forgot-password/page.tsx with email input form that calls password reset API. Connect to Supabase auth.resetPasswordForEmail() or custom API endpoint. Estimated 4-6 hours.",
+      "effortHours": 6,
+      "impact": "High - Unblocks account recovery, critical for user retention. Currently users cannot recover locked accounts."
+    },
+    {
+      "title": "Verify Homepage CTA Navigation - Test and Fix if Needed",
+      "action": "Test homepage CTAs: Click 'I want to work' and verify URL changes to /work?role=worker. If onClick preventsDefault() is blocking navigation, remove it or ensure navigation happens. Estimated 2-3 hours.",
+      "effortHours": 3,
+      "impact": "High - Ensures browser history, deep linking, SEO work correctly. Critical for user expectations."
+    },
+    {
+      "title": "Add Commission Display to Homepage Job Cards for Consistency",
+      "action": "Update homepage job card component to include commission display matching worker page format: 'Commission: 8-18% based on complexity'. Ensure consistent information across all pages. Estimated 2 hours.",
+      "effortHours": 2,
+      "impact": "Medium - Improves transparency, builds trust, consistent UX across pages"
+    }
+  ],
+  "acceptanceCriteria": [
+    {
+      "issueId": "P0-001",
+      "tests": [
+        "Navigate to /login, click 'Forgot?' link, verify /forgot-password page loads (200 OK)",
+        "Submit email on forgot-password page, verify success message or redirect",
+        "Check browser console - no 404 errors for /forgot-password"
+      ]
+    },
+    {
+      "issueId": "P0-002",
+      "tests": [
+        "Click 'I want to work' on homepage, verify URL changes to /work?role=worker",
+        "Click 'I want to hire' on homepage, verify URL changes to /clients?role=client",
+        "Use browser back button, verify returns to homepage correctly",
+        "Bookmark /work?role=worker, reload page, verify worker content loads"
+      ]
+    },
+    {
+      "issueId": "P1-001",
+      "tests": [
+        "Navigate to /category/devops, verify breadcrumb 'Home / Category / DevOps' visible",
+        "Click 'Home' in breadcrumb, verify navigates to /",
+        "Check mobile view (375px), verify breadcrumb still visible and clickable"
+      ]
+    },
+    {
+      "issueId": "P1-002",
+      "tests": [
+        "Navigate to /workers, check Skill Categories filter",
+        "Verify only: Development, DevOps & Cloud, Data & Analytics, QA & Testing present",
+        "Verify 'Design' and 'Mobile' removed"
+      ]
+    },
+    {
+      "issueId": "P1-003",
+      "tests": [
+        "Check job cards on homepage, verify commission display matches worker page format",
+        "Navigate to /work?role=worker, verify commission '8-18% based on complexity' shown",
+        "Verify commission display is consistent across homepage, category pages, and worker page",
+        "Check job detail pages, verify commission calculation shown correctly"
+      ]
+    },
+    {
+      "issueId": "P1-004",
+      "tests": [
+        "Inspect hero CTAs on homepage, verify CSS gap >= 16px (preferably 24px)",
+        "Test mobile view (375px), verify CTAs stack with adequate spacing",
+        "Verify keyboard Tab navigation works between CTAs"
+      ]
+    }
+  ]
+}

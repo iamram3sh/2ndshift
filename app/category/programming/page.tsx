@@ -38,6 +38,29 @@ export default function ProgrammingCategoryPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Breadcrumbs */}
+      <nav aria-label="breadcrumb" className="bg-slate-50 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <ol className="flex items-center space-x-2 text-sm">
+            <li>
+              <Link href="/" className="text-slate-600 hover:text-slate-900 transition-colors">
+                Home
+              </Link>
+            </li>
+            <li className="text-slate-400">/</li>
+            <li>
+              <Link href="/category" className="text-slate-600 hover:text-slate-900 transition-colors">
+                Category
+              </Link>
+            </li>
+            <li className="text-slate-400">/</li>
+            <li className="text-slate-900 font-medium" aria-current="page">
+              Programming
+            </li>
+          </ol>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <CategoryHero slug="programming" />
 
