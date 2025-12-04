@@ -142,7 +142,7 @@ function MessagesContent() {
                 </button>
               )}
               <Link
-                href="/"
+                href={user?.user_type === 'worker' ? '/worker' : user?.user_type === 'client' ? '/client' : '/'}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg"
                 aria-label="Home"
               >
@@ -187,7 +187,7 @@ function MessagesContent() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
               <Link
-                href="/"
+                href={user?.user_type === 'worker' ? '/worker' : user?.user_type === 'client' ? '/client' : '/'}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition"
                 aria-label="Home"
               >

@@ -1,230 +1,382 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useState } from 'react'
 import {
-  Monitor, Radio, Shield, Palette, Film, Megaphone, Calculator,
-  Scale, Users, Briefcase, Heart, Building, ShoppingBag, GraduationCap,
-  BookOpen, Wrench, Factory, Car, Leaf, Zap, Truck, Landmark,
-  HeartHandshake, MoreHorizontal, Search, ArrowRight, Star
+  Monitor, Building2, Heart, ShoppingBag, Radio, Sparkles,
+  ArrowRight, CheckCircle, Shield, Clock, Users, Zap, MessageSquare,
+  Menu, X, Briefcase, TrendingUp, Code, Database, Cloud, Lock,
+  Server, Network, Brain, BarChart, FileCode, Settings, Globe, DollarSign
 } from 'lucide-react'
-import type { Industry } from '@/types/categories'
+import { Button } from '@/components/ui/Button'
+import { Footer } from '@/components/layout/Footer'
+import { RoleAwareNav } from '@/components/role/RoleAwareNav'
+import { withRoleParam } from '@/lib/utils/roleAwareLinks'
 
-// Icon mapping
-const ICONS: Record<string, React.ComponentType<any>> = {
-  Monitor, Radio, Shield, Palette, Film, Megaphone, Calculator,
-  Scale, Users, Briefcase, Heart, Building, ShoppingBag, GraduationCap,
-  BookOpen, Wrench, Factory, Car, Leaf, Zap, Truck, Landmark,
-  HeartHandshake, MoreHorizontal, Hotel: Building, Pill: Heart,
-}
+// Industry data with microtasks
+const INDUSTRIES = [
+  {
+    id: 'tech-saas',
+    name: 'Tech & SaaS',
+    icon: Monitor,
+    description: 'Cloud infrastructure, API development, and scalable software solutions',
+    microtasks: [
+      'AWS/Azure cloud migration',
+      'RESTful API development',
+      'Microservices architecture',
+      'CI/CD pipeline setup'
+    ],
+    color: 'bg-blue-500'
+  },
+  {
+    id: 'finance-banking',
+    name: 'Finance & Banking',
+    icon: Building2,
+    description: 'Secure financial systems, compliance, and fintech integrations',
+    microtasks: [
+      'Payment gateway integration',
+      'PCI-DSS compliance audit',
+      'Blockchain smart contracts',
+      'Fraud detection algorithms'
+    ],
+    color: 'bg-emerald-500'
+  },
+  {
+    id: 'healthcare',
+    name: 'Healthcare',
+    icon: Heart,
+    description: 'HIPAA-compliant systems, telemedicine, and health data management',
+    microtasks: [
+      'HIPAA compliance implementation',
+      'HL7/FHIR integration',
+      'Telemedicine platform setup',
+      'Medical data encryption'
+    ],
+    color: 'bg-rose-500'
+  },
+  {
+    id: 'ecommerce',
+    name: 'E-commerce',
+    icon: ShoppingBag,
+    description: 'High-performance stores, payment processing, and inventory systems',
+    microtasks: [
+      'E-commerce platform migration',
+      'Payment gateway optimization',
+      'Inventory management system',
+      'Order fulfillment automation'
+    ],
+    color: 'bg-purple-500'
+  },
+  {
+    id: 'telecom-networking',
+    name: 'Telecom & Networking',
+    icon: Radio,
+    description: 'Network infrastructure, 5G solutions, and communication systems',
+    microtasks: [
+      '5G network optimization',
+      'VoIP system implementation',
+      'Network security hardening',
+      'SD-WAN configuration'
+    ],
+    color: 'bg-violet-500'
+  },
+  {
+    id: 'ai-startups',
+    name: 'AI Startups',
+    icon: Sparkles,
+    description: 'Machine learning models, AI infrastructure, and data pipelines',
+    microtasks: [
+      'ML model deployment',
+      'Data pipeline architecture',
+      'NLP/LLM integration',
+      'Model training infrastructure'
+    ],
+    color: 'bg-amber-500'
+  }
+]
 
-// Color mapping for backgrounds
-const BG_COLORS: Record<string, string> = {
-  sky: 'bg-sky-500',
-  violet: 'bg-violet-500',
-  red: 'bg-red-500',
-  pink: 'bg-pink-500',
-  purple: 'bg-purple-500',
-  orange: 'bg-orange-500',
-  emerald: 'bg-emerald-500',
-  slate: 'bg-slate-500',
-  cyan: 'bg-cyan-500',
-  amber: 'bg-amber-500',
-  rose: 'bg-rose-500',
-  teal: 'bg-teal-500',
-  yellow: 'bg-yellow-500',
-  stone: 'bg-stone-500',
-  fuchsia: 'bg-fuchsia-500',
-  indigo: 'bg-indigo-500',
-  blue: 'bg-blue-500',
-  zinc: 'bg-zinc-500',
-  neutral: 'bg-neutral-500',
-  gray: 'bg-gray-500',
-  lime: 'bg-lime-500',
-  green: 'bg-green-500',
-}
-
-const FEATURED_INDUSTRIES = ['it', 'design', 'marketing', 'finance', 'healthcare', 'engineering']
+// Why 2ndShift benefits
+const BENEFITS = [
+  {
+    icon: Shield,
+    title: 'Verified senior professionals only',
+    description: 'All professionals are vetted and verified before joining'
+  },
+  {
+    icon: DollarSign,
+    title: 'Transparent pricing, zero overhead',
+    description: 'No hidden fees, no markups. Pay only for the work delivered'
+  },
+  {
+    icon: Lock,
+    title: 'Escrow-protected payments',
+    description: 'Your payment is secured until work is completed and approved'
+  },
+  {
+    icon: Clock,
+    title: 'Delivery windows from 6 hours to 4 weeks',
+    description: 'Fast turnaround for urgent needs, flexible timelines for complex projects'
+  },
+  {
+    icon: Sparkles,
+    title: 'AI-matched professionals for faster hiring',
+    description: 'Our AI finds the perfect match based on skills, experience, and availability'
+  }
+]
 
 export default function IndustriesPage() {
-  const [industries, setIndustries] = useState<Industry[]>([])
-  const [searchQuery, setSearchQuery] = useState('')
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    fetchIndustries()
-  }, [])
-
-  const fetchIndustries = async () => {
-    try {
-      const response = await fetch('/api/industries')
-      const data = await response.json()
-      setIndustries(data.industries || [])
-    } catch (error) {
-      console.error('Error fetching industries:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const filteredIndustries = industries.filter(industry =>
-    industry.name.toLowerCase().includes(searchQuery.toLowerCase())
-  )
-
-  const featuredIndustries = industries.filter(i => FEATURED_INDUSTRIES.includes(i.slug))
-  const otherIndustries = filteredIndustries.filter(i => !FEATURED_INDUSTRIES.includes(i.slug))
-
-  const getIcon = (iconName: string | null) => {
-    if (!iconName) return MoreHorizontal
-    return ICONS[iconName] || MoreHorizontal
-  }
-
-  const getBgColor = (colorName: string | null) => {
-    if (!colorName) return BG_COLORS.slate
-    return BG_COLORS[colorName] || BG_COLORS.slate
-  }
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      {/* Hero */}
-      <div className="bg-slate-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Find Professionals by Industry
-          </h1>
-          <p className="text-xl text-slate-300 max-w-2xl">
-            Browse verified professionals across 25+ industries. From IT to Healthcare, 
-            find the right expertise for your project.
-          </p>
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-8">
+              <Link href="/" className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">2S</span>
+                </div>
+                <span className="text-xl font-bold text-[#111]">2ndShift</span>
+              </Link>
+              <div className="hidden lg:block">
+                <RoleAwareNav />
+              </div>
+            </div>
 
-          {/* Search */}
-          <div className="mt-8 max-w-xl">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-              <input
-                type="text"
-                placeholder="Search industries..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-white/10 backdrop-blur border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
-              />
+            <div className="flex items-center gap-4">
+              <div className="hidden lg:flex items-center gap-3">
+                <Button
+                  href={withRoleParam('/projects/create', 'client')}
+                  variant="primary"
+                  size="sm"
+                >
+                  Post a Project
+                </Button>
+                <Button
+                  href={withRoleParam('/workers', 'client')}
+                  variant="outline"
+                  size="sm"
+                >
+                  Browse Specialists
+                </Button>
+              </div>
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="lg:hidden p-2 text-slate-600"
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Featured Industries */}
-      {searchQuery === '' && (
-        <div className="max-w-7xl mx-auto px-4 py-12">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
-            Popular Industries
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredIndustries.map((industry) => {
-              const Icon = getIcon(industry.icon)
-              return (
-                <Link
-                  key={industry.id}
-                  href={`/workers?industry=${industry.slug}`}
-                  className="group relative bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all"
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden border-t border-slate-200 bg-white">
+            <div className="px-4 py-4 space-y-2">
+              <RoleAwareNav isMobile onLinkClick={() => setMobileMenuOpen(false)} />
+              <div className="pt-4 space-y-2">
+                <Button
+                  href={withRoleParam('/projects/create', 'client')}
+                  variant="primary"
+                  size="md"
+                  className="w-full"
                 >
-                  <div className={`h-3 ${getBgColor(industry.color)}`} />
-                  <div className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className={`w-14 h-14 rounded-xl ${getBgColor(industry.color)} bg-opacity-10 flex items-center justify-center`}>
-                        <Icon className={`w-7 h-7 ${getBgColor(industry.color).replace('bg-', 'text-')}`} />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-slate-900 dark:text-white group-hover:text-sky-600 transition-colors">
-                          {industry.name}
-                        </h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                          {industry.description || `Find ${industry.name} professionals`}
-                        </p>
-                        <div className="flex items-center gap-4 mt-4">
-                          <div className="flex items-center gap-1">
-                            <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">4.8</span>
-                          </div>
-                          <span className="text-sm text-slate-500">
-                            {industry.professional_count || 'Many'} professionals
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
-                      <span className="text-sm text-slate-500">Browse professionals</span>
-                      <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-sky-600 group-hover:translate-x-1 transition-all" />
-                    </div>
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* All Industries */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
-          {searchQuery ? 'Search Results' : 'All Industries'}
-        </h2>
-        
-        {isLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {[...Array(10)].map((_, i) => (
-              <div key={i} className="h-32 bg-slate-200 dark:bg-slate-700 rounded-xl animate-pulse" />
-            ))}
-          </div>
-        ) : filteredIndustries.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-slate-500">No industries found for "{searchQuery}"</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {(searchQuery ? filteredIndustries : otherIndustries).map((industry) => {
-              const Icon = getIcon(industry.icon)
-              return (
-                <Link
-                  key={industry.id}
-                  href={`/workers?industry=${industry.slug}`}
-                  className="group bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 hover:border-sky-300 dark:hover:border-sky-600 hover:shadow-md transition-all"
+                  Post a Project
+                </Button>
+                <Button
+                  href={withRoleParam('/workers', 'client')}
+                  variant="outline"
+                  size="md"
+                  className="w-full"
                 >
-                  <div className={`w-10 h-10 rounded-lg ${getBgColor(industry.color)} bg-opacity-10 flex items-center justify-center mb-3`}>
-                    <Icon className={`w-5 h-5 ${getBgColor(industry.color).replace('bg-', 'text-')}`} />
-                  </div>
-                  <h3 className="font-medium text-slate-900 dark:text-white group-hover:text-sky-600 transition-colors text-sm">
-                    {industry.name}
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    {industry.professional_count || 0} pros
-                  </p>
-                </Link>
-              )
-            })}
+                  Browse Specialists
+                </Button>
+              </div>
+            </div>
           </div>
         )}
-      </div>
+      </nav>
 
-      {/* CTA */}
-      <div className="bg-slate-900 text-white py-16">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            Can't find your industry?
-          </h2>
-          <p className="text-slate-300 mb-8">
-            We're constantly adding new industries and categories. 
-            Suggest one and we'll review it within 24 hours.
-          </p>
-          <Link
-            href="/register?type=worker"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-sky-600 rounded-lg font-medium hover:bg-sky-700 transition-colors"
-          >
-            Join as a Professional
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-20 md:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-4xl mx-auto">
+            <h1 
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
+              style={{ color: '#ffffff', textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}
+            >
+              Industries We Support
+            </h1>
+            <p 
+              className="text-xl md:text-2xl text-slate-300 mb-10 max-w-3xl mx-auto"
+              style={{ textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}
+            >
+              High-value IT expertise for fast, reliable delivery across major industries.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                href={withRoleParam('/projects/create', 'client')}
+                variant="secondary"
+                size="lg"
+                icon={<ArrowRight className="w-5 h-5" />}
+                iconPosition="right"
+              >
+                Post a Project
+              </Button>
+              <Button
+                href={withRoleParam('/workers', 'client')}
+                variant="outline"
+                size="lg"
+                className="border-white/30 text-white hover:bg-white/10 hover:text-white"
+                icon={<ArrowRight className="w-5 h-5" />}
+                iconPosition="right"
+              >
+                Browse Specialists
+              </Button>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* Industries Grid */}
+      <section className="py-16 md:py-24 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {INDUSTRIES.map((industry, index) => {
+              const Icon = industry.icon
+              return (
+                <div
+                  key={industry.id}
+                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-200 group"
+                  style={{ animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both` }}
+                >
+                  <div className={`h-2 ${industry.color}`} />
+                  <div className="p-6">
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className={`w-14 h-14 ${industry.color} bg-opacity-10 rounded-xl flex items-center justify-center flex-shrink-0`}>
+                        <Icon className={`w-7 h-7 ${industry.color.replace('bg-', 'text-')}`} />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-indigo-600 transition-colors">
+                          {industry.name}
+                        </h3>
+                        <p className="text-slate-600 text-sm mb-4">
+                          {industry.description}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2 mb-6">
+                      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+                        Example Microtasks
+                      </p>
+                      {industry.microtasks.map((task, i) => (
+                        <div key={i} className="flex items-start gap-2">
+                          <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                          <span className="text-sm text-slate-700">{task}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <Button
+                      href={withRoleParam('/workers', 'client')}
+                      variant="primary"
+                      size="md"
+                      className="w-full"
+                      icon={<ArrowRight className="w-4 h-4" />}
+                      iconPosition="right"
+                    >
+                      Hire Specialists
+                    </Button>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Why 2ndShift Section */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+              Why 2ndShift for Industry Projects?
+            </h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              We connect you with verified senior professionals who deliver high-value IT solutions across all major industries.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {BENEFITS.map((benefit, index) => {
+              const Icon = benefit.icon
+              return (
+                <div
+                  key={index}
+                  className="bg-slate-50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 border border-slate-200"
+                  style={{ animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both` }}
+                >
+                  <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+                    <Icon className="w-6 h-6 text-indigo-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-slate-600 text-sm">
+                    {benefit.description}
+                  </p>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Bottom CTA Section */}
+      <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-16 md:py-24">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 
+            className="text-3xl md:text-4xl font-bold mb-4"
+            style={{ color: '#ffffff', textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}
+          >
+            Start your project today
+          </h2>
+          <p 
+            className="text-xl text-slate-300 mb-10"
+            style={{ textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}
+          >
+            Join thousands of companies using 2ndShift to find top IT talent. Get started in minutes.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              href={withRoleParam('/projects/create', 'client')}
+              variant="secondary"
+              size="lg"
+              icon={<ArrowRight className="w-5 h-5" />}
+              iconPosition="right"
+            >
+              Post a Project Free
+            </Button>
+            <Button
+              href="/contact"
+              variant="outline"
+              size="lg"
+              className="border-white/30 text-white hover:bg-white/10 hover:text-white"
+              icon={<MessageSquare className="w-5 h-5" />}
+              iconPosition="right"
+            >
+              Talk to Support
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
     </div>
   )
 }
