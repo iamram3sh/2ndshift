@@ -50,22 +50,27 @@ export function useOpenTasks(filters?: JobFilters) {
         ...(filters || {}),
       }
       
-      const result = await apiClient.listJobs(params)
-      
-      if (result.error) {
-        const errorMessage = result.error.message || result.error.error || 'Failed to fetch tasks'
-        console.error('Error fetching tasks:', result.error)
-        throw new Error(errorMessage)
-      }
-      
-      // Ensure we have data
-      if (!result.data) {
-        console.warn('No data returned from API, returning empty array')
-        return []
-      }
-      
-      // Filter by minPrice if provided
-      let jobs = result.data.jobs || []
+      try {
+        const result = await apiClient.listJobs(params)
+        
+        if (result.error) {
+          // If it's a 401/403, it's an auth error
+          if (result.error.status === 401 || result.error.status === 403) {
+            throw new Error('Authentication failed. Please log in again.')
+          }
+          const errorMessage = result.error.message || result.error.error || 'Failed to fetch tasks'
+          console.error('Error fetching tasks:', result.error)
+          throw new Error(errorMessage)
+        }
+        
+        // Ensure we have data
+        if (!result.data) {
+          console.warn('No data returned from API, returning empty array')
+          return []
+        }
+        
+        // Filter by minPrice if provided
+        let jobs = result.data.jobs || []
       if (filters?.minPrice && filters.minPrice >= 50) {
         jobs = jobs.filter((job: Job) => {
           const price = job.price_fixed || 0
@@ -82,12 +87,24 @@ export function useOpenTasks(filters?: JobFilters) {
         )
       }
       
-      return jobs as Job[]
+        return jobs as Job[]
+      } catch (error: any) {
+        console.error('Error in useOpenTasks queryFn:', error)
+        // Re-throw to let React Query handle it
+        throw error
+      }
     },
     enabled: !!filters, // Only run when filters are provided (user is authenticated)
     staleTime: 30000, // 30 seconds
-    refetchOnWindowFocus: true,
-    retry: 1, // Only retry once on failure
+    refetchOnWindowFocus: false, // Disable to prevent too many requests
+    retry: (failureCount, error: any) => {
+      // Don't retry on auth errors
+      if (error?.message?.includes('Authentication')) {
+        return false
+      }
+      // Retry once for other errors
+      return failureCount < 1
+    },
   })
 }
 

@@ -196,19 +196,26 @@ export default function WorkerDashboard() {
           <div className="bg-white dark:bg-slate-800 rounded-xl border border-red-200 dark:border-red-800 p-12 text-center">
             <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-[#111] dark:text-white mb-2">
-              Error loading tasks
+              {tasksError instanceof Error && tasksError.message.includes('Authentication') 
+                ? 'Authentication Error' 
+                : 'Error loading tasks'}
             </h3>
-            <p className="text-slate-600 dark:text-slate-400 mb-4">
+            <p className="text-slate-600 dark:text-slate-400 mb-4 font-medium">
               {tasksError instanceof Error ? tasksError.message : 'Failed to load tasks. Please try again.'}
             </p>
-            <div className="text-sm text-slate-500 dark:text-slate-500 mb-6 space-y-2">
-              <p>Possible causes:</p>
-              <ul className="list-disc list-inside text-left max-w-md mx-auto space-y-1">
-                <li>No tasks available in the database</li>
-                <li>Authentication token expired</li>
-                <li>API endpoint not responding</li>
-              </ul>
-            </div>
+            {tasksError instanceof Error && !tasksError.message.includes('Authentication') && (
+              <div className="text-sm text-slate-500 dark:text-slate-500 mb-6 space-y-2">
+                <p className="font-medium">Possible causes:</p>
+                <ul className="list-disc list-inside text-left max-w-md mx-auto space-y-1">
+                  <li>No tasks available in the database (run seed script)</li>
+                  <li>API endpoint not responding</li>
+                  <li>Network connectivity issues</li>
+                </ul>
+                <p className="mt-4 text-xs">
+                  Check browser console (F12) for detailed error information.
+                </p>
+              </div>
+            )}
             <div className="flex gap-3 justify-center">
               <button
                 onClick={() => refetchTasks()}
@@ -216,16 +223,17 @@ export default function WorkerDashboard() {
               >
                 Retry
               </button>
-              <button
-                onClick={() => {
-                  // Clear token and reload
-                  localStorage.removeItem('access_token')
-                  window.location.href = '/login'
-                }}
-                className="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition"
-              >
-                Re-login
-              </button>
+              {tasksError instanceof Error && tasksError.message.includes('Authentication') && (
+                <button
+                  onClick={() => {
+                    localStorage.removeItem('access_token')
+                    window.location.href = '/login'
+                  }}
+                  className="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition"
+                >
+                  Re-login
+                </button>
+              )}
             </div>
           </div>
         ) : tasks.length === 0 ? (

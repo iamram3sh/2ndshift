@@ -99,14 +99,27 @@ class ApiClient {
         return { data: null, error: { message: 'Unauthorized' } };
       }
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (e) {
+        // If response is not JSON, create error
+        const text = await response.text();
+        return {
+          data: null,
+          error: {
+            message: `Invalid response: ${text.substring(0, 100)}`,
+            status: response.status,
+          },
+        };
+      }
 
       if (!response.ok) {
         // Ensure error object has message
         const error = {
           ...data,
           message: data.message || data.error || `Request failed with status ${response.status}`,
-          status: response.status
+          status: response.status,
         };
         return { data: null, error };
       }
