@@ -2,6 +2,7 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import type { Metadata } from 'next'
 import { RoleProviderWrapper } from '@/components/role/RoleProviderWrapper'
+import { QueryProvider } from '@/components/providers/QueryProvider'
 
 // Inter - The industry standard for professional SaaS
 const inter = Inter({ 
@@ -62,9 +63,11 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>
       <body className={`${inter.className} antialiased`}>
-        <RoleProviderWrapper>
-          {children}
-        </RoleProviderWrapper>
+        <QueryProvider>
+          <RoleProviderWrapper>
+            {children}
+          </RoleProviderWrapper>
+        </QueryProvider>
       </body>
     </html>
   )

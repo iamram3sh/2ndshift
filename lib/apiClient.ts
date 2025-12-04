@@ -185,9 +185,16 @@ class ApiClient {
     status?: string;
     category_id?: string;
     role?: 'worker' | 'client';
+    minPrice?: number;
+    limit?: number;
+    offset?: number;
   }) {
+    const params: any = { ...filters };
+    if (params.minPrice) {
+      params.minPrice = params.minPrice.toString();
+    }
     return this.request<{ jobs: any[] }>('/jobs', {
-      params: filters as any,
+      params,
     });
   }
 

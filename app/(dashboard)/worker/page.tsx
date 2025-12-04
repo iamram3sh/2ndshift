@@ -1,20 +1,18 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase/client'
-import apiClient from '@/lib/apiClient'
+import { useOpenTasks, useCurrentUser, useCreditsBalance } from '@/lib/queries'
+import { TaskCard } from '@/components/tasks/TaskCard'
+import { TaskFilters } from '@/components/tasks/TaskFilters'
+import { BidModal } from '@/components/tasks/BidModal'
 import { ShiftsModal } from '@/components/shifts/ShiftsModal'
 import { BuyCreditsModalV1 } from '@/components/revenue/BuyCreditsModalV1'
 import { VerificationBadge } from '@/components/revenue/VerificationBadge'
 import { SubscriptionUpsell } from '@/components/revenue/SubscriptionUpsell'
-import { VerificationBadgeInfo } from '@/components/revenue/VerificationBadgeInfo'
 import { AvailabilityCard } from '@/components/worker/AvailabilityCard'
 import { AlertsInbox } from '@/components/worker/AlertsInbox'
-import { WORKER_QUICK_TASKS } from '@/data/highValueTasks'
-import { CommissionBreakdown } from '@/components/revenue/CommissionBreakdown'
-import { SubscriptionUpsellSection } from '@/components/revenue/SubscriptionUpsellSection'
 import { 
   Briefcase, Clock, DollarSign, User, LogOut, Search, 
   TrendingUp, FileText, CheckCircle, XCircle, AlertCircle,
@@ -22,346 +20,97 @@ import {
   Calendar, Zap, BarChart3, Eye, Star, ChevronRight, 
   Rocket, Shield, BadgeCheck, Sparkles, Users, MessageSquare,
   Settings, HelpCircle, Crown, ArrowRight, Lock, Gift,
-  Layers, MoreHorizontal, ExternalLink, MapPin, Timer
+  Layers, MoreHorizontal, ExternalLink, MapPin, Timer, Loader2
 } from 'lucide-react'
-import type { User as UserType, Project, Contract, WorkerProfile } from '@/types/database.types'
-
-interface Application {
-  id: string
-  project_id: string
-  worker_id: string
-  cover_letter: string
-  proposed_rate: number
-  status: 'pending' | 'accepted' | 'rejected' | 'withdrawn'
-  created_at: string
-  project?: Project
-}
-
-interface DashboardStats {
-  activeContracts: number
-  hoursThisMonth: number
-  totalEarnings: number
-  pendingApplications: number
-  acceptanceRate: number
-  completedProjects: number
-  avgRating: number
-  profileViews: number
-  shiftsBalance: number
-}
+import type { Job } from '@/types/jobs'
 
 export default function WorkerDashboard() {
   const router = useRouter()
-  const [user, setUser] = useState<UserType | null>(null)
-  const [workerProfile, setWorkerProfile] = useState<WorkerProfile | null>(null)
-  const [projects, setProjects] = useState<Project[]>([])
-  const [applications, setApplications] = useState<Application[]>([])
-  const [contracts, setContracts] = useState<Contract[]>([])
-  const [profileCompletion, setProfileCompletion] = useState(0)
-  const [stats, setStats] = useState<DashboardStats>({
-    activeContracts: 0,
-    hoursThisMonth: 0,
-    totalEarnings: 0,
-    pendingApplications: 0,
-    acceptanceRate: 0,
-    completedProjects: 0,
-    avgRating: 4.8,
-    profileViews: 127,
-    shiftsBalance: 10
-  })
-  const [isLoading, setIsLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedTask, setSelectedTask] = useState<Job | null>(null)
+  const [showBidModal, setShowBidModal] = useState(false)
   const [showShiftsModal, setShowShiftsModal] = useState(false)
   const [showBuyCreditsModal, setShowBuyCreditsModal] = useState(false)
-  const [shiftsBalance, setShiftsBalance] = useState(0)
-  const [verifiedLevel, setVerifiedLevel] = useState<'basic' | 'professional' | 'premium' | null>(null)
+  const [filters, setFilters] = useState({ status: 'open' as const, role: 'worker' as const, minPrice: 50 })
+  
+  const { data: currentUser } = useCurrentUser()
+  const { data: creditsBalance = 0 } = useCreditsBalance()
+  const { data: tasks = [], isLoading: tasksLoading, refetch: refetchTasks } = useOpenTasks(filters)
 
-  // Fetch Shifts balance using v1 API
-  const fetchShiftsBalance = useCallback(async () => {
-    try {
-      const result = await apiClient.getCreditsBalance()
-      if (result.data) {
-        const balance = (result.data && typeof result.data === 'object' && 'balance' in result.data) ? (result.data as any).balance || 0 : 0
-        setShiftsBalance(balance)
-        setStats(prev => ({ ...prev, shiftsBalance: balance }))
-      }
-    } catch (err) {
-      // Error logged but don't block dashboard load
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Error fetching credits balance:', err)
-      }
-    }
-  }, [])
-
-  const checkAuth = async () => {
-    // Check authentication using v1 API
-    const result = await apiClient.getCurrentUser()
-    
-    if (result.error || !result.data?.user) {
-      router.push('/login')
+  const handleBidClick = (task: Job) => {
+    if (creditsBalance < 3) {
+      setShowBuyCreditsModal(true)
       return
     }
-
-    const currentUser = result.data.user
-    
-    // Check if user is a worker
-    if (currentUser.role !== 'worker') {
-      const routes: Record<string, string> = {
-        client: '/client',
-        admin: '/dashboard/admin',
-        superadmin: '/dashboard/admin'
-      }
-      router.push(routes[currentUser.role] || '/login')
-      return
-    }
-
-    // Set user data
-    setUser({
-      id: currentUser.id,
-      email: currentUser.email,
-      full_name: currentUser.name || '',
-      user_type: 'worker',
-    } as UserType)
-
-    // Fetch worker profile and other data
-    await fetchWorkerProfile(currentUser.id)
-    await fetchShiftsBalance()
-    setIsLoading(false)
+    setSelectedTask(task)
+    setShowBidModal(true)
   }
 
-  const fetchWorkerProfile = async (userId: string) => {
-    // Try profiles table first (v1 schema)
-    const { data: profileData } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('user_id', userId)
-      .single()
-
-    if (profileData) {
-      setWorkerProfile(profileData as any)
-      // Set verified level
-      if (profileData.verified_level) {
-        setVerifiedLevel(profileData.verified_level as 'basic' | 'professional' | 'premium')
-      }
-      // Calculate profile completion for v1 schema
-      if (profileData.skills && Array.isArray(profileData.skills)) {
-        const completion = Math.min(100, (profileData.skills.length / 5) * 100)
-        setProfileCompletion(Math.round(completion))
-      }
-      return
-    }
-
-    // Fallback to worker_profiles (legacy)
-    const { data } = await supabase
-      .from('worker_profiles')
-      .select('*')
-      .eq('user_id', userId)
-      .single()
-
-    if (data) {
-      setWorkerProfile(data)
-      calculateProfileCompletion(data)
-    }
-  }
-
-  const calculateProfileCompletion = (profile: WorkerProfile) => {
-    let completion = 0
-    const fields = [
-      profile.skills?.length > 0,
-      profile.experience_years > 0,
-      profile.hourly_rate > 0,
-      profile.bio,
-      profile.portfolio_url,
-      profile.resume_url,
-      profile.is_verified
-    ]
-    completion = (fields.filter(Boolean).length / fields.length) * 100
-    setProfileCompletion(Math.round(completion))
-  }
-
-  const fetchApplications = async () => {
-    if (!user) return
-
-    const { data } = await supabase
-      .from('applications')
-      .select(`*, project:projects(*)`)
-      .eq('worker_id', user.id)
-      .order('created_at', { ascending: false })
-      .limit(10)
-
-    if (data) {
-      setApplications(data as any)
-      const pending = data.filter(app => app.status === 'pending').length
-      const total = data.length
-      const accepted = data.filter(app => app.status === 'accepted').length
-      const rate = total > 0 ? Math.round((accepted / total) * 100) : 0
-      
-      setStats(prev => ({ ...prev, pendingApplications: pending, acceptanceRate: rate }))
-    }
-  }
-
-  const fetchContracts = async () => {
-    if (!user) return
-
-    const { data: activeData } = await supabase
-      .from('contracts')
-      .select('*')
-      .eq('worker_id', user.id)
-      .in('status', ['active', 'pending'])
-
-    const { data: completedData } = await supabase
-      .from('contracts')
-      .select('*')
-      .eq('worker_id', user.id)
-      .eq('status', 'completed')
-
-    if (activeData) {
-      setContracts(activeData)
-      setStats(prev => ({ 
-        ...prev, 
-        activeContracts: activeData.length,
-        completedProjects: completedData?.length || 0
-      }))
-    }
-  }
-
-  const fetchEarnings = async () => {
-    if (!user) return
-
-    const { data: totalData } = await supabase
-      .from('payments')
-      .select('net_amount')
-      .eq('payment_to', user.id)
-      .eq('status', 'completed')
-
-    if (totalData) {
-      const total = totalData.reduce((sum, payment) => sum + (payment.net_amount || 0), 0)
-      setStats(prev => ({ ...prev, totalEarnings: total }))
-    }
-  }
-
-  const fetchProjects = async () => {
-    const { data } = await supabase
-      .from('projects')
-      .select('*')
-      .eq('status', 'open')
-      .order('created_at', { ascending: false })
-      .limit(20)
-
-    if (data) setProjects(data)
+  const handleBidSuccess = () => {
+    refetchTasks()
+    setShowBidModal(false)
+    setSelectedTask(null)
   }
 
   const handleSignOut = async () => {
-    await apiClient.logout()
-    localStorage.removeItem('access_token')
-    router.push('/')
-  }
-
-  useEffect(() => { 
-    checkAuth() 
-  }, [])
-
-  // Fetch data when user is set
-  useEffect(() => {
-    if (user && !isLoading) {
-      fetchProjects()
-      fetchApplications()
-      fetchContracts()
-      fetchEarnings()
+    try {
+      await fetch('/api/v1/auth/logout', { method: 'POST' })
+      localStorage.removeItem('access_token')
+      router.push('/')
+    } catch (err) {
+      console.error('Logout error:', err)
+      router.push('/')
     }
-  }, [user, isLoading])
-
-  const getSkillMatch = (projectSkills: string[]) => {
-    if (!workerProfile?.skills?.length) return 0
-    const matches = projectSkills.filter(skill => 
-      workerProfile.skills.some(ws => ws.toLowerCase().includes(skill.toLowerCase()))
-    )
-    return Math.round((matches.length / projectSkills.length) * 100)
   }
 
-  const filteredProjects = projects.filter(project => 
-    project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    project.description.toLowerCase().includes(searchQuery.toLowerCase())
-  )
-
-  if (isLoading) {
+  if (!currentUser) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="flex items-center gap-3">
-          <div className="w-5 h-5 border-2 border-slate-300 border-t-[#111] rounded-full animate-spin" />
-          <span className="text-[#333]">Loading dashboard...</span>
+          <Loader2 className="w-5 h-5 animate-spin text-[#0b63ff]" />
+          <span className="text-[#333]">Loading...</span>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       {/* Navigation */}
-      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
+      <nav className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-8">
-              <Link href="/" className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
-                  <Layers className="w-4 h-4 text-white" />
-                </div>
-                <span className="text-lg font-semibold text-[#111]">2ndShift</span>
-              </Link>
-              
-              <div className="hidden md:flex items-center gap-1">
-                <Link href="/worker" className="px-3 py-2 text-sm font-semibold text-[#111] bg-slate-100 rounded-lg">
-                  Dashboard
-                </Link>
-                <Link href="/worker/discover" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111] rounded-lg transition-colors">
-                  Find Work
-                </Link>
-                <Link href="/messages" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111] rounded-lg transition-colors">
-                  Messages
-                </Link>
-                <Link href="/worker/profile/edit" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111] rounded-lg transition-colors">
-                  Profile
-                </Link>
+            <Link href="/worker" className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
+                <Layers className="w-4 h-4 text-white" />
               </div>
+              <span className="text-lg font-semibold text-[#111] dark:text-white">2ndShift</span>
+            </Link>
+            
+            <div className="hidden lg:flex items-center gap-1">
+              <Link href="/worker" className="px-3 py-2 text-sm font-medium text-[#111] dark:text-white bg-slate-100 dark:bg-slate-700 rounded-lg">
+                Dashboard
+              </Link>
+              <Link href="/worker/discover" className="px-3 py-2 text-sm font-medium text-[#333] dark:text-slate-300 hover:text-[#111] dark:hover:text-white">
+                Discover
+              </Link>
+              <Link href="/messages" className="px-3 py-2 text-sm font-medium text-[#333] dark:text-slate-300 hover:text-[#111] dark:hover:text-white">
+                Messages
+              </Link>
             </div>
 
             <div className="flex items-center gap-3">
-              {/* Shifts Balance */}
-              <div className="group relative">
-                <button
-                  onClick={() => setShowShiftsModal(true)}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg text-sm font-medium hover:from-amber-600 hover:to-orange-600 transition-all"
-                  aria-describedby="credits-tooltip-worker"
-                >
-                  <Zap className="w-4 h-4" />
-                  <span>{shiftsBalance} Shifts</span>
-                  <HelpCircle className="w-3.5 h-3.5 opacity-80" />
-                </button>
-                <div id="credits-tooltip-worker" className="absolute right-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-slate-900 text-white text-xs rounded-lg z-50 shadow-lg">
-                  Shift Credits: used to apply for verified job matches. 1 credit = 1 application. Buy credits to speed up matching.
-                </div>
-              </div>
-
-              <button className="relative p-2 text-[#333] hover:text-[#111] hover:bg-slate-100 rounded-lg transition-colors">
-                <Bell className="w-5 h-5" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
-              </button>
-              
-              <div className="h-6 w-px bg-slate-200" />
-              
               <button
-                onClick={() => router.push('/worker/profile/edit')}
-                className="flex items-center gap-2 text-[#333] hover:text-[#111] transition-colors"
+                onClick={() => setShowShiftsModal(true)}
+                className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg text-sm font-medium hover:from-amber-600 hover:to-orange-600 transition-all"
               >
-                <div className="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center text-sm font-semibold text-[#111]">
-                  {user?.full_name?.charAt(0) || 'U'}
-                </div>
+                <Zap className="w-4 h-4" />
+                {creditsBalance} Shifts
               </button>
-              
               <button
                 onClick={handleSignOut}
-                className="p-2 text-[#333] hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition"
               >
-                <LogOut className="w-5 h-5" />
+                <LogOut className="w-5 h-5 text-slate-600 dark:text-slate-400" />
               </button>
             </div>
           </div>
@@ -370,478 +119,144 @@ export default function WorkerDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8 border-b border-slate-200 pb-6">
-          <div>
-            <h1 className="text-3xl font-bold text-[#111]">
-              Welcome back, {user?.full_name?.split(' ')[0]}
-            </h1>
-            <p className="text-[#333] mt-2 text-lg">
-              Here&apos;s what&apos;s happening with your work today
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-[#111] dark:text-white mb-2">
+            High-Value IT Tasks
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400">
+            Browse premium microtasks from verified employers. Minimum ₹50 per task.
+          </p>
+        </div>
+
+        {/* Filters */}
+        <TaskFilters
+          filters={filters}
+          onFiltersChange={setFilters}
+        />
+
+        {/* Tasks Grid */}
+        {tasksLoading ? (
+          <div className="flex items-center justify-center py-20">
+            <div className="flex items-center gap-3">
+              <Loader2 className="w-6 h-6 animate-spin text-[#0b63ff]" />
+              <span className="text-slate-600 dark:text-slate-400">Loading tasks...</span>
+            </div>
+          </div>
+        ) : tasks.length === 0 ? (
+          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-12 text-center">
+            <Briefcase className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-[#111] dark:text-white mb-2">
+              No tasks found
+            </h3>
+            <p className="text-slate-600 dark:text-slate-400 mb-6">
+              Try adjusting your filters or check back later for new high-value tasks.
             </p>
           </div>
-          
-          <div className="flex items-center gap-3">
-            {verifiedLevel && (
-              <VerificationBadgeInfo
-                verifiedLevel={
-                  verifiedLevel === 'basic' ? 1 :
-                  verifiedLevel === 'professional' ? 2 :
-                  verifiedLevel === 'premium' ? 3 : 0
-                }
-                badges={[]}
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {tasks.map((task) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                onBidClick={handleBidClick}
+                showBidButton={true}
               />
-            )}
-            <Link
-              href="/worker/discover"
-              className="inline-flex items-center gap-2 bg-[#111] text-white px-6 py-3 rounded-lg text-sm font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl"
-            >
-              <Search className="w-4 h-4" />
-              Find Work
-            </Link>
-          </div>
-        </div>
-
-        {/* Verification Badge */}
-        <div className="mb-6">
-          <VerificationBadge 
-            verifiedLevel={verifiedLevel}
-            onUpgrade={() => router.push('/worker/verification')}
-          />
-        </div>
-
-        {/* Profile Completion Banner */}
-        {profileCompletion < 100 && (
-          <div className="bg-gradient-to-r from-sky-500 to-[#0b63ff] rounded-2xl p-6 mb-8 text-white">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-white/20 rounded-xl">
-                  <Target className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg">Complete your profile</h3>
-                  <p className="text-sky-100 text-sm mt-1">
-                    Profiles that are 100% complete get 3x more views
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-32 h-2 bg-white/20 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-white rounded-full transition-all" 
-                      style={{ width: `${profileCompletion}%` }}
-                    />
-                  </div>
-                  <span className="text-sm font-medium">{profileCompletion}%</span>
-                </div>
-                <Link
-                  href="/worker/profile/edit"
-                  className="inline-flex items-center gap-2 bg-white text-slate-900 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-100 transition-all"
-                >
-                  Complete Profile
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
+            ))}
           </div>
         )}
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-lg transition-all">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-emerald-100 rounded-lg">
-                <DollarSign className="w-6 h-6 text-emerald-600" />
+        {/* Stats Summary */}
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                <Briefcase className="w-5 h-5 text-[#0b63ff]" />
               </div>
-              <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">
-                +12%
-              </span>
+              <div>
+                <div className="text-2xl font-bold text-[#111] dark:text-white">{tasks.length}</div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">Available Tasks</div>
+              </div>
             </div>
-            <div className="text-3xl font-bold text-[#111] mb-1">
-              ₹{stats.totalEarnings.toLocaleString()}
-            </div>
-            <div className="text-sm text-[#333] font-medium">Total Earnings</div>
           </div>
           
-          <div className="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-lg transition-all">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-sky-100 rounded-lg">
-                <Briefcase className="w-6 h-6 text-sky-600" />
+          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
+                <Zap className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               </div>
-            </div>
-            <div className="text-3xl font-bold text-[#111] mb-1">
-              {stats.activeContracts}
-            </div>
-            <div className="text-sm text-[#333] font-medium">Active Projects</div>
-          </div>
-          
-          <div className="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-lg transition-all">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-amber-100 rounded-lg">
-                <Star className="w-6 h-6 text-amber-600" />
+              <div>
+                <div className="text-2xl font-bold text-[#111] dark:text-white">{creditsBalance}</div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">Shifts Balance</div>
               </div>
-            </div>
-            <div className="text-3xl font-bold text-[#111] mb-1">
-              {stats.avgRating}
-            </div>
-            <div className="text-sm text-[#333] font-medium">Avg. Rating</div>
-          </div>
-          
-          <div className="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-lg transition-all">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-purple-100 rounded-lg">
-                <Eye className="w-6 h-6 text-purple-600" />
-              </div>
-              <span className="text-xs font-semibold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full">
-                +8%
-              </span>
-            </div>
-            <div className="text-3xl font-bold text-[#111] mb-1">
-              {stats.profileViews}
-            </div>
-            <div className="text-sm text-[#333] font-medium">Profile Views</div>
-          </div>
-        </div>
-
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Availability Card */}
-            {user && <AvailabilityCard userId={user.id} />}
-            
-            {/* Alerts Inbox */}
-            {user && <AlertsInbox userId={user.id} />}
-            {/* Shifts Promo Card */}
-            <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 shifts-promo-card">
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 rounded-full text-sm font-medium mb-4 shifts-badge">
-                    <Zap className="w-4 h-4" />
-                    Shifts
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 shifts-title">
-                    Stand out from the crowd
-                  </h3>
-                  <p className="text-sm mb-4 shifts-description">
-                    Use Shifts to boost your applications, appear in featured listings, and get noticed by top clients.
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    <button
-                      onClick={() => setShowShiftsModal(true)}
-                      className="inline-flex items-center gap-2 bg-amber-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-amber-600 transition-all"
-                    >
-                      <Zap className="w-4 h-4" />
-                      Get Shifts
-                    </button>
-                    <Link
-                      href="/pricing"
-                      className="inline-flex items-center gap-2 text-sm font-medium shifts-learn-more"
-                    >
-                      Learn more
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
-                  </div>
-                </div>
-                <div className="hidden md:flex flex-col items-end gap-3">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Rocket className="w-4 h-4 text-amber-400" />
-                    <span className="shifts-benefit">Boost Applications</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <Crown className="w-4 h-4 text-amber-400" />
-                    <span className="shifts-benefit">Featured Profile</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <MessageSquare className="w-4 h-4 text-amber-400" />
-                    <span className="shifts-benefit">Direct Messages</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Talent Packs / Starter Packs */}
-            <div className="border-t border-slate-200 pt-8 mb-8">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-[#111]">
-                  Quick-Start Opportunities
-                </h2>
-                <Link href="/worker/discover" className="text-sm text-[#333] hover:text-[#111] font-semibold transition-colors">
-                  View all →
-                </Link>
-              </div>
-              <div className="grid md:grid-cols-3 gap-4">
-                {WORKER_QUICK_TASKS.slice(0, 3).map((task, i) => (
-                  <Link
-                    key={i}
-                    href="/worker/discover"
-                    className="block p-4 bg-white border border-slate-200 rounded-xl hover:border-sky-300 hover:shadow-lg transition-all"
-                  >
-                    <h3 className="font-semibold text-[#111] mb-2">{task}</h3>
-                    <div className="text-sm text-emerald-600 font-medium mb-2">High-value microtask</div>
-                    <div className="text-xs text-[#333] mb-2">Quick delivery</div>
-                    <div className="text-xs text-slate-500">
-                      Platform fee: 5-10% (first 3: 0%)
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            {/* Recommended Jobs */}
-            <div className="border-t border-slate-200 pt-8">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-[#111]">
-                  Recommended for you
-                </h2>
-                <Link href="/worker/discover" className="text-sm text-[#333] hover:text-[#111] font-semibold transition-colors">
-                  View all →
-                </Link>
-              </div>
-              
-              <div className="space-y-3">
-                {filteredProjects.slice(0, 5).map((project) => {
-                  const skillMatch = getSkillMatch(project.required_skills)
-                  return (
-                    <Link
-                      key={project.id}
-                      href={`/projects/${project.id}`}
-                      className="block bg-white border border-slate-200 rounded-xl p-6 hover:border-sky-300 hover:shadow-lg transition-all group"
-                    >
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <h3 className="font-bold text-lg text-[#111] group-hover:text-sky-600 transition-colors">
-                              {project.title}
-                            </h3>
-                            {skillMatch >= 70 && (
-                              <span className="px-2.5 py-1 text-xs font-semibold text-emerald-700 bg-emerald-50 rounded-full border border-emerald-200">
-                                {skillMatch}% Match
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-sm text-[#333] line-clamp-2 leading-relaxed">
-                            {project.description}
-                          </p>
-                        </div>
-                        <div className="text-right ml-4">
-                          <div className="text-xl font-bold text-[#111]">
-                            ₹{project.budget.toLocaleString()}
-                          </div>
-                          {user && (
-                            <div className="mt-2">
-                              <CommissionBreakdown
-                                price={project.budget}
-                                workerId={user.id}
-                                showTooltips={false}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-[#333] pt-4 border-t border-slate-100">
-                        <span className="flex items-center gap-1.5 font-medium">
-                          <Timer className="w-4 h-4" />
-                          {project.duration_hours}h
-                        </span>
-                        <div className="flex flex-wrap gap-1.5">
-                          {project.required_skills.slice(0, 3).map(skill => (
-                            <span key={skill} className="px-2.5 py-1 bg-slate-100 text-[#333] rounded-md text-xs font-medium">
-                              {skill}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </Link>
-                  )
-                })}
-              </div>
-            </div>
-
-            {/* Active Contracts */}
-            <div className="border-t border-slate-200 pt-8">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-[#111]">Active Contracts</h2>
-              </div>
-              
-              {contracts.length === 0 ? (
-                <div className="bg-white border border-slate-200 rounded-xl p-12 text-center">
-                  <Briefcase className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                  <p className="text-[#111] font-bold text-lg mb-2">No active contracts</p>
-                  <p className="text-sm text-[#333] mb-6">Apply to projects to start working</p>
-                  <Link
-                    href="/worker/discover"
-                    className="inline-flex items-center gap-2 bg-[#111] text-white px-6 py-3 rounded-lg text-sm font-semibold hover:bg-[#333] transition-all shadow-lg"
-                  >
-                    Browse opportunities
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {contracts.map((contract) => (
-                    <div key={contract.id} className="bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-all">
-                      <div className="flex items-center justify-between mb-4">
-                        <div>
-                          <h4 className="font-bold text-lg text-[#111] mb-1">
-                            Contract #{contract.id.slice(0, 8)}
-                          </h4>
-                          <span className="text-sm text-[#333] font-medium">
-                            {contract.status === 'active' ? 'In Progress' : 'Pending'}
-                          </span>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-2xl font-bold text-emerald-600">
-                            ₹{contract.worker_payout.toLocaleString()}
-                          </div>
-                          <span className="text-xs text-[#333]">Your payout</span>
-                        </div>
-                      </div>
-                      <button className="text-sm text-[#333] hover:text-[#111] font-semibold transition-colors">
-                        View Details →
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Quick Stats */}
-            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-              <h3 className="font-bold text-lg text-[#111] mb-6">This Month</h3>
-              <div className="space-y-5">
-                <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                  <span className="text-sm text-[#333] font-medium">Hours Worked</span>
-                  <span className="font-bold text-lg text-[#111]">{stats.hoursThisMonth}h</span>
+          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
+                <DollarSign className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-[#111] dark:text-white">
+                  ₹{tasks.reduce((sum, t) => sum + (t.price_fixed || 0), 0).toLocaleString()}
                 </div>
-                <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                  <span className="text-sm text-[#333] font-medium">Projects Completed</span>
-                  <span className="font-bold text-lg text-[#111]">{stats.completedProjects}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-[#333] font-medium">Success Rate</span>
-                  <span className="font-bold text-lg text-emerald-600">{stats.acceptanceRate}%</span>
-                </div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">Total Value</div>
               </div>
             </div>
+          </div>
 
-            {/* Applications */}
-            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="font-bold text-lg text-[#111]">Recent Applications</h3>
-                <span className="text-xs text-[#333] font-medium bg-slate-100 px-2.5 py-1 rounded-full">{applications.length} total</span>
+          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                <Shield className="w-5 h-5 text-purple-600 dark:text-purple-400" />
               </div>
-              
-              {applications.length === 0 ? (
-                <p className="text-sm text-[#333] text-center py-6">
-                  No applications yet
-                </p>
-              ) : (
-                <div className="space-y-4">
-                  {applications.slice(0, 4).map((app) => (
-                    <div key={app.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
-                      <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0">
-                        {app.status === 'pending' && <Clock className="w-5 h-5 text-amber-500" />}
-                        {app.status === 'accepted' && <CheckCircle className="w-5 h-5 text-emerald-500" />}
-                        {app.status === 'rejected' && <XCircle className="w-5 h-5 text-red-500" />}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-[#111] truncate">
-                          {app.project?.title || 'Project'}
-                        </p>
-                        <p className="text-xs text-[#333] capitalize font-medium">{app.status}</p>
-                      </div>
-                    </div>
-                  ))}
+              <div>
+                <div className="text-2xl font-bold text-[#111] dark:text-white">
+                  {tasks.filter(t => t.client?.trust_score && t.client.trust_score > 80).length}
                 </div>
-              )}
-            </div>
-
-            {/* Subscription Upsell */}
-            <SubscriptionUpsellSection userId={user?.id} />
-
-            {/* Subscription Upsell */}
-            <SubscriptionUpsell
-              userType="worker"
-              onSubscribe={() => router.push('/pricing')}
-            />
-
-            {/* Boost Profile Card */}
-            <div className="bg-gradient-to-br from-purple-500 to-[#0b63ff] rounded-xl p-5 text-white">
-              <div className="flex items-center gap-2 mb-3">
-                <Sparkles className="w-5 h-5" />
-                <span className="font-semibold">Boost Your Profile</span>
-              </div>
-              <p className="text-purple-100 text-sm mb-4">
-                Get 5x more visibility for 7 days. Appear in featured professionals.
-              </p>
-              <button
-                onClick={() => setShowBuyCreditsModal(true)}
-                className="w-full bg-white text-purple-600 py-2 rounded-lg text-sm font-semibold hover:bg-purple-50 transition-colors"
-              >
-                Boost for 5 Credits
-              </button>
-            </div>
-
-            {/* Quick Links */}
-            <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-              <h3 className="font-bold text-lg text-[#111] mb-6">Quick Links</h3>
-              <div className="space-y-2">
-                <Link href="/worker/profile/edit" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
-                  <User className="w-5 h-5 text-[#333] group-hover:text-[#111]" />
-                  <span className="text-sm text-[#333] font-medium group-hover:text-[#111]">Edit Profile</span>
-                </Link>
-                <Link href="/worker/verification" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
-                  <Shield className="w-5 h-5 text-[#333] group-hover:text-[#111]" />
-                  <span className="text-sm text-[#333] font-medium group-hover:text-[#111]">Verification</span>
-                </Link>
-                <Link href="/messages" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
-                  <MessageSquare className="w-5 h-5 text-[#333] group-hover:text-[#111]" />
-                  <span className="text-sm text-[#333] font-medium group-hover:text-[#111]">Messages</span>
-                </Link>
-                <Link href="/settings" className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group">
-                  <Settings className="w-5 h-5 text-[#333] group-hover:text-[#111]" />
-                  <span className="text-sm text-[#333] font-medium group-hover:text-[#111]">Settings</span>
-                </Link>
+                <div className="text-sm text-slate-600 dark:text-slate-400">Verified Employers</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Buy Credits Modal */}
-      {user && (
-        <BuyCreditsModalV1
-          isOpen={showBuyCreditsModal}
-          onClose={() => setShowBuyCreditsModal(false)}
-          userId={user.id}
-          userType="worker"
-          currentBalance={shiftsBalance}
-          onPurchaseComplete={(newBalance) => {
-            setShiftsBalance(newBalance)
-            setStats(prev => ({ ...prev, shiftsBalance: newBalance }))
-            fetchShiftsBalance()
+      {/* Modals */}
+      {selectedTask && (
+        <BidModal
+          isOpen={showBidModal}
+          onClose={() => {
+            setShowBidModal(false)
+            setSelectedTask(null)
           }}
+          task={selectedTask}
+          onSuccess={handleBidSuccess}
         />
       )}
 
-      {/* Shifts Modal */}
-      {user && (
-        <ShiftsModal
-          isOpen={showShiftsModal}
-          onClose={() => setShowShiftsModal(false)}
-          userId={user.id}
-          userType="worker"
-          currentBalance={shiftsBalance}
-          onPurchaseComplete={(newBalance) => {
-            setShiftsBalance(newBalance)
-            setStats(prev => ({ ...prev, shiftsBalance: newBalance }))
-            fetchShiftsBalance()
-          }}
-        />
+      {currentUser && (
+        <>
+          <ShiftsModal
+            isOpen={showShiftsModal}
+            onClose={() => setShowShiftsModal(false)}
+            userId={currentUser.id}
+            userType={currentUser.role as 'worker' | 'client'}
+            currentBalance={creditsBalance}
+            onPurchaseComplete={(newBalance) => {
+              // Balance will be refetched automatically via useCreditsBalance
+            }}
+          />
+          <BuyCreditsModalV1
+            isOpen={showBuyCreditsModal}
+            onClose={() => setShowBuyCreditsModal(false)}
+            userId={currentUser.id}
+            userType={currentUser.role as 'worker' | 'client'}
+            currentBalance={creditsBalance}
+            onPurchaseComplete={() => {
+              setShowBuyCreditsModal(false)
+            }}
+          />
+        </>
       )}
     </div>
   )

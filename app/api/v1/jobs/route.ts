@@ -31,6 +31,7 @@ export async function GET(request: NextRequest) {
       const role = searchParams.get('role') || authReq.userRole;
       const status = searchParams.get('status');
       const category_id = searchParams.get('category_id');
+      const minPrice = searchParams.get('minPrice');
       const limit = parseInt(searchParams.get('limit') || '20');
       const offset = parseInt(searchParams.get('offset') || '0');
 
@@ -60,6 +61,12 @@ export async function GET(request: NextRequest) {
       }
       if (category_id) {
         query = query.eq('category_id', category_id);
+      }
+      if (minPrice) {
+        const minPriceNum = parseFloat(minPrice);
+        if (!isNaN(minPriceNum) && minPriceNum >= 50) {
+          query = query.gte('price_fixed', minPriceNum);
+        }
       }
 
       const { data: jobs, error } = await query;
