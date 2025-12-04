@@ -21,7 +21,6 @@ const mockTask: Job = {
   delivery_window: 'oneTo4w',
   escrow_id: null,
   required_skills: ['React', 'TypeScript', 'Storybook'],
-  urgency: 'normal',
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
   requested_at: new Date().toISOString(),

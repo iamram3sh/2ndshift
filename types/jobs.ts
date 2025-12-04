@@ -5,7 +5,6 @@
 export type JobStatus = 'draft' | 'open' | 'assigned' | 'in_progress' | 'completed' | 'disputed' | 'cancelled'
 export type ApplicationStatus = 'pending' | 'accepted' | 'rejected' | 'withdrawn'
 export type DeliveryWindow = 'sixTo24h' | 'threeTo7d' | 'oneTo4w' | 'oneTo6m'
-export type Urgency = 'low' | 'normal' | 'urgent' | 'critical'
 
 export interface Job {
   id: string
@@ -22,7 +21,6 @@ export interface Job {
   delivery_window: DeliveryWindow | null
   escrow_id: string | null
   required_skills: string[]
-  urgency: Urgency
   created_at: string
   updated_at: string
   requested_at: string
@@ -82,7 +80,6 @@ export interface CreateJobPayload {
   delivery_window?: DeliveryWindow
   delivery_deadline?: string
   required_skills?: string[]
-  urgency?: Urgency
 }
 
 export interface ApplyToJobPayload {
