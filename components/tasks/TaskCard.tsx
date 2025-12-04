@@ -32,7 +32,7 @@ export function TaskCard({ task, onBidClick, showBidButton = true }: TaskCardPro
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2">
-              <h3 className="text-lg font-semibold text-[#111] dark:text-white line-clamp-2 group-hover:text-[#0b63ff] dark:group-hover:text-blue-400 transition-colors">
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white line-clamp-2 group-hover:text-[#0b63ff] dark:group-hover:text-blue-400 transition-colors">
                 {task.title}
               </h3>
               {isVerified && (
@@ -46,7 +46,7 @@ export function TaskCard({ task, onBidClick, showBidButton = true }: TaskCardPro
             {/* Category Badge */}
             {task.category && (
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg mb-3">
-                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                <span className="text-xs font-medium text-slate-800 dark:text-slate-200">
                   {task.category.name}
                 </span>
               </div>
@@ -63,12 +63,12 @@ export function TaskCard({ task, onBidClick, showBidButton = true }: TaskCardPro
         </div>
 
         {/* Description */}
-        <p className="text-sm text-[#333] dark:text-slate-300 mb-4 line-clamp-3 leading-relaxed">
+        <p className="text-sm text-slate-700 dark:text-slate-300 mb-4 line-clamp-3 leading-relaxed">
           {truncateDescription(task.description)}
         </p>
 
         {/* Meta Info */}
-        <div className="flex items-center gap-4 text-xs text-slate-600 dark:text-slate-400 mb-4">
+        <div className="flex items-center gap-4 text-xs text-slate-700 dark:text-slate-400 mb-4">
           {task.delivery_window && (
             <div className="flex items-center gap-1.5">
               <Clock className="w-4 h-4" />
@@ -102,7 +102,7 @@ export function TaskCard({ task, onBidClick, showBidButton = true }: TaskCardPro
               </span>
             ))}
             {task.required_skills.length > 3 && (
-              <span className="px-2.5 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-lg text-xs font-medium">
+              <span className="px-2.5 py-1 bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-300 rounded-lg text-xs font-medium">
                 +{task.required_skills.length - 3} more
               </span>
             )}
@@ -113,7 +113,7 @@ export function TaskCard({ task, onBidClick, showBidButton = true }: TaskCardPro
         <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
           <Link
             href={`/task/${task.id}`}
-            className="flex-1 text-center px-4 py-2.5 text-sm font-medium text-[#0b63ff] dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
+            className="flex-1 text-center px-4 py-2.5 text-sm font-medium text-[#0b63ff] dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors border border-[#0b63ff] dark:border-blue-400"
           >
             View Details
           </Link>

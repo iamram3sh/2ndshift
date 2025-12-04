@@ -276,10 +276,10 @@ export default function WorkerDashboard() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#111] dark:text-white mb-2">
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
             High-Value IT Tasks
           </h1>
-          <p className="text-slate-600 dark:text-slate-400">
+          <p className="text-slate-700 dark:text-slate-300">
             Browse premium microtasks from verified employers. Minimum ₹50 per task.
           </p>
         </div>
