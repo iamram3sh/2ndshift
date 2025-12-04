@@ -7,6 +7,7 @@ import apiClient from '@/lib/apiClient'
 import { User, Mail, Shield, ArrowLeft, Save } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import type { User as UserType } from '@/types/database.types'
 
@@ -190,43 +191,53 @@ export default function ProfilePage() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSave} className="space-y-6">
-                  <Input
-                    label="Full Name"
-                    value={formData.full_name}
-                    onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                    placeholder="John Doe"
-                  />
+                  <div className="space-y-2">
+                    <Label htmlFor="full_name">Full Name</Label>
+                    <Input
+                      id="full_name"
+                      value={formData.full_name}
+                      onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                      placeholder="John Doe"
+                    />
+                  </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      <Mail className="w-4 h-4 inline mr-2" />
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="flex items-center gap-2">
+                      <Mail className="w-4 h-4" />
                       Email
-                    </label>
-                    <input
+                    </Label>
+                    <Input
+                      id="email"
                       type="email"
                       value={user?.email}
                       disabled
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500 cursor-not-allowed"
+                      className="bg-gray-50 text-gray-500 cursor-not-allowed"
                     />
-                    <p className="mt-1 text-xs text-gray-500">Email cannot be changed</p>
+                    <p className="text-xs text-gray-500">Email cannot be changed</p>
                   </div>
 
-                  <Input
-                    label="Phone Number"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+91 98765 43210"
-                  />
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">Phone Number</Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder="+91 98765 43210"
+                    />
+                  </div>
 
-                  <Input
-                    label="PAN Number"
-                    value={formData.pan_number}
-                    onChange={(e) => setFormData({ ...formData, pan_number: e.target.value.toUpperCase() })}
-                    placeholder="ABCDE1234F"
-                    helperText="Required for tax compliance and payments"
-                    maxLength={10}
-                  />
+                  <div className="space-y-2">
+                    <Label htmlFor="pan_number">PAN Number</Label>
+                    <Input
+                      id="pan_number"
+                      value={formData.pan_number}
+                      onChange={(e) => setFormData({ ...formData, pan_number: e.target.value.toUpperCase() })}
+                      placeholder="ABCDE1234F"
+                      maxLength={10}
+                    />
+                    <p className="text-xs text-gray-500">Required for tax compliance and payments</p>
+                  </div>
 
                   <div className="flex gap-4 pt-4">
                     <Button
