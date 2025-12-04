@@ -265,9 +265,9 @@ export default function ProfileCompletionWidget({ userId, userType }: ProfileCom
   return (
     <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-6 text-white">
+      <div className="bg-gradient-to-r from-[#0b63ff] to-[#0a56e6] p-6 text-white">
         <h3 className="text-2xl font-bold mb-2">Complete Your Profile</h3>
-        <p className="text-indigo-100 text-sm">
+        <p className="text-blue-100 text-sm">
           {completion === 100 
             ? '🎉 Your profile is complete!' 
             : `${completedTasks} of ${totalTasks} tasks completed`
@@ -278,7 +278,7 @@ export default function ProfileCompletionWidget({ userId, userType }: ProfileCom
         <div className="mt-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-white font-bold text-3xl">{completion}%</span>
-            <span className="text-indigo-100 text-sm">
+            <span className="text-blue-100 text-sm">
               {100 - completion}% to complete
             </span>
           </div>
@@ -305,13 +305,13 @@ export default function ProfileCompletionWidget({ userId, userType }: ProfileCom
                 .map(task => (
                   <div 
                     key={task.id}
-                    className="flex items-center justify-between p-3 border border-gray-200 dark:border-slate-600 rounded-lg hover:border-indigo-300 dark:hover:border-indigo-600 transition group cursor-pointer"
+                    className="flex items-center justify-between p-3 border border-gray-200 dark:border-slate-600 rounded-lg hover:border-blue-300 dark:hover:border-blue-600 transition group cursor-pointer"
                     onClick={() => router.push(task.link)}
                   >
                     <div className="flex items-center gap-3 flex-1">
                       <Circle className="w-5 h-5 text-gray-400" />
                       <div className="flex-1">
-                        <h4 className="font-medium text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                        <h4 className="font-medium text-gray-900 dark:text-white group-hover:text-[#0b63ff] dark:group-hover:text-blue-400">
                           {task.title}
                         </h4>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -319,10 +319,10 @@ export default function ProfileCompletionWidget({ userId, userType }: ProfileCom
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                        <span className="text-xs font-bold text-[#0b63ff] dark:text-blue-400">
                           +{task.points}%
                         </span>
-                        <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:translate-x-1 transition" />
+                        <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#0b63ff] dark:group-hover:text-blue-400 group-hover:translate-x-1 transition" />
                       </div>
                     </div>
                   </div>
@@ -332,7 +332,7 @@ export default function ProfileCompletionWidget({ userId, userType }: ProfileCom
             {tasks.filter(t => !t.completed).length > 5 && (
               <button
                 onClick={() => router.push(`/${userType}/profile/edit`)}
-                className="mt-4 w-full text-center text-sm text-indigo-600 dark:text-indigo-400 hover:underline font-medium"
+                className="mt-4 w-full text-center text-sm text-[#0b63ff] dark:text-blue-400 hover:underline font-medium"
               >
                 View all {tasks.filter(t => !t.completed).length - 5} more tasks
               </button>
@@ -351,7 +351,7 @@ export default function ProfileCompletionWidget({ userId, userType }: ProfileCom
             </p>
             <button
               onClick={() => router.push(`/${userType}/profile`)}
-              className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+              className="px-6 py-2 bg-[#0b63ff] text-white rounded-lg hover:bg-[#0a56e6] transition"
             >
               View Profile
             </button>

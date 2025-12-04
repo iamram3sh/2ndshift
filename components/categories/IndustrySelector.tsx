@@ -34,7 +34,7 @@ const COLORS: Record<string, string> = {
   yellow: 'bg-yellow-100 text-yellow-700 border-yellow-200',
   stone: 'bg-stone-100 text-stone-700 border-stone-200',
   fuchsia: 'bg-fuchsia-100 text-fuchsia-700 border-fuchsia-200',
-  indigo: 'bg-indigo-100 text-indigo-700 border-indigo-200',
+  indigo: 'bg-blue-100 text-[#0a56e6] border-blue-200',
   blue: 'bg-blue-100 text-blue-700 border-blue-200',
   zinc: 'bg-zinc-100 text-zinc-700 border-zinc-200',
   neutral: 'bg-neutral-100 text-neutral-700 border-neutral-200',

@@ -11,20 +11,20 @@ export default function CompliancePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#0b63ff] to-[#0a56e6] rounded-xl flex items-center justify-center">
                 <Briefcase className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-[#0b63ff] to-[#0a56e6] bg-clip-text text-transparent">
                 2ndShift
               </span>
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
-              <Link href="/about" className="text-[#333] hover:text-indigo-600 font-medium transition">About</Link>
-              <Link href="/contact" className="text-[#333] hover:text-indigo-600 font-medium transition">Contact</Link>
+              <Link href="/about" className="text-[#333] hover:text-[#0b63ff] font-medium transition">About</Link>
+              <Link href="/contact" className="text-[#333] hover:text-[#0b63ff] font-medium transition">Contact</Link>
             </div>
 
-            <Link href="/register" className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition">
+            <Link href="/register" className="bg-gradient-to-r from-[#0b63ff] to-[#0a56e6] text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition">
               Get Started
             </Link>
           </div>
@@ -32,9 +32,9 @@ export default function CompliancePage() {
       </nav>
 
       {/* Hero */}
-      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-indigo-50 to-purple-50">
+      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-slate-50">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="w-20 h-20 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <div className="w-20 h-20 bg-gradient-to-br from-[#0b63ff] to-[#0a56e6] rounded-2xl flex items-center justify-center mx-auto mb-6">
             <FileCheck className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-5xl sm:text-6xl font-bold text-[#111] mb-6">
@@ -50,18 +50,18 @@ export default function CompliancePage() {
       <section className="py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 hover:border-indigo-600 transition">
-              <Award className="w-12 h-12 text-indigo-600 mb-4" />
+            <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 hover:border-[#0b63ff] transition">
+              <Award className="w-12 h-12 text-[#0b63ff] mb-4" />
               <h3 className="text-xl font-bold text-[#111] mb-3">100% Compliant</h3>
               <p className="text-[#333]">Full compliance with Indian laws and regulations</p>
             </div>
-            <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 hover:border-indigo-600 transition">
-              <Shield className="w-12 h-12 text-indigo-600 mb-4" />
+            <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 hover:border-[#0b63ff] transition">
+              <Shield className="w-12 h-12 text-[#0b63ff] mb-4" />
               <h3 className="text-xl font-bold text-[#111] mb-3">Data Protected</h3>
               <p className="text-[#333]">ISO 27001 certified security practices</p>
             </div>
-            <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 hover:border-indigo-600 transition">
-              <Building className="w-12 h-12 text-indigo-600 mb-4" />
+            <div className="bg-white border-2 border-slate-200 rounded-2xl p-8 hover:border-[#0b63ff] transition">
+              <Building className="w-12 h-12 text-[#0b63ff] mb-4" />
               <h3 className="text-xl font-bold text-[#111] mb-3">Registered Entity</h3>
               <p className="text-[#333]">Incorporated under Companies Act 2013</p>
             </div>
@@ -376,7 +376,7 @@ export default function CompliancePage() {
                 <li>User data access statistics</li>
                 <li>Proactive monitoring and removal stats</li>
               </ul>
-              <Link href="/transparency" className="inline-block mt-4 text-indigo-600 hover:text-indigo-700 font-semibold">
+              <Link href="/transparency" className="inline-block mt-4 text-[#0b63ff] hover:text-indigo-700 font-semibold">
                 View Transparency Reports →
               </Link>
             </div>
@@ -404,19 +404,19 @@ export default function CompliancePage() {
         <div className="max-w-4xl mx-auto">
           <h3 className="text-2xl font-bold text-[#111] mb-8 text-center">Related Documents</h3>
           <div className="grid md:grid-cols-3 gap-6">
-            <Link href="/terms" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
-              <FileCheck className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Terms of Service</h4>
+            <Link href="/terms" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-[#0b63ff] transition group">
+              <FileCheck className="w-10 h-10 text-[#0b63ff] mb-4" />
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-[#0b63ff]">Terms of Service</h4>
               <p className="text-sm text-[#333]">Platform usage terms</p>
             </Link>
-            <Link href="/privacy" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
-              <Shield className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Privacy Policy</h4>
+            <Link href="/privacy" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-[#0b63ff] transition group">
+              <Shield className="w-10 h-10 text-[#0b63ff] mb-4" />
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-[#0b63ff]">Privacy Policy</h4>
               <p className="text-sm text-[#333]">Data protection practices</p>
             </Link>
-            <Link href="/security" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
-              <Award className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Security</h4>
+            <Link href="/security" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-[#0b63ff] transition group">
+              <Award className="w-10 h-10 text-[#0b63ff] mb-4" />
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-[#0b63ff]">Security</h4>
               <p className="text-sm text-[#333]">Platform security measures</p>
             </Link>
           </div>

@@ -113,28 +113,28 @@ export function AdvancedSearch({ onSearch }: AdvancedSearchProps) {
             onChange={(e) => setFilters({ ...filters, query: e.target.value })}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             placeholder="Search projects by title, description, or skills..."
-            className="w-full pl-12 pr-4 py-3.5 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900 focus:border-indigo-500 transition outline-none dark:bg-slate-900 dark:text-white"
+            className="w-full pl-12 pr-4 py-3.5 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900 focus:border-[#0b63ff] transition outline-none dark:bg-slate-900 dark:text-white"
           />
         </div>
         <button
           onClick={() => setShowFilters(!showFilters)}
           className={`flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold transition ${
             showFilters
-              ? 'bg-indigo-600 text-white'
+              ? 'bg-[#0b63ff] text-white'
               : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
           }`}
         >
           <SlidersHorizontal className="w-5 h-5" />
           Filters
           {activeFiltersCount > 0 && (
-            <span className="bg-white text-indigo-600 w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">
+            <span className="bg-white text-[#0b63ff] w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">
               {activeFiltersCount}
             </span>
           )}
         </button>
         <button
           onClick={handleSearch}
-          className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3.5 rounded-xl font-semibold hover:shadow-xl transition"
+          className="bg-gradient-to-r from-[#0b63ff] to-[#0a56e6] text-white px-8 py-3.5 rounded-xl font-semibold hover:shadow-xl transition"
         >
           Search
         </button>
@@ -155,7 +155,7 @@ export function AdvancedSearch({ onSearch }: AdvancedSearchProps) {
                   onClick={() => toggleSkill(skill)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                     filters.skills.includes(skill)
-                      ? 'bg-indigo-600 text-white'
+                      ? 'bg-[#0b63ff] text-white'
                       : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
                   }`}
                 >
@@ -177,7 +177,7 @@ export function AdvancedSearch({ onSearch }: AdvancedSearchProps) {
                   type="number"
                   value={filters.minBudget}
                   onChange={(e) => setFilters({ ...filters, minBudget: Number(e.target.value) })}
-                  className="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none dark:bg-slate-900 dark:text-white"
+                  className="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-[#0b63ff] outline-none dark:bg-slate-900 dark:text-white"
                   placeholder="₹0"
                 />
               </div>
@@ -187,7 +187,7 @@ export function AdvancedSearch({ onSearch }: AdvancedSearchProps) {
                   type="number"
                   value={filters.maxBudget}
                   onChange={(e) => setFilters({ ...filters, maxBudget: Number(e.target.value) })}
-                  className="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none dark:bg-slate-900 dark:text-white"
+                  className="w-full px-4 py-2 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-[#0b63ff] outline-none dark:bg-slate-900 dark:text-white"
                   placeholder="₹200,000"
                 />
               </div>
@@ -205,7 +205,7 @@ export function AdvancedSearch({ onSearch }: AdvancedSearchProps) {
             <select
               value={filters.duration}
               onChange={(e) => setFilters({ ...filters, duration: e.target.value })}
-              className="w-full px-4 py-2.5 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none dark:bg-slate-900 dark:text-white"
+              className="w-full px-4 py-2.5 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-[#0b63ff] outline-none dark:bg-slate-900 dark:text-white"
             >
               {DURATION_OPTIONS.map(option => (
                 <option key={option.value} value={option.value}>
@@ -245,7 +245,7 @@ export function AdvancedSearch({ onSearch }: AdvancedSearchProps) {
             <select
               value={filters.sortBy}
               onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
-              className="w-full px-4 py-2.5 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none dark:bg-slate-900 dark:text-white"
+              className="w-full px-4 py-2.5 border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-[#0b63ff] outline-none dark:bg-slate-900 dark:text-white"
             >
               <option value="recent">Most Recent</option>
               <option value="budget-high">Highest Budget</option>
@@ -265,7 +265,7 @@ export function AdvancedSearch({ onSearch }: AdvancedSearchProps) {
             </button>
             <button
               onClick={handleSearch}
-              className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:shadow-xl transition"
+              className="flex-1 bg-gradient-to-r from-[#0b63ff] to-[#0a56e6] text-white px-6 py-2.5 rounded-lg font-semibold hover:shadow-xl transition"
             >
               Apply Filters
             </button>

@@ -11,20 +11,20 @@ export default function PrivacyPolicyPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#0b63ff] to-[#0a56e6] rounded-xl flex items-center justify-center">
                 <Briefcase className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-[#0b63ff] to-[#0a56e6] bg-clip-text text-transparent">
                 2ndShift
               </span>
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
-              <Link href="/about" className="text-[#333] hover:text-indigo-600 font-medium transition">About</Link>
-              <Link href="/contact" className="text-[#333] hover:text-indigo-600 font-medium transition">Contact</Link>
+              <Link href="/about" className="text-[#333] hover:text-[#0b63ff] font-medium transition">About</Link>
+              <Link href="/contact" className="text-[#333] hover:text-[#0b63ff] font-medium transition">Contact</Link>
             </div>
 
-            <Link href="/register" className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition">
+            <Link href="/register" className="bg-gradient-to-r from-[#0b63ff] to-[#0a56e6] text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition">
               Get Started
             </Link>
           </div>
@@ -32,9 +32,9 @@ export default function PrivacyPolicyPage() {
       </nav>
 
       {/* Hero */}
-      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-indigo-50 to-purple-50">
+      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-slate-50">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="w-20 h-20 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <div className="w-20 h-20 bg-gradient-to-br from-[#0b63ff] to-[#0a56e6] rounded-2xl flex items-center justify-center mx-auto mb-6">
             <Shield className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-5xl sm:text-6xl font-bold text-[#111] mb-6">
@@ -52,7 +52,7 @@ export default function PrivacyPolicyPage() {
           <div className="prose prose-lg max-w-none">
             
             {/* Introduction */}
-            <div className="bg-indigo-50 border-l-4 border-indigo-600 p-6 rounded-r-xl mb-12">
+            <div className="bg-blue-50 border-l-4 border-[#0b63ff] p-6 rounded-r-xl mb-12">
               <h3 className="text-xl font-bold text-[#111] mb-2">Your Privacy Matters</h3>
               <p className="text-slate-700 leading-relaxed">
                 At 2ndShift, we are committed to protecting your privacy and personal information. This Privacy Policy explains how we collect, use, store, and protect your data when you use our Platform.
@@ -62,7 +62,7 @@ export default function PrivacyPolicyPage() {
             {/* 1. Information We Collect */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold text-[#111] mb-6 flex items-center gap-3">
-                <Database className="w-8 h-8 text-indigo-600" />
+                <Database className="w-8 h-8 text-[#0b63ff]" />
                 1. Information We Collect
               </h2>
               
@@ -120,7 +120,7 @@ export default function PrivacyPolicyPage() {
             {/* 2. How We Use Your Information */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold text-[#111] mb-6 flex items-center gap-3">
-                <Eye className="w-8 h-8 text-indigo-600" />
+                <Eye className="w-8 h-8 text-[#0b63ff]" />
                 2. How We Use Your Information
               </h2>
               
@@ -220,7 +220,7 @@ export default function PrivacyPolicyPage() {
             {/* 4. Data Storage and Security */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold text-[#111] mb-6 flex items-center gap-3">
-                <Lock className="w-8 h-8 text-indigo-600" />
+                <Lock className="w-8 h-8 text-[#0b63ff]" />
                 4. Data Storage and Security
               </h2>
               
@@ -266,7 +266,7 @@ export default function PrivacyPolicyPage() {
             {/* 5. Your Rights and Choices */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold text-[#111] mb-6 flex items-center gap-3">
-                <UserCheck className="w-8 h-8 text-indigo-600" />
+                <UserCheck className="w-8 h-8 text-[#0b63ff]" />
                 5. Your Rights and Choices
               </h2>
               
@@ -447,19 +447,19 @@ export default function PrivacyPolicyPage() {
         <div className="max-w-4xl mx-auto">
           <h3 className="text-2xl font-bold text-[#111] mb-8 text-center">Related Documents</h3>
           <div className="grid md:grid-cols-3 gap-6">
-            <Link href="/terms" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
-              <Shield className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Terms of Service</h4>
+            <Link href="/terms" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-[#0b63ff] transition group">
+              <Shield className="w-10 h-10 text-[#0b63ff] mb-4" />
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-[#0b63ff]">Terms of Service</h4>
               <p className="text-sm text-[#333]">Platform usage terms and conditions</p>
             </Link>
-            <Link href="/compliance" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
-              <Lock className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Compliance</h4>
+            <Link href="/compliance" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-[#0b63ff] transition group">
+              <Lock className="w-10 h-10 text-[#0b63ff] mb-4" />
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-[#0b63ff]">Compliance</h4>
               <p className="text-sm text-[#333]">Our regulatory compliance framework</p>
             </Link>
-            <Link href="/security" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
-              <Database className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Security</h4>
+            <Link href="/security" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-[#0b63ff] transition group">
+              <Database className="w-10 h-10 text-[#0b63ff] mb-4" />
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-[#0b63ff]">Security</h4>
               <p className="text-sm text-[#333]">Platform security measures</p>
             </Link>
           </div>

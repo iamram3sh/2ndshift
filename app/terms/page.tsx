@@ -11,20 +11,20 @@ export default function TermsOfServicePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#0b63ff] to-[#0a56e6] rounded-xl flex items-center justify-center">
                 <Briefcase className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-[#0b63ff] to-[#0a56e6] bg-clip-text text-transparent">
                 2ndShift
               </span>
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
-              <Link href="/about" className="text-[#333] hover:text-indigo-600 font-medium transition">About</Link>
-              <Link href="/contact" className="text-[#333] hover:text-indigo-600 font-medium transition">Contact</Link>
+              <Link href="/about" className="text-[#333] hover:text-[#0b63ff] font-medium transition">About</Link>
+              <Link href="/contact" className="text-[#333] hover:text-[#0b63ff] font-medium transition">Contact</Link>
             </div>
 
-            <Link href="/register" className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition">
+            <Link href="/register" className="bg-gradient-to-r from-[#0b63ff] to-[#0a56e6] text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition">
               Get Started
             </Link>
           </div>
@@ -32,9 +32,9 @@ export default function TermsOfServicePage() {
       </nav>
 
       {/* Hero */}
-      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-indigo-50 to-purple-50">
+      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-slate-50">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="w-20 h-20 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <div className="w-20 h-20 bg-gradient-to-br from-[#0b63ff] to-[#0a56e6] rounded-2xl flex items-center justify-center mx-auto mb-6">
             <Scale className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-5xl sm:text-6xl font-bold text-[#111] mb-6">
@@ -52,7 +52,7 @@ export default function TermsOfServicePage() {
           <div className="prose prose-lg max-w-none">
             
             {/* Introduction */}
-            <div className="bg-indigo-50 border-l-4 border-indigo-600 p-6 rounded-r-xl mb-12">
+            <div className="bg-blue-50 border-l-4 border-[#0b63ff] p-6 rounded-r-xl mb-12">
               <h3 className="text-xl font-bold text-[#111] mb-2">Welcome to 2ndShift</h3>
               <p className="text-slate-700 leading-relaxed">
                 These Terms of Service ("Terms") govern your access to and use of 2ndShift platform, including our website, mobile application, and services (collectively, the "Platform"). By accessing or using 2ndShift, you agree to be bound by these Terms.
@@ -62,7 +62,7 @@ export default function TermsOfServicePage() {
             {/* 1. Definitions */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold text-[#111] mb-6 flex items-center gap-3">
-                <FileText className="w-8 h-8 text-indigo-600" />
+                <FileText className="w-8 h-8 text-[#0b63ff]" />
                 1. Definitions
               </h2>
               <div className="space-y-4 text-slate-700">
@@ -255,7 +255,7 @@ export default function TermsOfServicePage() {
                 </ul>
                 <p className="mt-4">
                   For detailed information, please review our{' '}
-                  <Link href="/privacy" className="text-indigo-600 hover:text-indigo-700 font-semibold">
+                  <Link href="/privacy" className="text-[#0b63ff] hover:text-indigo-700 font-semibold">
                     Privacy Policy
                   </Link>
                   .
@@ -414,19 +414,19 @@ export default function TermsOfServicePage() {
         <div className="max-w-4xl mx-auto">
           <h3 className="text-2xl font-bold text-[#111] mb-8 text-center">Related Legal Documents</h3>
           <div className="grid md:grid-cols-3 gap-6">
-            <Link href="/privacy" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
-              <Shield className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Privacy Policy</h4>
+            <Link href="/privacy" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-[#0b63ff] transition group">
+              <Shield className="w-10 h-10 text-[#0b63ff] mb-4" />
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-[#0b63ff]">Privacy Policy</h4>
               <p className="text-sm text-[#333]">How we collect, use, and protect your data</p>
             </Link>
-            <Link href="/compliance" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
-              <FileText className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Compliance</h4>
+            <Link href="/compliance" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-[#0b63ff] transition group">
+              <FileText className="w-10 h-10 text-[#0b63ff] mb-4" />
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-[#0b63ff]">Compliance</h4>
               <p className="text-sm text-[#333]">Our regulatory compliance framework</p>
             </Link>
-            <Link href="/security" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
-              <Scale className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Security</h4>
+            <Link href="/security" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-[#0b63ff] transition group">
+              <Scale className="w-10 h-10 text-[#0b63ff] mb-4" />
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-[#0b63ff]">Security</h4>
               <p className="text-sm text-[#333]">Platform security and data protection</p>
             </Link>
           </div>

@@ -30,14 +30,14 @@ export function ReferralWidget({
   const bonusAmount = userType === 'worker' ? 500 : 1000
 
   return (
-    <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-8 text-white">
+    <div className="bg-gradient-to-br from-[#0b63ff] to-[#0a56e6] rounded-3xl p-8 text-white">
       <div className="flex items-center gap-3 mb-6">
         <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
           <Gift className="w-6 h-6" />
         </div>
         <div>
           <h3 className="text-2xl font-bold">Refer & Earn</h3>
-          <p className="text-indigo-100">Invite friends and get ₹{bonusAmount} each</p>
+          <p className="text-blue-100">Invite friends and get ₹{bonusAmount} each</p>
         </div>
       </div>
 
@@ -62,7 +62,7 @@ export function ReferralWidget({
           <div className="text-3xl font-bold tracking-wider">{referralCode}</div>
           <button
             onClick={handleCopy}
-            className="flex items-center gap-2 bg-white text-indigo-600 px-4 py-2 rounded-lg font-semibold hover:bg-indigo-50 transition"
+            className="flex items-center gap-2 bg-white text-[#0b63ff] px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition"
           >
             {copied ? (
               <>
@@ -120,7 +120,7 @@ export function ReferralWidget({
       <div className="mt-6 pt-6 border-t border-white/20">
         <div className="text-sm">
           <div className="font-semibold mb-2">How it works:</div>
-          <ol className="space-y-1 text-indigo-100">
+          <ol className="space-y-1 text-blue-100">
             <li>1. Share your referral code with friends</li>
             <li>2. They sign up using your code</li>
             <li>3. You both get ₹{bonusAmount} when they complete first {userType === 'worker' ? 'project' : 'hire'}</li>

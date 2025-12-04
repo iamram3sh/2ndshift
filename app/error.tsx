@@ -62,7 +62,7 @@ export default function Error({
           </h3>
           <div className="space-y-3 text-left">
             <div className="flex items-start gap-3">
-              <RefreshCw className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
+              <RefreshCw className="w-5 h-5 text-[#0b63ff] dark:text-blue-400 flex-shrink-0 mt-0.5" />
               <div>
                 <div className="font-medium text-slate-900 dark:text-white">Try again</div>
                 <div className="text-sm text-slate-600 dark:text-slate-400">
@@ -71,7 +71,7 @@ export default function Error({
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <Home className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
+              <Home className="w-5 h-5 text-[#0b63ff] dark:text-blue-400 flex-shrink-0 mt-0.5" />
               <div>
                 <div className="font-medium text-slate-900 dark:text-white">Go back home</div>
                 <div className="text-sm text-slate-600 dark:text-slate-400">
@@ -80,7 +80,7 @@ export default function Error({
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
+              <AlertTriangle className="w-5 h-5 text-[#0b63ff] dark:text-blue-400 flex-shrink-0 mt-0.5" />
               <div>
                 <div className="font-medium text-slate-900 dark:text-white">Report the issue</div>
                 <div className="text-sm text-slate-600 dark:text-slate-400">
@@ -95,14 +95,14 @@ export default function Error({
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={reset}
-            className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-2xl hover:scale-105 transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#0b63ff] to-[#0a56e6] text-white px-8 py-4 rounded-xl font-semibold hover:shadow-2xl hover:scale-105 transition-all"
           >
             <RefreshCw className="w-5 h-5" />
             Try Again
           </button>
           <Link
             href="/"
-            className="inline-flex items-center justify-center gap-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-8 py-4 rounded-xl font-semibold border-2 border-slate-200 dark:border-slate-700 hover:border-indigo-600 dark:hover:border-indigo-400 hover:shadow-xl transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-white px-8 py-4 rounded-xl font-semibold border-2 border-slate-200 dark:border-slate-700 hover:border-[#0b63ff] dark:hover:border-blue-400 hover:shadow-xl transition-all"
           >
             <Home className="w-5 h-5" />
             Go to Homepage
@@ -112,7 +112,7 @@ export default function Error({
         {/* Help Text */}
         <p className="mt-8 text-sm text-slate-500 dark:text-slate-400">
           Error persists?{' '}
-          <Link href="/contact" className="text-indigo-600 dark:text-indigo-400 hover:underline font-semibold">
+          <Link href="/contact" className="text-[#0b63ff] dark:text-blue-400 hover:underline font-semibold">
             Contact support
           </Link>
         </p>

@@ -61,7 +61,7 @@ export function ReviewCard({ review, canRespond = false, onRespond, onFlag }: Re
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#0b63ff] to-[#0a56e6] flex items-center justify-center text-white font-bold text-lg">
             {review.reviewer?.full_name?.charAt(0).toUpperCase() || 'U'}
           </div>
           <div>
@@ -113,7 +113,7 @@ export function ReviewCard({ review, canRespond = false, onRespond, onFlag }: Re
           {!showResponseForm ? (
             <button
               onClick={() => setShowResponseForm(true)}
-              className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium"
+              className="text-sm text-[#0b63ff] dark:text-blue-400 hover:text-[#0a56e6] dark:hover:text-blue-300 font-medium"
             >
               Respond to this review
             </button>
@@ -123,14 +123,14 @@ export function ReviewCard({ review, canRespond = false, onRespond, onFlag }: Re
                 value={responseText}
                 onChange={(e) => setResponseText(e.target.value)}
                 placeholder="Write your response..."
-                className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-white resize-none"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-[#0b63ff] dark:bg-slate-700 dark:text-white resize-none"
                 rows={3}
               />
               <div className="flex gap-2">
                 <button
                   onClick={handleSubmitResponse}
                   disabled={isSubmitting || !responseText.trim()}
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                  className="px-4 py-2 bg-[#0b63ff] text-white rounded-lg hover:bg-[#0a56e6] disabled:opacity-50 disabled:cursor-not-allowed transition"
                 >
                   {isSubmitting ? 'Submitting...' : 'Submit Response'}
                 </button>

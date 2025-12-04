@@ -11,20 +11,20 @@ export default function SecurityPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#0b63ff] to-[#0a56e6] rounded-xl flex items-center justify-center">
                 <Briefcase className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-[#0b63ff] to-[#0a56e6] bg-clip-text text-transparent">
                 2ndShift
               </span>
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
-              <Link href="/about" className="text-[#333] hover:text-indigo-600 font-medium transition">About</Link>
-              <Link href="/contact" className="text-[#333] hover:text-indigo-600 font-medium transition">Contact</Link>
+              <Link href="/about" className="text-[#333] hover:text-[#0b63ff] font-medium transition">About</Link>
+              <Link href="/contact" className="text-[#333] hover:text-[#0b63ff] font-medium transition">Contact</Link>
             </div>
 
-            <Link href="/register" className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition">
+            <Link href="/register" className="bg-gradient-to-r from-[#0b63ff] to-[#0a56e6] text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition">
               Get Started
             </Link>
           </div>
@@ -32,9 +32,9 @@ export default function SecurityPage() {
       </nav>
 
       {/* Hero */}
-      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-indigo-50 to-purple-50">
+      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-slate-50">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="w-20 h-20 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <div className="w-20 h-20 bg-gradient-to-br from-[#0b63ff] to-[#0a56e6] rounded-2xl flex items-center justify-center mx-auto mb-6">
             <Shield className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-5xl sm:text-6xl font-bold text-[#111] mb-6">
@@ -51,19 +51,19 @@ export default function SecurityPage() {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-4xl font-bold text-indigo-600 mb-2">256-bit</div>
+              <div className="text-4xl font-bold text-[#0b63ff] mb-2">256-bit</div>
               <div className="text-[#333]">AES Encryption</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-indigo-600 mb-2">ISO 27001</div>
+              <div className="text-4xl font-bold text-[#0b63ff] mb-2">ISO 27001</div>
               <div className="text-[#333]">Certified</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-indigo-600 mb-2">PCI-DSS</div>
+              <div className="text-4xl font-bold text-[#0b63ff] mb-2">PCI-DSS</div>
               <div className="text-[#333]">Level 1 Compliant</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-indigo-600 mb-2">24/7</div>
+              <div className="text-4xl font-bold text-[#0b63ff] mb-2">24/7</div>
               <div className="text-[#333]">Security Monitoring</div>
             </div>
           </div>
@@ -77,7 +77,7 @@ export default function SecurityPage() {
           {/* Data Encryption */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-[#111] mb-8 flex items-center gap-3">
-              <Lock className="w-8 h-8 text-indigo-600" />
+              <Lock className="w-8 h-8 text-[#0b63ff]" />
               1. Data Encryption
             </h2>
             
@@ -129,7 +129,7 @@ export default function SecurityPage() {
           {/* Access Control */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-[#111] mb-8 flex items-center gap-3">
-              <Key className="w-8 h-8 text-indigo-600" />
+              <Key className="w-8 h-8 text-[#0b63ff]" />
               2. Access Control & Authentication
             </h2>
             
@@ -196,7 +196,7 @@ export default function SecurityPage() {
           {/* Infrastructure Security */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-[#111] mb-8 flex items-center gap-3">
-              <Server className="w-8 h-8 text-indigo-600" />
+              <Server className="w-8 h-8 text-[#0b63ff]" />
               3. Infrastructure Security
             </h2>
             
@@ -250,7 +250,7 @@ export default function SecurityPage() {
           {/* Monitoring & Incident Response */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-[#111] mb-8 flex items-center gap-3">
-              <Eye className="w-8 h-8 text-indigo-600" />
+              <Eye className="w-8 h-8 text-[#0b63ff]" />
               4. Monitoring & Incident Response
             </h2>
             
@@ -303,7 +303,7 @@ export default function SecurityPage() {
           {/* Fraud Prevention */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-[#111] mb-8 flex items-center gap-3">
-              <AlertTriangle className="w-8 h-8 text-indigo-600" />
+              <AlertTriangle className="w-8 h-8 text-[#0b63ff]" />
               5. Fraud Prevention
             </h2>
             
@@ -404,7 +404,7 @@ export default function SecurityPage() {
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-[#111] mb-8">8. Protect Yourself</h2>
             
-            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-xl">
+            <div className="bg-gradient-to-br from-blue-50 to-slate-50 p-8 rounded-xl">
               <h3 className="text-xl font-semibold text-[#111] mb-4">Security Best Practices for Users</h3>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
@@ -448,7 +448,7 @@ export default function SecurityPage() {
               <p><strong>Response Time:</strong> Within 24 hours</p>
               <p><strong>Bug Bounty:</strong> Rewards available for valid findings</p>
             </div>
-            <Link href="/.well-known/security.txt" className="inline-block bg-white text-indigo-600 px-6 py-3 rounded-xl font-semibold hover:bg-indigo-50 transition">
+            <Link href="/.well-known/security.txt" className="inline-block bg-white text-[#0b63ff] px-6 py-3 rounded-xl font-semibold hover:bg-blue-50 transition">
               View Security.txt
             </Link>
           </div>
@@ -461,19 +461,19 @@ export default function SecurityPage() {
         <div className="max-w-4xl mx-auto">
           <h3 className="text-2xl font-bold text-[#111] mb-8 text-center">Related Documents</h3>
           <div className="grid md:grid-cols-3 gap-6">
-            <Link href="/terms" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
-              <Shield className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Terms of Service</h4>
+            <Link href="/terms" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-[#0b63ff] transition group">
+              <Shield className="w-10 h-10 text-[#0b63ff] mb-4" />
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-[#0b63ff]">Terms of Service</h4>
               <p className="text-sm text-[#333]">Platform usage terms</p>
             </Link>
-            <Link href="/privacy" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
-              <Lock className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Privacy Policy</h4>
+            <Link href="/privacy" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-[#0b63ff] transition group">
+              <Lock className="w-10 h-10 text-[#0b63ff] mb-4" />
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-[#0b63ff]">Privacy Policy</h4>
               <p className="text-sm text-[#333]">Data protection practices</p>
             </Link>
-            <Link href="/compliance" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-indigo-600 transition group">
-              <Key className="w-10 h-10 text-indigo-600 mb-4" />
-              <h4 className="font-bold text-[#111] mb-2 group-hover:text-indigo-600">Compliance</h4>
+            <Link href="/compliance" className="bg-white p-6 rounded-xl border-2 border-slate-200 hover:border-[#0b63ff] transition group">
+              <Key className="w-10 h-10 text-[#0b63ff] mb-4" />
+              <h4 className="font-bold text-[#111] mb-2 group-hover:text-[#0b63ff]">Compliance</h4>
               <p className="text-sm text-[#333]">Regulatory compliance</p>
             </Link>
           </div>

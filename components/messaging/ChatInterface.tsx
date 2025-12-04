@@ -230,7 +230,7 @@ export function ChatInterface({ conversationId, currentUserId, otherUserId, onBa
           )}
           <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold ${
             otherUser?.user_type === 'worker'
-              ? 'bg-gradient-to-br from-indigo-500 to-purple-600'
+              ? 'bg-gradient-to-br from-[#0b63ff] to-[#0a56e6]'
               : 'bg-gradient-to-br from-green-500 to-teal-600'
           }`}>
             {otherUser ? getInitials(otherUser.full_name) : <User className="w-5 h-5" />}
@@ -254,8 +254,8 @@ export function ChatInterface({ conversationId, currentUserId, otherUserId, onBa
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center px-4">
-            <div className="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-4">
-              <Send className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-4">
+              <Send className="w-8 h-8 text-[#0b63ff] dark:text-blue-400" />
             </div>
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
               Start a conversation
@@ -288,7 +288,7 @@ export function ChatInterface({ conversationId, currentUserId, otherUserId, onBa
                   <div className={`max-w-[70%] ${isCurrentUser ? 'order-2' : 'order-1'}`}>
                     <div className={`rounded-2xl px-4 py-2 ${
                       isCurrentUser
-                        ? 'bg-indigo-600 text-white rounded-br-sm'
+                        ? 'bg-[#0b63ff] text-white rounded-br-sm'
                         : 'bg-gray-200 dark:bg-slate-700 text-gray-900 dark:text-white rounded-bl-sm'
                     }`}>
                       <p className="text-sm whitespace-pre-wrap break-words">
@@ -302,7 +302,7 @@ export function ChatInterface({ conversationId, currentUserId, otherUserId, onBa
                         {formatTime(message.created_at)}
                       </span>
                       {isCurrentUser && message.is_read && (
-                        <span className="text-xs text-indigo-600 dark:text-indigo-400">Read</span>
+                        <span className="text-xs text-[#0b63ff] dark:text-blue-400">Read</span>
                       )}
                     </div>
                   </div>
@@ -331,14 +331,14 @@ export function ChatInterface({ conversationId, currentUserId, otherUserId, onBa
             onChange={handleTextareaChange}
             onKeyPress={handleKeyPress}
             placeholder="Type a message..."
-            className="flex-1 px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-slate-700 dark:text-white resize-none min-h-[44px] max-h-[150px]"
+            className="flex-1 px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-[#0b63ff] dark:bg-slate-700 dark:text-white resize-none min-h-[44px] max-h-[150px]"
             rows={1}
           />
 
           <button
             type="submit"
             disabled={!messageText.trim() || isSending}
-            className="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition flex-shrink-0"
+            className="p-2 bg-[#0b63ff] text-white rounded-lg hover:bg-[#0a56e6] disabled:opacity-50 disabled:cursor-not-allowed transition flex-shrink-0"
           >
             <Send className="w-5 h-5" />
           </button>
