@@ -42,22 +42,30 @@ export const queryKeys = {
  */
 export function useOpenTasks(filters?: JobFilters) {
   return useQuery({
-    queryKey: queryKeys.jobs.list({ ...filters, status: 'open', role: 'worker' }),
+    queryKey: queryKeys.jobs.list({ ...(filters || {}), status: 'open', role: 'worker' }),
     queryFn: async () => {
       const params: any = {
         role: 'worker',
         status: 'open',
-        ...filters,
+        ...(filters || {}),
       }
       
       const result = await apiClient.listJobs(params)
       
       if (result.error) {
-        throw new Error(result.error.message || 'Failed to fetch tasks')
+        const errorMessage = result.error.message || result.error.error || 'Failed to fetch tasks'
+        console.error('Error fetching tasks:', result.error)
+        throw new Error(errorMessage)
+      }
+      
+      // Ensure we have data
+      if (!result.data) {
+        console.warn('No data returned from API, returning empty array')
+        return []
       }
       
       // Filter by minPrice if provided
-      let jobs = result.data?.jobs || []
+      let jobs = result.data.jobs || []
       if (filters?.minPrice && filters.minPrice >= 50) {
         jobs = jobs.filter((job: Job) => {
           const price = job.price_fixed || 0
@@ -76,8 +84,10 @@ export function useOpenTasks(filters?: JobFilters) {
       
       return jobs as Job[]
     },
+    enabled: !!filters, // Only run when filters are provided (user is authenticated)
     staleTime: 30000, // 30 seconds
     refetchOnWindowFocus: true,
+    retry: 1, // Only retry once on failure
   })
 }
 

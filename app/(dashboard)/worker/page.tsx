@@ -32,7 +32,19 @@ export default function WorkerDashboard() {
   const [currentUser, setCurrentUser] = useState<any>(null)
   
   const { data: creditsBalance = 0 } = useCreditsBalance()
-  const { data: tasks = [], isLoading: tasksLoading, error: tasksError, refetch: refetchTasks } = useOpenTasks(filters)
+  const { 
+    data: tasks = [], 
+    isLoading: tasksLoading, 
+    error: tasksError, 
+    refetch: refetchTasks 
+  } = useOpenTasks(currentUser ? filters : undefined)
+  
+  // Debug: Log errors
+  useEffect(() => {
+    if (tasksError) {
+      console.error('Tasks loading error:', tasksError)
+    }
+  }, [tasksError])
 
   // Check authentication on mount
   useEffect(() => {
@@ -186,15 +198,35 @@ export default function WorkerDashboard() {
             <h3 className="text-xl font-semibold text-[#111] dark:text-white mb-2">
               Error loading tasks
             </h3>
-            <p className="text-slate-600 dark:text-slate-400 mb-6">
+            <p className="text-slate-600 dark:text-slate-400 mb-4">
               {tasksError instanceof Error ? tasksError.message : 'Failed to load tasks. Please try again.'}
             </p>
-            <button
-              onClick={() => refetchTasks()}
-              className="px-4 py-2 bg-[#0b63ff] text-white rounded-lg hover:bg-[#0a56e6] transition"
-            >
-              Retry
-            </button>
+            <div className="text-sm text-slate-500 dark:text-slate-500 mb-6 space-y-2">
+              <p>Possible causes:</p>
+              <ul className="list-disc list-inside text-left max-w-md mx-auto space-y-1">
+                <li>No tasks available in the database</li>
+                <li>Authentication token expired</li>
+                <li>API endpoint not responding</li>
+              </ul>
+            </div>
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={() => refetchTasks()}
+                className="px-4 py-2 bg-[#0b63ff] text-white rounded-lg hover:bg-[#0a56e6] transition"
+              >
+                Retry
+              </button>
+              <button
+                onClick={() => {
+                  // Clear token and reload
+                  localStorage.removeItem('access_token')
+                  window.location.href = '/login'
+                }}
+                className="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition"
+              >
+                Re-login
+              </button>
+            </div>
           </div>
         ) : tasks.length === 0 ? (
           <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-12 text-center">
