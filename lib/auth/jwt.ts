@@ -17,23 +17,27 @@ const getJWTSecret = (): string => {
   }
   
   const secret = process.env.JWT_SECRET;
-  if (!secret || secret === 'your-secret-key-change-in-production') {
-    // During build time, use placeholder to allow build to complete
-    // Validation will happen at runtime when functions are called
-    if (typeof window === 'undefined' && process.env.NEXT_PHASE !== 'phase-production-build') {
-      // Runtime check (not build time)
-      if (process.env.NODE_ENV === 'production') {
-        throw new Error('JWT_SECRET must be set to a strong random value in production');
-      }
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('⚠️  JWT_SECRET not set or using default value. This is insecure for production.');
-      }
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
+  
+  // If no secret is set or it's the default placeholder
+  if (!secret || secret === 'your-secret-key-change-in-production' || secret.trim() === '') {
+    // In production, this is a critical error - but we need to handle it gracefully
+    // Use a placeholder for now but log a warning
+    if (isProduction) {
+      console.error('🚨 CRITICAL: JWT_SECRET is not set in production environment!');
+      console.error('   Please set JWT_SECRET environment variable in Vercel dashboard.');
+      console.error('   Generate a secret: openssl rand -base64 32');
+      // Don't throw immediately - allow the app to start but it will fail on actual use
+      // This gives better error messages to users
+    } else {
+      console.warn('⚠️  JWT_SECRET not set or using default value. This is insecure for production.');
     }
     JWT_SECRET = 'your-secret-key-change-in-production';
     return JWT_SECRET;
   }
   
-  if (secret.length < 32 && process.env.NODE_ENV === 'production') {
+  // Validate secret strength in production
+  if (isProduction && secret.length < 32) {
     console.warn('⚠️  JWT_SECRET appears to be too short. Use at least 32 characters for security.');
   }
   
@@ -47,23 +51,24 @@ const getRefreshSecret = (): string => {
   }
   
   const secret = process.env.REFRESH_SECRET;
-  if (!secret || secret === 'your-refresh-secret-key-change-in-production') {
-    // During build time, use placeholder to allow build to complete
-    // Validation will happen at runtime when functions are called
-    if (typeof window === 'undefined' && process.env.NEXT_PHASE !== 'phase-production-build') {
-      // Runtime check (not build time)
-      if (process.env.NODE_ENV === 'production') {
-        throw new Error('REFRESH_SECRET must be set to a strong random value in production');
-      }
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('⚠️  REFRESH_SECRET not set or using default value. This is insecure for production.');
-      }
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
+  
+  // If no secret is set or it's the default placeholder
+  if (!secret || secret === 'your-refresh-secret-key-change-in-production' || secret.trim() === '') {
+    // In production, this is a critical error - but we need to handle it gracefully
+    if (isProduction) {
+      console.error('🚨 CRITICAL: REFRESH_SECRET is not set in production environment!');
+      console.error('   Please set REFRESH_SECRET environment variable in Vercel dashboard.');
+      console.error('   Generate a secret: openssl rand -base64 32');
+    } else {
+      console.warn('⚠️  REFRESH_SECRET not set or using default value. This is insecure for production.');
     }
     REFRESH_SECRET = 'your-refresh-secret-key-change-in-production';
     return REFRESH_SECRET;
   }
   
-  if (secret.length < 32 && process.env.NODE_ENV === 'production') {
+  // Validate secret strength in production
+  if (isProduction && secret.length < 32) {
     console.warn('⚠️  REFRESH_SECRET appears to be too short. Use at least 32 characters for security.');
   }
   
@@ -84,9 +89,15 @@ export interface JWTPayload {
  */
 export function generateAccessToken(payload: JWTPayload): string {
   const secret = getJWTSecret();
-  // Runtime validation for production
-  if (process.env.NODE_ENV === 'production' && (secret === 'your-secret-key-change-in-production' || !secret)) {
-    throw new Error('JWT_SECRET must be set to a strong random value in production');
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
+  
+  // Runtime validation for production - only throw when actually trying to use it
+  if (isProduction && (secret === 'your-secret-key-change-in-production' || !secret || secret.trim() === '')) {
+    throw new Error(
+      'JWT_SECRET environment variable is not set in production. ' +
+      'Please set JWT_SECRET in Vercel dashboard (Settings > Environment Variables). ' +
+      'Generate a secret: openssl rand -base64 32'
+    );
   }
   return jwt.sign(payload, secret, {
     expiresIn: ACCESS_TOKEN_EXPIRY,
@@ -98,9 +109,15 @@ export function generateAccessToken(payload: JWTPayload): string {
  */
 export function generateRefreshToken(payload: JWTPayload): string {
   const secret = getRefreshSecret();
-  // Runtime validation for production
-  if (process.env.NODE_ENV === 'production' && (secret === 'your-refresh-secret-key-change-in-production' || !secret)) {
-    throw new Error('REFRESH_SECRET must be set to a strong random value in production');
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
+  
+  // Runtime validation for production - only throw when actually trying to use it
+  if (isProduction && (secret === 'your-refresh-secret-key-change-in-production' || !secret || secret.trim() === '')) {
+    throw new Error(
+      'REFRESH_SECRET environment variable is not set in production. ' +
+      'Please set REFRESH_SECRET in Vercel dashboard (Settings > Environment Variables). ' +
+      'Generate a secret: openssl rand -base64 32'
+    );
   }
   return jwt.sign(payload, secret, {
     expiresIn: REFRESH_TOKEN_EXPIRY,

@@ -76,7 +76,10 @@ export default function LoginPage() {
       )
       
       if (result.error) {
-        throw new Error(result.error.message || 'Login failed')
+        // Show detailed error message if available
+        const errorMessage = result.error.message || result.error.error || result.error.details || 'Login failed'
+        console.error('Login error:', result.error)
+        throw new Error(errorMessage)
       }
       
       if (result.data?.user) {
@@ -95,7 +98,14 @@ export default function LoginPage() {
         router.push(targetRoute)
       }
     } catch (error: any) {
-      setMessage(error.message || 'Sign in failed. Please check your credentials.')
+      console.error('Login error:', error)
+      const errorMessage = error.message || error.details || 'Sign in failed. Please check your credentials.'
+      setMessage(errorMessage)
+      
+      // Log to console for debugging
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Full error:', error)
+      }
     } finally {
       setIsLoading(false)
     }

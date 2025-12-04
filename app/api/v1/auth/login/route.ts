@@ -31,15 +31,29 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (userError || !user) {
+      logger.error('User not found during login', { 
+        email: validated.email.toLowerCase(),
+        error: userError 
+      });
       return NextResponse.json(
-        { error: 'Invalid credentials' },
+        { 
+          error: 'Invalid credentials',
+          message: 'No account found with this email address'
+        },
         { status: 401 }
       );
     }
 
     if (!user.password_hash) {
+      logger.warn('Login attempt for user without password hash', { 
+        userId: user.id,
+        email: user.email 
+      });
       return NextResponse.json(
-        { error: 'Password not set. Please use password reset.' },
+        { 
+          error: 'Password not set. Please use password reset.',
+          message: 'This account does not have a password set. Please reset your password.'
+        },
         { status: 401 }
       );
     }
@@ -47,8 +61,15 @@ export async function POST(request: NextRequest) {
     // Verify password
     const isValid = await verifyPassword(validated.password, user.password_hash);
     if (!isValid) {
+      logger.warn('Invalid password attempt', { 
+        userId: user.id,
+        email: user.email 
+      });
       return NextResponse.json(
-        { error: 'Invalid credentials' },
+        { 
+          error: 'Invalid credentials',
+          message: 'Incorrect password. Please try again.'
+        },
         { status: 401 }
       );
     }
@@ -66,8 +87,23 @@ export async function POST(request: NextRequest) {
       role: user.user_type as 'worker' | 'client' | 'admin',
     };
 
-    const accessToken = generateAccessToken(payload);
-    const refreshToken = generateRefreshToken(payload);
+    let accessToken: string;
+    let refreshToken: string;
+    
+    try {
+      accessToken = generateAccessToken(payload);
+      refreshToken = generateRefreshToken(payload);
+    } catch (tokenError: any) {
+      logger.error('Error generating tokens', tokenError);
+      return NextResponse.json(
+        { 
+          error: 'Authentication failed',
+          message: tokenError?.message || 'Failed to generate authentication tokens. Please contact support.',
+          details: 'JWT_SECRET or REFRESH_SECRET may not be configured correctly'
+        },
+        { status: 500 }
+      );
+    }
 
     // Set refresh token cookie
     await setRefreshTokenCookie(refreshToken);
@@ -84,14 +120,22 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Validation error', details: error.issues },
+        { 
+          error: 'Validation error', 
+          details: error.issues,
+          message: error.issues.map(i => `${i.path.join('.')}: ${i.message}`).join(', ')
+        },
         { status: 400 }
       );
     }
 
     logger.error('Login error', error);
     return NextResponse.json(
-      { error: 'Login failed' },
+      { 
+        error: error?.message || 'Login failed',
+        message: error?.message || 'An unexpected error occurred during login. Please try again.',
+        details: error?.stack || 'Unknown error'
+      },
       { status: 500 }
     );
   }
