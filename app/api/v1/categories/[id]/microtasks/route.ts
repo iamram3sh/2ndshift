@@ -20,17 +20,35 @@ export async function GET(
 
     if (error) {
       console.error('Error fetching microtasks:', error);
+      
+      // Log to monitoring service in production
+      if (process.env.NODE_ENV === 'production') {
+        // TODO: Integrate with Sentry, LogRocket, or similar
+      }
+      
       return NextResponse.json(
-        { error: 'Failed to fetch microtasks' },
+        { 
+          error: 'Failed to fetch microtasks',
+          details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        },
         { status: 500 }
       );
     }
 
     return NextResponse.json({ microtasks: microtasks || [] });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Get microtasks error:', error);
+    
+    // Log to monitoring service in production
+    if (process.env.NODE_ENV === 'production') {
+      // TODO: Integrate with Sentry, LogRocket, or similar
+    }
+    
     return NextResponse.json(
-      { error: 'Failed to fetch microtasks' },
+      { 
+        error: 'Failed to fetch microtasks',
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      },
       { status: 500 }
     );
   }

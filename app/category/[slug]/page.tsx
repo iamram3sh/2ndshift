@@ -1,6 +1,6 @@
 'use client'
 
-import { use } from 'react'
+import { use, useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getCategoryBySlug } from '@/lib/constants/highValueCategories'
@@ -9,14 +9,32 @@ import { CategoryHero } from '@/components/category/CategoryHero'
 import { BottomCTA } from '@/components/category/BottomCTA'
 import { BackButton } from '@/components/layout/BackButton'
 import { Footer } from '@/components/layout/Footer'
+import { EmptyState } from '@/components/category/EmptyState'
 
 interface CategoryPageProps {
   params: Promise<{ slug: string }>
 }
 
+interface ApiMicrotask {
+  id: string
+  title: string
+  description: string
+  complexity: 'low' | 'medium' | 'high'
+  base_price_min: number | string
+  base_price_max: number | string
+  default_commission_percent: number | string
+  delivery_window: string
+  category_id: string
+}
+
 export default function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = use(params)
   const category = getCategoryBySlug(slug)
+
+  const [microtasks, setMicrotasks] = useState<HighValueMicrotask[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [apiError, setApiError] = useState<string | null>(null)
+  const [usingFallback, setUsingFallback] = useState(false)
 
   if (!category) {
     notFound()
@@ -36,10 +54,86 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   }
 
   const microtaskCategory = categoryIdToMicrotaskCategory[category.id] || category.slug as HighValueMicrotask['category']
-  const microtasks = getMicrotasksByCategory(microtaskCategory)
 
   // Map category slug for CategoryHero (handle 'db' -> 'database')
   const heroSlug = category.id === 'db' ? 'database' : category.slug
+
+  // Fetch microtasks from API with fallback to static data
+  const fetchMicrotasks = useCallback(async () => {
+    setIsLoading(true)
+    setApiError(null)
+
+    try {
+      // First, get all categories to find the category ID
+      const categoriesResponse = await fetch('/api/v1/categories')
+      
+      if (!categoriesResponse.ok) {
+        throw new Error('Failed to fetch categories')
+      }
+
+      const { categories } = await categoriesResponse.json()
+      const categoryData = categories?.find((c: any) => c.slug === slug || c.id === category.id)
+
+      if (categoryData?.id) {
+        // Fetch microtasks from API
+        const microtasksResponse = await fetch(`/api/v1/categories/${categoryData.id}/microtasks`)
+        
+        if (!microtasksResponse.ok) {
+          throw new Error('Failed to fetch microtasks')
+        }
+
+        const { microtasks: apiMicrotasks } = await microtasksResponse.json()
+
+        if (apiMicrotasks && apiMicrotasks.length > 0) {
+          // Transform API microtasks to match HighValueMicrotask format
+          const transformedMicrotasks: HighValueMicrotask[] = apiMicrotasks.map((task: ApiMicrotask) => ({
+            id: task.id,
+            title: task.title,
+            description: task.description,
+            category: microtaskCategory,
+            complexity: task.complexity,
+            price_min: typeof task.base_price_min === 'string' ? parseFloat(task.base_price_min) : task.base_price_min,
+            price_max: typeof task.base_price_max === 'string' ? parseFloat(task.base_price_max) : task.base_price_max,
+            default_commission_percent: typeof task.default_commission_percent === 'string' 
+              ? parseFloat(task.default_commission_percent) 
+              : task.default_commission_percent,
+            delivery_window: task.delivery_window as '6-24h' | '3-7d' | '1-4w',
+            skills: [] // API doesn't return skills, could be enhanced later
+          }))
+          setMicrotasks(transformedMicrotasks)
+          setUsingFallback(false)
+        } else {
+          // API returned empty array, use fallback
+          const fallbackMicrotasks = getMicrotasksByCategory(microtaskCategory)
+          setMicrotasks(fallbackMicrotasks)
+          setUsingFallback(true)
+        }
+      } else {
+        // Category not found in API, use fallback
+        const fallbackMicrotasks = getMicrotasksByCategory(microtaskCategory)
+        setMicrotasks(fallbackMicrotasks)
+        setUsingFallback(true)
+      }
+    } catch (error: any) {
+      console.error('Failed to fetch microtasks from API:', error)
+      setApiError(error.message)
+      // Fallback to static data
+      const fallbackMicrotasks = getMicrotasksByCategory(microtaskCategory)
+      setMicrotasks(fallbackMicrotasks)
+      setUsingFallback(true)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [slug, category.id, microtaskCategory])
+
+  useEffect(() => {
+    fetchMicrotasks()
+  }, [fetchMicrotasks])
+
+  // Retry handler
+  const handleRetry = () => {
+    fetchMicrotasks()
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -72,8 +166,20 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       {/* Hero Section */}
       <CategoryHero slug={heroSlug} />
 
+      {/* Loading State */}
+      {isLoading && (
+        <section className="py-16 md:py-20 bg-white border-t border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <div className="inline-block w-8 h-8 border-4 border-slate-200 border-t-[#0b63ff] rounded-full animate-spin mb-4"></div>
+              <p className="text-lg text-[#333]">Loading microtasks...</p>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Microtasks Grid */}
-      {microtasks.length > 0 && (
+      {!isLoading && microtasks.length > 0 && (
         <section className="py-16 md:py-20 bg-white border-t border-slate-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
@@ -83,6 +189,11 @@ export default function CategoryPage({ params }: CategoryPageProps) {
               <p className="text-lg text-[#333] max-w-2xl mx-auto">
                 High-value technical tasks that showcase expertise
               </p>
+              {usingFallback && (
+                <p className="text-sm text-amber-600 mt-2">
+                  Showing static data. API connection unavailable.
+                </p>
+              )}
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -126,6 +237,16 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             </div>
           </div>
         </section>
+      )}
+
+      {/* Empty State */}
+      {!isLoading && microtasks.length === 0 && (
+        <EmptyState
+          title="No microtasks available"
+          message={`There are no ${category.name} microtasks available yet. Check back soon or contact us to request specific tasks.`}
+          showRetry={!!apiError}
+          onRetry={handleRetry}
+        />
       )}
 
       {/* Bottom CTA Section */}
