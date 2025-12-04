@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useOpenTasks, useCurrentUser, useCreditsBalance } from '@/lib/queries'
 import { TaskCard } from '@/components/tasks/TaskCard'
 import { TaskFilters } from '@/components/tasks/TaskFilters'
 import { BidModal } from '@/components/tasks/BidModal'
@@ -11,13 +10,8 @@ import { ShiftsModal } from '@/components/shifts/ShiftsModal'
 import { BuyCreditsModalV1 } from '@/components/revenue/BuyCreditsModalV1'
 import apiClient from '@/lib/apiClient'
 import { 
-  Briefcase, Clock, DollarSign, User, LogOut, Search, 
-  TrendingUp, FileText, CheckCircle, XCircle, AlertCircle,
-  Award, Target, Activity, Bell, Filter, ArrowUpRight,
-  Calendar, Zap, BarChart3, Eye, Star, ChevronRight, 
-  Rocket, Shield, BadgeCheck, Sparkles, Users, MessageSquare,
-  Settings, HelpCircle, Crown, ArrowRight, Lock, Gift,
-  Layers, MoreHorizontal, ExternalLink, MapPin, Timer, Loader2
+  Layers, LogOut, Zap, Loader2, AlertCircle, Briefcase,
+  Shield, DollarSign
 } from 'lucide-react'
 import type { Job, JobFilters } from '@/types/jobs'
 
@@ -27,66 +21,129 @@ export default function WorkerDashboard() {
   const [showBidModal, setShowBidModal] = useState(false)
   const [showShiftsModal, setShowShiftsModal] = useState(false)
   const [showBuyCreditsModal, setShowBuyCreditsModal] = useState(false)
-  const [filters, setFilters] = useState<JobFilters>({ status: 'open' as const, role: 'worker' as const, minPrice: 50 })
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
+  
+  // State management
   const [currentUser, setCurrentUser] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [tasks, setTasks] = useState<Job[]>([])
+  const [tasksLoading, setTasksLoading] = useState(false)
+  const [tasksError, setTasksError] = useState<Error | null>(null)
+  const [creditsBalance, setCreditsBalance] = useState(0)
   
-  const { data: creditsBalance = 0 } = useCreditsBalance()
-  const { 
-    data: tasks = [], 
-    isLoading: tasksLoading, 
-    error: tasksError, 
-    refetch: refetchTasks 
-  } = useOpenTasks(currentUser ? filters : undefined)
-  
-  // Debug: Log errors and data
-  useEffect(() => {
-    if (tasksError) {
-      console.error('[WorkerDashboard] Tasks loading error:', tasksError)
-    }
-    if (tasks.length > 0) {
-      console.log('[WorkerDashboard] Tasks loaded:', tasks.length, tasks)
-    }
-    if (currentUser && !tasksLoading && !tasksError && tasks.length === 0) {
-      console.warn('[WorkerDashboard] No tasks found. Filters:', filters, 'Current user:', currentUser?.id)
-    }
-  }, [tasksError, tasks, tasksLoading, currentUser, filters])
+  const [filters, setFilters] = useState<JobFilters>({
+    status: 'open',
+    role: 'worker',
+    minPrice: 50
+  })
 
-  // Check authentication on mount
+  // Fetch current user and credits
   useEffect(() => {
-    const checkAuth = async () => {
+    const loadUserData = async () => {
       try {
-        const result = await apiClient.getCurrentUser()
+        setIsLoading(true)
         
-        if (result.error || !result.data?.user) {
+        // Get current user
+        const userResult = await apiClient.getCurrentUser()
+        if (userResult.error || !userResult.data?.user) {
           router.push('/login')
           return
         }
 
-        const user = result.data.user
-        
-        // Check if user is a worker
+        const user = userResult.data.user
         if (user.role !== 'worker') {
-          const routes: Record<string, string> = {
-            client: '/client',
-            admin: '/dashboard/admin',
-            superadmin: '/dashboard/admin'
-          }
-          router.push(routes[user.role] || '/login')
+          router.push(user.role === 'client' ? '/client' : '/login')
           return
         }
 
         setCurrentUser(user)
+
+        // Get credits balance
+        const creditsResult = await apiClient.getCreditsBalance()
+        if (creditsResult.data) {
+          setCreditsBalance(creditsResult.data.balance || 0)
+        }
       } catch (err) {
-        console.error('Auth check error:', err)
+        console.error('Error loading user data:', err)
         router.push('/login')
       } finally {
-        setIsCheckingAuth(false)
+        setIsLoading(false)
       }
     }
 
-    checkAuth()
+    loadUserData()
   }, [router])
+
+  // Fetch tasks when user is loaded and filters change
+  useEffect(() => {
+    if (!currentUser) return
+
+    const fetchTasks = async () => {
+      try {
+        setTasksLoading(true)
+        setTasksError(null)
+
+        const params: any = {
+          role: 'worker',
+          status: 'open',
+          ...filters,
+        }
+
+        console.log('[WorkerDashboard] Fetching tasks with params:', params)
+        
+        const result = await apiClient.listJobs(params)
+        
+        console.log('[WorkerDashboard] API response:', result)
+
+        if (result.error) {
+          const errorMsg = result.error.message || result.error.error || 'Failed to fetch tasks'
+          console.error('[WorkerDashboard] Error:', result.error)
+          setTasksError(new Error(errorMsg))
+          setTasks([])
+          return
+        }
+
+        if (!result.data || !result.data.jobs) {
+          console.warn('[WorkerDashboard] No jobs in response')
+          setTasks([])
+          return
+        }
+
+        let jobs = result.data.jobs || []
+        console.log('[WorkerDashboard] Raw jobs:', jobs.length)
+
+        // Apply client-side filtering for minPrice (fallback)
+        if (filters.minPrice && filters.minPrice >= 50) {
+          jobs = jobs.filter((job: Job) => {
+            const price = job.price_fixed || (job as any).budget || 0
+            const priceNum = typeof price === 'string' ? parseFloat(price) : price
+            return priceNum >= filters.minPrice!
+          })
+          console.log('[WorkerDashboard] After minPrice filter:', jobs.length)
+        }
+
+        // Apply search filter
+        if (filters.search) {
+          const searchLower = filters.search.toLowerCase()
+          jobs = jobs.filter((job: Job) => 
+            job.title.toLowerCase().includes(searchLower) ||
+            job.description.toLowerCase().includes(searchLower)
+          )
+          console.log('[WorkerDashboard] After search filter:', jobs.length)
+        }
+
+        setTasks(jobs)
+        console.log('[WorkerDashboard] Final tasks:', jobs.length)
+      } catch (err: any) {
+        console.error('[WorkerDashboard] Fetch error:', err)
+        setTasksError(err instanceof Error ? err : new Error('Failed to fetch tasks'))
+        setTasks([])
+      } finally {
+        setTasksLoading(false)
+      }
+    }
+
+    fetchTasks()
+  }, [currentUser, filters])
 
   const handleBidClick = (task: Job) => {
     if (creditsBalance < 3) {
@@ -98,7 +155,24 @@ export default function WorkerDashboard() {
   }
 
   const handleBidSuccess = () => {
-    refetchTasks()
+    // Refetch tasks
+    if (currentUser) {
+      const fetchTasks = async () => {
+        try {
+          const result = await apiClient.listJobs({
+            role: 'worker',
+            status: 'open',
+            ...filters,
+          })
+          if (result.data?.jobs) {
+            setTasks(result.data.jobs)
+          }
+        } catch (err) {
+          console.error('Error refetching tasks:', err)
+        }
+      }
+      fetchTasks()
+    }
     setShowBidModal(false)
     setSelectedTask(null)
   }
@@ -114,19 +188,45 @@ export default function WorkerDashboard() {
     }
   }
 
-  if (isCheckingAuth) {
+  const handleRetry = () => {
+    setTasksError(null)
+    if (currentUser) {
+      const fetchTasks = async () => {
+        try {
+          setTasksLoading(true)
+          const result = await apiClient.listJobs({
+            role: 'worker',
+            status: 'open',
+            ...filters,
+          })
+          if (result.data?.jobs) {
+            setTasks(result.data.jobs)
+          } else if (result.error) {
+            setTasksError(new Error(result.error.message || 'Failed to fetch tasks'))
+          }
+        } catch (err: any) {
+          setTasksError(err instanceof Error ? err : new Error('Failed to fetch tasks'))
+        } finally {
+          setTasksLoading(false)
+        }
+      }
+      fetchTasks()
+    }
+  }
+
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
         <div className="flex items-center gap-3">
           <Loader2 className="w-5 h-5 animate-spin text-[#0b63ff]" />
-          <span className="text-[#333] dark:text-slate-300">Loading...</span>
+          <span className="text-slate-600 dark:text-slate-300">Loading...</span>
         </div>
       </div>
     )
   }
 
   if (!currentUser) {
-    return null // Will redirect to login
+    return null
   }
 
   return (
@@ -146,10 +246,10 @@ export default function WorkerDashboard() {
               <Link href="/worker" className="px-3 py-2 text-sm font-medium text-[#111] dark:text-white bg-slate-100 dark:bg-slate-700 rounded-lg">
                 Dashboard
               </Link>
-              <Link href="/worker/discover" className="px-3 py-2 text-sm font-medium text-[#333] dark:text-slate-300 hover:text-[#111] dark:hover:text-white">
+              <Link href="/worker/discover" className="px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#111] dark:hover:text-white">
                 Discover
               </Link>
-              <Link href="/messages" className="px-3 py-2 text-sm font-medium text-[#333] dark:text-slate-300 hover:text-[#111] dark:hover:text-white">
+              <Link href="/messages" className="px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#111] dark:hover:text-white">
                 Messages
               </Link>
             </div>
@@ -190,7 +290,7 @@ export default function WorkerDashboard() {
           onFiltersChange={(newFilters) => setFilters(newFilters)}
         />
 
-        {/* Tasks Grid */}
+        {/* Tasks Content */}
         {tasksLoading ? (
           <div className="flex items-center justify-center py-20">
             <div className="flex items-center gap-3">
@@ -202,45 +302,25 @@ export default function WorkerDashboard() {
           <div className="bg-white dark:bg-slate-800 rounded-xl border border-red-200 dark:border-red-800 p-12 text-center">
             <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-[#111] dark:text-white mb-2">
-              {tasksError instanceof Error && tasksError.message.includes('Authentication') 
-                ? 'Authentication Error' 
-                : 'Error loading tasks'}
+              Error loading tasks
             </h3>
             <p className="text-slate-600 dark:text-slate-400 mb-4 font-medium">
-              {tasksError instanceof Error ? tasksError.message : 'Failed to load tasks. Please try again.'}
+              {tasksError.message}
             </p>
-            {tasksError instanceof Error && !tasksError.message.includes('Authentication') && (
-              <div className="text-sm text-slate-500 dark:text-slate-500 mb-6 space-y-2">
-                <p className="font-medium">Possible causes:</p>
-                <ul className="list-disc list-inside text-left max-w-md mx-auto space-y-1">
-                  <li>No tasks available in the database (run seed script)</li>
-                  <li>API endpoint not responding</li>
-                  <li>Network connectivity issues</li>
-                </ul>
-                <p className="mt-4 text-xs">
-                  Check browser console (F12) for detailed error information.
-                </p>
-              </div>
-            )}
-            <div className="flex gap-3 justify-center">
-              <button
-                onClick={() => refetchTasks()}
-                className="px-4 py-2 bg-[#0b63ff] text-white rounded-lg hover:bg-[#0a56e6] transition"
-              >
-                Retry
-              </button>
-              {tasksError instanceof Error && tasksError.message.includes('Authentication') && (
-                <button
-                  onClick={() => {
-                    localStorage.removeItem('access_token')
-                    window.location.href = '/login'
-                  }}
-                  className="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition"
-                >
-                  Re-login
-                </button>
-              )}
+            <div className="text-sm text-slate-500 dark:text-slate-500 mb-6 space-y-2">
+              <p className="font-medium">Possible causes:</p>
+              <ul className="list-disc list-inside text-left max-w-md mx-auto space-y-1">
+                <li>No tasks available in the database (run seed script)</li>
+                <li>API endpoint not responding</li>
+                <li>Network connectivity issues</li>
+              </ul>
             </div>
+            <button
+              onClick={handleRetry}
+              className="px-4 py-2 bg-[#0b63ff] text-white rounded-lg hover:bg-[#0a56e6] transition"
+            >
+              Retry
+            </button>
           </div>
         ) : tasks.length === 0 ? (
           <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-12 text-center">
@@ -251,21 +331,12 @@ export default function WorkerDashboard() {
             <p className="text-slate-600 dark:text-slate-400 mb-6">
               Try adjusting your filters or check back later for new high-value tasks.
             </p>
-            <div className="text-sm text-slate-500 dark:text-slate-500 space-y-2">
-              <p>Make sure you've run the seed data script to populate tasks.</p>
-              <p className="text-xs mt-4 p-3 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700">
-                <strong>Debug Info:</strong><br />
-                Filters: {JSON.stringify(filters)}<br />
-                User ID: {currentUser?.id || 'Not set'}<br />
-                Query Enabled: {currentUser ? 'Yes' : 'No'}
-              </p>
-            </div>
+            <p className="text-sm text-slate-500 dark:text-slate-500 mb-4">
+              Make sure you've run the seed data script to populate tasks.
+            </p>
             <button
-              onClick={() => {
-                console.log('Manual refetch triggered')
-                refetchTasks()
-              }}
-              className="mt-4 px-4 py-2 bg-[#0b63ff] text-white rounded-lg hover:bg-[#0a56e6] transition"
+              onClick={handleRetry}
+              className="px-4 py-2 bg-[#0b63ff] text-white rounded-lg hover:bg-[#0a56e6] transition"
             >
               Refresh Tasks
             </button>
@@ -284,59 +355,61 @@ export default function WorkerDashboard() {
         )}
 
         {/* Stats Summary */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                <Briefcase className="w-5 h-5 text-[#0b63ff]" />
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-[#111] dark:text-white">{tasks.length}</div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">Available Tasks</div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
-                <Zap className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-[#111] dark:text-white">{creditsBalance}</div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">Shifts Balance</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
-                <DollarSign className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-[#111] dark:text-white">
-                  ₹{tasks.reduce((sum, t) => sum + (t.price_fixed || 0), 0).toLocaleString()}
+        {tasks.length > 0 && (
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                  <Briefcase className="w-5 h-5 text-[#0b63ff]" />
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">Total Value</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                <Shield className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-[#111] dark:text-white">
-                  {tasks.filter(t => t.client?.trust_score && t.client.trust_score > 80).length}
+                <div>
+                  <div className="text-2xl font-bold text-[#111] dark:text-white">{tasks.length}</div>
+                  <div className="text-sm text-slate-600 dark:text-slate-400">Available Tasks</div>
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">Verified Employers</div>
+              </div>
+            </div>
+            
+            <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-[#111] dark:text-white">{creditsBalance}</div>
+                  <div className="text-sm text-slate-600 dark:text-slate-400">Shifts Balance</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
+                  <DollarSign className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-[#111] dark:text-white">
+                    ₹{tasks.reduce((sum, t) => sum + (t.price_fixed || (t as any).budget || 0), 0).toLocaleString()}
+                  </div>
+                  <div className="text-sm text-slate-600 dark:text-slate-400">Total Value</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-[#111] dark:text-white">
+                    {tasks.filter(t => t.client?.trust_score && t.client.trust_score > 80).length}
+                  </div>
+                  <div className="text-sm text-slate-600 dark:text-slate-400">Verified Employers</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Modals */}
@@ -356,20 +429,32 @@ export default function WorkerDashboard() {
         isOpen={showShiftsModal}
         onClose={() => setShowShiftsModal(false)}
         userId={currentUser?.id || ''}
-        userType={(currentUser?.role || 'worker') as 'worker' | 'client'}
+        userType="worker"
         currentBalance={creditsBalance}
-        onPurchaseComplete={(newBalance) => {
-          // Balance will be refetched automatically via useCreditsBalance
+        onPurchaseComplete={() => {
+          // Refetch credits
+          apiClient.getCreditsBalance().then(result => {
+            if (result.data) {
+              setCreditsBalance(result.data.balance || 0)
+            }
+          })
         }}
       />
+      
       <BuyCreditsModalV1
         isOpen={showBuyCreditsModal}
         onClose={() => setShowBuyCreditsModal(false)}
         userId={currentUser?.id || ''}
-        userType={(currentUser?.role || 'worker') as 'worker' | 'client'}
+        userType="worker"
         currentBalance={creditsBalance}
         onPurchaseComplete={() => {
           setShowBuyCreditsModal(false)
+          // Refetch credits
+          apiClient.getCreditsBalance().then(result => {
+            if (result.data) {
+              setCreditsBalance(result.data.balance || 0)
+            }
+          })
         }}
       />
     </div>
