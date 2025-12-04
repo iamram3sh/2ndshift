@@ -19,8 +19,8 @@ interface AdvancedSearchProps {
 
 const SKILLS = [
   'JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'Java',
-  'Data Analysis',
-  'Video Editing', 'Graphic Design', 'Excel', 'SQL', 'AWS'
+  'Data Analysis', 'SQL', 'AWS', 'DevOps', 'Kubernetes', 'Terraform',
+  'Docker', 'CI/CD', 'Cloud Architecture', 'Security', 'Database Design'
 ]
 
 const DURATION_OPTIONS = [

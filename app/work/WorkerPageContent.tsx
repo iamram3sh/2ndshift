@@ -8,6 +8,7 @@ import {
   Mail, MapPin, Linkedin, Twitter, Target, Menu, X, ArrowUpRight,
   BadgeCheck, Wallet
 } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useRole } from '@/components/role/RoleContextProvider'
@@ -202,22 +203,26 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                <Link 
+                <Button
                   href={withRoleParam("/register?type=worker", 'worker')}
                   onClick={() => handleCTAClick('Get Remote Work', 'worker')}
-                  className="inline-flex items-center justify-center gap-2 bg-[#111] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  variant="primary"
+                  size="lg"
+                  icon={<ArrowRight className="w-5 h-5" />}
+                  iconPosition="right"
                 >
                   Get Remote Work
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
-                <Link 
+                </Button>
+                <Button
                   href={withRoleParam("/worker/discover", 'worker')}
                   onClick={() => handleCTAClick('Browse Jobs', 'worker')}
-                  className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold border-2 border-[#111] hover:bg-slate-50 transition-all"
+                  variant="outline"
+                  size="lg"
+                  icon={<ArrowUpRight className="w-5 h-5" />}
+                  iconPosition="right"
                 >
                   Browse Jobs
-                  <ArrowUpRight className="w-5 h-5" />
-                </Link>
+                </Button>
               </div>
 
               <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#333]">
@@ -480,22 +485,26 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
             Join 2ndShift today. It&apos;s free to create an account.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
+            <Button
               href={withRoleParam("/register?type=worker", 'worker')}
               onClick={() => handleCTAClick('I want to earn', 'worker')}
-              className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
+              variant="secondary"
+              size="lg"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
             >
               Get Started Free
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link 
+            </Button>
+            <Button
               href={withRoleParam("/worker/discover", 'worker')}
               onClick={() => handleCTAClick('Browse Jobs', 'worker')}
-              className="inline-flex items-center justify-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-sky-700 transition-all shadow-lg hover:shadow-xl"
+              variant="primary"
+              size="lg"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
             >
               Browse Jobs
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            </Button>
           </div>
         </div>
       </section>

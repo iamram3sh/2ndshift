@@ -556,8 +556,9 @@ export default function HomePage() {
             </Button>
             <Button
               href="/worker/discover?role=worker"
-              variant="secondary"
+              variant="outline"
               size="lg"
+              className="border-white/30 text-white hover:bg-white/10 hover:text-white"
               onClick={() => {
                 handleCTAClick('Browse Jobs', 'worker')
                 setRole('worker', 'hero')
@@ -598,8 +599,9 @@ export default function HomePage() {
             </Button>
             <Button
               href="/workers?role=client"
-              variant="secondary"
+              variant="outline"
               size="lg"
+              className="border-white/30 text-white hover:bg-white/10 hover:text-white"
               onClick={() => {
                 handleCTAClick('Browse Talent', 'client')
                 setRole('client', 'hero')
@@ -617,12 +619,11 @@ export default function HomePage() {
       {/* CTA Section - No Role Selected */}
       <RoleSection role="both" fallback={
         <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800 relative">
-          <div className="absolute inset-0 bg-[rgba(2,6,23,0.6)]"></div>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+            <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
               Ready to get started?
             </h2>
-            <p className="text-lg text-white mb-10 max-w-2xl mx-auto font-semibold" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.4)' }}>
+            <p className="text-lg mb-10 max-w-2xl mx-auto font-semibold" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
               Choose your path above to see personalized content.
             </p>
           </div>

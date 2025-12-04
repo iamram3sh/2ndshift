@@ -7,6 +7,7 @@ import {
   Calendar, Coffee, Sparkles, Heart, IndianRupee,
   Mail, MapPin, Linkedin, Twitter, Target, Menu, X
 } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useRole } from '@/components/role/RoleContextProvider'
@@ -168,22 +169,26 @@ export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'w
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                <Link 
+                <Button
                   href={withRoleParam("/register?type=client", 'client')}
                   onClick={() => handleCTAClick('Hire a Worker', 'client')}
-                  className="inline-flex items-center justify-center gap-2 bg-[#111] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#333] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  variant="primary"
+                  size="lg"
+                  icon={<ArrowRight className="w-5 h-5" />}
+                  iconPosition="right"
                 >
                   Hire a Worker
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
-                <Link 
+                </Button>
+                <Button
                   href={withRoleParam("/workers", 'client')}
                   onClick={() => handleCTAClick('Browse Talent', 'client')}
-                  className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold border-2 border-[#111] hover:bg-slate-50 transition-all"
+                  variant="outline"
+                  size="lg"
+                  icon={<ArrowRight className="w-5 h-5" />}
+                  iconPosition="right"
                 >
                   Browse Talent
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
+                </Button>
               </div>
 
               <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#333]">
@@ -368,22 +373,26 @@ export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'w
             Join 2ndShift today. It&apos;s free to create an account.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
+            <Button
               href={withRoleParam("/register?type=client", 'client')}
               onClick={() => handleCTAClick('Get Started Free', 'client')}
-              className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-lg font-semibold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
+              variant="secondary"
+              size="lg"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
             >
               Get Started Free
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link 
+            </Button>
+            <Button
               href={withRoleParam("/workers", 'client')}
               onClick={() => handleCTAClick('Browse Talent', 'client')}
-              className="inline-flex items-center justify-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-sky-700 transition-all shadow-lg hover:shadow-xl"
+              variant="primary"
+              size="lg"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
             >
               Browse Talent
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            </Button>
           </div>
         </div>
       </section>

@@ -1,9 +1,9 @@
 'use client'
 
-import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { useRole } from '@/components/role/RoleContextProvider'
 import { withRoleParam } from '@/lib/utils/roleAwareLinks'
+import { Button } from '@/components/ui/Button'
 
 type BottomCTAProps = {
   categoryName?: string
@@ -28,20 +28,25 @@ export function BottomCTA({ categoryName, role = 'both' }: BottomCTAProps) {
             working on high-value{categoryText} technical projects.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
+            <Button
               href={withRoleParam("/register?type=worker", 'worker')}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-slate-900 px-6 py-3 text-sm font-semibold shadow-lg hover:bg-slate-100 transition-all"
+              variant="secondary"
+              size="lg"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
             >
               Get Started Free
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
+            </Button>
+            <Button
               href={withRoleParam("/worker/discover", 'worker')}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/30 bg-transparent text-white px-6 py-3 text-sm font-semibold hover:bg-white/10 transition-all"
+              variant="outline"
+              size="lg"
+              className="border-white/30 text-white hover:bg-white/10 hover:text-white"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
             >
               Browse Jobs
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -58,22 +63,27 @@ export function BottomCTA({ categoryName, role = 'both' }: BottomCTAProps) {
         <p className="mb-8" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
           Join 2ndShift today. It&apos;s free to create an account.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            href={withRoleParam("/register?type=client", 'client')}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-slate-900 px-6 py-3 text-sm font-semibold shadow-lg hover:bg-slate-100 transition-all"
-          >
-            Get Started Free
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-          <Link
-            href={withRoleParam("/workers", 'client')}
-            className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/30 bg-transparent text-white px-6 py-3 text-sm font-semibold hover:bg-white/10 transition-all"
-          >
-            Browse Talent
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              href={withRoleParam("/register?type=client", 'client')}
+              variant="secondary"
+              size="lg"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
+            >
+              Get Started Free
+            </Button>
+            <Button
+              href={withRoleParam("/workers", 'client')}
+              variant="outline"
+              size="lg"
+              className="border-white/30 text-white hover:bg-white/10 hover:text-white"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
+            >
+              Browse Talent
+            </Button>
+          </div>
       </div>
     </section>
   )

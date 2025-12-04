@@ -822,7 +822,7 @@ export default function ClientDashboard() {
               <div className="space-y-3">
                 {[
                   { name: 'Rahul S.', skill: 'React Developer', rating: 4.9, rate: '₹1,200/hr' },
-                  { name: 'Priya M.', skill: 'UI Designer', rating: 4.8, rate: '₹1,000/hr' },
+                  { name: 'Priya M.', skill: 'Cloud Architect', rating: 4.8, rate: '₹2,000/hr' },
                   { name: 'Amit K.', skill: 'Backend Dev', rating: 4.9, rate: '₹1,400/hr' },
                 ].map((pro, i) => (
                   <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">

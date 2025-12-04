@@ -10,6 +10,7 @@ import {
   Receipt, BarChart3, MessageSquare, Calendar, Search, Send,
   ThumbsUp, AlertCircle, RefreshCw, Wallet, IndianRupee, Crown
 } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
 
 // Shifts explanation for Workers
 const WORKER_SHIFTS_USES = [
@@ -245,10 +246,10 @@ export default function FeaturesPage() {
       {/* Hero */}
       <section className="py-16 lg:py-20 bg-gradient-to-b from-slate-900 to-slate-800 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl lg:text-5xl font-semibold text-white mb-6">
+          <h1 className="text-3xl lg:text-5xl font-semibold mb-6" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
             How 2ndShift Works
           </h1>
-          <p className="text-xl text-slate-300 mb-10 max-w-3xl mx-auto">
+          <p className="text-xl mb-10 max-w-3xl mx-auto" style={{ color: '#e2e8f0', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
             Everything you need to know about hiring, payments, and our premium features. 
             We've designed every detail to protect both clients and professionals.
           </p>
@@ -368,13 +369,15 @@ export default function FeaturesPage() {
 
               {/* CTA */}
               <div className="text-center mt-12">
-                <Link
+                <Button
                   href="/register?type=client"
-                  className="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-xl font-medium hover:bg-slate-800 transition-all"
+                  variant="primary"
+                  size="lg"
+                  icon={<ArrowRight className="w-5 h-5" />}
+                  iconPosition="right"
                 >
                   Start Hiring Smarter
-                  <ArrowRight className="w-5 h-5" />
-                </Link>
+                </Button>
                 <p className="text-sm text-[#333] mt-3">Free to post. Pay only when you hire.</p>
               </div>
             </div>
@@ -553,13 +556,14 @@ export default function FeaturesPage() {
                       <strong>Benefit:</strong> Pay only as work progresses. Review each phase before releasing next payment.
                     </p>
                   </div>
-                  <Link
+                  <Button
                     href="/register?type=client"
-                    className="inline-flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-xl font-medium hover:bg-slate-800 transition-all"
+                    variant="primary"
+                    icon={<ArrowRight className="w-4 h-4" />}
+                    iconPosition="right"
                   >
                     Start a Project
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -673,13 +677,16 @@ export default function FeaturesPage() {
 
               {/* Pricing Preview */}
               <div className="mt-12 text-center">
-                <Link
+                <Button
                   href="/pricing"
-                  className="inline-flex items-center gap-2 bg-amber-500 text-white px-8 py-4 rounded-xl font-medium hover:bg-amber-600 transition-all"
+                  variant="primary"
+                  size="lg"
+                  icon={<Zap className="w-5 h-5" />}
+                  iconPosition="left"
+                  className="bg-amber-500 hover:bg-amber-600 text-white border-amber-500"
                 >
-                  <Zap className="w-5 h-5" />
                   View Shift Packages
-                </Link>
+                </Button>
               </div>
             </div>
           </section>
@@ -734,29 +741,33 @@ export default function FeaturesPage() {
       )}
 
       {/* Final CTA */}
-      <section className="py-16 lg:py-20 bg-slate-900 border-t border-slate-800">
+      <section className="py-16 lg:py-20 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-semibold text-white mb-4">
+          <h2 className="text-3xl font-semibold mb-4" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
             Ready to experience the difference?
           </h2>
-          <p className="text-lg text-slate-300 mb-10">
+          <p className="text-lg mb-10" style={{ color: '#e2e8f0', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
             Join 2ndShift today. It's free to get started.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
+            <Button
               href="/register?type=client"
-              className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-xl font-medium hover:bg-slate-100 transition-all"
+              variant="secondary"
+              size="lg"
+              icon={<Building2 className="w-5 h-5" />}
+              iconPosition="left"
             >
-              <Building2 className="w-5 h-5" />
               I Want to Hire
-            </Link>
-            <Link
+            </Button>
+            <Button
               href="/register?type=worker"
-              className="inline-flex items-center justify-center gap-2 bg-sky-600 text-white px-8 py-4 rounded-xl font-medium hover:bg-sky-700 transition-all"
+              variant="primary"
+              size="lg"
+              icon={<Briefcase className="w-5 h-5" />}
+              iconPosition="left"
             >
-              <Briefcase className="w-5 h-5" />
               I Want to Work
-            </Link>
+            </Button>
           </div>
         </div>
       </section>

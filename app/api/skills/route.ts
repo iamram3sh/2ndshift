@@ -17,11 +17,8 @@ const MOCK_SKILLS: Record<string, string[]> = {
     'C#', '.NET', 'Solidity', 'Unity', 'Unreal Engine'
   ],
   design: [
-    'UI Design', 'UX Design', 'Graphic Design', 'Logo Design', 'Branding',
-    'Figma', 'Adobe XD', 'Sketch', 'Photoshop', 'Illustrator', 'InDesign',
-    'After Effects', 'Motion Graphics', '3D Modeling', 'Blender', 'Cinema 4D',
-    'Illustration', 'Typography', 'Web Design', 'Mobile Design', 'Print Design',
-    'Product Design', 'Design Systems', 'Prototyping', 'Wireframing'
+    'Figma', 'Adobe XD', 'Sketch', 'Design Systems', 'Prototyping', 'Wireframing',
+    'Product Design', 'User Research', 'Interaction Design', 'Accessibility Design'
   ],
   marketing: [
     'Digital Marketing', 'SEO', 'SEM', 'Google Ads', 'Facebook Ads',

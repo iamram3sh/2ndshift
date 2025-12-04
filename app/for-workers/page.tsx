@@ -201,10 +201,10 @@ const SUCCESS_STORIES = [
   },
   {
     name: 'Priya M.',
-    role: 'UI/UX Designer',
+    role: 'Cloud Security Specialist',
     location: 'Mumbai',
-    quote: 'The escrow system is a game-changer. I used to waste so much time chasing payments. Now I just focus on design.',
-    earnings: '₹1.2L/month average',
+    quote: 'The escrow system is a game-changer. I used to waste so much time chasing payments. Now I just focus on delivering quality security audits.',
+    earnings: '₹2.5L/month average',
     avatar: 'PM',
   },
   {

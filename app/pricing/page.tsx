@@ -7,6 +7,7 @@ import {
   HelpCircle, ChevronDown, Layers, Menu, Crown, Sparkles,
   BadgeCheck, Clock, CreditCard, Headphones, FileText, Lock
 } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
 
 const WORKER_PLANS = [
   {
@@ -218,23 +219,26 @@ export default function PricingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="py-16 lg:py-20 bg-slate-50 border-t border-slate-200">
+      <section className="py-16 lg:py-20 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl lg:text-4xl font-semibold text-[#111] mb-4">
+          <h1 className="text-3xl lg:text-4xl font-semibold mb-4" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
             Simple, transparent pricing
           </h1>
-          <p className="text-lg text-[#333] mb-8 max-w-2xl mx-auto">
+          <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
             Start free, upgrade when you need more. All plans include full compliance handling.
+          </p>
+          <p className="text-sm mb-8 max-w-2xl mx-auto" style={{ color: '#e2e8f0', textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}>
+            <strong>Shifts = credits</strong> used to apply or boost job visibility. Purchase Shifts to stand out and get noticed faster.
           </p>
 
           {/* Toggle */}
-          <div className="inline-flex items-center bg-white border border-slate-200 rounded-xl p-1">
+          <div className="inline-flex items-center bg-white/10 border border-white/20 rounded-xl p-1">
             <button
               onClick={() => setUserType('client')}
               className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 userType === 'client'
-                  ? 'bg-slate-900 text-white'
-                  : 'text-[#333] hover:text-[#111]'
+                  ? 'bg-white text-[#111]'
+                  : 'text-white hover:bg-white/10'
               }`}
             >
               <span className="flex items-center gap-2">
@@ -246,8 +250,8 @@ export default function PricingPage() {
               onClick={() => setUserType('worker')}
               className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 userType === 'worker'
-                  ? 'bg-slate-900 text-white'
-                  : 'text-[#333] hover:text-[#111]'
+                  ? 'bg-white text-[#111]'
+                  : 'text-white hover:bg-white/10'
               }`}
             >
               <span className="flex items-center gap-2">
@@ -296,16 +300,13 @@ export default function PricingPage() {
                   )}
                 </div>
 
-                <Link
+                <Button
                   href={plan.name === 'Enterprise' ? '/contact' : '/register'}
-                  className={`block w-full py-3 rounded-xl font-medium text-center transition-all mb-8 ${
-                    plan.popular
-                      ? 'bg-slate-900 text-white hover:bg-slate-800'
-                      : 'bg-white text-[#111] border border-slate-200 hover:bg-slate-50'
-                  }`}
+                  variant={plan.popular ? 'primary' : 'outline'}
+                  className="w-full mb-8"
                 >
                   {plan.cta}
-                </Link>
+                </Button>
 
                 <ul className="space-y-3">
                   {plan.features.map((feature, j) => (
@@ -378,13 +379,16 @@ export default function PricingPage() {
           </div>
 
           <div className="text-center mt-8">
-            <Link
+            <Button
               href="/register"
-              className="inline-flex items-center gap-2 bg-amber-500 text-white px-6 py-3 rounded-xl font-medium hover:bg-amber-600 transition-all"
+              variant="primary"
+              size="lg"
+              icon={<Zap className="w-4 h-4" />}
+              iconPosition="left"
+              className="bg-amber-500 hover:bg-amber-600 text-white border-amber-500"
             >
-              <Zap className="w-4 h-4" />
               Get Shifts Now
-            </Link>
+            </Button>
           </div>
         </div>
       </section>

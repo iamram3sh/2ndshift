@@ -13,6 +13,7 @@ import {
 import { useState } from 'react'
 import { Footer } from '@/components/layout/Footer'
 import { BackButton } from '@/components/layout/BackButton'
+import { Button } from '@/components/ui/Button'
 
 // Hiring Process Steps
 const HIRING_STEPS = [
@@ -269,19 +270,25 @@ export default function EmployersPage() {
               </p>
 
               <div className="flex flex-wrap gap-4 mb-10">
-                <Link
+                <Button
                   href="/register?type=client"
-                  className="inline-flex items-center gap-2 bg-white text-[#111] px-6 py-3.5 rounded-xl font-medium hover:bg-slate-100 transition-all"
+                  variant="secondary"
+                  size="lg"
+                  icon={<ArrowRight className="w-4 h-4" />}
+                  iconPosition="right"
                 >
                   Post Your First Project
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
+                </Button>
+                <Button
                   href="/workers"
-                  className="inline-flex items-center gap-2 text-white px-6 py-3.5 rounded-xl font-medium border border-slate-600 hover:bg-slate-800 transition-all"
+                  variant="outline"
+                  size="lg"
+                  className="border-slate-600 text-white hover:bg-slate-800 hover:text-white"
+                  icon={<ArrowRight className="w-4 h-4" />}
+                  iconPosition="right"
                 >
                   Browse Talent First
-                </Link>
+                </Button>
               </div>
 
               {/* Trust Badges */}
@@ -347,13 +354,15 @@ export default function EmployersPage() {
                 </div>
               </div>
 
-              <Link
+              <Button
                 href="/register?type=client"
-                className="mt-8 w-full inline-flex items-center justify-center gap-2 bg-slate-900 text-white py-3 rounded-xl font-medium hover:bg-slate-800 transition-all"
+                variant="primary"
+                className="mt-8 w-full"
+                icon={<ArrowRight className="w-4 h-4" />}
+                iconPosition="right"
               >
                 Get Started Free
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              </Button>
             </div>
           </div>
         </div>
@@ -411,13 +420,15 @@ export default function EmployersPage() {
           </div>
 
           <div className="text-center mt-12">
-            <Link
+            <Button
               href="/register?type=client"
-              className="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-xl font-medium hover:bg-slate-800 transition-all"
+              variant="primary"
+              size="lg"
+              icon={<ArrowRight className="w-5 h-5" />}
+              iconPosition="right"
             >
               Start Your First Project
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -640,19 +651,25 @@ export default function EmployersPage() {
             Your first project is free to post.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
+            <Button
               href="/register?type=client"
-              className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-8 py-4 rounded-xl font-medium hover:bg-slate-100 transition-all"
+              variant="secondary"
+              size="lg"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
             >
               Post Your First Project - Free
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
+            </Button>
+            <Button
               href="/workers"
-              className="inline-flex items-center justify-center gap-2 text-white px-8 py-4 rounded-xl font-medium border border-slate-600 hover:bg-slate-800 transition-all"
+              variant="outline"
+              size="lg"
+              className="border-slate-600 text-white hover:bg-slate-800 hover:text-white"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
             >
               Browse Professionals
-            </Link>
+            </Button>
           </div>
           
           <p className="mt-8 text-sm text-white/80">

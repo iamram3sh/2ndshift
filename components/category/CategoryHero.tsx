@@ -1,9 +1,9 @@
 'use client'
 
-import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { CATEGORY_CONFIG, CategorySlug, getCategoryConfig } from '@/lib/config/categoryConfig'
 import { HIGH_VALUE_CATEGORIES, getCategoryBySlug } from '@/lib/constants/highValueCategories'
+import { Button } from '@/components/ui/Button'
 
 type CategoryHeroProps = {
   slug: CategorySlug | string
@@ -47,13 +47,16 @@ export function CategoryHero({ slug }: CategoryHeroProps) {
           </div>
         )}
 
-        <Link
+        <Button
           href={config.heroCtaHref}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-slate-900 px-6 py-3 text-sm md:text-base font-semibold shadow-lg hover:bg-slate-100 transition relative z-20"
+          variant="secondary"
+          size="lg"
+          icon={<ArrowRight className="w-5 h-5" />}
+          iconPosition="right"
+          className="relative z-20"
         >
           {config.heroCtaLabel}
-          <ArrowRight className="w-5 h-5" />
-        </Link>
+        </Button>
       </div>
     </section>
   )
