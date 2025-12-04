@@ -87,8 +87,8 @@ export function PostTaskForm({ isOpen, onClose, onSuccess }: PostTaskFormProps) 
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center gap-2 mb-2">
-            <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-              <Sparkles className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+              <Sparkles className="w-5 h-5 text-[#1E40AF] dark:text-blue-400" />
             </div>
             <DialogTitle className="text-2xl font-bold text-slate-900 dark:text-white">
               Post a High-Value Task

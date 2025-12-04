@@ -198,6 +198,23 @@ h1, h2, h3, h4, h5, h6 {
   color: #111 !important; /* Enforced heading color */
 }
 
+/* Don't override text colors for buttons and links */
+button, a, [role="button"] {
+  color: inherit;
+}
+
+/* Ensure buttons with colored backgrounds have proper text */
+button.bg-\[#1E40AF\], 
+a.bg-\[#1E40AF\],
+button[class*="bg-\[#1E40AF\]"], 
+a[class*="bg-\[#1E40AF\]"],
+button[class*="bg-primary-600"],
+a[class*="bg-primary-600"],
+button.bg-white:not([class*="text-white"]),
+a.bg-white:not([class*="text-white"]) {
+  color: inherit;
+}
+
 h1 { font-size: 3.5rem; font-weight: 700; letter-spacing: -0.03em; }
 h2 { font-size: 2.5rem; font-weight: 600; }
 h3 { font-size: 1.875rem; }
@@ -213,6 +230,23 @@ h6 { font-size: 1rem; }
 
 p, body, span, div, li, td, th {
   color: #333 !important; /* Enforced body text color */
+}
+
+/* Ensure buttons maintain their text colors - override global text color rules */
+button.bg-\[#1E40AF\], 
+a.bg-\[#1E40AF\],
+button[class*="bg-\[#1E40AF\]"], 
+a[class*="bg-\[#1E40AF\]"],
+button[class*="bg-primary-600"],
+a[class*="bg-primary-600"] {
+  color: #ffffff !important;
+}
+
+button.bg-white,
+a.bg-white,
+button[class*="bg-white"]:not([class*="text-white"]),
+a[class*="bg-white"]:not([class*="text-white"]) {
+  color: #111111 !important;
 }
 
 /* Override for dark backgrounds */

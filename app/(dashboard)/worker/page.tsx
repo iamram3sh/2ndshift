@@ -209,7 +209,7 @@ export default function WorkerDashboard() {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
         <div className="flex items-center gap-3">
-          <Loader2 className="w-5 h-5 animate-spin text-primary-600" />
+          <Loader2 className="w-5 h-5 animate-spin text-[#1E40AF]" />
           <span className="text-slate-600 dark:text-slate-300">Loading...</span>
         </div>
       </div>
@@ -281,8 +281,8 @@ export default function WorkerDashboard() {
           className="mb-12"
         >
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-              <Sparkles className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+              <Sparkles className="w-5 h-5 text-[#1E40AF] dark:text-blue-400" />
             </div>
             <h1 className="text-4xl font-bold text-slate-900 dark:text-white">
               High-Value IT Microtasks
@@ -290,7 +290,7 @@ export default function WorkerDashboard() {
           </div>
           <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl">
             Browse premium microtasks from verified employers. Minimum ₹50 per task. 
-            <span className="font-semibold text-primary-600 dark:text-primary-400"> Fast bidding. Trusted clients. Escrow-protected payments.</span>
+            <span className="font-semibold text-[#1E40AF] dark:text-blue-400"> Fast bidding. Trusted clients. Escrow-protected payments.</span>
           </p>
         </motion.div>
 
@@ -334,7 +334,7 @@ export default function WorkerDashboard() {
             </p>
             <button
               onClick={handleRetry}
-              className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition shadow-md hover:shadow-lg"
+              className="px-6 py-3 bg-[#1E40AF] !text-white rounded-lg hover:bg-[#1E3A8A] transition shadow-md hover:shadow-lg"
             >
               Retry
             </button>
@@ -354,7 +354,7 @@ export default function WorkerDashboard() {
             </p>
             <button
               onClick={handleRetry}
-              className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition shadow-md hover:shadow-lg"
+              className="px-6 py-3 bg-[#1E40AF] !text-white rounded-lg hover:bg-[#1E3A8A] transition shadow-md hover:shadow-lg"
             >
               Refresh Tasks
             </button>
@@ -383,7 +383,7 @@ export default function WorkerDashboard() {
               <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-md">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                    <Briefcase className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                    <Briefcase className="w-5 h-5 text-[#1E40AF] dark:text-blue-400" />
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-slate-900 dark:text-white">{tasks.length}</div>

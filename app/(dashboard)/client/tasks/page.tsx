@@ -88,7 +88,7 @@ export default function ClientTasksPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
+        <Loader2 className="w-8 h-8 animate-spin text-[#1E40AF]" />
       </div>
     )
   }
@@ -134,8 +134,8 @@ export default function ClientTasksPage() {
           className="mb-12"
         >
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-              <Sparkles className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+              <Sparkles className="w-5 h-5 text-[#1E40AF] dark:text-blue-400" />
             </div>
             <h1 className="text-4xl font-bold text-slate-900 dark:text-white">
               Your Posted Tasks
@@ -159,7 +159,7 @@ export default function ClientTasksPage() {
               onClick={() => setFilterStatus(status)}
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
                 filterStatus === status
-                  ? 'bg-primary-600 text-white shadow-md'
+                  ? 'bg-[#1E40AF] !text-white shadow-md'
                   : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-primary-300'
               }`}
             >

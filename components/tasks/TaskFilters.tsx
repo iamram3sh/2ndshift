@@ -77,7 +77,7 @@ export function TaskFilters({ filters, onFiltersChange, categories = [] }: TaskF
           <SlidersHorizontal className="w-4 h-4" />
           Filters
           {activeFiltersCount > 0 && (
-            <Badge variant="secondary" className="ml-1 bg-white text-primary-600">
+            <Badge variant="secondary" className="ml-1 bg-white text-[#1E40AF]">
               {activeFiltersCount}
             </Badge>
           )}
@@ -123,7 +123,7 @@ export function TaskFilters({ filters, onFiltersChange, categories = [] }: TaskF
                   onClick={() => handleCategoryChange(null)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                     !filters.category_id
-                      ? 'bg-primary-600 text-white shadow-md'
+                      ? 'bg-[#1E40AF] !text-white shadow-md'
                       : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
                   }`}
                 >
@@ -135,7 +135,7 @@ export function TaskFilters({ filters, onFiltersChange, categories = [] }: TaskF
                     onClick={() => handleCategoryChange(cat.id)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       filters.category_id === cat.id
-                        ? 'bg-primary-600 text-white shadow-md'
+                        ? 'bg-[#1E40AF] !text-white shadow-md'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
                     }`}
                   >
@@ -150,7 +150,7 @@ export function TaskFilters({ filters, onFiltersChange, categories = [] }: TaskF
           {activeFiltersCount > 0 && (
             <button
               onClick={clearFilters}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 transition"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-[#1E40AF] dark:hover:text-blue-400 transition"
             >
               <X className="w-4 h-4" />
               Clear all filters

@@ -51,7 +51,7 @@ export default function TaskDetailPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex items-center justify-center">
         <div className="flex items-center gap-3">
-          <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
+          <Loader2 className="w-8 h-8 animate-spin text-[#1E40AF]" />
           <span className="text-slate-600 dark:text-slate-300">Loading task...</span>
         </div>
       </div>
@@ -68,7 +68,7 @@ export default function TaskDetailPage() {
         >
           <AlertCircle className="w-16 h-16 text-slate-400 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Task not found</h2>
-          <Link href="/worker" className="text-primary-600 hover:underline">
+          <Link href="/worker" className="text-[#1E40AF] hover:underline">
             Back to Dashboard
           </Link>
         </motion.div>
@@ -290,7 +290,7 @@ export default function TaskDetailPage() {
             transition={{ delay: 0.2 }}
             className="bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 rounded-2xl border border-primary-200 dark:border-primary-800 p-8 text-center"
           >
-            <Sparkles className="w-12 h-12 text-primary-600 dark:text-primary-400 mx-auto mb-4" />
+            <Sparkles className="w-12 h-12 text-[#1E40AF] dark:text-blue-400 mx-auto mb-4" />
             <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
               Interested in this task?
             </h3>

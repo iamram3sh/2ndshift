@@ -62,7 +62,7 @@ export function TaskCard({ task, onBidClick, showBidButton = true, index = 0 }: 
           <div className="flex items-start justify-between gap-4 mb-4">
             <div className="flex-1 min-w-0">
               <div className="flex items-start gap-2 mb-3">
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors leading-tight">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white line-clamp-2 group-hover:text-[#1E40AF] dark:group-hover:text-blue-400 transition-colors leading-tight">
                   {task.title}
                 </h3>
                 {isVerified && (
@@ -147,7 +147,7 @@ export function TaskCard({ task, onBidClick, showBidButton = true, index = 0 }: 
           <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
             <Link
               href={`/task/${task.id}`}
-              className="flex-1 text-center px-4 py-2.5 text-sm font-medium text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors border border-primary-200 dark:border-primary-800"
+              className="flex-1 text-center px-4 py-2.5 text-sm font-medium text-[#1E40AF] dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors border border-blue-200 dark:border-blue-800"
             >
               View Details
             </Link>
@@ -156,7 +156,7 @@ export function TaskCard({ task, onBidClick, showBidButton = true, index = 0 }: 
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => onBidClick(task)}
-                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#1E40AF] hover:bg-[#1E3A8A] !text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200"
               >
                 Place Bid
                 <ArrowRight className="w-4 h-4" />

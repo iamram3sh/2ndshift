@@ -53,7 +53,7 @@ export function CategoryHero({ slug }: CategoryHeroProps) {
           size="lg"
           icon={<ArrowRight className="w-5 h-5" />}
           iconPosition="right"
-          className="relative z-20"
+          className="relative z-20 !bg-white !text-slate-900 hover:!bg-slate-50 border-white/20"
         >
           {config.heroCtaLabel}
         </Button>

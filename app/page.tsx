@@ -172,6 +172,7 @@ export default function HomePage() {
                   icon={<ArrowRight className="w-5 h-5" />}
                   iconPosition="right"
                   aria-label="I want to work — show worker signup"
+                  className="!bg-[#1E40AF] !text-white"
                 >
                   I want to work
                 </Button>
