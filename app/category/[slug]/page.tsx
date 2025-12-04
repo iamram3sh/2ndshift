@@ -1,6 +1,7 @@
 'use client'
 
 import { use } from 'react'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getCategoryBySlug } from '@/lib/constants/highValueCategories'
 import { getMicrotasksByCategory, type HighValueMicrotask } from '@/data/highValueMicrotasks'
