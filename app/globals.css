@@ -315,6 +315,53 @@ section.bg-gradient-to-br div:not([class*="bg-white"]):not([class*="bg-amber"]) 
   color: inherit !important;
 }
 
+/* Employers Page - Text Visibility */
+.employers-hero-title,
+.employers-hero-text,
+.employers-hero-subtext {
+  color: #ffffff !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6) !important;
+}
+
+.employers-hero-title {
+  font-weight: 600 !important;
+}
+
+.employers-hero-text {
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
+}
+
+.employers-calculator-title,
+.employers-calculator-text {
+  color: #ffffff !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6) !important;
+}
+
+.employers-calculator-text {
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) !important;
+}
+
+.employers-step-number {
+  background-color: #0b63ff !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2) !important;
+}
+
+.employers-calculator-card {
+  background-color: #ffffff !important;
+}
+
+.employers-calculator-label {
+  color: #111111 !important;
+  font-weight: 500 !important;
+}
+
+.employers-calculator-value {
+  color: #111111 !important;
+  font-weight: 700 !important;
+}
+
 .shifts-badge {
   color: #fbbf24 !important;
 }

@@ -385,7 +385,7 @@ export default function EmployersPage() {
               <div key={i} className="bg-white rounded-2xl border border-slate-200 p-8 hover:shadow-lg transition-shadow">
                 <div className="flex flex-col lg:flex-row lg:items-start gap-6">
                   <div className="flex-shrink-0">
-                    <div className="w-14 h-14 bg-slate-900 rounded-xl flex items-center justify-center text-white font-semibold text-xl">
+                    <div className="w-14 h-14 rounded-xl flex items-center justify-center text-xl employers-step-number">
                       {step.step}
                     </div>
                   </div>
@@ -515,18 +515,18 @@ export default function EmployersPage() {
               <Calculator className="w-4 h-4" />
               Cost Calculator
             </div>
-            <h2 className="text-3xl font-semibold text-white mb-4" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
+            <h2 className="text-3xl font-semibold mb-4 employers-calculator-title">
               See how much you can save
             </h2>
-            <p className="text-lg text-white" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
+            <p className="text-lg employers-calculator-text">
               Enter your project details to compare costs.
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl p-8">
+          <div className="bg-white rounded-2xl p-8 employers-calculator-card">
             <div className="grid md:grid-cols-2 gap-8 mb-8">
               <div>
-                <label className="block text-sm font-medium text-[#111] mb-2">
+                <label className="block text-sm mb-2 employers-calculator-label">
                   Project Budget (₹)
                 </label>
                 <input
@@ -543,14 +543,14 @@ export default function EmployersPage() {
                   aria-valuenow={projectCost}
                 />
                 <div className="flex justify-between mt-2">
-                  <span className="text-sm text-[#333]">₹10,000</span>
-                  <span className="text-xl font-bold text-[#111]">₹{projectCost.toLocaleString()}</span>
-                  <span className="text-sm text-[#333]">₹5,00,000</span>
+                  <span className="text-sm text-slate-600">₹10,000</span>
+                  <span className="text-xl font-bold employers-calculator-value">₹{projectCost.toLocaleString()}</span>
+                  <span className="text-sm text-slate-600">₹5,00,000</span>
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-[#111] mb-2">
+                <label className="block text-sm mb-2 employers-calculator-label">
                   Project Duration (months)
                 </label>
                 <input
@@ -566,39 +566,39 @@ export default function EmployersPage() {
                   aria-valuenow={projectDuration}
                 />
                 <div className="flex justify-between mt-2">
-                  <span className="text-sm text-[#333]">1 month</span>
-                  <span className="text-xl font-bold text-[#111]">{projectDuration} month{projectDuration > 1 ? 's' : ''}</span>
-                  <span className="text-sm text-[#333]">12 months</span>
+                  <span className="text-sm text-slate-600">1 month</span>
+                  <span className="text-xl font-bold employers-calculator-value">{projectDuration} month{projectDuration > 1 ? 's' : ''}</span>
+                  <span className="text-sm text-slate-600">12 months</span>
                 </div>
               </div>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className="p-5 bg-red-50 rounded-xl border border-red-200">
-                <div className="text-sm text-red-600 font-medium mb-1">Traditional Hire</div>
-                <div className="text-2xl font-bold text-red-700">₹{savings.traditional.toLocaleString()}</div>
-                <div className="text-xs text-red-500 mt-1">Salary + 40% overhead</div>
+              <div className="p-5 bg-red-50 rounded-xl border-2 border-red-300">
+                <div className="text-sm text-red-700 font-semibold mb-2">Traditional Hire</div>
+                <div className="text-2xl font-bold text-red-800">₹{savings.traditional.toLocaleString()}</div>
+                <div className="text-xs text-red-600 mt-2 font-medium">Salary + 40% overhead</div>
               </div>
               
-              <div className="p-5 bg-amber-50 rounded-xl border border-amber-200">
-                <div className="text-sm text-amber-600 font-medium mb-1">Staffing Agency</div>
-                <div className="text-2xl font-bold text-amber-700">₹{savings.agency.toLocaleString()}</div>
-                <div className="text-xs text-amber-500 mt-1">Base + 30% markup</div>
+              <div className="p-5 bg-amber-50 rounded-xl border-2 border-amber-300">
+                <div className="text-sm text-amber-700 font-semibold mb-2">Staffing Agency</div>
+                <div className="text-2xl font-bold text-amber-800">₹{savings.agency.toLocaleString()}</div>
+                <div className="text-xs text-amber-600 mt-2 font-medium">Base + 30% markup</div>
               </div>
               
-              <div className="p-5 bg-emerald-50 rounded-xl border-2 border-emerald-400">
-                <div className="text-sm text-emerald-600 font-medium mb-1">2ndShift</div>
-                <div className="text-2xl font-bold text-emerald-700">₹{savings.shift.toLocaleString()}</div>
-                <div className="text-xs text-emerald-500 mt-1">Base + 10% platform fee</div>
+              <div className="p-5 bg-emerald-50 rounded-xl border-2 border-emerald-400 shadow-md">
+                <div className="text-sm text-emerald-700 font-semibold mb-2">2ndShift</div>
+                <div className="text-2xl font-bold text-emerald-800">₹{savings.shift.toLocaleString()}</div>
+                <div className="text-xs text-emerald-600 mt-2 font-medium">Base + 10% platform fee</div>
               </div>
             </div>
 
-            <div className="bg-emerald-100 rounded-xl p-6 text-center">
-              <div className="text-emerald-700 font-medium mb-2">Your Potential Savings</div>
-              <div className="text-4xl font-bold text-emerald-800 mb-1">
+            <div className="bg-emerald-100 rounded-xl p-6 text-center border-2 border-emerald-300">
+              <div className="text-emerald-800 font-semibold mb-2 text-base">Your Potential Savings</div>
+              <div className="text-4xl font-bold text-emerald-900 mb-2">
                 ₹{savings.savingsVsTraditional.toLocaleString()}
               </div>
-              <div className="text-sm text-emerald-600">
+              <div className="text-sm text-emerald-700 font-medium">
                 vs traditional hiring ({Math.round((savings.savingsVsTraditional / savings.traditional) * 100)}% saved)
               </div>
             </div>
