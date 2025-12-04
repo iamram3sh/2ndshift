@@ -22,6 +22,7 @@ import { isRoleHomeEnabled } from '@/lib/role/feature-flag'
 import { HIGH_VALUE_CATEGORIES } from '@/lib/constants/highValueCategories'
 import { RolePickerModal } from '@/components/auth/RolePickerModal'
 import { useScrollAnimation } from '@/hooks/useScrollAnimation'
+import { Button } from '@/components/ui/Button'
 
 // What makes us different
 const VALUE_PROPS = [
@@ -160,32 +161,34 @@ export default function HomePage() {
 
               {/* CTAs - Only two buttons, no sign-in form */}
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 justify-center mb-8">
-                <Link 
+                <Button
                   href="/work?role=worker"
-                  onClick={(e) => {
+                  variant="primary"
+                  size="lg"
+                  onClick={() => {
                     handleCTAClick('I want to work', 'worker')
                     setRole('worker', 'hero')
-                    // Let Next.js Link handle navigation - don't prevent default
                   }}
+                  icon={<ArrowRight className="w-5 h-5" />}
+                  iconPosition="right"
                   aria-label="I want to work — show worker signup"
-                  className="inline-flex items-center justify-center gap-2 bg-[#0b63ff] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#0a56e6] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 active:scale-100"
                 >
                   I want to work
-                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                </Link>
-                <Link 
+                </Button>
+                <Button
                   href="/clients?role=client"
-                  onClick={(e) => {
+                  variant="outline"
+                  size="lg"
+                  onClick={() => {
                     handleCTAClick('I want to hire', 'client')
                     setRole('client', 'hero')
-                    // Let Next.js Link handle navigation - don't prevent default
                   }}
+                  icon={<ArrowUpRight className="w-5 h-5" />}
+                  iconPosition="right"
                   aria-label="I want to hire — show client signup"
-                  className="inline-flex items-center justify-center gap-2 bg-transparent text-[#0b1220] px-8 py-4 rounded-lg font-semibold border-2 border-[#0b1220] hover:bg-[#0b1220] hover:text-white transition-all duration-300 hover:scale-105 active:scale-100"
                 >
                   I want to hire
-                  <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </Link>
+                </Button>
               </div>
             </div>
 
@@ -406,13 +409,14 @@ export default function HomePage() {
             ))}
           </div>
           <div className="text-center mt-10">
-            <Link
+            <Button
               href="/workers"
-              className="inline-flex items-center gap-2 text-[#111] font-semibold hover:text-sky-600 transition-colors"
+              variant="link"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
             >
               View All Experts
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -537,28 +541,32 @@ export default function HomePage() {
             Join 2ndShift today. It&apos;s free to create an account.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
+            <Button
               href="/worker?role=worker"
+              variant="secondary"
+              size="lg"
               onClick={() => {
                 handleCTAClick('Get Started Free', 'worker')
                 setRole('worker', 'hero')
               }}
-              className="inline-flex items-center justify-center gap-2 bg-white text-[#0b1220] px-8 py-4 rounded-lg font-bold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
             >
               Get Started Free
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link 
+            </Button>
+            <Button
               href="/worker/discover?role=worker"
+              variant="secondary"
+              size="lg"
               onClick={() => {
                 handleCTAClick('Browse Jobs', 'worker')
                 setRole('worker', 'hero')
               }}
-              className="inline-flex items-center justify-center gap-2 bg-white text-[#0b1220] px-8 py-4 rounded-lg font-bold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
             >
               Browse Jobs
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -575,28 +583,32 @@ export default function HomePage() {
             Join 2ndShift today. It&apos;s free to create an account.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
+            <Button
               href="/client?role=client"
+              variant="secondary"
+              size="lg"
               onClick={() => {
                 handleCTAClick('Get Started Free', 'client')
                 setRole('client', 'hero')
               }}
-              className="inline-flex items-center justify-center gap-2 bg-white text-[#0b1220] px-8 py-4 rounded-lg font-bold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
             >
               Get Started Free
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link 
+            </Button>
+            <Button
               href="/workers?role=client"
+              variant="secondary"
+              size="lg"
               onClick={() => {
                 handleCTAClick('Browse Talent', 'client')
                 setRole('client', 'hero')
               }}
-              className="inline-flex items-center justify-center gap-2 bg-white text-[#0b1220] px-8 py-4 rounded-lg font-bold hover:bg-slate-100 transition-all shadow-lg hover:shadow-xl"
+              icon={<ArrowRight className="w-4 h-4" />}
+              iconPosition="right"
             >
               Browse Talent
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            </Button>
           </div>
         </div>
       </section>
