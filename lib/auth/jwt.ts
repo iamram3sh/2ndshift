@@ -6,8 +6,39 @@
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-const REFRESH_SECRET = process.env.REFRESH_SECRET || 'your-refresh-secret-key-change-in-production';
+// Validate JWT secrets - fail fast in production if not set
+const getJWTSecret = () => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || secret === 'your-secret-key-change-in-production') {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('JWT_SECRET must be set to a strong random value in production');
+    }
+    console.warn('⚠️  JWT_SECRET not set or using default value. This is insecure for production.');
+    return 'your-secret-key-change-in-production';
+  }
+  if (secret.length < 32) {
+    console.warn('⚠️  JWT_SECRET appears to be too short. Use at least 32 characters for security.');
+  }
+  return secret;
+};
+
+const getRefreshSecret = () => {
+  const secret = process.env.REFRESH_SECRET;
+  if (!secret || secret === 'your-refresh-secret-key-change-in-production') {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('REFRESH_SECRET must be set to a strong random value in production');
+    }
+    console.warn('⚠️  REFRESH_SECRET not set or using default value. This is insecure for production.');
+    return 'your-refresh-secret-key-change-in-production';
+  }
+  if (secret.length < 32) {
+    console.warn('⚠️  REFRESH_SECRET appears to be too short. Use at least 32 characters for security.');
+  }
+  return secret;
+};
+
+const JWT_SECRET = getJWTSecret();
+const REFRESH_SECRET = getRefreshSecret();
 const ACCESS_TOKEN_EXPIRY = '15m'; // 15 minutes
 const REFRESH_TOKEN_EXPIRY = '7d'; // 7 days
 

@@ -85,7 +85,10 @@ export default function WorkerDashboard() {
         setStats(prev => ({ ...prev, shiftsBalance: balance }))
       }
     } catch (err) {
-      console.error('Error fetching credits balance:', err)
+      // Error logged but don't block dashboard load
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error fetching credits balance:', err)
+      }
     }
   }, [])
 

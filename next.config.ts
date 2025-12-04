@@ -3,6 +3,14 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   
+  // API route configuration
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb', // Limit request body size
+    },
+    responseLimit: '10mb',
+  },
+  
   // Security headers
   async headers() {
     return [

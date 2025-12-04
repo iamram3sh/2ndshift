@@ -8,6 +8,9 @@ import { verifyPassword } from '@/lib/auth/password';
 import { generateAccessToken, generateRefreshToken, setRefreshTokenCookie, JWTPayload } from '@/lib/auth/jwt';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { z } from 'zod';
+import { withRateLimit } from '@/lib/api-middleware';
+import { rateLimitConfigs } from '@/lib/rate-limit';
+import { logger } from '@/lib/logger';
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -15,6 +18,7 @@ const loginSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  return withRateLimit(request, async (req) => {
   try {
     const body = await request.json();
     const validated = loginSchema.parse(body);
@@ -85,10 +89,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.error('Login error:', error);
+    logger.error('Login error', error);
     return NextResponse.json(
       { error: 'Login failed' },
       { status: 500 }
     );
   }
+  }, 'login');
 }

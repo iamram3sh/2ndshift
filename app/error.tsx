@@ -13,7 +13,13 @@ export default function Error({
 }) {
   useEffect(() => {
     // Log error to error tracking service (e.g., Sentry)
-    console.error('Error:', error)
+    // TODO: Integrate with Sentry or other error tracking service
+    if (process.env.NODE_ENV === 'production') {
+      // In production, send to error tracking service
+      // Example: Sentry.captureException(error)
+    } else {
+      console.error('Error:', error)
+    }
   }, [error])
 
   return (

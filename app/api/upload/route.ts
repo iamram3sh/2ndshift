@@ -5,6 +5,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { uploadFile } from '@/lib/storage/demo';
+import { validateFileUpload } from '@/lib/validation';
+import { logger } from '@/lib/logger';
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,6 +16,19 @@ export async function POST(request: NextRequest) {
     if (!file) {
       return NextResponse.json(
         { error: 'No file provided' },
+        { status: 400 }
+      );
+    }
+
+    // Validate file upload
+    const validation = validateFileUpload(file, {
+      maxSize: 10 * 1024 * 1024, // 10MB
+      allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'application/pdf']
+    });
+
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.errors.join(', ') },
         { status: 400 }
       );
     }
@@ -34,7 +49,7 @@ export async function POST(request: NextRequest) {
       size: result.size,
     });
   } catch (error: any) {
-    console.error('Upload error:', error);
+    logger.error('Upload error', error);
     return NextResponse.json(
       { error: error.message || 'Upload failed' },
       { status: 500 }

@@ -6,8 +6,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getRefreshTokenCookie, verifyRefreshToken, generateAccessToken, generateRefreshToken, setRefreshTokenCookie, JWTPayload } from '@/lib/auth/jwt';
 import { supabaseAdmin } from '@/lib/supabase/admin';
+import { withRateLimit } from '@/lib/api-middleware';
+import { logger } from '@/lib/logger';
 
 export async function POST(request: NextRequest) {
+  return withRateLimit(request, async (req) => {
   try {
     // Get refresh token from cookie
     const refreshToken = await getRefreshTokenCookie();
@@ -59,10 +62,11 @@ export async function POST(request: NextRequest) {
       access_token: newAccessToken,
     });
   } catch (error) {
-    console.error('Refresh error:', error);
+    logger.error('Refresh error', error);
     return NextResponse.json(
       { error: 'Token refresh failed' },
       { status: 500 }
     );
   }
+  }, 'api');
 }

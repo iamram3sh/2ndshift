@@ -5,6 +5,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAccessToken, extractTokenFromHeader, JWTPayload } from './jwt';
 import { supabaseAdmin } from '@/lib/supabase/admin';
+import { logger } from '@/lib/logger';
 
 export interface AuthenticatedRequest extends NextRequest {
   user?: JWTPayload;
@@ -61,7 +62,7 @@ export async function requireAuth(
 
     return handler(authRequest);
   } catch (error) {
-    console.error('Authentication error:', error);
+    logger.error('Authentication error', error);
     return NextResponse.json(
       { error: 'Authentication failed' },
       { status: 401 }

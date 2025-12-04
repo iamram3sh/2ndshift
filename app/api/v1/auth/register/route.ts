@@ -8,6 +8,8 @@ import { hashPassword } from '@/lib/auth/password';
 import { generateAccessToken, generateRefreshToken, setRefreshTokenCookie, JWTPayload } from '@/lib/auth/jwt';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { z } from 'zod';
+import { withRateLimit } from '@/lib/api-middleware';
+import { logger } from '@/lib/logger';
 
 const registerSchema = z.object({
   role: z.enum(['worker', 'client', 'admin']),
@@ -18,6 +20,7 @@ const registerSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  return withRateLimit(request, async (req) => {
   try {
     const body = await request.json();
     const validated = registerSchema.parse(body);
@@ -40,10 +43,12 @@ export async function POST(request: NextRequest) {
     const passwordHash = await hashPassword(validated.password);
 
     // Create user in Supabase Auth first (required due to foreign key constraint)
+    // In production, email_confirm should be false to require email verification
+    const isProduction = process.env.NODE_ENV === 'production'
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email: validated.email.toLowerCase(),
       password: validated.password,
-      email_confirm: true, // Auto-confirm for demo/staging
+      email_confirm: !isProduction, // Auto-confirm only in development/staging
       user_metadata: {
         full_name: validated.name,
         user_type: validated.role,
@@ -52,7 +57,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (authError || !authData?.user) {
-      console.error('Error creating auth user:', authError);
+      logger.error('Error creating auth user', authError);
       return NextResponse.json(
         { error: authError?.message || 'Failed to create user account' },
         { status: 500 }
@@ -79,7 +84,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (userError || !user) {
-      console.error('Error creating user:', userError);
+      logger.error('Error creating user', userError);
       // Clean up auth user if users table insert fails
       await supabaseAdmin.auth.admin.deleteUser(userId);
       return NextResponse.json(
@@ -99,7 +104,7 @@ export async function POST(request: NextRequest) {
         });
 
       if (profileError) {
-        console.error('Error creating profile:', profileError);
+        logger.error('Error creating profile', profileError);
         // Don't fail registration if profile creation fails, just log it
       }
     }
@@ -114,7 +119,7 @@ export async function POST(request: NextRequest) {
       });
 
     if (creditsError) {
-      console.error('Error initializing credits:', creditsError);
+      logger.error('Error initializing credits', creditsError);
       // Don't fail registration if credits initialization fails
     }
 
@@ -151,10 +156,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.error('Registration error:', error);
+    logger.error('Registration error', error);
     return NextResponse.json(
       { error: 'Registration failed' },
       { status: 500 }
     );
   }
+  }, 'register');
 }

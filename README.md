@@ -14,19 +14,26 @@ npm install
 ```
 
 ### 2. Set Environment Variables
-Create `.env.local`:
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_key
-RAZORPAY_KEY_ID=your_razorpay_key
-RAZORPAY_KEY_SECRET=your_razorpay_secret
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+Copy `env.example` to `.env.local` and fill in your values:
 
-# Feature Flags
-FEATURE_ROLE_HOME=true  # Enable role-targeted homepage (default: true)
-# Set to 'false' to disable role-based content filtering
+```bash
+cp env.example .env.local
 ```
+
+**Required Variables:**
+- `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase anonymous key
+- `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key (server-side only)
+- `JWT_SECRET` - Strong random secret for JWT tokens (generate: `openssl rand -base64 32`)
+- `REFRESH_SECRET` - Strong random secret for refresh tokens (generate: `openssl rand -base64 32`)
+- `NEXT_PUBLIC_APP_URL` - Application URL (http://localhost:3000 for dev)
+
+**Optional Variables:**
+- `RAZORPAY_KEY_ID` & `RAZORPAY_KEY_SECRET` - For payment processing
+- `RESEND_API_KEY` - For email sending
+- `FEATURE_ROLE_HOME` - Enable role-targeted homepage (default: true)
+
+See `env.example` for complete list with descriptions.
 
 ### 3. Run Development Server
 ```bash

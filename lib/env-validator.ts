@@ -65,6 +65,18 @@ const envVars: EnvVar[] = [
     key: 'NEXT_PUBLIC_GA_MEASUREMENT_ID',
     required: false,
     description: 'Google Analytics Measurement ID'
+  },
+  {
+    key: 'JWT_SECRET',
+    required: true,
+    production: true,
+    description: 'JWT access token secret (must be strong random string)'
+  },
+  {
+    key: 'REFRESH_SECRET',
+    required: true,
+    production: true,
+    description: 'JWT refresh token secret (must be strong random string)'
   }
 ]
 
@@ -91,7 +103,7 @@ export function validateEnvironment() {
       }
       
       // Check for placeholder values
-      if (value.includes('placeholder') || value.includes('your_')) {
+      if (value.includes('placeholder') || value.includes('your_') || value.includes('change-in-production')) {
         errors.push(`❌ Placeholder value detected for ${envVar.key}. Please set a real value.`)
       }
       
@@ -99,6 +111,13 @@ export function validateEnvironment() {
       if (envVar.key.includes('SECRET') || envVar.key.includes('SERVICE_ROLE')) {
         if (value.length < 20) {
           errors.push(`❌ ${envVar.key} appears to be too short. Ensure you're using the correct value.`)
+        }
+        // Check for default JWT secrets
+        if (envVar.key === 'JWT_SECRET' && value === 'your-secret-key-change-in-production') {
+          errors.push(`❌ ${envVar.key} is using the default value. Generate a strong random secret for production.`)
+        }
+        if (envVar.key === 'REFRESH_SECRET' && value === 'your-refresh-secret-key-change-in-production') {
+          errors.push(`❌ ${envVar.key} is using the default value. Generate a strong random secret for production.`)
         }
       }
     }

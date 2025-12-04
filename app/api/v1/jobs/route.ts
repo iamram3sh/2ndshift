@@ -7,6 +7,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth, requireRole, AuthenticatedRequest } from '@/lib/auth/middleware';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { z } from 'zod';
+import { logger } from '@/lib/logger';
+import { sanitizeInput } from '@/lib/sanitize';
 
 const createJobSchema = z.object({
   title: z.string().min(3),
@@ -63,7 +65,7 @@ export async function GET(request: NextRequest) {
       const { data: jobs, error } = await query;
 
       if (error) {
-        console.error('Error fetching jobs:', error);
+        logger.error('Error fetching jobs', error);
         return NextResponse.json(
           { error: 'Failed to fetch jobs' },
           { status: 500 }
@@ -79,7 +81,7 @@ export async function GET(request: NextRequest) {
         },
       });
     } catch (error) {
-      console.error('Get jobs error:', error);
+      logger.error('Get jobs error', error);
       return NextResponse.json(
         { error: 'Failed to fetch jobs' },
         { status: 500 }
@@ -94,13 +96,17 @@ export async function POST(request: NextRequest) {
       const body = await request.json();
       const validated = createJobSchema.parse(body);
 
+      // Sanitize user inputs
+      const sanitizedTitle = sanitizeInput(validated.title);
+      const sanitizedDescription = sanitizeInput(validated.description);
+
       // Create job
       const { data: job, error: jobError } = await supabaseAdmin
         .from('jobs')
         .insert({
           client_id: authReq.userId,
-          title: validated.title,
-          description: validated.description,
+          title: sanitizedTitle,
+          description: sanitizedDescription,
           category_id: validated.category_id,
           microtask_id: validated.microtask_id,
           custom: validated.custom,
@@ -116,7 +122,7 @@ export async function POST(request: NextRequest) {
         .single();
 
       if (jobError || !job) {
-        console.error('Error creating job:', jobError);
+        logger.error('Error creating job', jobError);
         return NextResponse.json(
           { error: 'Failed to create job' },
           { status: 500 }
@@ -143,7 +149,7 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      console.error('Create job error:', error);
+      logger.error('Create job error', error);
       return NextResponse.json(
         { error: 'Failed to create job' },
         { status: 500 }
