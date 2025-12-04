@@ -21,6 +21,9 @@
     "test:integration": "jest __tests__/api/integration.test.ts",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
+    "test:qa": "powershell -ExecutionPolicy Bypass -File scripts/run-qa-tests.ps1",
+    "test:qa:smoke": "playwright test __tests__/e2e/qa-smoke.spec.ts --reporter=list",
+    "test:qa:full": "playwright test __tests__/e2e/qa-*.spec.ts --reporter=html,json,list",
     "verify:api": "tsx scripts/verify-api-structure.ts"
   },
   "dependencies": {
