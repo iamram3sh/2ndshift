@@ -323,13 +323,20 @@ export default function WorkerDashboard() {
 
             <div className="flex items-center gap-3">
               {/* Shifts Balance */}
-              <button
-                onClick={() => setShowShiftsModal(true)}
-                className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg text-sm font-medium hover:from-amber-600 hover:to-orange-600 transition-all"
-              >
-                <Zap className="w-4 h-4" />
-                <span>{shiftsBalance} Shifts</span>
-              </button>
+              <div className="group relative">
+                <button
+                  onClick={() => setShowShiftsModal(true)}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg text-sm font-medium hover:from-amber-600 hover:to-orange-600 transition-all"
+                  aria-describedby="credits-tooltip-worker"
+                >
+                  <Zap className="w-4 h-4" />
+                  <span>{shiftsBalance} Shifts</span>
+                  <HelpCircle className="w-3.5 h-3.5 opacity-80" />
+                </button>
+                <div id="credits-tooltip-worker" className="absolute right-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-slate-900 text-white text-xs rounded-lg z-50 shadow-lg">
+                  Shift Credits: used to apply for verified job matches. 1 credit = 1 application. Buy credits to speed up matching.
+                </div>
+              </div>
 
               <button className="relative p-2 text-[#333] hover:text-[#111] hover:bg-slate-100 rounded-lg transition-colors">
                 <Bell className="w-5 h-5" />

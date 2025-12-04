@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, Crown, Zap, Loader2, ArrowRight } from 'lucide-react'
+import { Check, Crown, Zap, Loader2, ArrowRight, HelpCircle } from 'lucide-react'
 import apiClient from '@/lib/apiClient'
 import { useTranslation } from '@/lib/i18n'
 
@@ -123,6 +123,12 @@ export function SubscriptionCard({
           <span className="font-semibold text-slate-900">
             {plan.platform_fee_percent}%
           </span>
+          <div className="group relative">
+            <HelpCircle className="w-4 h-4 text-slate-400 cursor-help" aria-describedby={`platform-fee-tooltip-${plan.id}`} />
+            <div id={`platform-fee-tooltip-${plan.id}`} className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-slate-900 text-white text-xs rounded-lg z-10 shadow-lg">
+              Platform fee includes escrow, compliance, and payment processing. First 3 jobs: 0% (promo).
+            </div>
+          </div>
         </div>
         {plan.free_shifts_monthly > 0 && (
           <div className="flex items-center gap-2 p-2 bg-amber-50 rounded-lg">
@@ -130,6 +136,12 @@ export function SubscriptionCard({
             <span className="text-sm font-medium text-amber-900">
               {plan.free_shifts_monthly} Shifts/month included
             </span>
+            <div className="group relative">
+              <HelpCircle className="w-4 h-4 text-amber-400 cursor-help" aria-describedby={`credits-tooltip-${plan.id}`} />
+              <div id={`credits-tooltip-${plan.id}`} className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-64 p-2 bg-slate-900 text-white text-xs rounded-lg z-10 shadow-lg">
+                Shift Credits: used to apply for verified job matches. 1 credit = 1 application. Buy credits to speed up matching.
+              </div>
+            </div>
           </div>
         )}
       </div>

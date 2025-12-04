@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useRole } from '@/components/role/RoleContextProvider'
 import { RolePickerModal } from '@/components/auth/RolePickerModal'
+import { RoleMismatchModal } from '@/components/role/RoleMismatchModal'
 import { RoleAwareNav } from '@/components/role/RoleAwareNav'
 import { withRoleParam } from '@/lib/utils/roleAwareLinks'
 import { trackRoleCTA } from '@/lib/analytics/roleEvents'
@@ -31,19 +32,20 @@ export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'w
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [showRolePicker, setShowRolePicker] = useState(false)
+  const [showRoleMismatch, setShowRoleMismatch] = useState(false)
   const router = useRouter()
   const { role, setRole } = useRole()
   const isRoleEnabled = isRoleHomeEnabled()
 
-  // Enforce client role - redirect if mismatch
+  // Enforce client role - show modal if mismatch
   useEffect(() => {
     if (typeof window === 'undefined') return
     if (!isRoleEnabled) return
 
     const currentRole = role || initialRole
     if (currentRole && currentRole !== 'client') {
-      // Role mismatch - redirect to home with correct role
-      router.push(`/?role=${currentRole}`)
+      // Role mismatch - show modal
+      setShowRoleMismatch(true)
       return
     }
 
@@ -457,6 +459,13 @@ export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'w
         isOpen={showRolePicker}
         onClose={() => setShowRolePicker(false)}
         onRoleSelected={() => setShowRolePicker(false)}
+      />
+      <RoleMismatchModal
+        isOpen={showRoleMismatch}
+        currentRole={role || 'worker'}
+        attemptedRole="client"
+        onClose={() => setShowRoleMismatch(false)}
+        onSwitchRole={() => setRole('client', 'modal')}
       />
     </div>
   )

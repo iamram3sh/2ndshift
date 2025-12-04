@@ -3,6 +3,7 @@
 import { Info } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import apiClient from '@/lib/apiClient'
+import { PLATFORM_FEE_CONFIG, getPlatformFee } from '@/lib/config/pricing'
 
 interface PriceBreakdownProps {
   price: number
@@ -42,10 +43,35 @@ export function PriceBreakdown({
       })
 
       if (result.data && typeof result.data === 'object' && 'breakdown' in result.data) {
-        setBreakdown((result.data as any).breakdown)
+        const backendBreakdown = (result.data as any).breakdown
+        
+        // Apply fallback if commission is zero or null
+        if (backendBreakdown.client_commission_percent == null || backendBreakdown.client_commission_percent === 0) {
+          const fallbackFee = getPlatformFee({ difficulty: 'medium' })
+          backendBreakdown.client_commission_percent = fallbackFee
+          backendBreakdown.client_commission = (backendBreakdown.job_price || price) * fallbackFee
+          backendBreakdown.client_pays = (backendBreakdown.job_price || price) + (backendBreakdown.escrow_fee || 0) + backendBreakdown.client_commission
+        }
+        
+        setBreakdown(backendBreakdown)
       }
     } catch (err) {
       console.error('Failed to fetch breakdown:', err)
+      // Use fallback on error
+      const fallbackFee = getPlatformFee({ difficulty: 'medium' })
+      const escrowFee = price * 0.02
+      const clientCommission = price * fallbackFee
+      setBreakdown({
+        job_price: price,
+        escrow_fee: escrowFee,
+        escrow_fee_percent: 2,
+        client_commission: clientCommission,
+        client_commission_percent: fallbackFee,
+        client_pays: price + escrowFee + clientCommission,
+        worker_receives: price,
+        worker_commission: 0,
+        worker_commission_percent: 0,
+      })
     } finally {
       setLoading(false)
     }
@@ -96,15 +122,15 @@ export function PriceBreakdown({
           </div>
         )}
 
-        {breakdown.client_commission > 0 && (
+        {(breakdown.client_commission > 0 || breakdown.client_commission_percent > 0) && (
           <div className="flex items-center justify-between text-slate-600">
             <span className="flex items-center gap-1">
-              Platform Fee {breakdown.client_commission_percent ? `(${breakdown.client_commission_percent.toFixed(1)}%)` : '(Flat ₹49)'}:
-              <span title="Platform commission">
+              Platform Fee {breakdown.client_commission_percent ? `(${(breakdown.client_commission_percent * 100).toFixed(0)}%)` : '(Flat ₹49)'}:
+              <span title="Platform fee includes escrow, compliance & payment processing. First 3 jobs: 0% (promo).">
                 <Info className="w-3 h-3" />
               </span>
             </span>
-            <span className="text-xs">+₹{breakdown.client_commission.toFixed(2)}</span>
+            <span className="text-xs">+₹{breakdown.client_commission?.toFixed(2) || '0.00'}</span>
           </div>
         )}
 

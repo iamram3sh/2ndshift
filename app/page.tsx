@@ -109,25 +109,6 @@ export default function HomePage() {
 
             {/* CTA Buttons */}
             <div className="flex items-center gap-3">
-              {role ? (
-                <Link href={`/login?role=${role}`} className="hidden sm:block px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors">
-                  Sign in
-                </Link>
-              ) : (
-                <button
-                  onClick={() => setShowRolePicker(true)}
-                  className="hidden sm:block px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors"
-                  aria-label="Sign in - choose your role"
-                >
-                  Sign in
-                </button>
-              )}
-              <Link 
-                href={withRoleParam("/register", role)} 
-                className="bg-slate-900 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-slate-800 transition-all shadow-sm"
-              >
-                Get Started Free
-              </Link>
               <button 
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="lg:hidden p-2 text-slate-600 hover:text-slate-900"
@@ -143,23 +124,6 @@ export default function HomePage() {
           <div className="lg:hidden bg-white border-t border-slate-200 shadow-lg">
             <div className="px-4 py-4 space-y-1">
               <RoleAwareNav isMobile onLinkClick={() => setMobileMenuOpen(false)} />
-              <div className="pt-4 border-t border-slate-200 mt-4">
-                {role ? (
-                  <Link href={`/login?role=${role}`} className="block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg font-medium">
-                    Sign in
-                  </Link>
-                ) : (
-                  <button
-                    onClick={() => {
-                      setShowRolePicker(true)
-                      setMobileMenuOpen(false)
-                    }}
-                    className="block w-full text-left px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg font-medium"
-                  >
-                    Sign in
-                  </button>
-                )}
-              </div>
             </div>
           </div>
         )}
@@ -169,167 +133,44 @@ export default function HomePage() {
       <section className="relative pt-24 lg:pt-32 pb-16 lg:pb-24 bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
-            {/* Hero CTAs - Single Source of Role Selection */}
-            {!isRoleEnabled || role === null ? (
-              <div className="text-center">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
-                  Hire verified, senior IT pros for high-value technical work.
-                </h1>
-                <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
-                  DevOps, Cloud, Networking, Security, AI, Data, SRE, DB & Programming — delivered by certified Indian professionals.
-                </p>
+            {/* Hero CTAs - Single Source of Role Selection - Always show on homepage */}
+            <div className="text-center">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
+                Hire verified, senior IT pros for high-value technical work.
+              </h1>
+              <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
+                DevOps, Cloud, Networking, Security, AI, Data, SRE, DB & Programming — delivered by certified Indian professionals.
+              </p>
 
-                {/* CTAs - Single Source */}
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 justify-center mb-8">
-                  <Link 
-                    href="/work?role=worker"
-                    onClick={() => {
-                      handleCTAClick('I want to work', 'worker')
-                      setRole('worker', 'hero')
-                    }}
-                    aria-label="I want to work — show worker signup"
-                    className="inline-flex items-center justify-center gap-2 bg-[#0b63ff] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#0a56e6] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                  >
-                    I want to work
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                  <Link 
-                    href="/clients?role=client"
-                    onClick={() => {
-                      handleCTAClick('I want to hire', 'client')
-                      setRole('client', 'hero')
-                    }}
-                    aria-label="I want to hire — show client signup"
-                    className="inline-flex items-center justify-center gap-2 bg-transparent text-[#0b1220] px-8 py-4 rounded-lg font-semibold border-2 border-[#0b1220] hover:bg-[#0b1220] hover:text-white transition-all"
-                  >
-                    I want to hire
-                    <ArrowUpRight className="w-5 h-5" />
-                  </Link>
-                </div>
+              {/* CTAs - Only two buttons, no sign-in form */}
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 justify-center mb-8">
+                <Link 
+                  href="/work?role=worker"
+                  onClick={() => {
+                    handleCTAClick('I want to work', 'worker')
+                    setRole('worker', 'hero')
+                  }}
+                  aria-label="I want to work — show worker signup"
+                  className="inline-flex items-center justify-center gap-2 bg-[#0b63ff] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#0a56e6] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                >
+                  I want to work
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+                <Link 
+                  href="/clients?role=client"
+                  onClick={() => {
+                    handleCTAClick('I want to hire', 'client')
+                    setRole('client', 'hero')
+                  }}
+                  aria-label="I want to hire — show client signup"
+                  className="inline-flex items-center justify-center gap-2 bg-transparent text-[#0b1220] px-8 py-4 rounded-lg font-semibold border-2 border-[#0b1220] hover:bg-[#0b1220] hover:text-white transition-all"
+                >
+                  I want to hire
+                  <ArrowUpRight className="w-5 h-5" />
+                </Link>
               </div>
-            ) : null}
+            </div>
 
-            {/* Worker-Focused Hero */}
-            <RoleSection role="worker" sectionId="hero-worker" fallback={null}>
-            {(
-              <div className="text-center">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
-                  Earn from Anywhere.
-                  <br />
-                  <span className="text-[#111]">Build a Second Income with Skills You Already Have.</span>
-                </h1>
-
-                <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
-                  DevOps, Cloud, Networking, Security, AI, Data, SRE, DB & Programming — delivered by certified Indian professionals.
-                </p>
-
-                {/* CTAs - Single Source */}
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 justify-center mb-8">
-                  <Link 
-                    href="/work?role=worker"
-                    onClick={() => {
-                      handleCTAClick('I want to work', 'worker')
-                      setRole('worker', 'hero')
-                    }}
-                    aria-label="I want to work — show worker signup"
-                    className="inline-flex items-center justify-center gap-2 bg-[#0b63ff] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#0a56e6] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                  >
-                    I want to work
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                  <Link 
-                    href="/clients?role=client"
-                    onClick={() => {
-                      handleCTAClick('I want to hire', 'client')
-                      setRole('client', 'hero')
-                    }}
-                    aria-label="I want to hire — show client signup"
-                    className="inline-flex items-center justify-center gap-2 bg-transparent text-[#0b1220] px-8 py-4 rounded-lg font-semibold border-2 border-[#0b1220] hover:bg-[#0b1220] hover:text-white transition-all"
-                  >
-                    I want to hire
-                    <ArrowUpRight className="w-5 h-5" />
-                  </Link>
-                </div>
-
-                {/* Trust Indicators */}
-                <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#333]">
-                  <span className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-emerald-600" />
-                    Paid within 24 hours
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <Shield className="w-4 h-4 text-emerald-600" />
-                    Zero platform fees
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <BadgeCheck className="w-4 h-4 text-emerald-600" />
-                    Verified clients only
-                  </span>
-                </div>
-              </div>
-            )}
-            </RoleSection>
-
-            {/* Client-Focused Hero */}
-            <RoleSection role="client" sectionId="hero-client">
-            {(
-              <div className="text-center">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
-                  Hire Talent Fast.
-                  <br />
-                  <span className="text-[#111]">Zero Noise. Only Verified Workers.</span>
-                </h1>
-
-                <p className="text-lg lg:text-xl text-[#333] mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
-                  DevOps, Cloud, Networking, Security, AI, Data, SRE, DB & Programming — delivered by certified Indian professionals.
-                </p>
-
-                {/* CTAs - Single Source */}
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 justify-center mb-8">
-                  <Link 
-                    href="/clients?role=client"
-                    onClick={() => {
-                      handleCTAClick('I want to hire', 'client')
-                      setRole('client', 'hero')
-                    }}
-                    aria-label="I want to hire — show client signup"
-                    className="inline-flex items-center justify-center gap-2 bg-[#0b63ff] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#0a56e6] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                  >
-                    I want to hire
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                  <Link 
-                    href="/work?role=worker"
-                    onClick={() => {
-                      handleCTAClick('I want to work', 'worker')
-                      setRole('worker', 'hero')
-                    }}
-                    aria-label="I want to work — show worker signup"
-                    className="inline-flex items-center justify-center gap-2 bg-transparent text-[#0b1220] px-8 py-4 rounded-lg font-semibold border-2 border-[#0b1220] hover:bg-[#0b1220] hover:text-white transition-all"
-                  >
-                    I want to work
-                    <ArrowUpRight className="w-5 h-5" />
-                  </Link>
-                </div>
-
-                {/* Trust Indicators */}
-                <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#333]">
-                  <span className="flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-sky-600" />
-                    Hire in under 1 hour
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <Shield className="w-4 h-4 text-sky-600" />
-                    Replacement guarantee
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <BadgeCheck className="w-4 h-4 text-sky-600" />
-                    Verified workers only
-                  </span>
-                </div>
-              </div>
-            )}
-            </RoleSection>
           </div>
         </div>
       </section>

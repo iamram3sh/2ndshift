@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Info, DollarSign, TrendingDown, TrendingUp } from 'lucide-react'
 import apiClient from '@/lib/apiClient'
+import { getPlatformFee } from '@/lib/config/pricing'
 
 interface CommissionBreakdownProps {
   price: number
@@ -32,13 +33,25 @@ export function CommissionBreakdown({
         is_microtask: isMicrotask,
       })
       if (result.data && typeof result.data === 'object' && 'breakdown' in result.data) {
-        setBreakdown((result.data as any).breakdown)
+        const backendBreakdown = (result.data as any).breakdown
+        
+        // Apply fallback if commission is zero or null
+        if (backendBreakdown.client_commission_percent == null || backendBreakdown.client_commission_percent === 0) {
+          const fallbackFee = getPlatformFee({ difficulty: 'medium' })
+          backendBreakdown.client_commission_percent = fallbackFee
+          backendBreakdown.client_commission = (backendBreakdown.job_price || price) * fallbackFee
+          backendBreakdown.client_pays = (backendBreakdown.job_price || price) + (backendBreakdown.escrow_fee || 0) + backendBreakdown.client_commission
+        }
+        
+        setBreakdown(backendBreakdown)
       }
       setLoading(false)
     }
 
     if (price > 0) {
       fetchBreakdown()
+    } else {
+      setLoading(false)
     }
   }, [price, workerId, clientId, isMicrotask])
 
@@ -87,10 +100,8 @@ export function CommissionBreakdown({
               {showTooltips && (
                 <div className="group relative">
                   <Info className="w-3.5 h-3.5 text-slate-400 cursor-help" />
-                  <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-48 p-2 bg-slate-900 text-white text-xs rounded-lg z-10">
-                    {isMicrotask
-                      ? 'Flat fee for microtasks'
-                      : 'Platform service fee'}
+                  <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-56 p-2 bg-slate-900 text-white text-xs rounded-lg z-10 shadow-lg">
+                    Platform fee includes escrow, compliance, and payment processing. First 3 jobs: 0% (promo).
                   </div>
                 </div>
               )}
