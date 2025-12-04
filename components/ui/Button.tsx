@@ -10,7 +10,7 @@ function cn(...inputs: (string | undefined | null | false)[]) {
 
 interface ButtonProps {
   children: ReactNode
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'link'
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'link' | 'danger'
   size?: 'sm' | 'md' | 'lg'
   href?: string
   onClick?: () => void
@@ -28,7 +28,8 @@ const buttonVariants = {
   secondary: 'bg-slate-900 text-white hover:bg-slate-800 shadow-lg hover:shadow-xl active:shadow-md border border-transparent',
   outline: 'bg-transparent text-[#0b1220] border-2 border-[#0b1220] hover:bg-[#0b1220] hover:text-white hover:border-[#0b1220]',
   ghost: 'bg-transparent text-slate-700 hover:bg-slate-100 border border-transparent',
-  link: 'bg-transparent text-[#0b63ff] hover:text-[#0a56e6] underline-offset-4 hover:underline p-0 border-0 shadow-none'
+  link: 'bg-transparent text-[#0b63ff] hover:text-[#0a56e6] underline-offset-4 hover:underline p-0 border-0 shadow-none',
+  danger: 'bg-red-600 text-white hover:bg-red-700 shadow-lg hover:shadow-xl active:shadow-md border border-transparent focus:ring-red-500'
 }
 
 const buttonSizes = {

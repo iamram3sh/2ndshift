@@ -480,8 +480,9 @@ export default function SettingsPage() {
                             setMessage('Account deletion is not yet implemented. Please contact support.')
                           }
                         }}
+                        icon={<Trash2 className="w-4 h-4" />}
+                        iconPosition="left"
                       >
-                        <Trash2 className="w-4 h-4 mr-2" />
                         Delete Account
                       </Button>
                     </div>
