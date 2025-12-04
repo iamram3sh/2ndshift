@@ -129,7 +129,7 @@ export function ShiftsModal({
           },
         },
         theme: {
-          color: '#0f172a',
+          color: '#f59e0b', // Amber-500 to match Shifts branding
         },
       }
 

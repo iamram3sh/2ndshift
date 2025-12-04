@@ -1,13 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { 
   Check, X, ArrowRight, Shield, Zap, Users, Building2, 
   HelpCircle, ChevronDown, Layers, Menu, Crown, Sparkles,
-  BadgeCheck, Clock, CreditCard, Headphones, FileText, Lock
+  BadgeCheck, Clock, CreditCard, Headphones, FileText, Lock, CheckCircle
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { ShiftsModal } from '@/components/shifts/ShiftsModal'
+import apiClient from '@/lib/apiClient'
 
 const WORKER_PLANS = [
   {
@@ -169,11 +172,63 @@ const FAQS = [
 ]
 
 export default function PricingPage() {
+  const router = useRouter()
   const [userType, setUserType] = useState<'worker' | 'client'>('client')
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
+  const [selectedShiftPackage, setSelectedShiftPackage] = useState<number | null>(null)
+  const [showShiftsModal, setShowShiftsModal] = useState(false)
+  const [currentUser, setCurrentUser] = useState<{ id: string; role: string } | null>(null)
+  const [shiftsBalance, setShiftsBalance] = useState(0)
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
 
   const plans = userType === 'worker' ? WORKER_PLANS : CLIENT_PLANS
   const shiftPackages = userType === 'worker' ? SHIFT_PACKAGES_WORKERS : SHIFT_PACKAGES_CLIENTS
+
+  // Check if user is logged in
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const result = await apiClient.getCurrentUser()
+        if (result.data?.user) {
+          setCurrentUser({
+            id: result.data.user.id,
+            role: result.data.user.role
+          })
+          // Fetch shifts balance
+          try {
+            const balanceResult = await apiClient.getCreditsBalance()
+            if (balanceResult.data && typeof balanceResult.data === 'object' && 'balance' in balanceResult.data) {
+              setShiftsBalance((balanceResult.data as any).balance || 0)
+            }
+          } catch (err) {
+            // Ignore balance fetch errors
+          }
+        }
+      } catch (err) {
+        // User not logged in
+      } finally {
+        setIsCheckingAuth(false)
+      }
+    }
+    checkAuth()
+  }, [])
+
+  const handleGetShifts = () => {
+    if (!currentUser) {
+      // Redirect to login with return URL
+      router.push(`/login?redirect=${encodeURIComponent('/pricing')}`)
+      return
+    }
+
+    if (selectedShiftPackage === null) {
+      // If no package selected, just open modal
+      setShowShiftsModal(true)
+      return
+    }
+
+    // Open modal with pre-selected package
+    setShowShiftsModal(true)
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -348,17 +403,27 @@ export default function PricingPage() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {shiftPackages.map((pkg, i) => (
-              <div
+              <button
                 key={i}
-                className={`p-6 rounded-xl text-center transition-all duration-300 hover:scale-105 pricing-shift-card ${
+                onClick={() => setSelectedShiftPackage(i)}
+                className={`relative p-6 rounded-xl text-center transition-all duration-300 hover:scale-105 pricing-shift-card cursor-pointer ${
+                  selectedShiftPackage === i
+                    ? 'ring-4 ring-amber-400 ring-offset-2 ring-offset-slate-800'
+                    : ''
+                } ${
                   pkg.popular
-                    ? 'bg-amber-500 shadow-xl'
+                    ? 'bg-gradient-to-br from-amber-500 to-orange-500 shadow-xl'
                     : 'bg-white/10 border border-white/20 hover:bg-white/15'
                 }`}
                 style={{
                   animation: `fadeInUp 0.6s ease-out ${i * 0.1}s both`
                 }}
               >
+                {selectedShiftPackage === i && (
+                  <div className="absolute top-2 right-2">
+                    <CheckCircle className="w-6 h-6 text-white drop-shadow-lg" />
+                  </div>
+                )}
                 <div className={`text-3xl font-bold mb-1 ${pkg.popular ? 'pricing-shift-popular-number' : 'pricing-shift-number'}`}>{pkg.shifts}</div>
                 <div className={`text-sm mb-4 ${pkg.popular ? 'pricing-shift-popular-label' : 'pricing-shift-label'}`}>
                   Shifts
@@ -377,21 +442,28 @@ export default function PricingPage() {
                     Best Value
                   </div>
                 )}
-              </div>
+              </button>
             ))}
           </div>
 
           <div className="text-center mt-8">
             <Button
-              href="/register"
+              onClick={handleGetShifts}
               variant="primary"
               size="lg"
               icon={<Zap className="w-4 h-4" />}
               iconPosition="left"
-              className="bg-amber-500 hover:bg-amber-600 text-white border-amber-500"
+              className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0 shadow-lg hover:shadow-xl"
             >
-              Get Shifts Now
+              {selectedShiftPackage !== null 
+                ? `Get ${shiftPackages[selectedShiftPackage].shifts} Shifts Now`
+                : 'Get Shifts Now'}
             </Button>
+            {selectedShiftPackage !== null && (
+              <p className="mt-3 text-sm text-slate-300">
+                Selected: {shiftPackages[selectedShiftPackage].shifts} Shifts for ₹{shiftPackages[selectedShiftPackage].price}
+              </p>
+            )}
           </div>
         </div>
       </section>
@@ -490,6 +562,24 @@ export default function PricingPage() {
           </div>
         </div>
       </footer>
+
+      {/* Shifts Modal */}
+      {currentUser && (
+        <ShiftsModal
+          isOpen={showShiftsModal}
+          onClose={() => {
+            setShowShiftsModal(false)
+            setSelectedShiftPackage(null)
+          }}
+          userId={currentUser.id}
+          userType={currentUser.role as 'worker' | 'client'}
+          currentBalance={shiftsBalance}
+          onPurchaseComplete={(newBalance) => {
+            setShiftsBalance(newBalance)
+            setSelectedShiftPackage(null)
+          }}
+        />
+      )}
     </div>
   )
 }
