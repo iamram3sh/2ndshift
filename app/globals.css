@@ -172,12 +172,31 @@ p, body, span, div, li, td, th {
 .bg-slate-900 h1, .bg-slate-900 h2, .bg-slate-900 h3, 
 .bg-slate-900 h4, .bg-slate-900 h5, .bg-slate-900 h6,
 .bg-slate-800 h1, .bg-slate-800 h2, .bg-slate-800 h3,
-.bg-slate-800 h4, .bg-slate-800 h5, .bg-slate-800 h6 {
+.bg-slate-800 h4, .bg-slate-800 h5, .bg-slate-800 h6,
+[class*="bg-slate-900"] h1, [class*="bg-slate-900"] h2, [class*="bg-slate-900"] h3,
+[class*="bg-slate-900"] h4, [class*="bg-slate-900"] h5, [class*="bg-slate-900"] h6,
+[class*="bg-slate-800"] h1, [class*="bg-slate-800"] h2, [class*="bg-slate-800"] h3,
+[class*="bg-slate-800"] h4, [class*="bg-slate-800"] h5, [class*="bg-slate-800"] h6,
+.category-hero h1, .category-hero h2, .category-hero h3,
+.category-hero h4, .category-hero h5, .category-hero h6 {
   color: #ffffff !important;
 }
 
 .bg-slate-900 p, .bg-slate-900 span, .bg-slate-900 div,
-.bg-slate-800 p, .bg-slate-800 span, .bg-slate-800 div {
+.bg-slate-800 p, .bg-slate-800 span, .bg-slate-800 div,
+[class*="bg-slate-900"] p, [class*="bg-slate-900"] span, [class*="bg-slate-900"] div,
+[class*="bg-slate-800"] p, [class*="bg-slate-800"] span, [class*="bg-slate-800"] div,
+.category-hero p, .category-hero span, .category-hero div {
+  color: #ffffff !important;
+}
+
+/* Specific overrides for category hero and CTA sections */
+.category-hero * {
+  color: #ffffff !important;
+}
+
+[data-role="worker"] h2, [data-role="worker"] p,
+[data-role="client"] h2, [data-role="client"] p {
   color: #ffffff !important;
 }
 
