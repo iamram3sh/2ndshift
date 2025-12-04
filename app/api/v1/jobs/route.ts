@@ -65,6 +65,8 @@ export async function GET(request: NextRequest) {
       if (minPrice) {
         const minPriceNum = parseFloat(minPrice);
         if (!isNaN(minPriceNum) && minPriceNum >= 50) {
+          // Filter by price_fixed (primary) or budget (fallback)
+          // Note: We filter by price_fixed in DB, frontend will also check budget as fallback
           query = query.gte('price_fixed', minPriceNum);
         }
       }
@@ -74,10 +76,13 @@ export async function GET(request: NextRequest) {
       if (error) {
         logger.error('Error fetching jobs', error);
         return NextResponse.json(
-          { error: 'Failed to fetch jobs' },
+          { error: 'Failed to fetch jobs', details: error.message },
           { status: 500 }
         );
       }
+
+      // Log for debugging
+      logger.info(`Fetched ${jobs?.length || 0} jobs for role=${role}, status=${status}, minPrice=${minPrice}`);
 
       return NextResponse.json({
         jobs: jobs || [],

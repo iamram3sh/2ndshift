@@ -50,8 +50,12 @@ export function useOpenTasks(filters?: JobFilters) {
         ...(filters || {}),
       }
       
+      console.log('[useOpenTasks] Fetching tasks with params:', params)
+      
       try {
         const result = await apiClient.listJobs(params)
+        
+        console.log('[useOpenTasks] API response:', result)
         
         if (result.error) {
           // If it's a 401/403, it's an auth error
@@ -59,37 +63,46 @@ export function useOpenTasks(filters?: JobFilters) {
             throw new Error('Authentication failed. Please log in again.')
           }
           const errorMessage = result.error.message || result.error.error || 'Failed to fetch tasks'
-          console.error('Error fetching tasks:', result.error)
+          console.error('[useOpenTasks] Error fetching tasks:', result.error)
           throw new Error(errorMessage)
         }
         
         // Ensure we have data
         if (!result.data) {
-          console.warn('No data returned from API, returning empty array')
+          console.warn('[useOpenTasks] No data returned from API, returning empty array')
           return []
         }
         
-        // Filter by minPrice if provided
+        // Filter by minPrice if provided (fallback check in case API didn't filter)
         let jobs = result.data.jobs || []
-      if (filters?.minPrice && filters.minPrice >= 50) {
-        jobs = jobs.filter((job: Job) => {
-          const price = job.price_fixed || 0
-          return price >= filters.minPrice!
-        })
-      }
+        console.log('[useOpenTasks] Raw jobs from API:', jobs.length)
+        
+        if (filters?.minPrice && filters.minPrice >= 50) {
+          const beforeFilter = jobs.length
+          jobs = jobs.filter((job: Job) => {
+            // Use price_fixed first, fallback to budget
+            const price = job.price_fixed || (job as any).budget || 0
+            const priceNum = typeof price === 'string' ? parseFloat(price) : price
+            return priceNum >= filters.minPrice!
+          })
+          console.log(`[useOpenTasks] Filtered by minPrice ${filters.minPrice}: ${beforeFilter} -> ${jobs.length}`)
+        }
       
-      // Filter by search query if provided
-      if (filters?.search) {
-        const searchLower = filters.search.toLowerCase()
-        jobs = jobs.filter((job: Job) => 
-          job.title.toLowerCase().includes(searchLower) ||
-          job.description.toLowerCase().includes(searchLower)
-        )
-      }
+        // Filter by search query if provided
+        if (filters?.search) {
+          const beforeFilter = jobs.length
+          const searchLower = filters.search.toLowerCase()
+          jobs = jobs.filter((job: Job) => 
+            job.title.toLowerCase().includes(searchLower) ||
+            job.description.toLowerCase().includes(searchLower)
+          )
+          console.log(`[useOpenTasks] Filtered by search "${filters.search}": ${beforeFilter} -> ${jobs.length}`)
+        }
       
+        console.log('[useOpenTasks] Final jobs count:', jobs.length)
         return jobs as Job[]
       } catch (error: any) {
-        console.error('Error in useOpenTasks queryFn:', error)
+        console.error('[useOpenTasks] Error in queryFn:', error)
         // Re-throw to let React Query handle it
         throw error
       }

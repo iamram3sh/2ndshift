@@ -39,12 +39,18 @@ export default function WorkerDashboard() {
     refetch: refetchTasks 
   } = useOpenTasks(currentUser ? filters : undefined)
   
-  // Debug: Log errors
+  // Debug: Log errors and data
   useEffect(() => {
     if (tasksError) {
-      console.error('Tasks loading error:', tasksError)
+      console.error('[WorkerDashboard] Tasks loading error:', tasksError)
     }
-  }, [tasksError])
+    if (tasks.length > 0) {
+      console.log('[WorkerDashboard] Tasks loaded:', tasks.length, tasks)
+    }
+    if (currentUser && !tasksLoading && !tasksError && tasks.length === 0) {
+      console.warn('[WorkerDashboard] No tasks found. Filters:', filters, 'Current user:', currentUser?.id)
+    }
+  }, [tasksError, tasks, tasksLoading, currentUser, filters])
 
   // Check authentication on mount
   useEffect(() => {
@@ -245,9 +251,24 @@ export default function WorkerDashboard() {
             <p className="text-slate-600 dark:text-slate-400 mb-6">
               Try adjusting your filters or check back later for new high-value tasks.
             </p>
-            <p className="text-sm text-slate-500 dark:text-slate-500">
-              Make sure you've run the seed data script to populate tasks.
-            </p>
+            <div className="text-sm text-slate-500 dark:text-slate-500 space-y-2">
+              <p>Make sure you've run the seed data script to populate tasks.</p>
+              <p className="text-xs mt-4 p-3 bg-slate-50 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700">
+                <strong>Debug Info:</strong><br />
+                Filters: {JSON.stringify(filters)}<br />
+                User ID: {currentUser?.id || 'Not set'}<br />
+                Query Enabled: {currentUser ? 'Yes' : 'No'}
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                console.log('Manual refetch triggered')
+                refetchTasks()
+              }}
+              className="mt-4 px-4 py-2 bg-[#0b63ff] text-white rounded-lg hover:bg-[#0a56e6] transition"
+            >
+              Refresh Tasks
+            </button>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
