@@ -21,6 +21,7 @@ import { trackRoleCTA } from '@/lib/analytics/roleEvents'
 import { isRoleHomeEnabled } from '@/lib/role/feature-flag'
 import { HIGH_VALUE_CATEGORIES } from '@/lib/constants/highValueCategories'
 import { RolePickerModal } from '@/components/auth/RolePickerModal'
+import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
 // What makes us different
 const VALUE_PROPS = [
@@ -72,6 +73,11 @@ export default function HomePage() {
   const [showRolePicker, setShowRolePicker] = useState(false)
   const { role, setRole } = useRole()
   const isRoleEnabled = isRoleHomeEnabled()
+  
+  // Scroll animations
+  const heroAnimation = useScrollAnimation({ threshold: 0.2 })
+  const categoriesAnimation = useScrollAnimation({ threshold: 0.1 })
+  const expertsAnimation = useScrollAnimation({ threshold: 0.1 })
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10)
@@ -137,7 +143,14 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
             {/* Hero CTAs - Single Source of Role Selection - Always show on homepage */}
-            <div className="text-center">
+            <div 
+              ref={heroAnimation.ref}
+              className={`text-center transition-all duration-1000 ${
+                heroAnimation.isVisible 
+                  ? 'opacity-100 translate-y-0' 
+                  : 'opacity-0 translate-y-8'
+              }`}
+            >
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#111] tracking-tight mb-6 leading-tight">
                 Hire verified, senior IT pros for high-value technical work.
               </h1>
@@ -155,10 +168,10 @@ export default function HomePage() {
                     // Let Next.js Link handle navigation - don't prevent default
                   }}
                   aria-label="I want to work — show worker signup"
-                  className="inline-flex items-center justify-center gap-2 bg-[#0b63ff] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#0a56e6] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  className="inline-flex items-center justify-center gap-2 bg-[#0b63ff] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#0a56e6] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 active:scale-100"
                 >
                   I want to work
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                 </Link>
                 <Link 
                   href="/clients?role=client"
@@ -168,10 +181,10 @@ export default function HomePage() {
                     // Let Next.js Link handle navigation - don't prevent default
                   }}
                   aria-label="I want to hire — show client signup"
-                  className="inline-flex items-center justify-center gap-2 bg-transparent text-[#0b1220] px-8 py-4 rounded-lg font-semibold border-2 border-[#0b1220] hover:bg-[#0b1220] hover:text-white transition-all"
+                  className="inline-flex items-center justify-center gap-2 bg-transparent text-[#0b1220] px-8 py-4 rounded-lg font-semibold border-2 border-[#0b1220] hover:bg-[#0b1220] hover:text-white transition-all duration-300 hover:scale-105 active:scale-100"
                 >
                   I want to hire
-                  <ArrowUpRight className="w-5 h-5" />
+                  <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </Link>
               </div>
             </div>
@@ -184,7 +197,7 @@ export default function HomePage() {
       <RoleSection role="both">
       <section className="py-8 bg-slate-50 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 animate-fade-in">
             <div className="flex items-center gap-2 text-sm font-medium text-[#333]">
               <BadgeCheck className="w-5 h-5 text-emerald-600" />
               Verified Professionals
@@ -206,7 +219,14 @@ export default function HomePage() {
       <RoleSection role="both">
       <section className="py-20 lg:py-28 bg-white border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <div 
+            ref={categoriesAnimation.ref}
+            className={`text-center mb-12 transition-all duration-700 ${
+              categoriesAnimation.isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-6'
+            }`}
+          >
             <h2 className="text-3xl lg:text-4xl font-bold text-[#111] tracking-tight mb-4">
               High-Value Expert Categories
             </h2>
@@ -216,13 +236,20 @@ export default function HomePage() {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {HIGH_VALUE_CATEGORIES.map((category) => {
+            {HIGH_VALUE_CATEGORIES.map((category, index) => {
               const Icon = category.icon
               return (
                 <Link
                   key={category.id}
                   href={`/category/${category.slug}`}
-                  className="group p-6 bg-white border-2 border-slate-200 rounded-xl hover:border-sky-300 hover:shadow-lg transition-all"
+                  className={`group p-6 bg-white border-2 border-slate-200 rounded-xl hover:border-sky-300 hover:shadow-lg transition-all duration-500 hover:-translate-y-1 ${
+                    categoriesAnimation.isVisible 
+                      ? 'opacity-100 translate-y-0' 
+                      : 'opacity-0 translate-y-8'
+                  }`}
+                  style={{
+                    transitionDelay: categoriesAnimation.isVisible ? `${index * 100}ms` : '0ms'
+                  }}
                 >
                   <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 bg-sky-50 rounded-lg flex items-center justify-center group-hover:bg-sky-100 transition-colors">
@@ -256,7 +283,14 @@ export default function HomePage() {
       <RoleSection role="both">
       <section className="py-20 lg:py-28 bg-slate-50 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <div 
+            ref={expertsAnimation.ref}
+            className={`text-center mb-12 transition-all duration-700 ${
+              expertsAnimation.isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-6'
+            }`}
+          >
             <h2 className="text-3xl lg:text-4xl font-bold text-[#111] tracking-tight mb-4">
               Featured Experts
             </h2>
@@ -321,10 +355,17 @@ export default function HomePage() {
                 rate: '₹2,000/hr',
                 badge: 'Data Expert'
               }
-            ].map((expert, i) => (
+            ].map((expert, index) => (
               <div
-                key={i}
-                className="p-6 bg-white border-2 border-slate-200 rounded-xl hover:border-sky-300 hover:shadow-lg transition-all"
+                key={index}
+                className={`p-6 bg-white border-2 border-slate-200 rounded-xl hover:border-sky-300 hover:shadow-lg transition-all duration-500 hover:-translate-y-1 ${
+                  expertsAnimation.isVisible 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-8'
+                }`}
+                style={{
+                  transitionDelay: expertsAnimation.isVisible ? `${index * 100}ms` : '0ms'
+                }}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
