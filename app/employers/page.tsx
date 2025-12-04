@@ -537,6 +537,10 @@ export default function EmployersPage() {
                   value={projectCost}
                   onChange={(e) => setProjectCost(parseInt(e.target.value))}
                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                  aria-label="Project budget slider"
+                  aria-valuemin={10000}
+                  aria-valuemax={500000}
+                  aria-valuenow={projectCost}
                 />
                 <div className="flex justify-between mt-2">
                   <span className="text-sm text-[#333]">₹10,000</span>
@@ -556,6 +560,10 @@ export default function EmployersPage() {
                   value={projectDuration}
                   onChange={(e) => setProjectDuration(parseInt(e.target.value))}
                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                  aria-label="Project duration slider"
+                  aria-valuemin={1}
+                  aria-valuemax={12}
+                  aria-valuenow={projectDuration}
                 />
                 <div className="flex justify-between mt-2">
                   <span className="text-sm text-[#333]">1 month</span>
@@ -643,10 +651,10 @@ export default function EmployersPage() {
       {/* Final CTA */}
       <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-semibold text-white mb-6" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
+          <h2 className="text-3xl lg:text-4xl font-semibold mb-6" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
             Ready to hire smarter?
           </h2>
-          <p className="text-xl text-white mb-10 max-w-2xl mx-auto" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
+          <p className="text-xl mb-10 max-w-2xl mx-auto" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
             Join companies saving time, money, and headaches with 2ndShift. 
             Your first project is free to post.
           </p>

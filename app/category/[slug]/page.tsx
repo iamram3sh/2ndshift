@@ -197,10 +197,13 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {microtasks.slice(0, 12).map((task) => (
+              {microtasks.slice(0, 12).map((task, index) => (
                 <div
                   key={task.id}
-                  className="p-6 bg-white border-2 border-slate-200 rounded-xl hover:border-sky-300 hover:shadow-lg transition-all"
+                  className="p-6 bg-white border-2 border-slate-200 rounded-xl hover:border-sky-300 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                  style={{
+                    animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
+                  }}
                 >
                   <div className="flex items-start justify-between mb-4">
                     <h3 className="text-lg font-bold text-[#111] mb-1">
@@ -219,8 +222,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                   <p className="text-sm text-[#333] mb-4 line-clamp-3">
                     {task.description}
                   </p>
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                    <div>
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-auto">
+                    <div className="flex-1">
                       <div className="text-lg font-semibold text-[#111]">
                         ₹{task.price_min.toLocaleString()} - ₹{task.price_max.toLocaleString()}
                       </div>

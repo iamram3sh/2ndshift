@@ -70,6 +70,7 @@ export function Button({
         onClick={onClick}
         className={classes}
         aria-disabled={isDisabled}
+        aria-label={props['aria-label'] || (typeof children === 'string' ? children : undefined)}
         {...props}
       >
         {isLoading ? (
@@ -94,6 +95,7 @@ export function Button({
       onClick={onClick}
       disabled={isDisabled}
       className={classes}
+      aria-label={props['aria-label'] || (typeof children === 'string' ? children : undefined)}
       {...props}
     >
       {isLoading ? (

@@ -29,6 +29,17 @@ export function RoleAwareNav({ isMobile = false, onLinkClick }: RoleAwareNavProp
     return (
       <div className={isMobile ? 'space-y-1' : 'flex items-center gap-1'}>
         <Link 
+          href="/" 
+          onClick={onLinkClick}
+          className={isMobile 
+            ? "block px-4 py-3 text-slate-700 hover:bg-slate-50 rounded-lg font-medium"
+            : "px-4 py-2 text-slate-600 hover:text-slate-900 font-medium text-sm transition-colors"
+          }
+          aria-label="Home"
+        >
+          Home
+        </Link>
+        <Link 
           href="/jobs" 
           onClick={onLinkClick}
           className={isMobile 
@@ -75,10 +86,10 @@ export function RoleAwareNav({ isMobile = false, onLinkClick }: RoleAwareNavProp
   // Worker-specific navigation
   if (role === 'worker') {
     const workerNavItems = [
+      { label: 'Home', href: '/', icon: Menu },
       { label: 'Jobs', href: withRoleParam('/worker/discover', role), icon: Briefcase },
       { label: 'Starter Packs', href: withRoleParam('/pricing', role), icon: Zap },
       { label: 'How It Works', href: withRoleParam('/for-workers', role), icon: FileText },
-      { label: 'My Profile', href: withRoleParam('/profile', role), icon: Users },
     ]
 
     return (
@@ -104,10 +115,10 @@ export function RoleAwareNav({ isMobile = false, onLinkClick }: RoleAwareNavProp
   // Client-specific navigation
   if (role === 'client') {
     const clientNavItems = [
+      { label: 'Home', href: '/', icon: Menu },
       { label: 'Post a Job', href: withRoleParam('/projects/create', role), icon: Plus },
       { label: 'Hire Specialists', href: withRoleParam('/workers', role), icon: Search },
       { label: 'Pricing', href: withRoleParam('/pricing', role), icon: BarChart3 },
-      { label: 'Client Dashboard', href: withRoleParam('/client', role), icon: FolderOpen },
     ]
 
     return (

@@ -171,7 +171,10 @@ export default function ProgrammingCategoryPage() {
             {filteredTasks.map((task, index) => (
               <div
                 key={index}
-                className="p-6 bg-white border-2 border-slate-200 rounded-xl hover:border-sky-300 hover:shadow-lg transition-all"
+                className="p-6 bg-white border-2 border-slate-200 rounded-xl hover:border-sky-300 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                style={{
+                  animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
+                }}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
@@ -199,7 +202,7 @@ export default function ProgrammingCategoryPage() {
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-auto">
                   <div>
                     <div className="text-lg font-bold text-[#111]">
                       {formatCurrency(task.price_min)} - {formatCurrency(task.price_max)}
@@ -210,7 +213,8 @@ export default function ProgrammingCategoryPage() {
                   </div>
                   <Link
                     href={`/projects/create?category=programming&microtask=${encodeURIComponent(task.title)}`}
-                    className="px-4 py-2 bg-sky-600 text-white rounded-lg text-sm font-medium hover:bg-sky-700 transition-colors"
+                    className="px-4 py-2 bg-[#0b63ff] text-white rounded-lg text-sm font-semibold hover:bg-[#0a56e6] transition-all shadow-md hover:shadow-lg"
+                    aria-label={`Post task: ${task.title}`}
                   >
                     Post Task
                   </Link>

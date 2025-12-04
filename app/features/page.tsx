@@ -469,7 +469,13 @@ export default function FeaturesPage() {
               {/* Escrow Flow */}
               <div className="space-y-6">
                 {ESCROW_STEPS.map((step, i) => (
-                  <div key={i} className="flex gap-6 items-start">
+                  <div 
+                    key={i} 
+                    className="flex gap-6 items-start"
+                    style={{
+                      animation: `fadeInUp 0.6s ease-out ${i * 0.1}s both`
+                    }}
+                  >
                     <div className="flex-shrink-0">
                       <div className="w-14 h-14 bg-slate-900 rounded-2xl flex items-center justify-center text-white font-semibold text-lg">
                         {step.step}

@@ -21,10 +21,22 @@ export function Footer() {
               Work on your terms.<br />Get paid with confidence.
             </p>
             <div className="flex gap-3">
-              <a href="https://twitter.com/2ndshift" target="_blank" rel="noopener noreferrer" className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-[#333] hover:bg-slate-200 transition-colors">
+              <a 
+                href="https://twitter.com/2ndshift" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-[#333] hover:bg-slate-200 transition-colors"
+                aria-label="Follow us on Twitter"
+              >
                 <Twitter className="w-4 h-4" />
               </a>
-              <a href="https://linkedin.com/company/2ndshift" target="_blank" rel="noopener noreferrer" className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-[#333] hover:bg-slate-200 transition-colors">
+              <a 
+                href="https://linkedin.com/company/2ndshift" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-[#333] hover:bg-slate-200 transition-colors"
+                aria-label="Follow us on LinkedIn"
+              >
                 <Linkedin className="w-4 h-4" />
               </a>
             </div>
@@ -68,7 +80,7 @@ export function Footer() {
             <ul className="space-y-3 text-sm text-[#333]">
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                <a href="mailto:hello@2ndshift.in" className="hover:text-[#111] transition-colors">hello@2ndshift.in</a>
+                <a href="mailto:hello@2ndshift.in" className="hover:text-[#111] transition-colors" aria-label="Email us at hello@2ndshift.in">hello@2ndshift.in</a>
               </li>
               <li className="flex items-center gap-2">
                 <MapPin className="w-4 h-4" />

@@ -266,14 +266,14 @@ export default function PricingPage() {
       {/* Plans */}
       <section className="py-16 lg:py-20 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {plans.map((plan, i) => (
               <div
                 key={i}
-                className={`relative p-8 rounded-2xl border-2 transition-all ${
+                className={`relative p-8 rounded-2xl border-2 transition-all duration-300 hover:-translate-y-1 ${
                   plan.popular
-                    ? 'border-slate-900 bg-slate-50 shadow-xl'
-                    : 'border-slate-200 bg-white hover:border-slate-300'
+                    ? 'border-slate-900 bg-slate-50 shadow-xl scale-105'
+                    : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-lg'
                 }`}
               >
                 {plan.popular && (
@@ -336,10 +336,10 @@ export default function PricingPage() {
               <Zap className="w-4 h-4" />
               Premium Credits
             </div>
-            <h2 className="text-3xl lg:text-4xl font-semibold text-white mb-4">
+            <h2 className="text-3xl lg:text-4xl font-semibold mb-4" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
               Boost with Shifts
             </h2>
-            <p className="text-lg text-white max-w-2xl mx-auto">
+            <p className="text-lg max-w-2xl mx-auto" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
               {userType === 'worker'
                 ? 'Stand out from the competition. Boost applications, get featured, and message clients directly.'
                 : 'Find talent faster. Feature your jobs, get AI recommendations, and invite top professionals.'}
@@ -350,11 +350,14 @@ export default function PricingPage() {
             {shiftPackages.map((pkg, i) => (
               <div
                 key={i}
-                className={`p-6 rounded-xl text-center ${
+                className={`p-6 rounded-xl text-center transition-all duration-300 hover:scale-105 ${
                   pkg.popular
-                    ? 'bg-amber-500 text-white'
-                    : 'bg-white/10 text-white border border-white/20'
+                    ? 'bg-amber-500 text-white shadow-xl'
+                    : 'bg-white/10 text-white border border-white/20 hover:bg-white/15'
                 }`}
+                style={{
+                  animation: `fadeInUp 0.6s ease-out ${i * 0.1}s both`
+                }}
               >
                 <div className="text-3xl font-bold mb-1">{pkg.shifts}</div>
                 <div className={`text-sm mb-4 ${pkg.popular ? 'text-amber-100' : 'text-white'}`}>
