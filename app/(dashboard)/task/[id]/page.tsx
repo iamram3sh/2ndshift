@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useJob, useCurrentUser, useAcceptBid } from '@/lib/queries'
 import { Button } from '@/components/ui/Button'
 import { 
-  ArrowLeft, Clock, DollarSign, Shield, BadgeCheck, CheckCircle,
+  ArrowLeft, ArrowRight, Clock, DollarSign, Shield, BadgeCheck, CheckCircle,
   User, Calendar, FileText, Loader2, AlertCircle, Layers
 } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
