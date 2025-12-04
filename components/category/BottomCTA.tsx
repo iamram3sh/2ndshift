@@ -18,12 +18,12 @@ export function BottomCTA({ categoryName, role = 'both' }: BottomCTAProps) {
   // Worker CTA
   if (effectiveRole === 'worker' || (!effectiveRole && role === 'both')) {
     return (
-      <section className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-16 md:py-20">
+      <section className="bg-gradient-to-br from-slate-900 to-slate-800 py-16 md:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl md:text-3xl font-semibold mb-3" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
+          <h2 className="text-2xl md:text-3xl font-semibold mb-3" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
             Ready to start earning?
           </h2>
-          <p className="text-white/90 mb-8" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
+          <p className="mb-8" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
             Join 2ndShift today. It&apos;s free to create an account and start
             working on high-value{categoryText} technical projects.
           </p>
@@ -50,14 +50,13 @@ export function BottomCTA({ categoryName, role = 'both' }: BottomCTAProps) {
 
   // Client CTA
   return (
-    <section className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-16 md:py-20">
+    <section className="bg-gradient-to-br from-slate-900 to-slate-800 py-16 md:py-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-2xl md:text-3xl font-semibold mb-3" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
+        <h2 className="text-2xl md:text-3xl font-semibold mb-3" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
           Ready to hire talent?
         </h2>
-        <p className="text-white/90 mb-8" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
-          Join 2ndShift today. Post your first job and connect with verified
-          high-value{categoryText} technical professionals.
+        <p className="mb-8" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
+          Join 2ndShift today. It&apos;s free to create an account.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link

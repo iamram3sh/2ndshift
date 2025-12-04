@@ -526,7 +526,6 @@ export default function HomePage() {
       {/* CTA Section - Client */}
       <RoleSection role="client">
       <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800 relative" data-role="client">
-        {/* Removed dark overlay - background is already dark enough */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
             Ready to hire talent?
