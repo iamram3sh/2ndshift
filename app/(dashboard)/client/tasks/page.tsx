@@ -1,168 +1,223 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useClientJobs, useCurrentUser } from '@/lib/queries'
+import { motion } from 'framer-motion'
 import { TaskCard } from '@/components/tasks/TaskCard'
 import { PostTaskForm } from '@/components/tasks/PostTaskForm'
+import apiClient from '@/lib/apiClient'
 import { 
-  Plus, Briefcase, Clock, DollarSign, CheckCircle, XCircle,
-  Layers, Loader2, LogOut, ArrowRight, Filter
+  Layers, LogOut, Plus, Loader2, Briefcase, Filter, Sparkles
 } from 'lucide-react'
-import type { Job } from '@/types/jobs'
+import type { Job, JobFilters } from '@/types/jobs'
+import { Button } from '@/components/ui/Button'
+import { Badge } from '@/components/ui/badge'
+import { Skeleton } from '@/components/ui/Skeleton'
 
 export default function ClientTasksPage() {
   const router = useRouter()
-  const [showPostForm, setShowPostForm] = useState(false)
-  const [filterStatus, setFilterStatus] = useState<string>('all')
-  
-  const { data: currentUser } = useCurrentUser()
-  const { data: jobs = [], isLoading, refetch } = useClientJobs({
-    role: 'client',
-    status: filterStatus === 'all' ? undefined : filterStatus as any,
-  })
+  const [currentUser, setCurrentUser] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [tasks, setTasks] = useState<Job[]>([])
+  const [tasksLoading, setTasksLoading] = useState(false)
+  const [showPostTaskModal, setShowPostTaskModal] = useState(false)
+  const [filterStatus, setFilterStatus] = useState<'all' | 'open' | 'assigned' | 'completed'>('all')
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        setIsLoading(true)
+        const userResult = await apiClient.getCurrentUser()
+        if (userResult.error || !userResult.data?.user) {
+          router.push('/login')
+          return
+        }
+        const user = userResult.data.user
+        if (user.role !== 'client') {
+          router.push('/worker')
+          return
+        }
+        setCurrentUser(user)
+      } catch (err) {
+        router.push('/login')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    loadUserData()
+  }, [router])
+
+  useEffect(() => {
+    if (!currentUser) return
+
+    const fetchTasks = async () => {
+      try {
+        setTasksLoading(true)
+        const result = await apiClient.listJobs({
+          role: 'client',
+          status: filterStatus === 'all' ? undefined : filterStatus,
+        })
+        if (result.data?.jobs) {
+          setTasks(result.data.jobs)
+        }
+      } catch (err) {
+        console.error('Error fetching tasks:', err)
+      } finally {
+        setTasksLoading(false)
+      }
+    }
+
+    fetchTasks()
+  }, [currentUser, filterStatus])
 
   const handlePostSuccess = () => {
-    refetch()
-    setShowPostForm(false)
+    setShowPostTaskModal(false)
+    // Refetch tasks
+    if (currentUser) {
+      const fetchTasks = async () => {
+        const result = await apiClient.listJobs({ role: 'client' })
+        if (result.data?.jobs) {
+          setTasks(result.data.jobs)
+        }
+      }
+      fetchTasks()
+    }
   }
 
-  if (!currentUser) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <Loader2 className="w-6 h-6 animate-spin text-[#0b63ff]" />
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
       </div>
     )
   }
 
-  const stats = {
-    total: jobs.length,
-    open: jobs.filter((j: Job) => j.status === 'open').length,
-    assigned: jobs.filter((j: Job) => j.status === 'assigned' || j.status === 'in_progress').length,
-    completed: jobs.filter((j: Job) => j.status === 'completed').length,
-  }
+  if (!currentUser) return null
+
+  const filteredTasks = filterStatus === 'all' 
+    ? tasks 
+    : tasks.filter(t => t.status === filterStatus)
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      {/* Navigation */}
-      <nav className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-40">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      {/* Premium Navigation */}
+      <nav className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link href="/client" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary-600 to-primary-800 rounded-lg flex items-center justify-center shadow-md">
                 <Layers className="w-4 h-4 text-white" />
               </div>
-              <span className="text-lg font-semibold text-[#111] dark:text-white">2ndShift</span>
+              <span className="text-lg font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+                2ndShift
+              </span>
             </Link>
-            
             <div className="flex items-center gap-3">
-              <button
-                onClick={() => setShowPostForm(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#0b63ff] hover:bg-[#0a56e6] text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all"
+              <Button
+                onClick={() => setShowPostTaskModal(true)}
+                className="flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
                 Post New Task
-              </button>
-              <Link
-                href="/client"
-                className="px-3 py-2 text-sm font-medium text-[#333] dark:text-slate-300 hover:text-[#111] dark:hover:text-white"
-              >
-                Dashboard
-              </Link>
+              </Button>
             </div>
           </div>
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#111] dark:text-white mb-2">
-            Your Posted Tasks
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Hero Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-12"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
+              <Sparkles className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+            </div>
+            <h1 className="text-4xl font-bold text-slate-900 dark:text-white">
+              Your Posted Tasks
+            </h1>
+          </div>
+          <p className="text-lg text-slate-600 dark:text-slate-400">
             Manage your high-value IT microtasks and review bids from verified professionals.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
-            <div className="text-2xl font-bold text-[#111] dark:text-white">{stats.total}</div>
-            <div className="text-sm text-slate-600 dark:text-slate-400">Total Tasks</div>
-          </div>
-          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.open}</div>
-            <div className="text-sm text-slate-600 dark:text-slate-400">Open</div>
-          </div>
-          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
-            <div className="text-2xl font-bold text-amber-600 dark:text-amber-400">{stats.assigned}</div>
-            <div className="text-sm text-slate-600 dark:text-slate-400">In Progress</div>
-          </div>
-          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
-            <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{stats.completed}</div>
-            <div className="text-sm text-slate-600 dark:text-slate-400">Completed</div>
-          </div>
-        </div>
-
-        {/* Filters */}
-        <div className="flex items-center gap-2 mb-6">
-          <Filter className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-          {['all', 'open', 'assigned', 'in_progress', 'completed'].map((status) => (
+        {/* Status Filters */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="flex items-center gap-3 mb-8"
+        >
+          {(['all', 'open', 'assigned', 'completed'] as const).map((status) => (
             <button
               key={status}
               onClick={() => setFilterStatus(status)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
                 filterStatus === status
-                  ? 'bg-[#0b63ff] text-white'
-                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+                  ? 'bg-primary-600 text-white shadow-md'
+                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-primary-300'
               }`}
             >
-              {status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' ')}
+              {status.charAt(0).toUpperCase() + status.slice(1)}
             </button>
           ))}
-        </div>
+        </motion.div>
 
         {/* Tasks Grid */}
-        {isLoading ? (
-          <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-6 h-6 animate-spin text-[#0b63ff]" />
+        {tasksLoading ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+                <Skeleton className="h-6 w-3/4 mb-4" />
+                <Skeleton className="h-4 w-full mb-2" />
+                <Skeleton className="h-4 w-5/6 mb-4" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            ))}
           </div>
-        ) : jobs.length === 0 ? (
-          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-12 text-center">
+        ) : filteredTasks.length === 0 ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-12 text-center shadow-soft"
+          >
             <Briefcase className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-[#111] dark:text-white mb-2">
-              No tasks yet
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
+              No tasks found
             </h3>
             <p className="text-slate-600 dark:text-slate-400 mb-6">
-              Post your first high-value IT microtask to get started.
+              {filterStatus === 'all' 
+                ? "Get started by posting your first high-value IT microtask."
+                : `No ${filterStatus} tasks found.`}
             </p>
-            <button
-              onClick={() => setShowPostForm(true)}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#0b63ff] hover:bg-[#0a56e6] text-white rounded-xl font-semibold shadow-md hover:shadow-lg transition-all"
-            >
-              <Plus className="w-5 h-5" />
+            <Button onClick={() => setShowPostTaskModal(true)}>
+              <Plus className="w-4 h-4 mr-2" />
               Post Your First Task
-            </button>
-          </div>
+            </Button>
+          </motion.div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {jobs.map((job: Job) => (
-              <div key={job.id}>
-                <Link href={`/task/${job.id}`}>
-                  <TaskCard task={job} showBidButton={false} />
-                </Link>
-              </div>
+            {filteredTasks.map((task, index) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                showBidButton={false}
+                index={index}
+              />
             ))}
           </div>
         )}
       </div>
 
-      {/* Post Task Form Modal */}
+      {/* Post Task Modal */}
       <PostTaskForm
-        isOpen={showPostForm}
-        onClose={() => setShowPostForm(false)}
+        isOpen={showPostTaskModal}
+        onClose={() => setShowPostTaskModal(false)}
         onSuccess={handlePostSuccess}
       />
     </div>

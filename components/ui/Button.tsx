@@ -24,12 +24,12 @@ interface ButtonProps {
 }
 
 const buttonVariants = {
-  primary: 'bg-[#0b63ff] text-white hover:bg-[#0a56e6] shadow-lg hover:shadow-xl active:shadow-md border border-transparent',
-  secondary: 'bg-slate-900 text-white hover:bg-slate-800 shadow-lg hover:shadow-xl active:shadow-md border border-transparent',
-  outline: 'bg-transparent text-[#0b1220] border-2 border-[#0b1220] hover:bg-[#0b1220] hover:text-white hover:border-[#0b1220]',
-  ghost: 'bg-transparent text-slate-700 hover:bg-slate-100 border border-transparent',
-  link: 'bg-transparent text-[#0b63ff] hover:text-[#0a56e6] underline-offset-4 hover:underline p-0 border-0 shadow-none',
-  danger: 'bg-red-600 text-white hover:bg-red-700 shadow-lg hover:shadow-xl active:shadow-md border border-transparent focus:ring-red-500'
+  primary: 'bg-primary-600 text-white hover:bg-primary-700 shadow-md hover:shadow-lg active:shadow-md border border-transparent',
+  secondary: 'bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-300 dark:hover:bg-slate-700 shadow-sm hover:shadow-md active:shadow-sm border border-transparent',
+  outline: 'bg-transparent text-slate-900 dark:text-white border-2 border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800',
+  ghost: 'bg-transparent text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent',
+  link: 'bg-transparent text-primary-600 hover:text-primary-700 underline-offset-4 hover:underline p-0 border-0 shadow-none',
+  danger: 'bg-red-600 text-white hover:bg-red-700 shadow-md hover:shadow-lg active:shadow-md border border-transparent focus:ring-red-500'
 }
 
 const buttonSizes = {

@@ -4,9 +4,21 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { X, Loader2, AlertCircle } from 'lucide-react'
+import { Loader2, AlertCircle, Sparkles } from 'lucide-react'
 import { useCreateJob, useCategories } from '@/lib/queries'
-import type { DeliveryWindow } from '@/types/jobs'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/Input'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/Button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { motion } from 'framer-motion'
 
 const postTaskSchema = z.object({
   title: z.string().min(10, 'Title must be at least 10 characters').max(200, 'Title must be less than 200 characters'),
@@ -25,17 +37,6 @@ interface PostTaskFormProps {
   onSuccess?: () => void
 }
 
-const IT_CATEGORIES = [
-  { id: 'frontend', name: 'Frontend Development' },
-  { id: 'backend', name: 'Backend Development' },
-  { id: 'devops', name: 'DevOps & Infrastructure' },
-  { id: 'ml-ai', name: 'ML/AI Engineering' },
-  { id: 'security', name: 'Security & Penetration Testing' },
-  { id: 'database', name: 'Database Administration' },
-  { id: 'cloud', name: 'Cloud Architecture' },
-  { id: 'mobile', name: 'Mobile Development' },
-]
-
 export function PostTaskForm({ isOpen, onClose, onSuccess }: PostTaskFormProps) {
   const [error, setError] = useState<string | null>(null)
   const createJob = useCreateJob()
@@ -47,6 +48,7 @@ export function PostTaskForm({ isOpen, onClose, onSuccess }: PostTaskFormProps) 
     formState: { errors, isSubmitting },
     reset,
     watch,
+    setValue,
   } = useForm<PostTaskFormData>({
     resolver: zodResolver(postTaskSchema),
     defaultValues: {
@@ -58,8 +60,6 @@ export function PostTaskForm({ isOpen, onClose, onSuccess }: PostTaskFormProps) 
       required_skills: [],
     },
   })
-
-  if (!isOpen) return null
 
   const onSubmit = async (data: PostTaskFormData) => {
     setError(null)
@@ -83,67 +83,63 @@ export function PostTaskForm({ isOpen, onClose, onSuccess }: PostTaskFormProps) 
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
-        onClick={onClose}
-      />
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <div className="flex items-center gap-2 mb-2">
+            <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
+              <Sparkles className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+            </div>
+            <DialogTitle className="text-2xl font-bold text-slate-900 dark:text-white">
+              Post a High-Value Task
+            </DialogTitle>
+          </div>
+          <DialogDescription>
+            Create a new high-value IT microtask ($50–$500+) for verified professionals.
+          </DialogDescription>
+        </DialogHeader>
 
-      {/* Modal */}
-      <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
-          <h2 className="text-2xl font-bold text-[#111] dark:text-white">
-            Post a High-Value Task
-          </h2>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
-            aria-label="Close"
-          >
-            <X className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-          </button>
-        </div>
-
-        {/* Content */}
-        <form onSubmit={handleSubmit(onSubmit)} className="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Error Message */}
           {error && (
-            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl"
+            >
               <div className="flex items-center gap-2">
                 <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
                 <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Title */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-[#111] dark:text-white mb-2">
+          <div className="space-y-2">
+            <Label htmlFor="title">
               Task Title <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
+            </Label>
+            <Input
+              id="title"
               {...register('title')}
-              className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#0b63ff] focus:border-[#0b63ff] outline-none dark:bg-slate-900 dark:text-white"
               placeholder="e.g., Code Review for React Performance Optimization"
             />
             {errors.title && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+              <p className="text-sm text-red-600 dark:text-red-400">
                 {errors.title.message}
               </p>
             )}
           </div>
 
           {/* Category */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-[#111] dark:text-white mb-2">
+          <div className="space-y-2">
+            <Label htmlFor="category_id">
               Category <span className="text-red-500">*</span>
-            </label>
+            </Label>
             <select
+              id="category_id"
               {...register('category_id')}
-              className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#0b63ff] focus:border-[#0b63ff] outline-none dark:bg-slate-900 dark:text-white"
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <option value="">Select a category</option>
               {categories.map((cat: any) => (
@@ -153,64 +149,64 @@ export function PostTaskForm({ isOpen, onClose, onSuccess }: PostTaskFormProps) 
               ))}
             </select>
             {errors.category_id && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+              <p className="text-sm text-red-600 dark:text-red-400">
                 {errors.category_id.message}
               </p>
             )}
           </div>
 
           {/* Description */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-[#111] dark:text-white mb-2">
+          <div className="space-y-2">
+            <Label htmlFor="description">
               Detailed Description <span className="text-red-500">*</span>
-            </label>
-            <textarea
+            </Label>
+            <Textarea
+              id="description"
               {...register('description')}
               rows={8}
-              className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#0b63ff] focus:border-[#0b63ff] outline-none resize-none dark:bg-slate-900 dark:text-white"
+              className="resize-none"
               placeholder="Provide a detailed description of the task, requirements, expected deliverables, and any specific technologies or frameworks needed..."
             />
             {errors.description && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+              <p className="text-sm text-red-600 dark:text-red-400">
                 {errors.description.message}
               </p>
             )}
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               {watch('description')?.length || 0} / 5000 characters
             </p>
           </div>
 
           {/* Price and Delivery */}
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <label className="block text-sm font-semibold text-[#111] dark:text-white mb-2">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="price_fixed">
                 Budget (₹) <span className="text-red-500">*</span>
                 <span className="text-xs font-normal text-slate-500 dark:text-slate-400 ml-2">
                   Min ₹50
                 </span>
-              </label>
-              <input
+              </Label>
+              <Input
+                id="price_fixed"
                 type="number"
                 min="50"
                 step="10"
                 {...register('price_fixed', { valueAsNumber: true })}
-                className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#0b63ff] focus:border-[#0b63ff] outline-none dark:bg-slate-900 dark:text-white"
                 placeholder="500"
               />
               {errors.price_fixed && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+                <p className="text-sm text-red-600 dark:text-red-400">
                   {errors.price_fixed.message}
                 </p>
               )}
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-[#111] dark:text-white mb-2">
-                Delivery Timeline
-              </label>
+            <div className="space-y-2">
+              <Label htmlFor="delivery_window">Delivery Timeline</Label>
               <select
+                id="delivery_window"
                 {...register('delivery_window')}
-                className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#0b63ff] focus:border-[#0b63ff] outline-none dark:bg-slate-900 dark:text-white"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 <option value="sixTo24h">6-24 hours</option>
                 <option value="threeTo7d">3-7 days</option>
@@ -222,30 +218,31 @@ export function PostTaskForm({ isOpen, onClose, onSuccess }: PostTaskFormProps) 
 
           {/* Actions */}
           <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
-            <button
+            <Button
               type="button"
+              variant="secondary"
               onClick={onClose}
-              className="flex-1 px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-xl transition-colors"
+              className="flex-1"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-[#0b63ff] hover:bg-[#0a56e6] text-white rounded-xl font-semibold shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
                   Posting Task...
                 </>
               ) : (
                 'Post Task'
               )}
-            </button>
+            </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   )
 }

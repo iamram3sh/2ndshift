@@ -4,9 +4,22 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { X, DollarSign, Clock, AlertCircle, Loader2 } from 'lucide-react'
+import { DollarSign, Clock, AlertCircle, Loader2, Sparkles } from 'lucide-react'
 import type { Job } from '@/types/jobs'
 import { usePlaceBid, useCreditsBalance } from '@/lib/queries'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/Input'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/Button'
+import { Badge } from '@/components/ui/badge'
+import { motion } from 'framer-motion'
 
 const bidSchema = z.object({
   proposed_price: z
@@ -50,7 +63,7 @@ export function BidModal({ isOpen, onClose, task, onSuccess }: BidModalProps) {
   })
 
   const proposedPrice = watch('proposed_price')
-  const creditsRequired = 3 // Default credits per application
+  const creditsRequired = 3
 
   useEffect(() => {
     if (task && isOpen) {
@@ -63,7 +76,7 @@ export function BidModal({ isOpen, onClose, task, onSuccess }: BidModalProps) {
     }
   }, [task, isOpen, reset])
 
-  if (!isOpen || !task) return null
+  if (!task) return null
 
   const onSubmit = async (data: BidFormData) => {
     if (creditsBalance < creditsRequired) {
@@ -91,147 +104,163 @@ export function BidModal({ isOpen, onClose, task, onSuccess }: BidModalProps) {
     }
   }
 
+  const getDeliveryWindowText = () => {
+    const dw = task.delivery_window
+    if (dw === 'sixTo24h' || dw === '6-24h') return '6-24 hours'
+    if (dw === 'threeTo7d' || dw === '3-7d') return '3-7 days'
+    if (dw === 'oneTo4w' || dw === '1-4w') return '1-4 weeks'
+    if (dw === 'oneTo6m' || dw === '1-6m') return '1-6 months'
+    return null
+  }
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
-        onClick={onClose}
-      />
-
-      {/* Modal */}
-      <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
-          <div>
-            <h2 className="text-2xl font-bold text-[#111] dark:text-white">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <div className="flex items-center gap-2 mb-2">
+            <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
+              <Sparkles className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+            </div>
+            <DialogTitle className="text-2xl font-bold text-slate-900 dark:text-white">
               Place Your Bid
-            </h2>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-              {task.title}
-            </p>
+            </DialogTitle>
           </div>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
-            aria-label="Close"
-          >
-            <X className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-          </button>
-        </div>
+          <DialogDescription className="text-base text-slate-600 dark:text-slate-400">
+            {task.title}
+          </DialogDescription>
+        </DialogHeader>
 
-        {/* Content */}
-        <form onSubmit={handleSubmit(onSubmit)} className="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
-          {/* Task Info */}
-          <div className="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-4 mb-6">
-            <div className="flex items-center justify-between mb-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Task Info Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900/50 dark:to-slate-800/50 rounded-xl p-5 border border-slate-200 dark:border-slate-700"
+          >
+            <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
                 Task Budget
               </span>
-              <span className="text-lg font-bold text-[#111] dark:text-white">
+              <span className="text-2xl font-bold text-slate-900 dark:text-white">
                 ₹{task.price_fixed?.toLocaleString() || 'Negotiable'}
               </span>
             </div>
-            {task.delivery_window && (
+            {getDeliveryWindowText() && (
               <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
                 <Clock className="w-4 h-4" />
-                <span>
-                  Expected: {
-                    (task.delivery_window === 'sixTo24h' || task.delivery_window === '6-24h') && '6-24 hours'
-                  }
-                  {(task.delivery_window === 'threeTo7d' || task.delivery_window === '3-7d') && '3-7 days'}
-                  {(task.delivery_window === 'oneTo4w' || task.delivery_window === '1-4w') && '1-4 weeks'}
-                  {(task.delivery_window === 'oneTo6m' || task.delivery_window === '1-6m') && '1-6 months'}
-                </span>
+                <span>Expected: {getDeliveryWindowText()}</span>
               </div>
             )}
-          </div>
+          </motion.div>
 
           {/* Credits Info */}
-          <div className="flex items-center justify-between p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg mb-6">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className={`flex items-center justify-between p-4 rounded-xl border ${
+              creditsBalance >= creditsRequired
+                ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800'
+                : 'bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800'
+            }`}
+          >
             <div className="flex items-center gap-2">
-              <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-              <span className="text-sm font-medium text-amber-800 dark:text-amber-300">
+              <AlertCircle className={`w-5 h-5 ${
+                creditsBalance >= creditsRequired
+                  ? 'text-emerald-600 dark:text-emerald-400'
+                  : 'text-amber-600 dark:text-amber-400'
+              }`} />
+              <span className={`text-sm font-medium ${
+                creditsBalance >= creditsRequired
+                  ? 'text-emerald-800 dark:text-emerald-300'
+                  : 'text-amber-800 dark:text-amber-300'
+              }`}>
                 Credits Required: {creditsRequired}
               </span>
             </div>
-            <span className={`text-sm font-semibold ${creditsBalance >= creditsRequired ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
-              Your Balance: {creditsBalance}
-            </span>
-          </div>
+            <Badge variant={creditsBalance >= creditsRequired ? 'success' : 'warning'}>
+              Balance: {creditsBalance}
+            </Badge>
+          </motion.div>
 
           {/* Error Message */}
           {error && (
-            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl"
+            >
               <div className="flex items-center gap-2">
                 <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
                 <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Proposed Price */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-[#111] dark:text-white mb-2">
+          <div className="space-y-2">
+            <Label htmlFor="proposed_price" className="text-sm font-semibold text-slate-900 dark:text-white">
               Proposed Price (₹)
               <span className="text-xs font-normal text-slate-500 dark:text-slate-400 ml-2">
                 Optional - leave empty to use task budget
               </span>
-            </label>
+            </Label>
             <div className="relative">
               <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-              <input
+              <Input
+                id="proposed_price"
                 type="number"
                 min="50"
                 step="10"
                 {...register('proposed_price', { valueAsNumber: true })}
-                className="w-full pl-10 pr-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#0b63ff] focus:border-[#0b63ff] outline-none dark:bg-slate-900 dark:text-white"
+                className="pl-10"
                 placeholder={task.price_fixed?.toString() || 'Enter amount (min ₹50)'}
               />
             </div>
             {errors.proposed_price && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+              <p className="text-sm text-red-600 dark:text-red-400">
                 {errors.proposed_price.message}
               </p>
             )}
           </div>
 
           {/* Proposal Text */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-[#111] dark:text-white mb-2">
+          <div className="space-y-2">
+            <Label htmlFor="cover_text" className="text-sm font-semibold text-slate-900 dark:text-white">
               Your Proposal <span className="text-red-500">*</span>
-            </label>
-            <textarea
+            </Label>
+            <Textarea
+              id="cover_text"
               {...register('cover_text')}
               rows={6}
-              className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#0b63ff] focus:border-[#0b63ff] outline-none resize-none dark:bg-slate-900 dark:text-white"
+              className="resize-none"
               placeholder="Explain why you're the right fit for this task. Include your relevant experience, approach, and timeline..."
             />
             {errors.cover_text && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+              <p className="text-sm text-red-600 dark:text-red-400">
                 {errors.cover_text.message}
               </p>
             )}
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               {watch('cover_text')?.length || 0} / 1000 characters
             </p>
           </div>
 
           {/* Proposed Delivery */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-[#111] dark:text-white mb-2">
+          <div className="space-y-2">
+            <Label htmlFor="proposed_delivery" className="text-sm font-semibold text-slate-900 dark:text-white">
               Proposed Delivery Timeline
               <span className="text-xs font-normal text-slate-500 dark:text-slate-400 ml-2">
                 Optional
               </span>
-            </label>
-            <input
+            </Label>
+            <Input
+              id="proposed_delivery"
               type="datetime-local"
               {...register('proposed_delivery')}
-              className="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-[#0b63ff] focus:border-[#0b63ff] outline-none dark:bg-slate-900 dark:text-white"
             />
             {errors.proposed_delivery && (
-              <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+              <p className="text-sm text-red-600 dark:text-red-400">
                 {errors.proposed_delivery.message}
               </p>
             )}
@@ -239,21 +268,22 @@ export function BidModal({ isOpen, onClose, task, onSuccess }: BidModalProps) {
 
           {/* Actions */}
           <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
-            <button
+            <Button
               type="button"
+              variant="secondary"
               onClick={onClose}
-              className="flex-1 px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-xl transition-colors"
+              className="flex-1"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               disabled={isSubmitting || creditsBalance < creditsRequired}
-              className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 bg-[#0b63ff] hover:bg-[#0a56e6] text-white rounded-xl font-semibold shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
                   Placing Bid...
                 </>
               ) : (
@@ -261,10 +291,10 @@ export function BidModal({ isOpen, onClose, task, onSuccess }: BidModalProps) {
                   Place Bid ({creditsRequired} Credits)
                 </>
               )}
-            </button>
+            </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   )
 }

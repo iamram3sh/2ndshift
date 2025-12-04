@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { TaskCard } from '@/components/tasks/TaskCard'
 import { TaskFilters } from '@/components/tasks/TaskFilters'
 import { BidModal } from '@/components/tasks/BidModal'
@@ -11,9 +12,10 @@ import { BuyCreditsModalV1 } from '@/components/revenue/BuyCreditsModalV1'
 import apiClient from '@/lib/apiClient'
 import { 
   Layers, LogOut, Zap, Loader2, AlertCircle, Briefcase,
-  Shield, DollarSign
+  Shield, DollarSign, Search, Sparkles, TrendingUp
 } from 'lucide-react'
 import type { Job, JobFilters } from '@/types/jobs'
+import { Skeleton } from '@/components/ui/Skeleton'
 
 export default function WorkerDashboard() {
   const router = useRouter()
@@ -87,29 +89,22 @@ export default function WorkerDashboard() {
           status: 'open',
           ...filters,
         }
-
-        console.log('[WorkerDashboard] Fetching tasks with params:', params)
         
         const result = await apiClient.listJobs(params)
-        
-        console.log('[WorkerDashboard] API response:', result)
 
         if (result.error) {
           const errorMsg = result.error.message || result.error.error || 'Failed to fetch tasks'
-          console.error('[WorkerDashboard] Error:', result.error)
           setTasksError(new Error(errorMsg))
           setTasks([])
           return
         }
 
         if (!result.data || !result.data.jobs) {
-          console.warn('[WorkerDashboard] No jobs in response')
           setTasks([])
           return
         }
 
         let jobs = result.data.jobs || []
-        console.log('[WorkerDashboard] Raw jobs:', jobs.length)
 
         // Apply client-side filtering for minPrice (fallback)
         if (filters.minPrice && filters.minPrice >= 50) {
@@ -118,7 +113,6 @@ export default function WorkerDashboard() {
             const priceNum = typeof price === 'string' ? parseFloat(price) : price
             return priceNum >= filters.minPrice!
           })
-          console.log('[WorkerDashboard] After minPrice filter:', jobs.length)
         }
 
         // Apply search filter
@@ -128,13 +122,10 @@ export default function WorkerDashboard() {
             job.title.toLowerCase().includes(searchLower) ||
             job.description.toLowerCase().includes(searchLower)
           )
-          console.log('[WorkerDashboard] After search filter:', jobs.length)
         }
 
         setTasks(jobs)
-        console.log('[WorkerDashboard] Final tasks:', jobs.length)
       } catch (err: any) {
-        console.error('[WorkerDashboard] Fetch error:', err)
         setTasksError(err instanceof Error ? err : new Error('Failed to fetch tasks'))
         setTasks([])
       } finally {
@@ -218,7 +209,7 @@ export default function WorkerDashboard() {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
         <div className="flex items-center gap-3">
-          <Loader2 className="w-5 h-5 animate-spin text-[#0b63ff]" />
+          <Loader2 className="w-5 h-5 animate-spin text-primary-600" />
           <span className="text-slate-600 dark:text-slate-300">Loading...</span>
         </div>
       </div>
@@ -230,41 +221,49 @@ export default function WorkerDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      {/* Navigation */}
-      <nav className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-40">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      {/* Premium Navigation */}
+      <nav className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link href="/worker" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
+            <Link href="/worker" className="flex items-center gap-2 group">
+              <motion.div
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6 }}
+                className="w-8 h-8 bg-gradient-to-br from-primary-600 to-primary-800 rounded-lg flex items-center justify-center shadow-md"
+              >
                 <Layers className="w-4 h-4 text-white" />
-              </div>
-              <span className="text-lg font-semibold text-[#111] dark:text-white">2ndShift</span>
+              </motion.div>
+              <span className="text-lg font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+                2ndShift
+              </span>
             </Link>
             
             <div className="hidden lg:flex items-center gap-1">
-              <Link href="/worker" className="px-3 py-2 text-sm font-medium text-[#111] dark:text-white bg-slate-100 dark:bg-slate-700 rounded-lg">
+              <Link href="/worker" className="px-3 py-2 text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800 rounded-lg">
                 Dashboard
               </Link>
-              <Link href="/worker/discover" className="px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#111] dark:hover:text-white">
+              <Link href="/worker/discover" className="px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
                 Discover
               </Link>
-              <Link href="/messages" className="px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#111] dark:hover:text-white">
+              <Link href="/messages" className="px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
                 Messages
               </Link>
             </div>
 
             <div className="flex items-center gap-3">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setShowShiftsModal(true)}
-                className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg text-sm font-medium hover:from-amber-600 hover:to-orange-600 transition-all"
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg text-sm font-semibold hover:from-amber-600 hover:to-orange-600 transition-all shadow-md hover:shadow-lg"
               >
                 <Zap className="w-4 h-4" />
                 {creditsBalance} Shifts
-              </button>
+              </motion.button>
               <button
                 onClick={handleSignOut}
-                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition"
+                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
               >
                 <LogOut className="w-5 h-5 text-slate-600 dark:text-slate-400" />
               </button>
@@ -273,142 +272,167 @@ export default function WorkerDashboard() {
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
-            High-Value IT Tasks
-          </h1>
-          <p className="text-slate-700 dark:text-slate-300">
-            Browse premium microtasks from verified employers. Minimum ₹50 per task.
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Hero Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-12"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
+              <Sparkles className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+            </div>
+            <h1 className="text-4xl font-bold text-slate-900 dark:text-white">
+              High-Value IT Microtasks
+            </h1>
+          </div>
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl">
+            Browse premium microtasks from verified employers. Minimum ₹50 per task. 
+            <span className="font-semibold text-primary-600 dark:text-primary-400"> Fast bidding. Trusted clients. Escrow-protected payments.</span>
           </p>
-        </div>
+        </motion.div>
 
         {/* Filters */}
-        <TaskFilters
-          filters={filters}
-          onFiltersChange={(newFilters) => setFilters(newFilters)}
-        />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mb-8"
+        >
+          <TaskFilters
+            filters={filters}
+            onFiltersChange={(newFilters) => setFilters(newFilters)}
+          />
+        </motion.div>
 
         {/* Tasks Content */}
         {tasksLoading ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="flex items-center gap-3">
-              <Loader2 className="w-6 h-6 animate-spin text-[#0b63ff]" />
-              <span className="text-slate-600 dark:text-slate-400">Loading tasks...</span>
-            </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+                <Skeleton className="h-6 w-3/4 mb-4" />
+                <Skeleton className="h-4 w-full mb-2" />
+                <Skeleton className="h-4 w-5/6 mb-4" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            ))}
           </div>
         ) : tasksError ? (
-          <div className="bg-white dark:bg-slate-800 rounded-xl border border-red-200 dark:border-red-800 p-12 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white dark:bg-slate-900 rounded-2xl border border-red-200 dark:border-red-800 p-12 text-center shadow-soft"
+          >
             <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-[#111] dark:text-white mb-2">
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
               Error loading tasks
             </h3>
             <p className="text-slate-600 dark:text-slate-400 mb-4 font-medium">
               {tasksError.message}
             </p>
-            <div className="text-sm text-slate-500 dark:text-slate-500 mb-6 space-y-2">
-              <p className="font-medium">Possible causes:</p>
-              <ul className="list-disc list-inside text-left max-w-md mx-auto space-y-1">
-                <li>No tasks available in the database (run seed script)</li>
-                <li>API endpoint not responding</li>
-                <li>Network connectivity issues</li>
-              </ul>
-            </div>
             <button
               onClick={handleRetry}
-              className="px-4 py-2 bg-[#0b63ff] text-white rounded-lg hover:bg-[#0a56e6] transition"
+              className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition shadow-md hover:shadow-lg"
             >
               Retry
             </button>
-          </div>
+          </motion.div>
         ) : tasks.length === 0 ? (
-          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-12 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-12 text-center shadow-soft"
+          >
             <Briefcase className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-[#111] dark:text-white mb-2">
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
               No tasks found
             </h3>
             <p className="text-slate-600 dark:text-slate-400 mb-6">
               Try adjusting your filters or check back later for new high-value tasks.
             </p>
-            <p className="text-sm text-slate-500 dark:text-slate-500 mb-4">
-              Make sure you've run the seed data script to populate tasks.
-            </p>
             <button
               onClick={handleRetry}
-              className="px-4 py-2 bg-[#0b63ff] text-white rounded-lg hover:bg-[#0a56e6] transition"
+              className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition shadow-md hover:shadow-lg"
             >
               Refresh Tasks
             </button>
-          </div>
+          </motion.div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tasks.map((task) => (
-              <TaskCard
-                key={task.id}
-                task={task}
-                onBidClick={handleBidClick}
-                showBidButton={true}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Stats Summary */}
-        {tasks.length > 0 && (
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                  <Briefcase className="w-5 h-5 text-[#0b63ff]" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-[#111] dark:text-white">{tasks.length}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400">Available Tasks</div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-[#111] dark:text-white">{creditsBalance}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400">Shifts Balance</div>
-                </div>
-              </div>
+          <>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {tasks.map((task, index) => (
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  onBidClick={handleBidClick}
+                  showBidButton={true}
+                  index={index}
+                />
+              ))}
             </div>
 
-            <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
-                  <DollarSign className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-[#111] dark:text-white">
-                    ₹{tasks.reduce((sum, t) => sum + (t.price_fixed || (t as any).budget || 0), 0).toLocaleString()}
+            {/* Stats Summary */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="grid grid-cols-1 md:grid-cols-4 gap-4"
+            >
+              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-soft">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                    <Briefcase className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                   </div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400">Total Value</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                  <Shield className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-[#111] dark:text-white">
-                    {tasks.filter(t => t.client?.trust_score && t.client.trust_score > 80).length}
+                  <div>
+                    <div className="text-2xl font-bold text-slate-900 dark:text-white">{tasks.length}</div>
+                    <div className="text-sm text-slate-600 dark:text-slate-400">Available Tasks</div>
                   </div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400">Verified Employers</div>
                 </div>
               </div>
-            </div>
-          </div>
+              
+              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-soft">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
+                    <Zap className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-slate-900 dark:text-white">{creditsBalance}</div>
+                    <div className="text-sm text-slate-600 dark:text-slate-400">Shifts Balance</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-soft">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
+                    <DollarSign className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-slate-900 dark:text-white">
+                      ₹{tasks.reduce((sum, t) => sum + (t.price_fixed || (t as any).budget || 0), 0).toLocaleString()}
+                    </div>
+                    <div className="text-sm text-slate-600 dark:text-slate-400">Total Value</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-soft">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                    <Shield className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-slate-900 dark:text-white">
+                      {tasks.filter(t => t.client?.trust_score && t.client.trust_score > 80).length}
+                    </div>
+                    <div className="text-sm text-slate-600 dark:text-slate-400">Verified Employers</div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </>
         )}
       </div>
 
@@ -432,7 +456,6 @@ export default function WorkerDashboard() {
         userType="worker"
         currentBalance={creditsBalance}
         onPurchaseComplete={() => {
-          // Refetch credits
           apiClient.getCreditsBalance().then(result => {
             if (result.data) {
               setCreditsBalance(result.data.balance || 0)
@@ -449,7 +472,6 @@ export default function WorkerDashboard() {
         currentBalance={creditsBalance}
         onPurchaseComplete={() => {
           setShowBuyCreditsModal(false)
-          // Refetch credits
           apiClient.getCreditsBalance().then(result => {
             if (result.data) {
               setCreditsBalance(result.data.balance || 0)
