@@ -9,10 +9,7 @@ import { TaskFilters } from '@/components/tasks/TaskFilters'
 import { BidModal } from '@/components/tasks/BidModal'
 import { ShiftsModal } from '@/components/shifts/ShiftsModal'
 import { BuyCreditsModalV1 } from '@/components/revenue/BuyCreditsModalV1'
-import { VerificationBadge } from '@/components/revenue/VerificationBadge'
-import { SubscriptionUpsell } from '@/components/revenue/SubscriptionUpsell'
-import { AvailabilityCard } from '@/components/worker/AvailabilityCard'
-import { AlertsInbox } from '@/components/worker/AlertsInbox'
+import apiClient from '@/lib/apiClient'
 import { 
   Briefcase, Clock, DollarSign, User, LogOut, Search, 
   TrendingUp, FileText, CheckCircle, XCircle, AlertCircle,
@@ -31,10 +28,47 @@ export default function WorkerDashboard() {
   const [showShiftsModal, setShowShiftsModal] = useState(false)
   const [showBuyCreditsModal, setShowBuyCreditsModal] = useState(false)
   const [filters, setFilters] = useState<JobFilters>({ status: 'open' as const, role: 'worker' as const, minPrice: 50 })
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
+  const [currentUser, setCurrentUser] = useState<any>(null)
   
-  const { data: currentUser } = useCurrentUser()
   const { data: creditsBalance = 0 } = useCreditsBalance()
-  const { data: tasks = [], isLoading: tasksLoading, refetch: refetchTasks } = useOpenTasks(filters)
+  const { data: tasks = [], isLoading: tasksLoading, error: tasksError, refetch: refetchTasks } = useOpenTasks(filters)
+
+  // Check authentication on mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const result = await apiClient.getCurrentUser()
+        
+        if (result.error || !result.data?.user) {
+          router.push('/login')
+          return
+        }
+
+        const user = result.data.user
+        
+        // Check if user is a worker
+        if (user.role !== 'worker') {
+          const routes: Record<string, string> = {
+            client: '/client',
+            admin: '/dashboard/admin',
+            superadmin: '/dashboard/admin'
+          }
+          router.push(routes[user.role] || '/login')
+          return
+        }
+
+        setCurrentUser(user)
+      } catch (err) {
+        console.error('Auth check error:', err)
+        router.push('/login')
+      } finally {
+        setIsCheckingAuth(false)
+      }
+    }
+
+    checkAuth()
+  }, [router])
 
   const handleBidClick = (task: Job) => {
     if (creditsBalance < 3) {
@@ -62,15 +96,19 @@ export default function WorkerDashboard() {
     }
   }
 
-  if (!currentUser) {
+  if (isCheckingAuth) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
         <div className="flex items-center gap-3">
           <Loader2 className="w-5 h-5 animate-spin text-[#0b63ff]" />
-          <span className="text-[#333]">Loading...</span>
+          <span className="text-[#333] dark:text-slate-300">Loading...</span>
         </div>
       </div>
     )
+  }
+
+  if (!currentUser) {
+    return null // Will redirect to login
   }
 
   return (
@@ -142,6 +180,22 @@ export default function WorkerDashboard() {
               <span className="text-slate-600 dark:text-slate-400">Loading tasks...</span>
             </div>
           </div>
+        ) : tasksError ? (
+          <div className="bg-white dark:bg-slate-800 rounded-xl border border-red-200 dark:border-red-800 p-12 text-center">
+            <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-[#111] dark:text-white mb-2">
+              Error loading tasks
+            </h3>
+            <p className="text-slate-600 dark:text-slate-400 mb-6">
+              {tasksError instanceof Error ? tasksError.message : 'Failed to load tasks. Please try again.'}
+            </p>
+            <button
+              onClick={() => refetchTasks()}
+              className="px-4 py-2 bg-[#0b63ff] text-white rounded-lg hover:bg-[#0a56e6] transition"
+            >
+              Retry
+            </button>
+          </div>
         ) : tasks.length === 0 ? (
           <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-12 text-center">
             <Briefcase className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
@@ -150,6 +204,9 @@ export default function WorkerDashboard() {
             </h3>
             <p className="text-slate-600 dark:text-slate-400 mb-6">
               Try adjusting your filters or check back later for new high-value tasks.
+            </p>
+            <p className="text-sm text-slate-500 dark:text-slate-500">
+              Make sure you've run the seed data script to populate tasks.
             </p>
           </div>
         ) : (
@@ -234,30 +291,26 @@ export default function WorkerDashboard() {
         />
       )}
 
-      {currentUser && (
-        <>
-          <ShiftsModal
-            isOpen={showShiftsModal}
-            onClose={() => setShowShiftsModal(false)}
-            userId={currentUser.id}
-            userType={currentUser.role as 'worker' | 'client'}
-            currentBalance={creditsBalance}
-            onPurchaseComplete={(newBalance) => {
-              // Balance will be refetched automatically via useCreditsBalance
-            }}
-          />
-          <BuyCreditsModalV1
-            isOpen={showBuyCreditsModal}
-            onClose={() => setShowBuyCreditsModal(false)}
-            userId={currentUser.id}
-            userType={currentUser.role as 'worker' | 'client'}
-            currentBalance={creditsBalance}
-            onPurchaseComplete={() => {
-              setShowBuyCreditsModal(false)
-            }}
-          />
-        </>
-      )}
+      <ShiftsModal
+        isOpen={showShiftsModal}
+        onClose={() => setShowShiftsModal(false)}
+        userId={currentUser?.id || ''}
+        userType={(currentUser?.role || 'worker') as 'worker' | 'client'}
+        currentBalance={creditsBalance}
+        onPurchaseComplete={(newBalance) => {
+          // Balance will be refetched automatically via useCreditsBalance
+        }}
+      />
+      <BuyCreditsModalV1
+        isOpen={showBuyCreditsModal}
+        onClose={() => setShowBuyCreditsModal(false)}
+        userId={currentUser?.id || ''}
+        userType={(currentUser?.role || 'worker') as 'worker' | 'client'}
+        currentBalance={creditsBalance}
+        onPurchaseComplete={() => {
+          setShowBuyCreditsModal(false)
+        }}
+      />
     </div>
   )
 }
