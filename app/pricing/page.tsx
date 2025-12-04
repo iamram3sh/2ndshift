@@ -221,14 +221,14 @@ export default function PricingPage() {
       {/* Hero */}
       <section className="py-16 lg:py-20 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl lg:text-4xl font-semibold mb-4" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
+          <h1 className="text-3xl lg:text-4xl font-semibold mb-4 pricing-hero-title">
             Simple, transparent pricing
           </h1>
-          <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
+          <p className="text-lg mb-8 max-w-2xl mx-auto pricing-hero-text">
             Start free, upgrade when you need more. All plans include full compliance handling.
           </p>
-          <p className="text-sm mb-8 max-w-2xl mx-auto" style={{ color: '#e2e8f0', textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}>
-            <strong>Shifts = credits</strong> used to apply or boost job visibility. Purchase Shifts to stand out and get noticed faster.
+          <p className="text-sm mb-8 max-w-2xl mx-auto pricing-hero-subtext">
+            <strong className="pricing-hero-strong">Shifts = credits</strong> used to apply or boost job visibility. Purchase Shifts to stand out and get noticed faster.
           </p>
 
           {/* Toggle */}
@@ -332,14 +332,14 @@ export default function PricingPage() {
       <section className="py-16 lg:py-20 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-500/20 text-amber-400 rounded-full text-sm font-medium mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-500/20 rounded-full text-sm font-medium mb-4 pricing-premium-badge">
               <Zap className="w-4 h-4" />
               Premium Credits
             </div>
-            <h2 className="text-3xl lg:text-4xl font-semibold mb-4" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
+            <h2 className="text-3xl lg:text-4xl font-semibold mb-4 pricing-shifts-title">
               Boost with Shifts
             </h2>
-            <p className="text-lg max-w-2xl mx-auto" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
+            <p className="text-lg max-w-2xl mx-auto pricing-shifts-text">
               {userType === 'worker'
                 ? 'Stand out from the competition. Boost applications, get featured, and message clients directly.'
                 : 'Find talent faster. Feature your jobs, get AI recommendations, and invite top professionals.'}
@@ -350,30 +350,30 @@ export default function PricingPage() {
             {shiftPackages.map((pkg, i) => (
               <div
                 key={i}
-                className={`p-6 rounded-xl text-center transition-all duration-300 hover:scale-105 ${
+                className={`p-6 rounded-xl text-center transition-all duration-300 hover:scale-105 pricing-shift-card ${
                   pkg.popular
-                    ? 'bg-amber-500 text-white shadow-xl'
-                    : 'bg-white/10 text-white border border-white/20 hover:bg-white/15'
+                    ? 'bg-amber-500 shadow-xl'
+                    : 'bg-white/10 border border-white/20 hover:bg-white/15'
                 }`}
                 style={{
                   animation: `fadeInUp 0.6s ease-out ${i * 0.1}s both`
                 }}
               >
-                <div className="text-3xl font-bold mb-1">{pkg.shifts}</div>
-                <div className={`text-sm mb-4 ${pkg.popular ? 'text-amber-100' : 'text-white'}`}>
+                <div className={`text-3xl font-bold mb-1 ${pkg.popular ? 'pricing-shift-popular-number' : 'pricing-shift-number'}`}>{pkg.shifts}</div>
+                <div className={`text-sm mb-4 ${pkg.popular ? 'pricing-shift-popular-label' : 'pricing-shift-label'}`}>
                   Shifts
                 </div>
-                <div className="text-2xl font-semibold mb-1">₹{pkg.price}</div>
-                <div className={`text-xs ${pkg.popular ? 'text-amber-100' : 'text-white'}`}>
+                <div className={`text-2xl font-semibold mb-1 ${pkg.popular ? 'pricing-shift-popular-price' : 'pricing-shift-price'}`}>₹{pkg.price}</div>
+                <div className={`text-xs ${pkg.popular ? 'pricing-shift-popular-per-shift' : 'pricing-shift-per-shift'}`}>
                   ₹{pkg.perShift.toFixed(2)}/shift
                 </div>
                 {pkg.save && (
-                  <div className="mt-2 text-xs font-medium text-emerald-400">
+                  <div className="mt-2 text-xs font-medium pricing-shift-save">
                     Save {pkg.save}
                   </div>
                 )}
                 {pkg.popular && (
-                  <div className="mt-2 text-xs font-medium text-amber-100">
+                  <div className="mt-2 text-xs font-medium pricing-shift-best-value">
                     Best Value
                   </div>
                 )}

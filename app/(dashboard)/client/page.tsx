@@ -555,17 +555,17 @@ export default function ClientDashboard() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Shifts Promo Card */}
-            <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white">
+            <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 shifts-promo-card">
               <div className="flex items-start justify-between">
                 <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full text-sm font-medium mb-4">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 rounded-full text-sm font-medium mb-4 shifts-badge">
                     <Zap className="w-4 h-4" />
                     Shifts for Clients
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">
+                  <h3 className="text-xl font-semibold mb-2 shifts-title">
                     Find top talent faster
                   </h3>
-                  <p className="text-slate-400 text-sm mb-4">
+                  <p className="text-sm mb-4 shifts-description">
                     Use Shifts to feature your jobs, get AI-powered recommendations, and directly invite the best professionals.
                   </p>
                   <div className="flex flex-wrap gap-3">
@@ -576,7 +576,7 @@ export default function ClientDashboard() {
                       <Zap className="w-4 h-4" />
                       Get Shifts
                     </button>
-                    <button className="inline-flex items-center gap-2 text-slate-300 hover:text-white text-sm font-medium">
+                    <button className="inline-flex items-center gap-2 text-sm font-medium shifts-learn-more">
                       Learn more
                       <ArrowRight className="w-4 h-4" />
                     </button>
@@ -585,15 +585,15 @@ export default function ClientDashboard() {
                 <div className="hidden md:flex flex-col items-end gap-3">
                   <div className="flex items-center gap-2 text-sm">
                     <Crown className="w-4 h-4 text-amber-400" />
-                    <span className="text-slate-300">Featured Listing</span>
+                    <span className="shifts-benefit">Featured Listing</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Sparkles className="w-4 h-4 text-amber-400" />
-                    <span className="text-slate-300">AI Recommendations</span>
+                    <span className="shifts-benefit">AI Recommendations</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Send className="w-4 h-4 text-amber-400" />
-                    <span className="text-slate-300">Direct Invites</span>
+                    <span className="shifts-benefit">Direct Invites</span>
                   </div>
                 </div>
               </div>

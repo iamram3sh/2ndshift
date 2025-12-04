@@ -262,15 +262,15 @@ export function ShiftsPromoCard({ userType, onGetShifts }: ShiftsPromoCardProps)
     : 'Use Shifts to feature your jobs, get AI-powered recommendations, and directly invite the best professionals.'
 
   return (
-    <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white">
+    <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 shifts-promo-card">
       <div className="flex items-start justify-between">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full text-sm font-medium mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 rounded-full text-sm font-medium mb-4 shifts-badge">
             <Zap className="w-4 h-4" />
             Shifts
           </div>
-          <h3 className="text-xl font-semibold mb-2">{title}</h3>
-          <p className="text-slate-400 text-sm mb-4">{description}</p>
+          <h3 className="text-xl font-semibold mb-2 shifts-title">{title}</h3>
+          <p className="text-sm mb-4 shifts-description">{description}</p>
           <div className="flex flex-wrap gap-3">
             <button
               onClick={onGetShifts}
@@ -279,7 +279,7 @@ export function ShiftsPromoCard({ userType, onGetShifts }: ShiftsPromoCardProps)
               <Zap className="w-4 h-4" />
               Get Shifts
             </button>
-            <button className="inline-flex items-center gap-2 text-slate-300 hover:text-white text-sm font-medium">
+            <button className="inline-flex items-center gap-2 text-sm font-medium shifts-learn-more">
               Learn more
               <ArrowRight className="w-4 h-4" />
             </button>
@@ -289,7 +289,7 @@ export function ShiftsPromoCard({ userType, onGetShifts }: ShiftsPromoCardProps)
           {benefits.map((benefit, i) => (
             <div key={i} className="flex items-center gap-2 text-sm">
               <benefit.icon className="w-4 h-4 text-amber-400" />
-              <span className="text-slate-300">{benefit.text}</span>
+              <span className="shifts-benefit">{benefit.text}</span>
             </div>
           ))}
         </div>

@@ -2,11 +2,12 @@
 
 import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 import { supabase } from '@/lib/supabase/client'
 import apiClient from '@/lib/apiClient'
 import { ConversationList } from '@/components/messaging/ConversationList'
 import { ChatInterface } from '@/components/messaging/ChatInterface'
-import { MessageSquare, ArrowLeft } from 'lucide-react'
+import { MessageSquare, ArrowLeft, Home } from 'lucide-react'
 import type { User } from '@/types/database.types'
 
 function MessagesContent() {
@@ -135,10 +136,18 @@ function MessagesContent() {
                 <button
                   onClick={handleBack}
                   className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg"
+                  aria-label="Back to conversations"
                 >
                   <ArrowLeft className="w-5 h-5" />
                 </button>
               )}
+              <Link
+                href="/"
+                className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg"
+                aria-label="Home"
+              >
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Home</span>
+              </Link>
               <h1 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                 <MessageSquare className="w-6 h-6 text-indigo-600" />
                 Messages
@@ -177,6 +186,13 @@ function MessagesContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
+              <Link
+                href="/"
+                className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition"
+                aria-label="Home"
+              >
+                <Home className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+              </Link>
               <button
                 onClick={() => {
                   if (user?.user_type === 'worker') {
@@ -188,6 +204,7 @@ function MessagesContent() {
                   }
                 }}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition"
+                aria-label="Back to dashboard"
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>

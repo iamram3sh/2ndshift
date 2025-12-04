@@ -177,6 +177,12 @@ p, body, span, div, li, td, th {
 [class*="bg-slate-900"] h4, [class*="bg-slate-900"] h5, [class*="bg-slate-900"] h6,
 [class*="bg-slate-800"] h1, [class*="bg-slate-800"] h2, [class*="bg-slate-800"] h3,
 [class*="bg-slate-800"] h4, [class*="bg-slate-800"] h5, [class*="bg-slate-800"] h6,
+[class*="from-slate-900"] h1, [class*="from-slate-900"] h2, [class*="from-slate-900"] h3,
+[class*="from-slate-900"] h4, [class*="from-slate-900"] h5, [class*="from-slate-900"] h6,
+[class*="to-slate-800"] h1, [class*="to-slate-800"] h2, [class*="to-slate-800"] h3,
+[class*="to-slate-800"] h4, [class*="to-slate-800"] h5, [class*="to-slate-800"] h6,
+[class*="bg-gradient-to"] h1, [class*="bg-gradient-to"] h2, [class*="bg-gradient-to"] h3,
+[class*="bg-gradient-to"] h4, [class*="bg-gradient-to"] h5, [class*="bg-gradient-to"] h6,
 .category-hero h1, .category-hero h2, .category-hero h3,
 .category-hero h4, .category-hero h5, .category-hero h6 {
   color: #ffffff !important;
@@ -186,6 +192,9 @@ p, body, span, div, li, td, th {
 .bg-slate-800 p, .bg-slate-800 span, .bg-slate-800 div,
 [class*="bg-slate-900"] p, [class*="bg-slate-900"] span, [class*="bg-slate-900"] div,
 [class*="bg-slate-800"] p, [class*="bg-slate-800"] span, [class*="bg-slate-800"] div,
+[class*="from-slate-900"] p, [class*="from-slate-900"] span, [class*="from-slate-900"] div,
+[class*="to-slate-800"] p, [class*="to-slate-800"] span, [class*="to-slate-800"] div,
+[class*="bg-gradient-to"] p, [class*="bg-gradient-to"] span, [class*="bg-gradient-to"] div,
 .category-hero p, .category-hero span, .category-hero div {
   color: #ffffff !important;
 }
@@ -193,6 +202,162 @@ p, body, span, div, li, td, th {
 /* Specific overrides for category hero and CTA sections */
 .category-hero * {
   color: #ffffff !important;
+}
+
+/* Specific overrides for pricing page dark sections */
+section[class*="bg-gradient-to"] h1,
+section[class*="bg-gradient-to"] h2,
+section[class*="bg-gradient-to"] h3,
+section[class*="bg-gradient-to"] h4,
+section[class*="bg-gradient-to"] h5,
+section[class*="bg-gradient-to"] h6,
+section[class*="bg-gradient-to"] p,
+section[class*="bg-gradient-to"] span,
+section[class*="bg-gradient-to"] div {
+  color: #ffffff !important;
+}
+
+/* Override for pricing page specifically */
+section.bg-gradient-to-br h1,
+section.bg-gradient-to-br h2,
+section.bg-gradient-to-br h3,
+section.bg-gradient-to-br h4,
+section.bg-gradient-to-br h5,
+section.bg-gradient-to-br h6,
+section.bg-gradient-to-br p,
+section.bg-gradient-to-br span,
+section.bg-gradient-to-br div:not([class*="bg-white"]):not([class*="bg-amber"]) {
+  color: #ffffff !important;
+}
+
+/* Pricing page specific text visibility classes */
+.pricing-hero-title,
+.pricing-hero-text,
+.pricing-hero-subtext,
+.pricing-hero-strong,
+.pricing-shifts-title,
+.pricing-shifts-text {
+  color: #ffffff !important;
+}
+
+.pricing-hero-title {
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.3) !important;
+}
+
+.pricing-hero-text {
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6), 0 0 10px rgba(0,0,0,0.2) !important;
+}
+
+.pricing-hero-subtext {
+  color: #f1f5f9 !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5), 0 0 8px rgba(0,0,0,0.2) !important;
+}
+
+.pricing-hero-strong {
+  color: #ffffff !important;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6) !important;
+}
+
+.pricing-shifts-title {
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.3) !important;
+}
+
+.pricing-shifts-text {
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6), 0 0 10px rgba(0,0,0,0.2) !important;
+}
+
+/* Shift package cards text visibility */
+.pricing-shift-number,
+.pricing-shift-label,
+.pricing-shift-price,
+.pricing-shift-per-shift {
+  color: #ffffff !important;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6), 0 0 8px rgba(0,0,0,0.2) !important;
+}
+
+.pricing-shift-popular-number,
+.pricing-shift-popular-price {
+  color: #ffffff !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
+}
+
+.pricing-shift-popular-label,
+.pricing-shift-popular-per-shift {
+  color: #fef3c7 !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
+}
+
+.pricing-shift-save {
+  color: #86efac !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4) !important;
+}
+
+.pricing-shift-best-value {
+  color: #fef3c7 !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3) !important;
+}
+
+.pricing-premium-badge {
+  color: #fbbf24 !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4) !important;
+}
+
+.pricing-premium-badge svg {
+  color: #fbbf24 !important;
+}
+
+/* Shifts Promo Card - Dashboard visibility fixes */
+.shifts-promo-card {
+  color: #ffffff !important;
+}
+
+.shifts-promo-card * {
+  color: inherit !important;
+}
+
+.shifts-badge {
+  color: #fbbf24 !important;
+}
+
+.shifts-badge svg {
+  color: #fbbf24 !important;
+}
+
+.shifts-title {
+  color: #ffffff !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6) !important;
+}
+
+.shifts-description {
+  color: #e2e8f0 !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4) !important;
+}
+
+.shifts-learn-more {
+  color: #cbd5e1 !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3) !important;
+}
+
+.shifts-learn-more:hover {
+  color: #ffffff !important;
+}
+
+.shifts-learn-more svg {
+  color: inherit !important;
+}
+
+.shifts-benefit {
+  color: #cbd5e1 !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3) !important;
+}
+
+/* Shift card container - ensure all child text is visible */
+.pricing-shift-card {
+  color: #ffffff !important;
+}
+
+.pricing-shift-card *:not([class*="bg-white"]):not([class*="bg-amber"]) {
+  color: inherit !important;
 }
 
 [data-role="worker"] h2, [data-role="worker"] p,
