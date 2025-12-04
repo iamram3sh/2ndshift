@@ -533,10 +533,13 @@ export default function WorkerDashboard() {
                       <Zap className="w-4 h-4" />
                       Get Shifts
                     </button>
-                    <button className="inline-flex items-center gap-2 text-sm font-medium shifts-learn-more">
+                    <Link
+                      href="/pricing"
+                      className="inline-flex items-center gap-2 text-sm font-medium shifts-learn-more"
+                    >
                       Learn more
                       <ArrowRight className="w-4 h-4" />
-                    </button>
+                    </Link>
                   </div>
                 </div>
                 <div className="hidden md:flex flex-col items-end gap-3">
@@ -814,6 +817,22 @@ export default function WorkerDashboard() {
         <BuyCreditsModalV1
           isOpen={showBuyCreditsModal}
           onClose={() => setShowBuyCreditsModal(false)}
+          userId={user.id}
+          userType="worker"
+          currentBalance={shiftsBalance}
+          onPurchaseComplete={(newBalance) => {
+            setShiftsBalance(newBalance)
+            setStats(prev => ({ ...prev, shiftsBalance: newBalance }))
+            fetchShiftsBalance()
+          }}
+        />
+      )}
+
+      {/* Shifts Modal */}
+      {user && (
+        <ShiftsModal
+          isOpen={showShiftsModal}
+          onClose={() => setShowShiftsModal(false)}
           userId={user.id}
           userType="worker"
           currentBalance={shiftsBalance}

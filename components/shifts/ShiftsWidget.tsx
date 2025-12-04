@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { Zap, Crown, Rocket, MessageSquare, Send, Sparkles, X, CheckCircle, ArrowRight, Shield } from 'lucide-react'
 
 interface ShiftPackage {
@@ -279,10 +280,13 @@ export function ShiftsPromoCard({ userType, onGetShifts }: ShiftsPromoCardProps)
               <Zap className="w-4 h-4" />
               Get Shifts
             </button>
-            <button className="inline-flex items-center gap-2 text-sm font-medium shifts-learn-more">
+            <Link
+              href="/pricing"
+              className="inline-flex items-center gap-2 text-sm font-medium shifts-learn-more"
+            >
               Learn more
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </Link>
           </div>
         </div>
         <div className="hidden md:flex flex-col items-end gap-3">
