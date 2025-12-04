@@ -3,13 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   
-  // API route configuration
-  api: {
-    bodyParser: {
-      sizeLimit: '10mb', // Limit request body size
-    },
-    responseLimit: '10mb',
-  },
+  // Note: In Next.js 16 App Router, body size limits are handled at the route level
+  // or through middleware. The 'api' config option is only for Pages Router.
   
   // Security headers
   async headers() {
