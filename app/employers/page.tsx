@@ -11,6 +11,8 @@ import {
   ThumbsUp, XCircle, MinusCircle
 } from 'lucide-react'
 import { useState } from 'react'
+import { Footer } from '@/components/layout/Footer'
+import { BackButton } from '@/components/layout/BackButton'
 
 // Hiring Process Steps
 const HIRING_STEPS = [
@@ -211,6 +213,7 @@ export default function EmployersPage() {
                 </div>
                 <span className="text-lg font-semibold text-[#111]">2ndShift</span>
               </Link>
+              <BackButton href="/" className="hidden sm:flex" />
               
               <div className="hidden lg:flex items-center gap-1">
                 <Link href="/workers" className="px-3 py-2 text-sm font-medium text-[#333] hover:text-[#111]">
@@ -248,19 +251,19 @@ export default function EmployersPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem]" />
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/20 text-emerald-400 rounded-full text-sm font-medium mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/20 text-emerald-400 rounded-full text-sm font-medium mb-6" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>
                 <Zap className="w-4 h-4" />
                 Hire in 48 Hours, Not 48 Days
               </div>
               
-              <h1 className="text-4xl lg:text-5xl font-semibold text-white mb-6 leading-tight">
+              <h1 className="text-4xl lg:text-5xl font-semibold text-white mb-6 leading-tight" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
                 The smart way to hire professionals in India
               </h1>
               
-              <p className="text-xl text-slate-300 mb-8 leading-relaxed">
+              <p className="text-xl text-white mb-8 leading-relaxed" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
                 Skip the recruitment hassle. Access verified professionals, 
                 with automatic tax compliance and escrow payment protection.
               </p>
@@ -282,7 +285,7 @@ export default function EmployersPage() {
               </div>
 
               {/* Trust Badges */}
-              <div className="flex flex-wrap gap-6 text-sm text-[#333]">
+              <div className="flex flex-wrap gap-6 text-sm text-white">
                 <span className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-emerald-400" />
                   100% Tax Compliant
@@ -497,14 +500,14 @@ export default function EmployersPage() {
       <section className="py-20 lg:py-28 bg-slate-900 border-t border-slate-800">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/20 text-emerald-400 rounded-full text-sm font-medium mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/20 text-emerald-400 rounded-full text-sm font-medium mb-4" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>
               <Calculator className="w-4 h-4" />
               Cost Calculator
             </div>
-            <h2 className="text-3xl font-semibold text-white mb-4">
+            <h2 className="text-3xl font-semibold text-white mb-4" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
               See how much you can save
             </h2>
-            <p className="text-lg text-white">
+            <p className="text-lg text-white" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
               Enter your project details to compare costs.
             </p>
           </div>
@@ -629,10 +632,10 @@ export default function EmployersPage() {
       {/* Final CTA */}
       <section className="py-20 lg:py-28 bg-gradient-to-br from-slate-900 to-slate-800 border-t border-slate-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-semibold text-white mb-6">
+          <h2 className="text-3xl lg:text-4xl font-semibold text-white mb-6" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
             Ready to hire smarter?
           </h2>
-          <p className="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">
+          <p className="text-xl text-white mb-10 max-w-2xl mx-auto" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
             Join companies saving time, money, and headaches with 2ndShift. 
             Your first project is free to post.
           </p>
@@ -652,32 +655,14 @@ export default function EmployersPage() {
             </Link>
           </div>
           
-          <p className="mt-8 text-sm text-[#333]">
+          <p className="mt-8 text-sm text-white/80">
             No credit card required. No commitment.
           </p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-slate-200 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
-                <Layers className="w-4 h-4 text-white" />
-              </div>
-              <span className="text-lg font-semibold text-[#111]">2ndShift</span>
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#333]">
-              <Link href="/about" className="hover:text-[#111] transition-colors">About</Link>
-              <Link href="/features" className="hover:text-[#111] transition-colors">Features</Link>
-              <Link href="/pricing" className="hover:text-[#111] transition-colors">Pricing</Link>
-              <Link href="/contact" className="hover:text-[#111] transition-colors">Contact</Link>
-            </div>
-            <p className="text-sm text-[#333]">© 2025 2ndShift Technologies</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
