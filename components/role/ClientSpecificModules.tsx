@@ -180,10 +180,10 @@ export function EscrowExplainerSection({ role, onCTAClick }: ClientSpecificModul
             <div className="w-16 h-16 bg-sky-500/10 rounded-xl flex items-center justify-center mb-6">
               <Lock className="w-8 h-8 text-sky-400" />
             </div>
-            <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+            <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
               Payment protection built-in
             </h2>
-            <p className="text-lg text-white/90 mb-6" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+            <p className="text-lg mb-6" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>
               Every payment is secured in escrow. You only pay when you're satisfied with the work. 
               Workers get paid for completed milestones. It's that simple.
             </p>
@@ -197,8 +197,8 @@ export function EscrowExplainerSection({ role, onCTAClick }: ClientSpecificModul
                 <li key={i} className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-sky-400 mt-0.5 flex-shrink-0" />
                   <div>
-                    <div className="font-semibold text-white">{item.label}</div>
-                    <div className="text-sm text-white/80">{item.desc}</div>
+                    <div className="font-semibold" style={{ color: '#ffffff' }}>{item.label}</div>
+                    <div className="text-sm" style={{ color: '#ffffff' }}>{item.desc}</div>
                   </div>
                 </li>
               ))}
@@ -207,19 +207,19 @@ export function EscrowExplainerSection({ role, onCTAClick }: ClientSpecificModul
           <div className="bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10">
             <div className="space-y-6">
               <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
-                <span className="text-white/90">Project Budget</span>
-                <span className="text-white font-semibold">₹50,000</span>
+                <span style={{ color: '#ffffff' }}>Project Budget</span>
+                <span className="font-semibold" style={{ color: '#ffffff' }}>₹50,000</span>
               </div>
               <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
-                <span className="text-white/90">In Escrow</span>
+                <span style={{ color: '#ffffff' }}>In Escrow</span>
                 <span className="text-sky-400 font-semibold">₹50,000</span>
               </div>
               <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
-                <span className="text-white/90">Paid to Worker</span>
-                <span className="text-white/60 font-semibold">₹0</span>
+                <span style={{ color: '#ffffff' }}>Paid to Worker</span>
+                <span className="font-semibold" style={{ color: '#ffffff' }}>₹0</span>
               </div>
               <div className="pt-4 border-t border-white/10">
-                <p className="text-sm text-white/70 text-center">
+                <p className="text-sm text-center" style={{ color: '#ffffff' }}>
                   Funds released only after milestone approval
                 </p>
               </div>
