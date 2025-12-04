@@ -19,6 +19,8 @@ interface ButtonProps {
   type?: 'button' | 'submit' | 'reset'
   icon?: ReactNode
   iconPosition?: 'left' | 'right'
+  isLoading?: boolean
+  'aria-label'?: string
 }
 
 const buttonVariants = {
@@ -46,6 +48,7 @@ export function Button({
   type = 'button',
   icon,
   iconPosition = 'right',
+  isLoading = false,
   ...props
 }: ButtonProps) {
   const baseStyles = 'inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105 active:scale-100 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0b63ff]'
@@ -57,17 +60,29 @@ export function Button({
     className
   )
 
+  const isDisabled = disabled || isLoading
+
   if (href) {
     return (
       <Link
         href={href}
         onClick={onClick}
         className={classes}
+        aria-disabled={isDisabled}
         {...props}
       >
-        {icon && iconPosition === 'left' && icon}
-        {children}
-        {icon && iconPosition === 'right' && icon}
+        {isLoading ? (
+          <>
+            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+            Loading...
+          </>
+        ) : (
+          <>
+            {icon && iconPosition === 'left' && icon}
+            {children}
+            {icon && iconPosition === 'right' && icon}
+          </>
+        )}
       </Link>
     )
   }
@@ -76,13 +91,22 @@ export function Button({
     <button
       type={type}
       onClick={onClick}
-      disabled={disabled}
+      disabled={isDisabled}
       className={classes}
       {...props}
     >
-      {icon && iconPosition === 'left' && icon}
-      {children}
-      {icon && iconPosition === 'right' && icon}
+      {isLoading ? (
+        <>
+          <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+          Loading...
+        </>
+      ) : (
+        <>
+          {icon && iconPosition === 'left' && icon}
+          {children}
+          {icon && iconPosition === 'right' && icon}
+        </>
+      )}
     </button>
   )
 }

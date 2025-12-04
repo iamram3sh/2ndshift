@@ -233,8 +233,9 @@ export default function ProfilePage() {
                       type="submit"
                       isLoading={isSaving}
                       className="flex-1"
+                      icon={<Save className="w-5 h-5" />}
+                      iconPosition="left"
                     >
-                      <Save className="w-5 h-5 mr-2 inline" />
                       Save Changes
                     </Button>
                     <Button
