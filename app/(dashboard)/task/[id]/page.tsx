@@ -115,7 +115,7 @@ export default function TaskDetailPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-soft p-8 mb-8"
+          className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md p-8 mb-8"
         >
           <div className="flex items-start justify-between gap-6 mb-6">
             <div className="flex-1">
@@ -200,7 +200,7 @@ export default function TaskDetailPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-soft p-6 mb-8"
+            className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md p-6 mb-8"
           >
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Client Information</h3>
             <div className="flex items-center gap-4">
@@ -228,7 +228,7 @@ export default function TaskDetailPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-soft p-8"
+            className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md p-8"
           >
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
               Pending Bids ({pendingBids.length})

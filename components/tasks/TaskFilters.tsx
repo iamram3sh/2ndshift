@@ -55,7 +55,7 @@ export function TaskFilters({ filters, onFiltersChange, categories = [] }: TaskF
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-soft p-6 mb-8"
+      className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md p-6 mb-8"
     >
       {/* Search Bar */}
       <div className="flex items-center gap-3 mb-4">

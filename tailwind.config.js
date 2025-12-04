@@ -62,11 +62,6 @@ module.exports = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
-      boxShadow: {
-        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
-        'glow': '0 0 20px -5px rgba(30, 64, 175, 0.4)',
-        'glow-lg': '0 0 40px -10px rgba(30, 64, 175, 0.5)',
-      },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },

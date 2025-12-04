@@ -48,7 +48,7 @@ export function TaskCard({ task, onBidClick, showBidButton = true, index = 0 }: 
     >
       <div className={cn(
         "h-full bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800",
-        "shadow-soft hover:shadow-glow transition-all duration-300",
+        "shadow-md hover:shadow-xl transition-all duration-300",
         "overflow-hidden",
         isVerified && "ring-2 ring-emerald-500/20"
       )}>
