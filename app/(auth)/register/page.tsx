@@ -6,10 +6,14 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase/client'
 import apiClient from '@/lib/apiClient'
 import { Briefcase, Users, Mail, Lock, User, ArrowRight, Layers, Shield, CheckCircle, Zap, Eye, EyeOff } from 'lucide-react'
+import { useRole } from '@/components/role/RoleContextProvider'
+import { trackEvent } from '@/lib/analytics/events'
+import { trackRoleSelected } from '@/lib/analytics/roleEvents'
 
 export default function RegisterPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { setRole } = useRole()
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -71,8 +75,24 @@ export default function RegisterPage() {
       }
       
       if (result.data?.user) {
+        // User is already logged in (access token and refresh token cookie set)
+        // Set role and track events
+        const userRole = result.data.user.role
+        if (userRole === 'worker' || userRole === 'client') {
+          setRole(userRole, 'login')
+          trackRoleSelected(userRole, 'login')
+        }
+        trackEvent('registration_success', { role: userRole })
+        
+        // Redirect to appropriate dashboard based on role
+        const routes: Record<string, string> = {
+          worker: '/worker', // Worker dashboard
+          client: '/client', // Client dashboard
+          admin: '/dashboard/admin',
+        }
+        const targetRoute = routes[userRole] || '/worker'
         setMessage('Account created successfully! Redirecting...')
-        setTimeout(() => router.push('/login'), 2000)
+        setTimeout(() => router.push(targetRoute), 1500)
       }
     } catch (error: any) {
       setMessage(error.message || 'Registration failed. Please try again.')
