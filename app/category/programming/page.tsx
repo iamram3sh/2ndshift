@@ -12,6 +12,8 @@ import { HIGH_VALUE_CATEGORIES } from '@/lib/constants/highValueCategories'
 import { formatCurrency } from '@/lib/utils/formatCurrency'
 import { CategoryHero } from '@/components/category/CategoryHero'
 import { BottomCTA } from '@/components/category/BottomCTA'
+import { BackButton } from '@/components/layout/BackButton'
+import { Footer } from '@/components/layout/Footer'
 
 export default function ProgrammingCategoryPage() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('all')
@@ -238,7 +240,10 @@ export default function ProgrammingCategoryPage() {
       </section>
 
       {/* CTA Section */}
-      <BottomCTA categoryName={category?.name} />
+      <BottomCTA categoryName={category?.name} role="both" />
+
+      {/* Footer */}
+      <Footer />
     </div>
   )
 }

@@ -420,7 +420,7 @@ export default function ClientDashboard() {
           </div>
           <div className="grid md:grid-cols-3 gap-4">
             {[
-              { title: 'DevOps Quick Fix', price: '₹5,000', tasks: ['Bug fixes', 'Deployment'], duration: '1-2 days' },
+              { title: 'DevOps Quick Fix', price: '₹5,000', tasks: ['Pipeline fixes', 'Deployment'], duration: '1-2 days' },
               { title: 'Cloud Audit', price: '₹15,000', tasks: ['Security review', 'Cost optimization'], duration: '3-5 days' },
               { title: 'API Integration', price: '₹10,000', tasks: ['Third-party API', 'Documentation'], duration: '2-3 days' },
             ].map((pack, i) => (

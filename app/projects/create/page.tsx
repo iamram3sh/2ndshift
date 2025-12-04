@@ -14,9 +14,9 @@ import { CATEGORY_CONFIG, CategorySlug, getCategoryConfig } from '@/lib/config/c
 
 const GENERIC_SKILL_OPTIONS = [
   'JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'Java',
-  'Design', 'Marketing', 'Content Writing', 'Data Analysis', 'SEO',
+  'Data Analysis',
   'Video Editing', 'Graphic Design', 'Excel', 'SQL', 'Mobile App',
-  'AWS', 'DevOps', 'UI/UX', 'WordPress', 'Shopify'
+  'AWS', 'DevOps', 'Kubernetes', 'Terraform', 'Docker'
 ]
 
 const PROJECT_TYPES = [

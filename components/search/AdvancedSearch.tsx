@@ -19,7 +19,7 @@ interface AdvancedSearchProps {
 
 const SKILLS = [
   'JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'Java',
-  'Design', 'Marketing', 'Content Writing', 'Data Analysis', 'SEO',
+  'Data Analysis',
   'Video Editing', 'Graphic Design', 'Excel', 'SQL', 'AWS'
 ]
 
