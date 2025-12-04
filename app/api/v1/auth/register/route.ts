@@ -71,39 +71,81 @@ export async function POST(request: NextRequest) {
     const userId = authData.user.id;
 
     // Insert user in users table (using auth user ID)
-    const { data: user, error: userError } = await supabaseAdmin
+    // Start with base required fields that exist in all schema versions
+    const userData: Record<string, any> = {
+      id: userId, // Use the auth user ID
+      email: validated.email.toLowerCase(),
+      full_name: validated.name,
+      user_type: validated.role,
+    };
+
+    // Add optional fields
+    if (validated.phone) {
+      userData.phone = validated.phone;
+    }
+
+    // Try to insert with migration fields first, fallback to base fields if it fails
+    let user: any = null;
+    let userError: any = null;
+
+    // First attempt: with all possible fields
+    const fullUserData = {
+      ...userData,
+      password_hash: passwordHash,
+      profile_complete: false,
+      email_verified: false,
+      phone_verified: false,
+    };
+
+    const { data: userWithExtras, error: errorWithExtras } = await supabaseAdmin
       .from('users')
-      .insert({
-        id: userId, // Use the auth user ID
-        email: validated.email.toLowerCase(),
-        full_name: validated.name,
-        user_type: validated.role,
-        phone: validated.phone,
-        password_hash: passwordHash,
-        profile_complete: false,
-        email_verified: false,
-        phone_verified: false,
-      })
+      .insert(fullUserData)
       .select()
       .single();
 
+    if (errorWithExtras) {
+      // If that fails, try with just base fields
+      logger.warn('Insert with extra fields failed, trying base fields only', { error: errorWithExtras.message });
+      const { data: userBase, error: errorBase } = await supabaseAdmin
+        .from('users')
+        .insert(userData)
+        .select()
+        .single();
+      
+      user = userBase;
+      userError = errorBase;
+    } else {
+      user = userWithExtras;
+    }
+
     if (userError || !user) {
       logger.error('Error creating user', userError);
+      logger.error('User data attempted:', userData);
+      
       // Clean up auth user if users table insert fails
-      await supabaseAdmin.auth.admin.deleteUser(userId);
+      try {
+        await supabaseAdmin.auth.admin.deleteUser(userId);
+      } catch (cleanupError) {
+        logger.error('Error cleaning up auth user', cleanupError);
+      }
+      
       return NextResponse.json(
         { 
           error: 'Failed to create user profile',
           details: userError?.message || 'Unknown database error',
-          code: userError?.code || 'USER_CREATE_ERROR'
+          code: userError?.code || 'USER_CREATE_ERROR',
+          hint: userError?.hint || 'Check database schema and required fields'
         },
         { status: 500 }
       );
     }
 
     // Create profile if worker
+    // Try both 'profiles' (new schema) and 'worker_profiles' (old schema)
     if (validated.role === 'worker') {
-      const { error: profileError } = await supabaseAdmin
+      // Try new schema first (profiles table)
+      let profileError = null;
+      const { error: newProfileError } = await supabaseAdmin
         .from('profiles')
         .insert({
           user_id: userId,
@@ -111,8 +153,20 @@ export async function POST(request: NextRequest) {
           score: 0,
         });
 
-      if (profileError) {
-        logger.error('Error creating profile', profileError);
+      if (newProfileError) {
+        // Fallback to old schema (worker_profiles table)
+        const { error: oldProfileError } = await supabaseAdmin
+          .from('worker_profiles')
+          .insert({
+            user_id: userId,
+            is_verified: false,
+            verification_status: 'pending',
+          });
+        profileError = oldProfileError;
+      }
+
+      if (profileError && newProfileError) {
+        logger.error('Error creating profile', { newProfileError, oldProfileError: profileError });
         // Don't fail registration if profile creation fails, just log it
       }
     }
