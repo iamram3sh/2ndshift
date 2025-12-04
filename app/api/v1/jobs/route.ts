@@ -120,7 +120,11 @@ export async function POST(request: NextRequest) {
           price_fixed: validated.price_fixed,
           price_currency: validated.price_currency,
           delivery_deadline: validated.delivery_deadline,
-          delivery_window: validated.delivery_window,
+          delivery_window: validated.delivery_window ? 
+            validated.delivery_window.replace('sixTo24h', '6-24h')
+              .replace('threeTo7d', '3-7d')
+              .replace('oneTo4w', '1-4w')
+              .replace('oneTo6m', '1-6m') : undefined,
           status: 'open',
           required_skills: validated.required_skills || [],
           urgency: validated.urgency,

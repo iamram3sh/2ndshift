@@ -73,10 +73,10 @@ export function TaskCard({ task, onBidClick, showBidButton = true }: TaskCardPro
             <div className="flex items-center gap-1.5">
               <Clock className="w-4 h-4" />
               <span>
-                {task.delivery_window === 'sixTo24h' && '6-24 hours'}
-                {task.delivery_window === 'threeTo7d' && '3-7 days'}
-                {task.delivery_window === 'oneTo4w' && '1-4 weeks'}
-                {task.delivery_window === 'oneTo6m' && '1-6 months'}
+                {(task.delivery_window === 'sixTo24h' || task.delivery_window === '6-24h') && '6-24 hours'}
+                {(task.delivery_window === 'threeTo7d' || task.delivery_window === '3-7d') && '3-7 days'}
+                {(task.delivery_window === 'oneTo4w' || task.delivery_window === '1-4w') && '1-4 weeks'}
+                {(task.delivery_window === 'oneTo6m' || task.delivery_window === '1-6m') && '1-6 months'}
               </span>
             </div>
           )}

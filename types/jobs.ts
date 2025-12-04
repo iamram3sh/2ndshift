@@ -4,7 +4,7 @@
 
 export type JobStatus = 'draft' | 'open' | 'assigned' | 'in_progress' | 'completed' | 'disputed' | 'cancelled'
 export type ApplicationStatus = 'pending' | 'accepted' | 'rejected' | 'withdrawn'
-export type DeliveryWindow = 'sixTo24h' | 'threeTo7d' | 'oneTo4w' | 'oneTo6m'
+export type DeliveryWindow = 'sixTo24h' | 'threeTo7d' | 'oneTo4w' | 'oneTo6m' | '6-24h' | '3-7d' | '1-4w' | '1-6m'
 
 export interface Job {
   id: string

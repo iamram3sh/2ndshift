@@ -146,7 +146,7 @@ SELECT
   'open',
   25000, -- ₹250
   'INR',
-  'oneTo4w',
+  '1-4w',
   ARRAY['Kubernetes', 'Docker', 'Helm', 'CI/CD', 'AWS EKS'],
   NOW(),
   NOW()
@@ -167,7 +167,7 @@ SELECT
   'open',
   18000, -- ₹180
   'INR',
-  'threeTo7d',
+  '3-7d',
   ARRAY['React', 'Next.js', 'TypeScript', 'Performance Optimization', 'Web Vitals'],
   NOW(),
   NOW()
@@ -188,7 +188,7 @@ SELECT
   'open',
   35000, -- ₹350
   'INR',
-  'oneTo4w',
+  '1-4w',
   ARRAY['MLOps', 'PyTorch', 'FastAPI', 'AWS', 'Docker', 'MLflow'],
   NOW(),
   NOW()
@@ -209,7 +209,7 @@ SELECT
   'open',
   30000, -- ₹300
   'INR',
-  'threeTo7d',
+  '3-7d',
   ARRAY['Penetration Testing', 'OWASP', 'Security Audits', 'Node.js', 'API Security'],
   NOW(),
   NOW()
@@ -230,7 +230,7 @@ SELECT
   'open',
   12000, -- ₹120
   'INR',
-  'threeTo7d',
+  '3-7d',
   ARRAY['PostgreSQL', 'Database Optimization', 'Query Optimization', 'Indexing'],
   NOW(),
   NOW()
@@ -251,7 +251,7 @@ SELECT
   'open',
   15000, -- ₹150
   'INR',
-  'oneTo4w',
+  '1-4w',
   ARRAY['Node.js', 'Express', 'REST API', 'JWT', 'PostgreSQL', 'OpenAPI'],
   NOW(),
   NOW()
@@ -272,7 +272,7 @@ SELECT
   'open',
   10000, -- ₹100
   'INR',
-  'threeTo7d',
+  '3-7d',
   ARRAY['GitHub Actions', 'CI/CD', 'Docker', 'AWS', 'Node.js'],
   NOW(),
   NOW()
@@ -293,7 +293,7 @@ SELECT
   'open',
   20000, -- ₹200
   'INR',
-  'oneTo4w',
+  '1-4w',
   ARRAY['Microservices', 'System Design', 'Architecture', 'Node.js', 'Python'],
   NOW(),
   NOW()
@@ -314,7 +314,7 @@ SELECT
   'open',
   22000, -- ₹220
   'INR',
-  'oneTo4w',
+  '1-4w',
   ARRAY['React', 'TypeScript', 'Storybook', 'Component Library', 'Jest'],
   NOW(),
   NOW()
@@ -335,7 +335,7 @@ SELECT
   'open',
   18000, -- ₹180
   'INR',
-  'oneTo4w',
+  '1-4w',
   ARRAY['ETL', 'Python', 'Airflow', 'PostgreSQL', 'AWS', 'Data Processing'],
   NOW(),
   NOW()
