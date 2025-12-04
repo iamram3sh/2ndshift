@@ -35,15 +35,13 @@ export async function GET(request: NextRequest) {
       const limit = parseInt(searchParams.get('limit') || '20');
       const offset = parseInt(searchParams.get('offset') || '0');
 
+      // First, get jobs without the complex join
       let query = supabaseAdmin
         .from('jobs')
         .select(`
           *,
           category:categories(*),
-          microtask:microtasks(*),
-          client:users!jobs_client_id_fkey(id, full_name, email),
-          applications(count),
-          assignments(count)
+          microtask:microtasks(*)
         `)
         .order('created_at', { ascending: false })
         .range(offset, offset + limit - 1);
@@ -81,15 +79,72 @@ export async function GET(request: NextRequest) {
         );
       }
 
+      // Fetch client information separately to avoid relationship issues
+      const jobsWithClient = await Promise.all(
+        (jobs || []).map(async (job: any) => {
+          try {
+            // Get client info (handle both success and error cases)
+            const { data: clientData, error: clientError } = await supabaseAdmin
+              .from('users')
+              .select('id, full_name, email')
+              .eq('id', job.client_id)
+              .maybeSingle();
+
+            if (clientError) {
+              logger.warn(`Error fetching client for job ${job.id}:`, clientError);
+            }
+
+            // Get application count (handle errors gracefully)
+            let appCount = 0;
+            try {
+              const { count } = await supabaseAdmin
+                .from('applications')
+                .select('*', { count: 'exact', head: true })
+                .eq('project_id', job.id);
+              appCount = count || 0;
+            } catch (err) {
+              logger.warn(`Error fetching application count for job ${job.id}:`, err);
+            }
+
+            // Get assignment count (handle errors gracefully)
+            let assignCount = 0;
+            try {
+              const { count } = await supabaseAdmin
+                .from('assignments')
+                .select('*', { count: 'exact', head: true })
+                .eq('job_id', job.id);
+              assignCount = count || 0;
+            } catch (err) {
+              logger.warn(`Error fetching assignment count for job ${job.id}:`, err);
+            }
+
+            return {
+              ...job,
+              client: clientData || null,
+              applications: [{ count: appCount }],
+              assignments: [{ count: assignCount }],
+            };
+          } catch (err) {
+            logger.error(`Unexpected error processing job ${job.id}:`, err);
+            return {
+              ...job,
+              client: null,
+              applications: [{ count: 0 }],
+              assignments: [{ count: 0 }],
+            };
+          }
+        })
+      );
+
       // Log for debugging
-      logger.info(`Fetched ${jobs?.length || 0} jobs for role=${role}, status=${status}, minPrice=${minPrice}`);
+      logger.info(`Fetched ${jobsWithClient?.length || 0} jobs for role=${role}, status=${status}, minPrice=${minPrice}`);
 
       return NextResponse.json({
-        jobs: jobs || [],
+        jobs: jobsWithClient || [],
         pagination: {
           limit,
           offset,
-          total: jobs?.length || 0,
+          total: jobsWithClient?.length || 0,
         },
       });
     } catch (error) {
