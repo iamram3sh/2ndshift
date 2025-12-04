@@ -119,7 +119,7 @@ export default function ProjectsPage() {
             filteredProjects.map((project) => (
               <Card
                 key={project.id}
-                hover
+                className="cursor-pointer hover:shadow-md transition-shadow"
                 onClick={() => router.push(`/projects/${project.id}`)}
               >
                 <div className="flex justify-between items-start mb-3">
