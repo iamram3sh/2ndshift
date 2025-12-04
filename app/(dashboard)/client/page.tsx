@@ -797,7 +797,7 @@ export default function ClientDashboard() {
             />
 
             {/* Featured Job Promo */}
-            <div className="bg-gradient-to-br from-sky-500 to-indigo-600 rounded-xl p-5 text-white">
+            <div className="bg-gradient-to-br from-sky-500 to-[#0b63ff] rounded-xl p-5 text-white">
               <div className="flex items-center gap-2 mb-3">
                 <Crown className="w-5 h-5" />
                 <span className="font-semibold">Feature Your Job</span>

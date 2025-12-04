@@ -6,12 +6,12 @@
    ============================================ */
 
 :root {
-  /* Brand Colors */
-  --brand-primary: #0ea5e9;
-  --brand-primary-light: #38bdf8;
-  --brand-primary-dark: #0284c7;
-  --brand-secondary: #6366f1;
-  --brand-accent: #22d3ee;
+  /* Brand Colors - Unified Theme */
+  --brand-primary: #0b63ff;
+  --brand-primary-light: #2563eb;
+  --brand-primary-dark: #0a56e6;
+  --brand-secondary: #1e293b; /* slate-800 */
+  --brand-accent: #0b63ff;
   
   /* Semantic Colors */
   --success: #10b981;

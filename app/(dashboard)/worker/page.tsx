@@ -411,7 +411,7 @@ export default function WorkerDashboard() {
 
         {/* Profile Completion Banner */}
         {profileCompletion < 100 && (
-          <div className="bg-gradient-to-r from-sky-500 to-indigo-500 rounded-2xl p-6 mb-8 text-white">
+          <div className="bg-gradient-to-r from-sky-500 to-[#0b63ff] rounded-2xl p-6 mb-8 text-white">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-white/20 rounded-xl">
@@ -770,7 +770,7 @@ export default function WorkerDashboard() {
             />
 
             {/* Boost Profile Card */}
-            <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl p-5 text-white">
+            <div className="bg-gradient-to-br from-purple-500 to-[#0b63ff] rounded-xl p-5 text-white">
               <div className="flex items-center gap-2 mb-3">
                 <Sparkles className="w-5 h-5" />
                 <span className="font-semibold">Boost Your Profile</span>

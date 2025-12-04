@@ -25,9 +25,9 @@ export function MessageButton({
   }
 
   const variants = {
-    primary: 'bg-indigo-600 text-white hover:bg-indigo-700',
+    primary: 'bg-[#0b63ff] text-white hover:bg-[#0a56e6]',
     secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300 dark:bg-slate-700 dark:text-white dark:hover:bg-slate-600',
-    ghost: 'text-indigo-600 hover:bg-indigo-50 dark:text-indigo-400 dark:hover:bg-indigo-900/20'
+    ghost: 'text-[#0b63ff] hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/20'
   }
 
   const sizes = {

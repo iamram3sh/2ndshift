@@ -95,7 +95,7 @@ export function SubscriptionUpsell({ userType, currentPlan, onSubscribe }: Subsc
 
   // Client view
   return (
-    <div className="bg-gradient-to-br from-sky-500 to-indigo-600 rounded-2xl p-6 text-white">
+    <div className="bg-gradient-to-br from-sky-500 to-[#0b63ff] rounded-2xl p-6 text-white">
       <div className="flex items-center gap-2 mb-4">
         <Crown className="w-5 h-5 text-amber-300" />
         <h3 className="text-lg font-semibold">Client Subscriptions</h3>

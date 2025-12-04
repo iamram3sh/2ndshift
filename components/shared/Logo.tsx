@@ -18,7 +18,7 @@ export default function Logo({ variant = 'full', size = 'md', className = '' }: 
   // Icon only version
   if (variant === 'icon') {
     return (
-      <div className={`${sizes.icon} bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center shadow-md ${className}`}>
+      <div className={`${sizes.icon} bg-gradient-to-br from-[#0b63ff] to-[#0a56e6] rounded-lg flex items-center justify-center shadow-md ${className}`}>
         <span className={`text-white font-bold ${sizes.text}`}>2S</span>
       </div>
     )
@@ -28,7 +28,7 @@ export default function Logo({ variant = 'full', size = 'md', className = '' }: 
   if (variant === 'horizontal') {
     return (
       <div className={`flex items-center gap-2 ${className}`}>
-        <div className={`${sizes.icon} bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center shadow-md`}>
+        <div className={`${sizes.icon} bg-gradient-to-br from-[#0b63ff] to-[#0a56e6] rounded-lg flex items-center justify-center shadow-md`}>
           <span className={`text-white font-bold ${sizes.text}`}>2S</span>
         </div>
         <span className={`font-bold text-gray-900 ${sizes.text}`}>2ndShift</span>
@@ -39,9 +39,9 @@ export default function Logo({ variant = 'full', size = 'md', className = '' }: 
   // Full version with tagline (default)
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      <div className={`${sizes.icon} bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center shadow-md`}>
-        <span className={`text-white font-bold ${sizes.text}`}>2S</span>
-      </div>
+        <div className={`${sizes.icon} bg-gradient-to-br from-[#0b63ff] to-[#0a56e6] rounded-lg flex items-center justify-center shadow-md`}>
+          <span className={`text-white font-bold ${sizes.text}`}>2S</span>
+        </div>
       <div className="flex flex-col">
         <span className={`font-bold text-gray-900 ${sizes.text} leading-tight`}>2ndShift</span>
         <span className={`text-gray-600 ${sizes.tagline} font-medium`}>Legal Talent Platform</span>

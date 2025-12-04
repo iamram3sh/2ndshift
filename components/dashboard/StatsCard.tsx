@@ -12,7 +12,7 @@ interface StatsCardProps {
 }
 
 const colorClasses = {
-  indigo: 'from-indigo-500 to-indigo-600',
+  indigo: 'from-[#0b63ff] to-[#0a56e6]',
   green: 'from-green-500 to-green-600',
   orange: 'from-orange-500 to-orange-600',
   purple: 'from-purple-500 to-purple-600',
@@ -20,7 +20,7 @@ const colorClasses = {
 }
 
 const iconBgColors = {
-  indigo: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900 dark:text-indigo-300',
+  indigo: 'bg-blue-100 text-[#0b63ff] dark:bg-blue-900 dark:text-blue-300',
   green: 'bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300',
   orange: 'bg-orange-100 text-orange-600 dark:bg-orange-900 dark:text-orange-300',
   purple: 'bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300',

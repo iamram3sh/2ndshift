@@ -122,7 +122,7 @@ export default function AboutPage() {
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl lg:text-5xl font-semibold text-[#111] mb-6">
               Making contract work
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-indigo-600"> simple and compliant</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-[#0b63ff]"> simple and compliant</span>
             </h1>
             <p className="text-xl text-[#333] leading-relaxed">
               We started 2ndShift because we saw a broken system. Talented professionals doing great work, 

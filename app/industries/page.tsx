@@ -135,7 +135,7 @@ export default function IndustriesPage() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-8">
               <Link href="/" className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-[#0b63ff] to-[#0a56e6] rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-sm">2S</span>
                 </div>
                 <span className="text-xl font-bold text-[#111]">2ndShift</span>
@@ -261,7 +261,7 @@ export default function IndustriesPage() {
                         <Icon className={`w-7 h-7 ${industry.color.replace('bg-', 'text-')}`} />
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-indigo-600 transition-colors">
+                        <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-[#0b63ff] transition-colors">
                           {industry.name}
                         </h3>
                         <p className="text-slate-600 text-sm mb-4">
@@ -321,8 +321,8 @@ export default function IndustriesPage() {
                   className="bg-slate-50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 border border-slate-200"
                   style={{ animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both` }}
                 >
-                  <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
-                    <Icon className="w-6 h-6 text-indigo-600" />
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                    <Icon className="w-6 h-6 text-[#0b63ff]" />
                   </div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-2">
                     {benefit.title}

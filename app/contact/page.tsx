@@ -33,21 +33,21 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#0b63ff] to-[#0a56e6] rounded-xl flex items-center justify-center">
                 <Briefcase className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-[#0b63ff] to-[#0a56e6] bg-clip-text text-transparent">
                 2ndShift
               </span>
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
-              <Link href="/about" className="text-[#333] hover:text-indigo-600 font-medium transition">About</Link>
-              <Link href="/pricing" className="text-[#333] hover:text-indigo-600 font-medium transition">Pricing</Link>
-              <Link href="/faq" className="text-[#333] hover:text-indigo-600 font-medium transition">FAQ</Link>
+              <Link href="/about" className="text-[#333] hover:text-[#0b63ff] font-medium transition">About</Link>
+              <Link href="/pricing" className="text-[#333] hover:text-[#0b63ff] font-medium transition">Pricing</Link>
+              <Link href="/faq" className="text-[#333] hover:text-[#0b63ff] font-medium transition">FAQ</Link>
             </div>
 
-            <Link href="/register" className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition">
+            <Link href="/register" className="bg-gradient-to-r from-[#0b63ff] to-[#0a56e6] text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition">
               Get Started
             </Link>
           </div>
@@ -55,7 +55,7 @@ export default function ContactPage() {
       </nav>
 
       {/* Hero */}
-      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-indigo-50 to-purple-50">
+      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-slate-50">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl sm:text-6xl font-bold text-[#111] mb-6">
             Get in Touch
@@ -76,12 +76,12 @@ export default function ContactPage() {
               
               <div className="space-y-6 mb-12">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-6 h-6 text-indigo-600" />
+                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-6 h-6 text-[#0b63ff]" />
                   </div>
                   <div>
                     <div className="font-semibold text-[#111] mb-1">Email Us</div>
-                    <a href="mailto:support@2ndshift.in" className="text-indigo-600 hover:text-indigo-700">
+                    <a href="mailto:support@2ndshift.in" className="text-[#0b63ff] hover:text-[#0a56e6]">
                       support@2ndshift.in
                     </a>
                     <p className="text-sm text-slate-500 mt-1">We&apos;ll respond within 24 hours</p>
@@ -94,7 +94,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <div className="font-semibold text-[#111] mb-1">Call Us</div>
-                    <a href="tel:+918071234567" className="text-indigo-600 hover:text-indigo-700">
+                    <a href="tel:+918071234567" className="text-[#0b63ff] hover:text-[#0a56e6]">
                       +91 80712 34567
                     </a>
                     <p className="text-sm text-slate-500 mt-1">Mon-Sat, 9 AM - 6 PM IST</p>
@@ -118,7 +118,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl">
+              <div className="bg-gradient-to-br from-blue-50 to-slate-50 p-8 rounded-2xl">
                 <h3 className="font-bold text-[#111] mb-4">Quick Response Times</h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -160,7 +160,7 @@ export default function ContactPage() {
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 transition outline-none"
+                    className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-[#0b63ff] transition outline-none"
                     placeholder="John Doe"
                     required
                   />
@@ -174,7 +174,7 @@ export default function ContactPage() {
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 transition outline-none"
+                    className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-[#0b63ff] transition outline-none"
                     placeholder="you@example.com"
                     required
                   />
@@ -187,7 +187,7 @@ export default function ContactPage() {
                   <select
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 transition outline-none"
+                    className="w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-[#0b63ff] transition outline-none"
                     required
                   >
                     <option value="">Select a topic</option>
@@ -217,7 +217,7 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 rounded-xl font-semibold hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-[#0b63ff] to-[#0a56e6] text-white py-4 rounded-xl font-semibold hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <>

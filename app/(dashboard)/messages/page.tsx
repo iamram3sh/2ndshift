@@ -149,7 +149,7 @@ function MessagesContent() {
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Home</span>
               </Link>
               <h1 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <MessageSquare className="w-6 h-6 text-indigo-600" />
+                <MessageSquare className="w-6 h-6 text-[#0b63ff]" />
                 Messages
               </h1>
             </div>
@@ -209,13 +209,13 @@ function MessagesContent() {
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <MessageSquare className="w-6 h-6 text-indigo-600" />
+                <MessageSquare className="w-6 h-6 text-[#0b63ff]" />
                 Messages
               </h1>
             </div>
             <button
               onClick={() => router.push('/profile')}
-              className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400"
+              className="text-gray-700 dark:text-gray-300 hover:text-[#0b63ff] dark:hover:text-blue-400"
             >
               {user?.full_name}
             </button>
@@ -245,8 +245,8 @@ function MessagesContent() {
                 />
               ) : (
                 <div className="flex flex-col items-center justify-center h-full text-center px-8">
-                  <div className="w-24 h-24 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-6">
-                    <MessageSquare className="w-12 h-12 text-indigo-600 dark:text-indigo-400" />
+                  <div className="w-24 h-24 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-6">
+                    <MessageSquare className="w-12 h-12 text-[#0b63ff] dark:text-blue-400" />
                   </div>
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                     Your Messages
