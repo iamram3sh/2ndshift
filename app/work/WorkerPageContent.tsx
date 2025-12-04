@@ -254,8 +254,8 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
               <div className="w-12 h-12 bg-sky-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Coffee className="w-6 h-6 text-sky-400" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">High-Value Microtasks</h3>
-              <p className="text-white text-sm">
+              <h3 className="text-lg font-semibold mb-2" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>High-Value Microtasks</h3>
+              <p className="text-sm" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
                 CI/CD fixes, API debugging, cloud audits, security hardening. Premium technical tasks that showcase expertise.
               </p>
             </div>
@@ -263,8 +263,8 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
               <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Calendar className="w-6 h-6 text-emerald-400" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Complex Projects</h3>
-              <p className="text-white text-sm">
+              <h3 className="text-lg font-semibold mb-2" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>Complex Projects</h3>
+              <p className="text-sm" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
                 Architecture refactoring, system migrations, AI/LLM implementations. Fixed price, clear timeline, expert delivery.
               </p>
             </div>
@@ -272,8 +272,8 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
               <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
                 <Users className="w-6 h-6 text-purple-400" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">Expert Consultation</h3>
-              <p className="text-white text-sm">
+              <h3 className="text-lg font-semibold mb-2" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>Expert Consultation</h3>
+              <p className="text-sm" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
                 Ongoing expert guidance and consultation. Part-time or full-time engagement with all compliance handled.
               </p>
             </div>

@@ -279,11 +279,11 @@ export default function ForWorkersPage() {
                 Escrow Protected Payments
               </div>
               
-              <h1 className="text-4xl lg:text-5xl font-semibold text-white mb-6 leading-tight">
+              <h1 className="text-4xl lg:text-5xl font-semibold mb-6 leading-tight" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
                 Freelance with peace of mind
               </h1>
               
-              <p className="text-xl text-emerald-100 mb-8 leading-relaxed">
+              <p className="text-xl mb-8 leading-relaxed" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
                 No more chasing payments. No more tax headaches. 
                 Get verified clients, guaranteed payments, and focus on what you do best.
               </p>
@@ -305,7 +305,7 @@ export default function ForWorkersPage() {
               </div>
 
               {/* Trust Badges */}
-              <div className="flex flex-wrap gap-6 text-sm text-emerald-200">
+              <div className="flex flex-wrap gap-6 text-sm" style={{ color: '#ffffff', textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}>
                 <span className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-emerald-400" />
                   Free to join
@@ -654,10 +654,10 @@ export default function ForWorkersPage() {
       {/* Final CTA */}
       <section className="py-20 bg-gradient-to-br from-emerald-900 to-slate-900">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-semibold text-white mb-6">
+          <h2 className="text-3xl lg:text-4xl font-semibold mb-6" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
             Ready to freelance smarter?
           </h2>
-          <p className="text-xl text-emerald-200 mb-10 max-w-2xl mx-auto">
+          <p className="text-xl mb-10 max-w-2xl mx-auto" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
             Join professionals who work with peace of mind. 
             It&apos;s free to join and takes less than 5 minutes.
           </p>

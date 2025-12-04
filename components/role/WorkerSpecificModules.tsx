@@ -232,10 +232,10 @@ export function EarningsCalculatorSection({ role, onCTAClick }: WorkerSpecificMo
     <section className="py-20 lg:py-28 bg-slate-900 border-t border-slate-800" data-role="worker">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+          <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
             Calculate your potential earnings
           </h2>
-          <p className="text-lg text-white/90" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+          <p className="text-lg" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
             See how much you could earn working on 2ndShift. Zero platform fees means you keep 100% of your rate.
           </p>
         </div>

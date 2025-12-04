@@ -485,10 +485,10 @@ export default function HomePage() {
       <section className="py-20 lg:py-28 bg-slate-900 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4">
+            <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-4" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
               Simple process
             </h2>
-            <p className="text-lg text-white max-w-2xl mx-auto">
+            <p className="text-lg max-w-2xl mx-auto" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
               Get started in minutes. No complicated onboarding.
             </p>
           </div>
@@ -519,8 +519,8 @@ export default function HomePage() {
                 <div className="w-14 h-14 bg-sky-500/10 rounded-xl flex items-center justify-center mx-auto mb-4">
                   <item.icon className="w-7 h-7 text-sky-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-2">{item.title}</h3>
-                <p className="text-white">{item.description}</p>
+                <h3 className="text-xl font-semibold mb-2" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>{item.title}</h3>
+                <p style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>{item.description}</p>
               </div>
             ))}
           </div>

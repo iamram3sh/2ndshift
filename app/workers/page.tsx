@@ -304,26 +304,27 @@ function WorkersPageContent() {
                 <div className="flex items-center justify-center gap-2 mb-4">
                   <Link 
                     href="/workers"
-                    className="text-sm text-slate-300 hover:text-white transition-colors"
+                    className="text-sm hover:text-white transition-colors"
+                    style={{ color: '#e2e8f0', textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}
                   >
                     All Industries
                   </Link>
-                  <span className="text-[#333]">/</span>
-                  <span className="text-sm text-sky-400 font-medium">{selectedIndustryData.name}</span>
+                  <span style={{ color: '#ffffff' }}>/</span>
+                  <span className="text-sm font-medium" style={{ color: '#7dd3fc', textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}>{selectedIndustryData.name}</span>
                 </div>
-                <h1 className="text-3xl lg:text-4xl font-semibold text-white mb-4">
+                <h1 className="text-3xl lg:text-4xl font-semibold mb-4" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
                   {selectedIndustryData.name} Professionals
                 </h1>
-                <p className="text-lg text-slate-300">
+                <p className="text-lg" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
                   {selectedIndustryData.description || `Find verified ${selectedIndustryData.name} professionals`}
                 </p>
               </>
             ) : (
               <>
-                <h1 className="text-3xl lg:text-4xl font-semibold text-white mb-4">
+                <h1 className="text-3xl lg:text-4xl font-semibold mb-4" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
                   Find India&apos;s Top Talent
                 </h1>
-                <p className="text-lg text-slate-300">
+                <p className="text-lg" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
                   Verified professionals across multiple industries. All compliance handled.
                 </p>
               </>
@@ -616,10 +617,10 @@ function WorkersPageContent() {
       {/* CTA Section */}
       <section className="bg-slate-900 py-16 border-t border-slate-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl lg:text-3xl font-semibold text-white mb-4">
+          <h2 className="text-2xl lg:text-3xl font-semibold mb-4" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6)' }}>
             Ready to build your team?
           </h2>
-          <p className="text-slate-300 mb-8">
+          <p className="mb-8" style={{ color: '#ffffff', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>
             Post your project and get proposals from verified professionals within hours.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
