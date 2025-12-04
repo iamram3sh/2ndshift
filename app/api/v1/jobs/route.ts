@@ -91,7 +91,10 @@ export async function GET(request: NextRequest) {
               .maybeSingle();
 
             if (clientError) {
-              logger.warn(`Error fetching client for job ${job.id}:`, clientError);
+              logger.warn(`Error fetching client for job ${job.id}`, { 
+                error: clientError.message || String(clientError),
+                jobId: job.id 
+              });
             }
 
             // Get application count (handle errors gracefully)
@@ -103,7 +106,10 @@ export async function GET(request: NextRequest) {
                 .eq('project_id', job.id);
               appCount = count || 0;
             } catch (err) {
-              logger.warn(`Error fetching application count for job ${job.id}:`, err);
+              logger.warn(`Error fetching application count for job ${job.id}`, { 
+                error: err instanceof Error ? err.message : String(err),
+                jobId: job.id 
+              });
             }
 
             // Get assignment count (handle errors gracefully)
@@ -115,7 +121,10 @@ export async function GET(request: NextRequest) {
                 .eq('job_id', job.id);
               assignCount = count || 0;
             } catch (err) {
-              logger.warn(`Error fetching assignment count for job ${job.id}:`, err);
+              logger.warn(`Error fetching assignment count for job ${job.id}`, { 
+                error: err instanceof Error ? err.message : String(err),
+                jobId: job.id 
+              });
             }
 
             return {
@@ -125,7 +134,7 @@ export async function GET(request: NextRequest) {
               assignments: [{ count: assignCount }],
             };
           } catch (err) {
-            logger.error(`Unexpected error processing job ${job.id}:`, err);
+            logger.error(`Unexpected error processing job ${job.id}`, err, { jobId: job.id });
             return {
               ...job,
               client: null,
