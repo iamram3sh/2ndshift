@@ -573,7 +573,7 @@ export function WorkerPageContent({ initialRole }: { initialRole?: 'client' | 'w
         currentRole={role || 'client'}
         attemptedRole="worker"
         onClose={() => setShowRoleMismatch(false)}
-        onSwitchRole={() => setRole('worker', 'modal')}
+        onSwitchRole={() => setRole('worker', 'cta')}
       />
     </div>
   )
