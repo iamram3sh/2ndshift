@@ -134,7 +134,7 @@ END $$;
 
 -- Task 1: Kubernetes Migration
 INSERT INTO jobs (
-  id, client_id, title, description, category_id, status, price_fixed, price_currency,
+  id, client_id, title, description, category_id, status, budget, price_fixed, price_currency,
   delivery_window, required_skills, created_at, updated_at
 )
 SELECT 
@@ -144,7 +144,8 @@ SELECT
   'We need to migrate our existing Docker Compose application to Kubernetes. The application consists of 5 microservices (Node.js, Python, PostgreSQL, Redis, Nginx). Requirements: 1) Design Kubernetes manifests (Deployments, Services, ConfigMaps, Secrets), 2) Set up Helm charts, 3) Configure ingress and load balancing, 4) Implement health checks and auto-scaling, 5) Document the migration process. Expected delivery: 1-2 weeks.',
   id,
   'open',
-  25000, -- ₹250
+  25000, -- budget (₹250)
+  25000, -- price_fixed (₹250)
   'INR',
   '1-4w',
   ARRAY['Kubernetes', 'Docker', 'Helm', 'CI/CD', 'AWS EKS'],
@@ -155,7 +156,7 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Task 2: React Performance Optimization
 INSERT INTO jobs (
-  id, client_id, title, description, category_id, status, price_fixed, price_currency,
+  id, client_id, title, description, category_id, status, budget, price_fixed, price_currency,
   delivery_window, required_skills, created_at, updated_at
 )
 SELECT 
@@ -165,7 +166,8 @@ SELECT
   'Our React application (Next.js 14, TypeScript) is experiencing performance issues. Need an expert to: 1) Review codebase and identify bottlenecks, 2) Optimize component rendering (memoization, code splitting), 3) Fix bundle size issues, 4) Improve Core Web Vitals (LCP, FID, CLS), 5) Provide recommendations for long-term performance. Codebase size: ~50 components, 3 main pages. Budget: ₹150-₹200.',
   id,
   'open',
-  18000, -- ₹180
+  18000, -- budget (₹180)
+  18000, -- price_fixed (₹180)
   'INR',
   '3-7d',
   ARRAY['React', 'Next.js', 'TypeScript', 'Performance Optimization', 'Web Vitals'],
@@ -176,7 +178,7 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Task 3: ML Model Deployment Pipeline
 INSERT INTO jobs (
-  id, client_id, title, description, category_id, status, price_fixed, price_currency,
+  id, client_id, title, description, category_id, status, budget, price_fixed, price_currency,
   delivery_window, required_skills, created_at, updated_at
 )
 SELECT 
@@ -186,7 +188,8 @@ SELECT
   'We have a trained PyTorch model (image classification) and need a complete MLOps pipeline: 1) Model versioning (MLflow/DVC), 2) API endpoint (FastAPI) with model serving, 3) A/B testing framework, 4) Monitoring and alerting (model drift, performance metrics), 5) CI/CD integration. Infrastructure: AWS S3, ECS, CloudWatch. Timeline: 2-3 weeks.',
   id,
   'open',
-  35000, -- ₹350
+  35000, -- budget (₹350)
+  35000, -- price_fixed (₹350)
   'INR',
   '1-4w',
   ARRAY['MLOps', 'PyTorch', 'FastAPI', 'AWS', 'Docker', 'MLflow'],
@@ -197,7 +200,7 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Task 4: Security Audit
 INSERT INTO jobs (
-  id, client_id, title, description, category_id, status, price_fixed, price_currency,
+  id, client_id, title, description, category_id, status, budget, price_fixed, price_currency,
   delivery_window, required_skills, created_at, updated_at
 )
 SELECT 
@@ -207,7 +210,8 @@ SELECT
   'Comprehensive security audit for our Node.js/Express REST API and React frontend. Scope: 1) OWASP Top 10 vulnerability assessment, 2) Penetration testing (authorized), 3) Code review for security issues, 4) API security testing, 5) Detailed report with remediation steps. Application handles sensitive user data (PII). Compliance: GDPR, SOC 2.',
   id,
   'open',
-  30000, -- ₹300
+  30000, -- budget (₹300)
+  30000, -- price_fixed (₹300)
   'INR',
   '3-7d',
   ARRAY['Penetration Testing', 'OWASP', 'Security Audits', 'Node.js', 'API Security'],
@@ -218,7 +222,7 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Task 5: Database Optimization
 INSERT INTO jobs (
-  id, client_id, title, description, category_id, status, price_fixed, price_currency,
+  id, client_id, title, description, category_id, status, budget, price_fixed, price_currency,
   delivery_window, required_skills, created_at, updated_at
 )
 SELECT 
@@ -228,7 +232,8 @@ SELECT
   'Our PostgreSQL database (v14) is experiencing slow query performance. Need expert to: 1) Analyze slow queries and execution plans, 2) Optimize indexes and query structure, 3) Review schema design, 4) Implement connection pooling, 5) Provide recommendations for scaling. Database size: ~50GB, 10M+ rows. Current issues: N+1 queries, missing indexes, inefficient joins.',
   id,
   'open',
-  12000, -- ₹120
+  12000, -- budget (₹120)
+  12000, -- price_fixed (₹120)
   'INR',
   '3-7d',
   ARRAY['PostgreSQL', 'Database Optimization', 'Query Optimization', 'Indexing'],
@@ -239,7 +244,7 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Task 6: API Development
 INSERT INTO jobs (
-  id, client_id, title, description, category_id, status, price_fixed, price_currency,
+  id, client_id, title, description, category_id, status, budget, price_fixed, price_currency,
   delivery_window, required_skills, created_at, updated_at
 )
 SELECT 
@@ -249,7 +254,8 @@ SELECT
   'Develop a production-ready REST API using Node.js/Express or Python/FastAPI. Features: 1) JWT authentication, 2) Role-based access control (RBAC), 3) Rate limiting, 4) Input validation, 5) API documentation (OpenAPI/Swagger), 6) Error handling and logging. Database: PostgreSQL. Expected endpoints: 10-15 routes.',
   id,
   'open',
-  15000, -- ₹150
+  15000, -- budget (₹150)
+  15000, -- price_fixed (₹150)
   'INR',
   '1-4w',
   ARRAY['Node.js', 'Express', 'REST API', 'JWT', 'PostgreSQL', 'OpenAPI'],
@@ -260,7 +266,7 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Task 7: CI/CD Pipeline Setup
 INSERT INTO jobs (
-  id, client_id, title, description, category_id, status, price_fixed, price_currency,
+  id, client_id, title, description, category_id, status, budget, price_fixed, price_currency,
   delivery_window, required_skills, created_at, updated_at
 )
 SELECT 
@@ -270,7 +276,8 @@ SELECT
   'Configure a complete CI/CD pipeline for our monorepo (React frontend + Node.js backend). Requirements: 1) Automated testing (unit, integration), 2) Linting and code quality checks, 3) Build and Docker image creation, 4) Automated deployment to staging/production, 5) Slack notifications. Infrastructure: AWS ECS, Docker Hub.',
   id,
   'open',
-  10000, -- ₹100
+  10000, -- budget (₹100)
+  10000, -- price_fixed (₹100)
   'INR',
   '3-7d',
   ARRAY['GitHub Actions', 'CI/CD', 'Docker', 'AWS', 'Node.js'],
@@ -281,7 +288,7 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Task 8: Microservices Architecture Review
 INSERT INTO jobs (
-  id, client_id, title, description, category_id, status, price_fixed, price_currency,
+  id, client_id, title, description, category_id, status, budget, price_fixed, price_currency,
   delivery_window, required_skills, created_at, updated_at
 )
 SELECT 
@@ -291,7 +298,8 @@ SELECT
   'Review our microservices architecture (5 services, Node.js/Python) and provide recommendations: 1) Service boundaries and communication patterns, 2) Data consistency strategies, 3) API gateway design, 4) Observability (logging, tracing, metrics), 5) Deployment and scaling strategies. Deliverable: Architecture review document with diagrams and recommendations.',
   id,
   'open',
-  20000, -- ₹200
+  20000, -- budget (₹200)
+  20000, -- price_fixed (₹200)
   'INR',
   '1-4w',
   ARRAY['Microservices', 'System Design', 'Architecture', 'Node.js', 'Python'],
@@ -302,7 +310,7 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Task 9: Frontend Component Library
 INSERT INTO jobs (
-  id, client_id, title, description, category_id, status, price_fixed, price_currency,
+  id, client_id, title, description, category_id, status, budget, price_fixed, price_currency,
   delivery_window, required_skills, created_at, updated_at
 )
 SELECT 
@@ -312,7 +320,8 @@ SELECT
   'Create a design system component library using React, TypeScript, and Storybook. Components needed: Button, Input, Select, Modal, Table, Form, Card, Badge, Toast. Requirements: 1) TypeScript types, 2) Storybook documentation, 3) Unit tests (Jest + React Testing Library), 4) Accessibility (WCAG 2.1 AA), 5) NPM package setup.',
   id,
   'open',
-  22000, -- ₹220
+  22000, -- budget (₹220)
+  22000, -- price_fixed (₹220)
   'INR',
   '1-4w',
   ARRAY['React', 'TypeScript', 'Storybook', 'Component Library', 'Jest'],
@@ -323,7 +332,7 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Task 10: Data Pipeline ETL
 INSERT INTO jobs (
-  id, client_id, title, description, category_id, status, price_fixed, price_currency,
+  id, client_id, title, description, category_id, status, budget, price_fixed, price_currency,
   delivery_window, required_skills, created_at, updated_at
 )
 SELECT 
@@ -333,7 +342,8 @@ SELECT
   'Design and implement an ETL pipeline to process daily data from multiple sources (CSV, JSON, APIs) and load into data warehouse. Requirements: 1) Data validation and cleaning, 2) Transformations and aggregations, 3) Error handling and retry logic, 4) Monitoring and alerting, 5) Documentation. Tech stack: Python (Pandas/Airflow), PostgreSQL, AWS S3.',
   id,
   'open',
-  18000, -- ₹180
+  18000, -- budget (₹180)
+  18000, -- price_fixed (₹180)
   'INR',
   '1-4w',
   ARRAY['ETL', 'Python', 'Airflow', 'PostgreSQL', 'AWS', 'Data Processing'],
