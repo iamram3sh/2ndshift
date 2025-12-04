@@ -22,7 +22,7 @@ import {
   Settings, HelpCircle, Crown, ArrowRight, Lock, Gift,
   Layers, MoreHorizontal, ExternalLink, MapPin, Timer, Loader2
 } from 'lucide-react'
-import type { Job } from '@/types/jobs'
+import type { Job, JobFilters } from '@/types/jobs'
 
 export default function WorkerDashboard() {
   const router = useRouter()
@@ -30,7 +30,7 @@ export default function WorkerDashboard() {
   const [showBidModal, setShowBidModal] = useState(false)
   const [showShiftsModal, setShowShiftsModal] = useState(false)
   const [showBuyCreditsModal, setShowBuyCreditsModal] = useState(false)
-  const [filters, setFilters] = useState({ status: 'open' as const, role: 'worker' as const, minPrice: 50 })
+  const [filters, setFilters] = useState<JobFilters>({ status: 'open' as const, role: 'worker' as const, minPrice: 50 })
   
   const { data: currentUser } = useCurrentUser()
   const { data: creditsBalance = 0 } = useCreditsBalance()
@@ -131,7 +131,7 @@ export default function WorkerDashboard() {
         {/* Filters */}
         <TaskFilters
           filters={filters}
-          onFiltersChange={setFilters}
+          onFiltersChange={(newFilters) => setFilters(newFilters)}
         />
 
         {/* Tasks Grid */}
