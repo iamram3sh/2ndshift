@@ -24,9 +24,9 @@ interface ButtonProps {
 }
 
 const buttonVariants = {
-  primary: 'bg-[#1E40AF] text-white hover:bg-[#1E3A8A] shadow-md hover:shadow-lg active:shadow-md border border-transparent !text-white',
-  secondary: 'bg-white text-slate-900 hover:bg-slate-50 shadow-sm hover:shadow-md active:shadow-sm border border-slate-300 !text-slate-900 dark:bg-slate-800 dark:!text-white dark:hover:bg-slate-700 dark:border-slate-700',
-  outline: 'bg-transparent !text-slate-900 dark:!text-white border-2 border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800',
+  primary: '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50',
+  secondary: '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50',
+  outline: '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50',
   ghost: 'bg-transparent !text-slate-700 dark:!text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent',
   link: 'bg-transparent !text-[#1E40AF] hover:!text-[#1E3A8A] underline-offset-4 hover:underline p-0 border-0 shadow-none',
   danger: 'bg-red-600 !text-white hover:bg-red-700 shadow-md hover:shadow-lg active:shadow-md border border-transparent focus:ring-red-500'
@@ -52,7 +52,7 @@ export function Button({
   isLoading = false,
   ...props
 }: ButtonProps) {
-  const baseStyles = 'inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-all duration-300 transform hover:-translate-y-0.5 hover:scale-105 active:scale-100 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1E40AF]'
+  const baseStyles = 'inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1E40AF]'
   
   const classes = cn(
     baseStyles,
