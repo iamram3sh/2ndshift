@@ -267,7 +267,7 @@ export default function WorkerJobDiscoveryPage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-[#111] placeholder:text-[#333]"
+                  className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 !text-[#111] placeholder:!text-[#666]"
                 />
               </div>
             </div>
@@ -385,9 +385,10 @@ export default function WorkerJobDiscoveryPage() {
                           <div className="flex items-center gap-2 mb-1">
                             <h4 
                               className="text-lg font-bold !text-[#111] group-hover:text-sky-600 cursor-pointer transition-colors"
+                              style={{ color: '#111' }}
                               onClick={() => router.push(`/projects/${project.id}`)}
                             >
-                              {project.title}
+                              {project.title || 'Untitled Project'}
                             </h4>
                             {(project as any).escrow_enabled && (
                               <PaymentVerifiedBadge size="sm" />
@@ -419,8 +420,8 @@ export default function WorkerJobDiscoveryPage() {
                         </div>
                       </div>
 
-                      <p className="!text-[#333] mb-4 line-clamp-2 leading-relaxed">
-                        {project.description}
+                      <p className="!text-[#333] !font-normal mb-4 line-clamp-2 leading-relaxed" style={{ color: '#333' }}>
+                        {project.description || 'No description available'}
                       </p>
 
                       <div className="flex flex-wrap items-center justify-between gap-4">
