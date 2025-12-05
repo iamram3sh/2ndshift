@@ -238,7 +238,7 @@ export default function EmployersPage() {
               </Link>
               <Link 
                 href="/register?type=client" 
-                className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-all"
+                className="!bg-white !text-[#111] border-2 border-[#111] px-4 py-2 rounded-lg text-sm font-medium hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
               >
                 Post a Project Free
               </Link>

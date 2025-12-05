@@ -264,7 +264,7 @@ export default function PricingPage() {
               </Link>
               <Link 
                 href="/register" 
-                className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-all"
+                className="!bg-white !text-[#111] border-2 border-[#111] px-4 py-2 rounded-lg text-sm font-medium hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
               >
                 Get Started
               </Link>
@@ -290,9 +290,9 @@ export default function PricingPage() {
           <div className="inline-flex items-center bg-white/10 border border-white/20 rounded-xl p-1">
             <button
               onClick={() => setUserType('client')}
-              className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
+              className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 ${
                 userType === 'client'
-                  ? 'bg-white text-[#111]'
+                  ? '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
                   : 'text-white hover:bg-white/10'
               }`}
               style={userType !== 'client' ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : {}}
@@ -304,9 +304,9 @@ export default function PricingPage() {
             </button>
             <button
               onClick={() => setUserType('worker')}
-              className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
+              className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 ${
                 userType === 'worker'
-                  ? 'bg-white text-[#111]'
+                  ? '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
                   : 'text-white hover:bg-white/10'
               }`}
               style={userType !== 'worker' ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : {}}

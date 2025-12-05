@@ -207,7 +207,7 @@ export default function HowItWorksPage() {
               </Link>
               <Link 
                 href="/register" 
-                className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-all"
+                className="!bg-white !text-[#111] border-2 border-[#111] px-4 py-2 rounded-lg text-sm font-medium hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
               >
                 Get Started
               </Link>
@@ -230,10 +230,10 @@ export default function HowItWorksPage() {
           <div className="inline-flex items-center bg-white border border-slate-200 rounded-xl p-1 shadow-sm">
             <button
               onClick={() => setUserType('client')}
-              className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
+              className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 ${
                 userType === 'client'
-                  ? 'bg-slate-900 text-white'
-                  : 'text-[#333] hover:text-[#111]'
+                  ? '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
+                  : 'text-[#333] hover:text-[#111] hover:bg-slate-50'
               }`}
             >
               <span className="flex items-center gap-2">
@@ -243,10 +243,10 @@ export default function HowItWorksPage() {
             </button>
             <button
               onClick={() => setUserType('worker')}
-              className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
+              className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 ${
                 userType === 'worker'
-                  ? 'bg-slate-900 text-white'
-                  : 'text-[#333] hover:text-[#111]'
+                  ? '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
+                  : 'text-[#333] hover:text-[#111] hover:bg-slate-50'
               }`}
             >
               <span className="flex items-center gap-2">
@@ -306,7 +306,7 @@ export default function HowItWorksPage() {
           <div className="text-center mt-12">
             <Link
               href="/register"
-              className="inline-flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-xl font-medium hover:bg-slate-800 transition-all"
+              className="inline-flex items-center gap-2 !bg-white !text-[#111] border-2 border-[#111] px-6 py-3 rounded-xl font-medium hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
             >
               {userType === 'worker' ? 'Start Earning Today' : 'Post Your First Project'}
               <ArrowRight className="w-4 h-4" />

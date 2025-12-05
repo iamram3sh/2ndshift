@@ -93,10 +93,10 @@ export function RoleToggle({ variant = 'hero', onRoleChange, className = '' }: R
             id="worker-tab"
             onClick={() => handleRoleSelect('worker')}
             onKeyDown={(e) => handleKeyDown(e, 'worker')}
-            className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all flex items-center gap-3 ${
+            className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 flex items-center gap-3 ${
               role === 'worker'
-                ? 'bg-[#111] text-white shadow-lg'
-                : 'bg-white text-[#111] border-2 border-[#111] hover:bg-slate-50'
+                ? '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
+                : '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
             }`}
           >
             <Briefcase className="w-5 h-5" />
@@ -111,10 +111,10 @@ export function RoleToggle({ variant = 'hero', onRoleChange, className = '' }: R
             id="client-tab"
             onClick={() => handleRoleSelect('client')}
             onKeyDown={(e) => handleKeyDown(e, 'client')}
-            className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all flex items-center gap-3 ${
+            className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 flex items-center gap-3 ${
               role === 'client'
-                ? 'bg-[#111] text-white shadow-lg'
-                : 'bg-white text-[#111] border-2 border-[#111] hover:bg-slate-50'
+                ? '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
+                : '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
             }`}
           >
             <Users className="w-5 h-5" />
@@ -150,10 +150,10 @@ export function RoleToggle({ variant = 'hero', onRoleChange, className = '' }: R
           id="worker-tab-header"
           onClick={() => handleRoleSelect('worker')}
           onKeyDown={(e) => handleKeyDown(e, 'worker')}
-          className={`px-4 py-1.5 rounded-md text-sm font-semibold transition-all flex items-center gap-2 ${
+          className={`px-4 py-1.5 rounded-md text-sm font-semibold transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 flex items-center gap-2 ${
             role === 'worker'
-              ? 'bg-white text-[#111] shadow-sm'
-              : 'text-[#333] hover:text-[#111]'
+              ? '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
+              : '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
           }`}
           title="View as worker"
         >
@@ -169,10 +169,10 @@ export function RoleToggle({ variant = 'hero', onRoleChange, className = '' }: R
           id="client-tab-header"
           onClick={() => handleRoleSelect('client')}
           onKeyDown={(e) => handleKeyDown(e, 'client')}
-          className={`px-4 py-1.5 rounded-md text-sm font-semibold transition-all flex items-center gap-2 ${
+          className={`px-4 py-1.5 rounded-md text-sm font-semibold transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 flex items-center gap-2 ${
             role === 'client'
-              ? 'bg-white text-[#111] shadow-sm'
-              : 'text-[#333] hover:text-[#111]'
+              ? '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
+              : '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
           }`}
           title="View as client"
         >

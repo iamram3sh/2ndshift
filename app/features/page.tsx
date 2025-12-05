@@ -234,7 +234,7 @@ export default function FeaturesPage() {
               </Link>
               <Link 
                 href="/register" 
-                className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-all"
+                className="!bg-white !text-[#111] border-2 border-[#111] px-4 py-2 rounded-lg text-sm font-medium hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
               >
                 Get Started
               </Link>
@@ -601,10 +601,10 @@ export default function FeaturesPage() {
                 <div className="inline-flex items-center bg-slate-100 rounded-xl p-1">
                   <button
                     onClick={() => setUserView('client')}
-                    className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                    className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 ${
                       userView === 'client'
-                        ? 'bg-white text-[#111] shadow-sm'
-                        : 'text-[#333] hover:text-[#111]'
+                        ? '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
+                        : 'text-[#333] hover:text-[#111] hover:bg-white/50'
                     }`}
                   >
                     <span className="flex items-center gap-2">
@@ -614,10 +614,10 @@ export default function FeaturesPage() {
                   </button>
                   <button
                     onClick={() => setUserView('worker')}
-                    className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                    className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 ${
                       userView === 'worker'
-                        ? 'bg-white text-[#111] shadow-sm'
-                        : 'text-[#333] hover:text-[#111]'
+                        ? '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
+                        : 'text-[#333] hover:text-[#111] hover:bg-white/50'
                     }`}
                   >
                     <span className="flex items-center gap-2">
