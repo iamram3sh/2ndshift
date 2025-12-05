@@ -674,8 +674,8 @@ export default function ClientDashboard() {
             </div>
           </div>
 
-          {/* Right Sidebar */}
-          <div className="lg:col-span-1 space-y-6">
+            {/* Right Sidebar */}
+            <div className="lg:col-span-1 space-y-6">
               {/* Activity Feed */}
               <ActivityFeed
                 activities={activities.length > 0 ? activities : [
@@ -691,7 +691,7 @@ export default function ClientDashboard() {
               />
 
               {/* Active Contracts */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <div className="bg-white border border-slate-200 rounded-xl p-5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-slate-900">Active Contracts</h3>
                 <span className="text-xs text-slate-500">{contracts.filter(c => c.status === 'active').length} active</span>
@@ -718,95 +718,96 @@ export default function ClientDashboard() {
                   ))}
                 </div>
               )}
-            </div>
-
-            {/* Subscription Upsell */}
-            <SubscriptionUpsellSection userId={user?.id} userType="client" />
-
-            {/* Client Subscription Upsell */}
-            <SubscriptionUpsell
-              userType="client"
-              onSubscribe={() => router.push('/pricing')}
-            />
-
-            {/* Featured Job Promo */}
-            <div className="bg-gradient-to-br from-sky-500 to-[#0b63ff] rounded-xl p-5 text-white">
-              <div className="flex items-center gap-2 mb-3">
-                <Crown className="w-5 h-5" />
-                <span className="font-semibold">Feature Your Job</span>
               </div>
-              <p className="text-sky-100 text-sm mb-4">
-                Get 10x more applications. Your job appears at the top for 7 days.
-              </p>
-              <button
-                onClick={() => setShowBuyCreditsModal(true)}
-                className="w-full bg-white text-sky-600 py-2 rounded-lg text-sm font-semibold hover:bg-sky-50 transition-colors"
-              >
-                Feature for 3 Credits
-              </button>
-            </div>
 
-            {/* Recommended Professionals */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-slate-900">Recommended</h3>
-                <Link href="/workers" className="text-xs text-sky-600 font-medium hover:text-sky-700">
-                  View all
-                </Link>
+              {/* Subscription Upsell */}
+              <SubscriptionUpsellSection userId={user?.id} userType="client" />
+
+              {/* Client Subscription Upsell */}
+              <SubscriptionUpsell
+                userType="client"
+                onSubscribe={() => router.push('/pricing')}
+              />
+
+              {/* Featured Job Promo */}
+              <div className="bg-gradient-to-br from-sky-500 to-[#0b63ff] rounded-xl p-5 text-white">
+                <div className="flex items-center gap-2 mb-3">
+                  <Crown className="w-5 h-5" />
+                  <span className="font-semibold">Feature Your Job</span>
+                </div>
+                <p className="text-sky-100 text-sm mb-4">
+                  Get 10x more applications. Your job appears at the top for 7 days.
+                </p>
+                <button
+                  onClick={() => setShowBuyCreditsModal(true)}
+                  className="w-full bg-white text-sky-600 py-2 rounded-lg text-sm font-semibold hover:bg-sky-50 transition-colors"
+                >
+                  Feature for 3 Credits
+                </button>
               </div>
-              
-              <div className="space-y-3">
-                {[
-                  { name: 'Rahul S.', skill: 'React Developer', rating: 4.9, rate: '₹1,200/hr' },
-                  { name: 'Priya M.', skill: 'Cloud Architect', rating: 4.8, rate: '₹2,000/hr' },
-                  { name: 'Amit K.', skill: 'Backend Dev', rating: 4.9, rate: '₹1,400/hr' },
-                ].map((pro, i) => (
-                  <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                    <div className="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-sm font-medium text-slate-600">
-                      {pro.name.charAt(0)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-1">
-                        <span className="text-sm font-medium text-slate-900">{pro.name}</span>
-                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                        <span className="text-xs text-slate-500">{pro.rating}</span>
+
+              {/* Recommended Professionals */}
+              <div className="bg-white border border-slate-200 rounded-xl p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-slate-900">Recommended</h3>
+                  <Link href="/workers" className="text-xs text-sky-600 font-medium hover:text-sky-700">
+                    View all
+                  </Link>
+                </div>
+                
+                <div className="space-y-3">
+                  {[
+                    { name: 'Rahul S.', skill: 'React Developer', rating: 4.9, rate: '₹1,200/hr' },
+                    { name: 'Priya M.', skill: 'Cloud Architect', rating: 4.8, rate: '₹2,000/hr' },
+                    { name: 'Amit K.', skill: 'Backend Dev', rating: 4.9, rate: '₹1,400/hr' },
+                  ].map((pro, i) => (
+                    <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                      <div className="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-sm font-medium text-slate-600">
+                        {pro.name.charAt(0)}
                       </div>
-                      <div className="text-xs text-slate-500">{pro.skill}</div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1">
+                          <span className="text-sm font-medium text-slate-900">{pro.name}</span>
+                          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                          <span className="text-xs text-slate-500">{pro.rating}</span>
+                        </div>
+                        <div className="text-xs text-slate-500">{pro.skill}</div>
+                      </div>
+                      <span className="text-xs font-medium text-slate-600">{pro.rate}</span>
                     </div>
-                    <span className="text-xs font-medium text-slate-600">{pro.rate}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                
+                <button
+                  onClick={() => setShowShiftsModal(true)}
+                  className="w-full mt-4 flex items-center justify-center gap-2 text-sm text-amber-600 font-medium hover:text-amber-700"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  Get AI Recommendations (5 Shifts)
+                </button>
               </div>
-              
-              <button
-                onClick={() => setShowShiftsModal(true)}
-                className="w-full mt-4 flex items-center justify-center gap-2 text-sm text-amber-600 font-medium hover:text-amber-700"
-              >
-                <Sparkles className="w-4 h-4" />
-                Get AI Recommendations (5 Shifts)
-              </button>
-            </div>
 
-            {/* Quick Links */}
-            <div className="bg-white border border-slate-200 rounded-xl p-5">
-              <h3 className="font-semibold text-slate-900 mb-4">Quick Links</h3>
-              <div className="space-y-2">
-                <Link href="/projects/create" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                  <Plus className="w-5 h-5 text-slate-400" />
-                  <span className="text-sm text-slate-700">Post New Project</span>
-                </Link>
-                <Link href="/workers" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                  <Users className="w-5 h-5 text-slate-400" />
-                  <span className="text-sm text-slate-700">Browse Talent</span>
-                </Link>
-                <Link href="/messages" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                  <MessageSquare className="w-5 h-5 text-slate-400" />
-                  <span className="text-sm text-slate-700">Messages</span>
-                </Link>
-                <Link href="/settings" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                  <Settings className="w-5 h-5 text-slate-400" />
-                  <span className="text-sm text-slate-700">Settings</span>
-                </Link>
+              {/* Quick Links */}
+              <div className="bg-white border border-slate-200 rounded-xl p-5">
+                <h3 className="font-semibold text-slate-900 mb-4">Quick Links</h3>
+                <div className="space-y-2">
+                  <Link href="/projects/create" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                    <Plus className="w-5 h-5 text-slate-400" />
+                    <span className="text-sm text-slate-700">Post New Project</span>
+                  </Link>
+                  <Link href="/workers" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                    <Users className="w-5 h-5 text-slate-400" />
+                    <span className="text-sm text-slate-700">Browse Talent</span>
+                  </Link>
+                  <Link href="/messages" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                    <MessageSquare className="w-5 h-5 text-slate-400" />
+                    <span className="text-sm text-slate-700">Messages</span>
+                  </Link>
+                  <Link href="/settings" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                    <Settings className="w-5 h-5 text-slate-400" />
+                    <span className="text-sm text-slate-700">Settings</span>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
