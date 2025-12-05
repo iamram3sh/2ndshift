@@ -8,7 +8,7 @@ import {
   TrendingUp, Award, BadgeCheck, IndianRupee, Calculator, Gift,
   Sparkles, ChevronDown, ChevronUp, Layers, Briefcase, UserCheck,
   Receipt, BarChart3, MessageSquare, Calendar, Search, Send,
-  ThumbsUp, AlertCircle, RefreshCw, Wallet, IndianRupee, Crown
+  ThumbsUp, AlertCircle, RefreshCw, Wallet, Crown
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 

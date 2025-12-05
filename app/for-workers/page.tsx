@@ -8,7 +8,7 @@ import {
   Award, Target, Briefcase, Lock, CreditCard, Wallet, 
   Calendar, ChevronDown, ChevronUp, Layers, Receipt,
   Calculator, MessageSquare, Send, Globe, Gift, Crown,
-  IndianRupee, Clock3, Sparkles, UserPlus, Play, Heart,
+  Clock3, Sparkles, UserPlus, Play, Heart,
   ThumbsUp, XCircle, MinusCircle, AlertCircle, Timer,
   Phone, Mail, BookOpen
 } from 'lucide-react'
