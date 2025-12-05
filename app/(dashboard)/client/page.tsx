@@ -109,11 +109,22 @@ export default function ClientDashboard() {
   }, [])
 
   const checkAuth = async () => {
+    // Check if we just redirected from login
+    const justLoggedIn = localStorage.getItem('auth_redirected') === 'true'
+    if (justLoggedIn) {
+      localStorage.removeItem('auth_redirected')
+      // Give token time to be available
+      await new Promise(resolve => setTimeout(resolve, 200))
+    }
+    
     // Check authentication using v1 API
     const result = await apiClient.getCurrentUser()
     
     if (result.error || !result.data?.user) {
-      router.push('/login')
+      // Only redirect if we didn't just log in
+      if (!justLoggedIn) {
+        router.push('/login')
+      }
       return
     }
 

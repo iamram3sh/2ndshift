@@ -103,8 +103,14 @@ export default function LoginPage() {
           setRole(userRole, 'login')
         }
         
+        // Store auth state to prevent immediate redirect
+        localStorage.setItem('auth_redirected', 'true')
+        
         // Use replace instead of push to avoid back button issues
-        router.replace(targetRoute)
+        // Add a small delay to ensure token is stored
+        setTimeout(() => {
+          router.replace(targetRoute)
+        }, 100)
       }
     } catch (error: any) {
       console.error('Login error:', error)

@@ -120,7 +120,7 @@ export function Topbar({
                     <button 
                       onClick={() => {
                         setShowUserMenu(false)
-                        window.location.href = '/profile'
+                        window.location.href = role === 'client' ? '/client/profile/edit' : '/worker/profile/edit'
                       }}
                       className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 rounded"
                     >
@@ -129,7 +129,7 @@ export function Topbar({
                     <button 
                       onClick={() => {
                         setShowUserMenu(false)
-                        window.location.href = '/settings'
+                        window.location.href = role === 'client' ? '/client/settings' : '/worker/settings'
                       }}
                       className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 rounded"
                     >

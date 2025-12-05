@@ -50,10 +50,21 @@ export default function WorkerDashboard() {
       try {
         setIsLoading(true)
         
+        // Check if we just redirected from login
+        const justLoggedIn = localStorage.getItem('auth_redirected') === 'true'
+        if (justLoggedIn) {
+          localStorage.removeItem('auth_redirected')
+          // Give token time to be available
+          await new Promise(resolve => setTimeout(resolve, 200))
+        }
+        
         // Get current user
         const userResult = await apiClient.getCurrentUser()
         if (userResult.error || !userResult.data?.user) {
-          router.push('/login')
+          // Only redirect if we didn't just log in
+          if (!justLoggedIn) {
+            router.push('/login')
+          }
           return
         }
 
