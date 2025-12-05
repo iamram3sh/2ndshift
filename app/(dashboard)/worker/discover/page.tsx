@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
 import apiClient from '@/lib/apiClient'
 import { 
-  Search, Filter, Bookmark, Clock, IndianRupee, Calendar,
-  TrendingUp, Zap, Star, ArrowLeft, ArrowRight, Bell, Shield, Lock
+  Search, Bookmark, Clock, IndianRupee, Calendar,
+  TrendingUp, Zap, ArrowRight, Lock
 } from 'lucide-react'
 import type { User as UserType, Project } from '@/types/database.types'
 import RecommendedJobs from '@/components/worker/RecommendedJobs'
@@ -48,7 +48,6 @@ export default function WorkerJobDiscoveryPage() {
 
   const checkAuth = async () => {
     try {
-      // Use v1 API for authentication
       const result = await apiClient.getCurrentUser()
       
       if (result.error || !result.data?.user) {
@@ -59,7 +58,6 @@ export default function WorkerJobDiscoveryPage() {
 
       const currentUser = result.data.user
       
-      // Check if user is a worker
       if (currentUser.role !== 'worker') {
         const routes: Record<string, string> = {
           client: '/client',
@@ -92,7 +90,6 @@ export default function WorkerJobDiscoveryPage() {
         .select('*')
         .eq('status', 'open')
 
-      // Apply filters
       if (filters.minBudget) {
         query = query.gte('budget', parseFloat(filters.minBudget))
       }
@@ -106,7 +103,6 @@ export default function WorkerJobDiscoveryPage() {
         query = query.lte('duration_hours', parseInt(filters.maxDuration))
       }
 
-      // Apply sorting
       switch (filters.sortBy) {
         case 'budget_high':
           query = query.order('budget', { ascending: false })
@@ -125,13 +121,12 @@ export default function WorkerJobDiscoveryPage() {
 
       if (error) throw error
 
-      // Apply search filter
       let filteredData = data || []
       if (searchQuery) {
         filteredData = filteredData.filter(project => 
-          project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          project.required_skills.some((skill: string) => 
+          project.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          project.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          project.required_skills?.some((skill: string) => 
             skill.toLowerCase().includes(searchQuery.toLowerCase())
           )
         )
@@ -139,7 +134,6 @@ export default function WorkerJobDiscoveryPage() {
 
       setProjects(filteredData)
 
-      // Track search if query exists
       if (searchQuery && user) {
         await supabase
           .from('search_history')
@@ -226,7 +220,7 @@ export default function WorkerJobDiscoveryPage() {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="flex items-center gap-3">
           <div className="w-5 h-5 border-2 border-slate-300 border-t-[#111] rounded-full animate-spin" />
-          <span className="text-[#333]">Loading...</span>
+          <span className="text-[#111] font-medium">Loading...</span>
         </div>
       </div>
     )
@@ -245,7 +239,7 @@ export default function WorkerJobDiscoveryPage() {
                   <Zap className="w-8 h-8 text-sky-600" />
                   Job Discovery
                 </h1>
-                <p className="text-sm text-[#333] mt-1">
+                <p className="text-sm text-[#333] mt-1 font-medium">
                   Find your perfect project with AI-powered recommendations
                 </p>
               </div>
@@ -267,7 +261,8 @@ export default function WorkerJobDiscoveryPage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 !text-[#111] placeholder:!text-[#666]"
+                  className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-[#111] placeholder:text-[#666] bg-white"
+                  style={{ color: '#111' }}
                 />
               </div>
             </div>
@@ -292,7 +287,8 @@ export default function WorkerJobDiscoveryPage() {
                   value={filters.minBudget}
                   onChange={(e) => setFilters(prev => ({ ...prev, minBudget: e.target.value }))}
                   placeholder="5000"
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm text-[#111] placeholder:text-[#333]"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm text-[#111] placeholder:text-[#666] bg-white"
+                  style={{ color: '#111' }}
                 />
               </div>
               <div>
@@ -304,7 +300,8 @@ export default function WorkerJobDiscoveryPage() {
                   value={filters.maxBudget}
                   onChange={(e) => setFilters(prev => ({ ...prev, maxBudget: e.target.value }))}
                   placeholder="100000"
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm text-[#111] placeholder:text-[#333]"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm text-[#111] placeholder:text-[#666] bg-white"
+                  style={{ color: '#111' }}
                 />
               </div>
               <div>
@@ -316,7 +313,8 @@ export default function WorkerJobDiscoveryPage() {
                   value={filters.minDuration}
                   onChange={(e) => setFilters(prev => ({ ...prev, minDuration: e.target.value }))}
                   placeholder="10"
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm text-[#111] placeholder:text-[#333]"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm text-[#111] placeholder:text-[#666] bg-white"
+                  style={{ color: '#111' }}
                 />
               </div>
               <div>
@@ -326,7 +324,8 @@ export default function WorkerJobDiscoveryPage() {
                 <select
                   value={filters.sortBy}
                   onChange={(e) => setFilters(prev => ({ ...prev, sortBy: e.target.value as any }))}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm text-[#111] placeholder:text-[#333]"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm text-[#111] bg-white"
+                  style={{ color: '#111' }}
                 >
                   <option value="newest">Newest First</option>
                   <option value="budget_high">Budget: High to Low</option>
@@ -335,16 +334,17 @@ export default function WorkerJobDiscoveryPage() {
                 </select>
               </div>
             </div>
-            <div className="mt-3 flex gap-2">
+            <div className="mt-3 flex gap-2 items-center">
               <button
                 onClick={clearFilters}
                 className="px-4 py-2 text-sm border border-slate-200 rounded-lg hover:bg-slate-50 transition text-[#111] font-medium"
+                style={{ color: '#111' }}
               >
                 Clear Filters
               </button>
-                <div className="text-sm text-[#333] flex items-center font-medium">
-                  Showing {projects.length} projects
-                </div>
+              <div className="text-sm text-[#333] flex items-center font-medium" style={{ color: '#333' }}>
+                Showing {projects.length} projects
+              </div>
             </div>
           </div>
         </div>
@@ -357,7 +357,7 @@ export default function WorkerJobDiscoveryPage() {
 
             {/* All Projects */}
             <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
-              <h3 className="text-xl font-bold text-[#111] mb-6 flex items-center gap-2">
+              <h3 className="text-xl font-bold text-[#111] mb-6 flex items-center gap-2" style={{ color: '#111' }}>
                 <TrendingUp className="w-6 h-6 text-sky-600" />
                 All Available Projects
               </h3>
@@ -365,7 +365,7 @@ export default function WorkerJobDiscoveryPage() {
               {projects.length === 0 ? (
                 <div className="text-center py-12">
                   <Search className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                  <p className="text-[#333] font-medium mb-2">No projects match your filters</p>
+                  <p className="text-[#333] font-medium mb-2" style={{ color: '#333' }}>No projects match your filters</p>
                   <button
                     onClick={clearFilters}
                     className="mt-4 px-6 py-2 bg-[#111] text-white rounded-lg hover:bg-[#333] transition-all font-semibold shadow-lg"
@@ -384,7 +384,7 @@ export default function WorkerJobDiscoveryPage() {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <h4 
-                              className="text-lg font-bold !text-[#111] group-hover:text-sky-600 cursor-pointer transition-colors"
+                              className="text-lg font-bold text-[#111] group-hover:text-sky-600 cursor-pointer transition-colors"
                               style={{ color: '#111' }}
                               onClick={() => router.push(`/projects/${project.id}`)}
                             >
@@ -396,16 +396,15 @@ export default function WorkerJobDiscoveryPage() {
                           </div>
                         </div>
                         <div className="text-right ml-4">
-                          <div className="text-xl font-bold text-emerald-600">
-                            ₹{project.budget.toLocaleString()}
+                          <div className="text-xl font-bold text-emerald-600" style={{ color: '#059669' }}>
+                            ₹{project.budget?.toLocaleString() || '0'}
                           </div>
-                          <div className="text-xs !text-[#333] flex items-center justify-end gap-1 font-medium">
+                          <div className="text-xs text-[#333] flex items-center justify-end gap-1 font-medium" style={{ color: '#333' }}>
                             {(project as any).escrow_enabled && (
                               <Lock className="w-3 h-3 text-emerald-500" />
                             )}
                             Budget
                           </div>
-                          {/* Price Breakdown - Compact */}
                           {user && (
                             <div className="mt-2">
                               <PriceBreakdown
@@ -420,31 +419,41 @@ export default function WorkerJobDiscoveryPage() {
                         </div>
                       </div>
 
-                      <p className="!text-[#333] !font-normal mb-4 line-clamp-2 leading-relaxed" style={{ color: '#333' }}>
+                      <p 
+                        className="text-[#333] mb-4 line-clamp-2 leading-relaxed font-normal" 
+                        style={{ color: '#333' }}
+                      >
                         {project.description || 'No description available'}
                       </p>
 
                       <div className="flex flex-wrap items-center justify-between gap-4">
-                        <div className="flex flex-wrap items-center gap-4 text-sm !text-[#333] font-medium">
+                        <div className="flex flex-wrap items-center gap-4 text-sm text-[#333] font-medium" style={{ color: '#333' }}>
                           <span className="flex items-center gap-1.5">
-                            <Clock className="w-4 h-4 !text-[#333]" />
-                            {project.duration_hours}h
+                            <Clock className="w-4 h-4 text-[#333]" style={{ color: '#333' }} />
+                            {project.duration_hours || 0}h
                           </span>
                           {project.deadline && (
                             <span className="flex items-center gap-1.5">
-                              <Calendar className="w-4 h-4 !text-[#333]" />
+                              <Calendar className="w-4 h-4 text-[#333]" style={{ color: '#333' }} />
                               {new Date(project.deadline).toLocaleDateString()}
                             </span>
                           )}
                           <div className="flex flex-wrap gap-1.5">
-                            {project.required_skills.slice(0, 3).map(skill => (
-                              <span key={skill} className="px-2.5 py-1 bg-slate-100 !text-[#111] rounded-md text-xs font-medium">
+                            {(project.required_skills || []).slice(0, 3).map((skill: string) => (
+                              <span 
+                                key={skill} 
+                                className="px-2.5 py-1 bg-slate-100 text-[#111] rounded-md text-xs font-medium"
+                                style={{ color: '#111' }}
+                              >
                                 {skill}
                               </span>
                             ))}
-                            {project.required_skills.length > 3 && (
-                              <span className="px-2.5 py-1 bg-slate-100 !text-[#111] rounded-md text-xs font-medium">
-                                +{project.required_skills.length - 3}
+                            {(project.required_skills || []).length > 3 && (
+                              <span 
+                                className="px-2.5 py-1 bg-slate-100 text-[#111] rounded-md text-xs font-medium"
+                                style={{ color: '#111' }}
+                              >
+                                +{(project.required_skills || []).length - 3}
                               </span>
                             )}
                           </div>
@@ -456,14 +465,18 @@ export default function WorkerJobDiscoveryPage() {
                             className={`p-2 rounded-lg transition ${
                               savedProjects.has(project.id)
                                 ? 'bg-amber-100 text-amber-600'
-                                : 'bg-slate-100 !text-[#333] hover:bg-slate-200'
+                                : 'bg-slate-100 text-[#333] hover:bg-slate-200'
                             }`}
+                            style={{ 
+                              color: savedProjects.has(project.id) ? '#d97706' : '#333' 
+                            }}
                           >
                             <Bookmark className={`w-4 h-4 ${savedProjects.has(project.id) ? 'fill-current' : ''}`} />
                           </button>
                           <button
                             onClick={() => router.push(`/projects/${project.id}`)}
-                            className="inline-flex items-center gap-2 !bg-white !text-[#111] border-2 border-[#111] px-4 py-2 rounded-lg hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 text-sm font-semibold"
+                            className="inline-flex items-center gap-2 bg-white text-[#111] border-2 border-[#111] px-4 py-2 rounded-lg hover:bg-[#2563EB] hover:text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 text-sm font-semibold"
+                            style={{ color: '#111' }}
                           >
                             Place Bid
                             <ArrowRight className="w-4 h-4" />
@@ -496,7 +509,6 @@ export default function WorkerJobDiscoveryPage() {
           onClose={() => setShowAlertModal(false)}
           onSave={() => {
             setShowAlertModal(false)
-            // Refresh will happen automatically through JobAlertsManager
           }}
           userId={user.id}
         />

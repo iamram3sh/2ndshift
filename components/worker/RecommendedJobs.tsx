@@ -133,11 +133,11 @@ export default function RecommendedJobs({ workerId }: RecommendedJobsProps) {
           <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
             <Sparkles className="w-6 h-6 text-purple-600 dark:text-purple-400" />
           </div>
-          <h3 className="text-xl font-bold !text-[#111] dark:!text-white">Recommended for You</h3>
+          <h3 className="text-xl font-bold !text-[#111] dark:!text-white" style={{ color: '#111' }}>Recommended for You</h3>
         </div>
-        <div className="text-center py-8 !text-[#333] dark:!text-gray-400">
+        <div className="text-center py-8 !text-[#333] dark:!text-gray-400" style={{ color: '#333' }}>
           <Sparkles className="w-16 h-16 mx-auto mb-4 opacity-50" />
-          <p>Complete your profile to get personalized job recommendations</p>
+          <p style={{ color: '#333' }}>Complete your profile to get personalized job recommendations</p>
         </div>
       </div>
     )
@@ -151,8 +151,8 @@ export default function RecommendedJobs({ workerId }: RecommendedJobsProps) {
             <Sparkles className="w-6 h-6 text-purple-600 dark:text-purple-400" />
           </div>
           <div>
-            <h3 className="text-xl font-bold !text-[#111] dark:!text-white">Recommended for You</h3>
-            <p className="text-sm !text-[#333] dark:!text-gray-400">Based on your skills and preferences</p>
+            <h3 className="text-xl font-bold !text-[#111] dark:!text-white" style={{ color: '#111' }}>Recommended for You</h3>
+            <p className="text-sm !text-[#333] dark:!text-gray-400" style={{ color: '#333' }}>Based on your skills and preferences</p>
           </div>
         </div>
         <div className="flex items-center gap-2 text-sm text-purple-600 dark:text-purple-400">
@@ -199,7 +199,7 @@ export default function RecommendedJobs({ workerId }: RecommendedJobsProps) {
                 <div className="text-xl font-bold text-green-600 dark:text-green-400">
                   ₹{project.budget.toLocaleString()}
                 </div>
-                <div className="text-xs !text-[#333] dark:!text-gray-400">Budget</div>
+                <div className="text-xs !text-[#333] dark:!text-gray-400" style={{ color: '#333' }}>Budget</div>
               </div>
             </div>
 
@@ -208,25 +208,25 @@ export default function RecommendedJobs({ workerId }: RecommendedJobsProps) {
             </p>
 
             <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="flex flex-wrap items-center gap-4 text-sm !text-[#333] dark:!text-gray-400">
-                <span className="flex items-center gap-1">
-                  <Clock className="w-4 h-4 !text-[#333] dark:!text-gray-400" />
+              <div className="flex flex-wrap items-center gap-4 text-sm !text-[#333] dark:!text-gray-400" style={{ color: '#333' }}>
+                <span className="flex items-center gap-1" style={{ color: '#333' }}>
+                  <Clock className="w-4 h-4" style={{ color: '#333' }} />
                   {project.duration_hours}h
                 </span>
                 {project.deadline && (
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4 !text-[#333] dark:!text-gray-400" />
+                  <span className="flex items-center gap-1" style={{ color: '#333' }}>
+                    <Calendar className="w-4 h-4" style={{ color: '#333' }} />
                     {new Date(project.deadline).toLocaleDateString()}
                   </span>
                 )}
                 <div className="flex flex-wrap gap-1">
                   {project.required_skills.slice(0, 3).map(skill => (
-                    <span key={skill} className="px-2 py-1 bg-gray-100 dark:bg-slate-700 !text-[#111] dark:!text-gray-300 rounded text-xs font-medium">
+                    <span key={skill} className="px-2 py-1 bg-gray-100 dark:bg-slate-700 !text-[#111] dark:!text-gray-300 rounded text-xs font-medium" style={{ color: '#111' }}>
                       {skill}
                     </span>
                   ))}
                   {project.required_skills.length > 3 && (
-                    <span className="px-2 py-1 bg-gray-100 dark:bg-slate-700 !text-[#111] dark:!text-gray-300 rounded text-xs font-medium">
+                    <span className="px-2 py-1 bg-gray-100 dark:bg-slate-700 !text-[#111] dark:!text-gray-300 rounded text-xs font-medium" style={{ color: '#111' }}>
                       +{project.required_skills.length - 3}
                     </span>
                   )}
