@@ -83,19 +83,28 @@ export default function LoginPage() {
       }
       
       if (result.data?.user) {
+        const userRole = result.data.user.role
         const routes: Record<string, string> = {
           worker: '/worker', // Worker dashboard
           client: '/client', // Client dashboard
           admin: '/dashboard/admin',
           superadmin: '/dashboard/admin'
         }
-        const targetRoute = routes[result.data.user.role] || '/worker'
-        trackEvent('login_success', { role: result.data.user.role })
-        if (result.data.user.role === 'worker' || result.data.user.role === 'client') {
-          trackRoleSelected(result.data.user.role, 'login')
-          setRole(result.data.user.role, 'login')
+        
+        // Ensure worker role always goes to /worker dashboard, not /work landing page
+        const targetRoute = routes[userRole] || '/worker'
+        
+        // Debug log to verify redirect
+        console.log('Login redirect:', { userRole, targetRoute })
+        
+        trackEvent('login_success', { role: userRole })
+        if (userRole === 'worker' || userRole === 'client') {
+          trackRoleSelected(userRole, 'login')
+          setRole(userRole, 'login')
         }
-        router.push(targetRoute)
+        
+        // Use replace instead of push to avoid back button issues
+        router.replace(targetRoute)
       }
     } catch (error: any) {
       console.error('Login error:', error)
