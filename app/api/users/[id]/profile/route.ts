@@ -4,11 +4,12 @@ import { supabaseAdmin } from '@/lib/supabase/admin'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return requireAuth(request, async (req) => {
     try {
-      const userId = params.id
+      const { id } = await params
+      const userId = id
       const currentUserId = req.userId!
 
       // Users can view their own profile or admins can view any

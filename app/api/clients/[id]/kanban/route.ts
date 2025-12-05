@@ -4,11 +4,12 @@ import { supabaseAdmin } from '@/lib/supabase/admin'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return requireAuth(request, async (req) => {
     try {
-      const clientId = params.id
+      const { id } = await params
+      const clientId = id
       const userId = req.userId!
 
       // Verify access
