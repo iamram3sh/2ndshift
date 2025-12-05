@@ -1,237 +1,323 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { TaskCard } from '@/components/tasks/TaskCard'
-import { TaskFilters } from '@/components/tasks/TaskFilters'
-import { BidModal } from '@/components/tasks/BidModal'
-import { ShiftsModal } from '@/components/shifts/ShiftsModal'
-import { BuyCreditsModalV1 } from '@/components/revenue/BuyCreditsModalV1'
+import { supabase } from '@/lib/supabase/client'
+import apiClient from '@/lib/apiClient'
+import { 
+  Briefcase, IndianRupee, User, LogOut, Plus, Clock,
+  Users, CheckCircle, TrendingUp, Eye, MessageSquare,
+  Bell, Search, Calendar, Award, BarChart3, FileText, 
+  Zap, Target, Activity, Star, ChevronRight, Rocket, 
+  Shield, BadgeCheck, Sparkles, ArrowRight, Crown,
+  Layers, XCircle, Timer, MapPin, Filter, ArrowUpRight,
+  UserPlus, Send, Gift, Settings, HelpCircle, Info,
+  CheckCircle2, TrendingDown
+} from 'lucide-react'
 import { Sidebar } from '@/components/ui/Sidebar'
 import { Topbar } from '@/components/ui/Topbar'
 import { StatsBar } from '@/components/ui/StatsBar'
-import { ActivityFeed } from '@/components/ui/ActivityFeed'
-import apiClient from '@/lib/apiClient'
-import { 
-  Layers, LogOut, Zap, Loader2, AlertCircle, Briefcase,
-  Shield, IndianRupee, Search, Sparkles, TrendingUp, Users, DollarSign
-} from 'lucide-react'
-import type { Job, JobFilters } from '@/types/jobs'
-import { Skeleton } from '@/components/ui/Skeleton'
+import { KanbanBoard, type KanbanColumn } from '@/components/ui/KanbanBoard'
+import { ActivityFeed, type ActivityItem } from '@/components/ui/ActivityFeed'
+import type { User as UserType } from '@/types/database.types'
+
+interface Application {
+  id: string
+  project_id: string
+  job_id?: string
+  worker_id: string
+  cover_letter: string
+  proposed_rate: number
+  status: 'pending' | 'accepted' | 'rejected' | 'withdrawn'
+  created_at: string
+  job?: any
+  client?: UserType
+}
+
+interface DashboardStats {
+  activeApplications: number
+  acceptedJobs: number
+  completedJobs: number
+  totalEarnings: number
+  pendingApplications: number
+  totalClients: number
+  avgJobValue: number
+  shiftsBalance: number
+  activeContracts: number
+}
+
+interface JobWithClient {
+  id: string
+  title: string
+  description: string
+  budget?: number
+  price_fixed?: number
+  status: string
+  client_id: string
+  created_at: string
+  client?: UserType
+  applicationCount?: number
+}
 
 export default function WorkerDashboard() {
   const router = useRouter()
-  const [selectedTask, setSelectedTask] = useState<Job | null>(null)
-  const [showBidModal, setShowBidModal] = useState(false)
-  const [showShiftsModal, setShowShiftsModal] = useState(false)
-  const [showBuyCreditsModal, setShowBuyCreditsModal] = useState(false)
-  
-  // State management
-  const [currentUser, setCurrentUser] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [tasks, setTasks] = useState<Job[]>([])
-  const [tasksLoading, setTasksLoading] = useState(false)
-  const [tasksError, setTasksError] = useState<Error | null>(null)
-  const [creditsBalance, setCreditsBalance] = useState(0)
-  const [dashboardMetrics, setDashboardMetrics] = useState<any>(null)
-  const [activities, setActivities] = useState<any[]>([])
-  
-  const [filters, setFilters] = useState<JobFilters>({
-    status: 'open',
-    role: 'worker',
-    minPrice: 50
+  const [user, setUser] = useState<UserType | null>(null)
+  const [jobs, setJobs] = useState<JobWithClient[]>([])
+  const [applications, setApplications] = useState<Application[]>([])
+  const [stats, setStats] = useState<DashboardStats>({
+    activeApplications: 0,
+    acceptedJobs: 0,
+    completedJobs: 0,
+    totalEarnings: 0,
+    pendingApplications: 0,
+    totalClients: 0,
+    avgJobValue: 0,
+    shiftsBalance: 0,
+    activeContracts: 0
   })
+  const [isLoading, setIsLoading] = useState(true)
+  const [filterStatus, setFilterStatus] = useState<string>('all')
+  const [dashboardMetrics, setDashboardMetrics] = useState<any>(null)
+  const [kanbanColumns, setKanbanColumns] = useState<KanbanColumn[]>([])
+  const [activities, setActivities] = useState<ActivityItem[]>([])
 
-  // Fetch current user and credits
-  useEffect(() => {
-    const loadUserData = async () => {
-      try {
-        setIsLoading(true)
-        
-        // Check if we just redirected from login
-        const justLoggedIn = localStorage.getItem('auth_redirected') === 'true'
-        if (justLoggedIn) {
-          localStorage.removeItem('auth_redirected')
-          // Give token time to be available
-          await new Promise(resolve => setTimeout(resolve, 200))
-        }
-        
-        // Get current user - use skipRedirect to prevent redirect loops
-        const userResult = await apiClient.getCurrentUser({ skipRedirect: true })
-        if (userResult.error || !userResult.data?.user) {
-          // Only redirect if we didn't just log in and error is not 401 (might be network issue)
-          if (!justLoggedIn && userResult.error?.status !== 401) {
-            // Try refresh first
-            const refreshResult = await apiClient.refreshAccessToken()
-            if (refreshResult.error) {
-              router.push('/login')
-            } else {
-              // Retry getting user after refresh
-              const retryResult = await apiClient.getCurrentUser({ skipRedirect: true })
-              if (retryResult.error || !retryResult.data?.user) {
-                router.push('/login')
-              } else {
-                setCurrentUser(retryResult.data.user)
-              }
-            }
-          }
-          return
-        }
-
-        const user = userResult.data.user
-        if (user.role !== 'worker') {
-          router.push(user.role === 'client' ? '/client' : '/login')
-          return
-        }
-
-        setCurrentUser(user)
-
-        // Get credits balance
-        const creditsResult = await apiClient.getCreditsBalance()
-        if (creditsResult.data) {
-          setCreditsBalance(creditsResult.data.balance || 0)
-        }
-
-        // Fetch dashboard metrics
-        try {
-          const metricsResponse = await fetch('/api/dashboard/metrics?role=worker', {
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-            },
-          })
-          if (metricsResponse.ok) {
-            const metrics = await metricsResponse.json()
-            setDashboardMetrics(metrics)
-          }
-        } catch (err) {
-          console.error('Error fetching metrics:', err)
-        }
-      } catch (err) {
-        console.error('Error loading user data:', err)
-        router.push('/login')
-      } finally {
-        setIsLoading(false)
-      }
+  const checkAuth = async () => {
+    // Check if we just redirected from login
+    const justLoggedIn = localStorage.getItem('auth_redirected') === 'true'
+    if (justLoggedIn) {
+      localStorage.removeItem('auth_redirected')
+      // Give token time to be available
+      await new Promise(resolve => setTimeout(resolve, 200))
     }
-
-    loadUserData()
-  }, [router])
-
-  // Fetch tasks when user is loaded and filters change
-  useEffect(() => {
-    if (!currentUser) return
-
-    const fetchTasks = async () => {
-      try {
-        setTasksLoading(true)
-        setTasksError(null)
-
-        const params: any = {
-          role: 'worker',
-          status: 'open',
-          ...filters,
-        }
-        
-        const result = await apiClient.listJobs(params)
-
-        if (result.error) {
-          // Don't show error for 401 - let refresh handle it
-          if (result.error.status === 401) {
-            // Try refresh
-            const refreshResult = await apiClient.refreshAccessToken()
-            if (refreshResult.data?.access_token) {
-              // Retry the request
-              const retryResult = await apiClient.listJobs(params)
-              if (retryResult.error) {
-                const errorMsg = retryResult.error.message || retryResult.error.error || 'Failed to fetch tasks'
-                setTasksError(new Error(errorMsg))
-                setTasks([])
-              } else {
-                const jobs = retryResult.data?.jobs || []
-                setTasks(jobs)
-              }
-            } else {
-              const errorMsg = result.error.message || result.error.error || 'Failed to fetch tasks'
-              setTasksError(new Error(errorMsg))
-              setTasks([])
-            }
+    
+    // Check authentication using v1 API - use skipRedirect to prevent redirect loops
+    const result = await apiClient.getCurrentUser({ skipRedirect: true })
+    
+    if (result.error || !result.data?.user) {
+      // Only redirect if we didn't just log in and error is not 401 (might be network issue)
+      if (!justLoggedIn && result.error?.status !== 401) {
+        // Try refresh first
+        const refreshResult = await apiClient.refreshAccessToken()
+        if (refreshResult.error) {
+          router.push('/login?next=/worker')
+        } else {
+          // Retry getting user after refresh
+          const retryResult = await apiClient.getCurrentUser({ skipRedirect: true })
+          if (retryResult.error || !retryResult.data?.user) {
+            router.push('/login?next=/worker')
           } else {
-            const errorMsg = result.error.message || result.error.error || 'Failed to fetch tasks'
-            setTasksError(new Error(errorMsg))
-            setTasks([])
+            const currentUser = retryResult.data.user
+            if (currentUser.role !== 'worker') {
+              const routes: Record<string, string> = {
+                client: '/client',
+                admin: '/dashboard/admin',
+                superadmin: '/dashboard/admin'
+              }
+              router.push(routes[currentUser.role] || '/login')
+              return
+            }
+            setUser({
+              id: currentUser.id,
+              email: currentUser.email,
+              full_name: currentUser.name || '',
+              user_type: 'worker',
+            } as UserType)
+            await fetchWorkerData(currentUser.id)
           }
-          return
         }
-
-        if (!result.data || !result.data.jobs) {
-          setTasks([])
-          return
-        }
-
-        let jobs = result.data.jobs || []
-
-        // Apply client-side filtering for minPrice (fallback)
-        if (filters.minPrice && filters.minPrice >= 50) {
-          jobs = jobs.filter((job: Job) => {
-            const price = job.price_fixed || (job as any).budget || 0
-            const priceNum = typeof price === 'string' ? parseFloat(price) : price
-            return priceNum >= filters.minPrice!
-          })
-        }
-
-        // Apply search filter
-        if (filters.search) {
-          const searchLower = filters.search.toLowerCase()
-          jobs = jobs.filter((job: Job) => 
-            job.title.toLowerCase().includes(searchLower) ||
-            job.description.toLowerCase().includes(searchLower)
-          )
-        }
-
-        setTasks(jobs)
-      } catch (err: any) {
-        setTasksError(err instanceof Error ? err : new Error('Failed to fetch tasks'))
-        setTasks([])
-      } finally {
-        setTasksLoading(false)
       }
-    }
-
-    fetchTasks()
-  }, [currentUser, filters])
-
-  const handleBidClick = (task: Job) => {
-    if (creditsBalance < 3) {
-      setShowBuyCreditsModal(true)
       return
     }
-    setSelectedTask(task)
-    setShowBidModal(true)
+
+    const currentUser = result.data.user
+    
+    // Check if user is a worker
+    if (currentUser.role !== 'worker') {
+      const routes: Record<string, string> = {
+        client: '/client',
+        admin: '/dashboard/admin',
+        superadmin: '/dashboard/admin'
+      }
+      router.push(routes[currentUser.role] || '/login')
+      return
+    }
+
+    // Set user data
+    setUser({
+      id: currentUser.id,
+      email: currentUser.email,
+      full_name: currentUser.name || '',
+      user_type: 'worker',
+    } as UserType)
+
+    // Fetch dashboard data
+    await fetchWorkerData(currentUser.id)
+    
+    setIsLoading(false)
   }
 
-  const handleBidSuccess = () => {
-    // Refetch tasks
-    if (currentUser) {
-      const fetchTasks = async () => {
-        try {
-          const result = await apiClient.listJobs({
-            role: 'worker',
-            status: 'open',
-            ...filters,
-          })
-          if (result.data?.jobs) {
-            setTasks(result.data.jobs)
+  const fetchWorkerData = async (userId: string) => {
+    await Promise.all([
+      fetchApplications(userId),
+      fetchJobs(userId),
+      fetchShiftsBalance(),
+      fetchPlatformConfig()
+    ])
+
+    // Fetch dashboard metrics
+    try {
+      const metricsResponse = await fetch('/api/dashboard/metrics?role=worker', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      })
+      if (metricsResponse.ok) {
+        const metrics = await metricsResponse.json()
+        setDashboardMetrics(metrics)
+      }
+    } catch (err) {
+      console.error('Error fetching metrics:', err)
+    }
+
+    // Build activity feed
+    buildActivityFeed(userId)
+    
+    setIsLoading(false)
+  }
+
+  const fetchApplications = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('applications')
+        .select(`
+          *,
+          job:jobs(*, client:users!jobs_client_id_fkey(id, full_name, email))
+        `)
+        .eq('worker_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(20)
+
+      if (error) throw error
+
+      if (data) {
+        setApplications(data as any)
+        const pending = data.filter(app => app.status === 'pending').length
+        const accepted = data.filter(app => app.status === 'accepted').length
+        
+        setStats(prev => ({
+          ...prev,
+          pendingApplications: pending,
+          activeApplications: accepted,
+          acceptedJobs: accepted
+        }))
+      }
+    } catch (err) {
+      console.error('Error fetching applications:', err)
+    }
+  }
+
+  const fetchJobs = async (userId: string) => {
+    try {
+      // Fetch jobs the worker has applied to
+      const { data: applicationsData } = await supabase
+        .from('applications')
+        .select('job_id, job:jobs(*)')
+        .eq('worker_id', userId)
+        .in('status', ['pending', 'accepted'])
+
+      if (applicationsData) {
+        const jobIds = applicationsData.map(app => app.job_id).filter(Boolean)
+        
+        if (jobIds.length > 0) {
+          const { data: jobsData, error } = await supabase
+            .from('jobs')
+            .select(`
+              *,
+              client:users!jobs_client_id_fkey(id, full_name, email)
+            `)
+            .in('id', jobIds)
+            .order('created_at', { ascending: false })
+
+          if (error) throw error
+
+          if (jobsData) {
+            setJobs(jobsData as any)
+            
+            // Calculate stats
+            const completed = jobsData.filter(job => job.status === 'completed').length
+            const totalValue = jobsData.reduce((sum, job) => {
+              return sum + (job.price_fixed || job.budget || 0)
+            }, 0)
+            const avgValue = jobsData.length > 0 ? totalValue / jobsData.length : 0
+            
+            const uniqueClients = new Set(jobsData.map(job => job.client_id)).size
+
+            setStats(prev => ({
+              ...prev,
+              completedJobs: completed,
+              totalEarnings: totalValue,
+              avgJobValue: avgValue,
+              totalClients: uniqueClients
+            }))
           }
-        } catch (err) {
-          console.error('Error refetching tasks:', err)
         }
       }
-      fetchTasks()
+    } catch (err) {
+      console.error('Error fetching jobs:', err)
     }
-    setShowBidModal(false)
-    setSelectedTask(null)
+  }
+
+  const fetchShiftsBalance = useCallback(async () => {
+    try {
+      const result = await apiClient.getCreditsBalance()
+      if (result.data) {
+        const balance = (result.data && typeof result.data === 'object' && 'balance' in result.data) ? (result.data as any).balance || 0 : 0
+        setStats(prev => ({ ...prev, shiftsBalance: balance }))
+      }
+    } catch (err) {
+      console.error('Error fetching credits balance:', err)
+    }
+  }, [])
+
+  const fetchPlatformConfig = useCallback(async () => {
+    try {
+      const result = await apiClient.getPlatformConfig()
+      if (result.data) {
+        // Handle platform config if needed
+      }
+    } catch (err) {
+      console.error('Error fetching platform config:', err)
+    }
+  }, [])
+
+  const buildActivityFeed = async (userId: string) => {
+    const activityItems: ActivityItem[] = []
+
+    // Get recent applications
+    const recentApplications = applications.slice(0, 5)
+    recentApplications.forEach(app => {
+      activityItems.push({
+        id: `app-${app.id}`,
+        timestamp: app.created_at,
+        type: app.status === 'accepted' ? 'success' : app.status === 'rejected' ? 'error' : 'info',
+        title: app.status === 'accepted' 
+          ? `Application accepted for "${app.job?.title || 'Job'}"`
+          : app.status === 'pending'
+          ? `Applied to "${app.job?.title || 'Job'}"`
+          : `Application ${app.status} for "${app.job?.title || 'Job'}"`,
+        description: app.cover_letter ? app.cover_letter.substring(0, 100) : undefined,
+      })
+    })
+
+    // Sort by timestamp
+    activityItems.sort((a, b) => {
+      const timeA = typeof a.timestamp === 'string' ? new Date(a.timestamp).getTime() : a.timestamp.getTime()
+      const timeB = typeof b.timestamp === 'string' ? new Date(b.timestamp).getTime() : b.timestamp.getTime()
+      return timeB - timeA
+    })
+
+    setActivities(activityItems.slice(0, 10))
   }
 
   const handleSignOut = async () => {
@@ -240,46 +326,43 @@ export default function WorkerDashboard() {
     router.push('/')
   }
 
-  const handleRetry = () => {
-    setTasksError(null)
-    if (currentUser) {
-      const fetchTasks = async () => {
-        try {
-          setTasksLoading(true)
-          const result = await apiClient.listJobs({
-            role: 'worker',
-            status: 'open',
-            ...filters,
-          })
-          if (result.data?.jobs) {
-            setTasks(result.data.jobs)
-          } else if (result.error) {
-            setTasksError(new Error(result.error.message || 'Failed to fetch tasks'))
-          }
-        } catch (err: any) {
-          setTasksError(err instanceof Error ? err : new Error('Failed to fetch tasks'))
-        } finally {
-          setTasksLoading(false)
-        }
-      }
-      fetchTasks()
+  useEffect(() => { 
+    checkAuth()
+  }, [])
+
+  useEffect(() => {
+    if (user && applications.length > 0) {
+      buildActivityFeed(user.id)
     }
+  }, [applications, user])
+
+  const getStatusColor = (status: string) => {
+    const colors: Record<string, string> = {
+      pending: 'bg-amber-50 text-amber-700 border-amber-200',
+      accepted: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+      rejected: 'bg-red-50 text-red-700 border-red-200',
+      completed: 'bg-slate-100 text-slate-700 border-slate-200',
+      withdrawn: 'bg-slate-100 text-slate-700 border-slate-200'
+    }
+    return colors[status] || 'bg-slate-100 text-slate-700 border-slate-200'
   }
+
+  const filteredApplications = applications.filter(app => 
+    filterStatus === 'all' || app.status === filterStatus
+  )
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="flex items-center gap-3">
-          <Loader2 className="w-5 h-5 animate-spin text-[#1E40AF]" />
-          <span className="text-slate-600 dark:text-slate-300">Loading...</span>
+          <div className="w-5 h-5 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin" />
+          <span className="text-slate-600">Loading dashboard...</span>
         </div>
       </div>
     )
   }
 
-  if (!currentUser) {
-    return null
-  }
+  if (!user) return null
 
   const handleQuickAction = () => {
     router.push('/worker/discover')
@@ -299,134 +382,166 @@ export default function WorkerDashboard() {
           quickActionLabel="Find Work"
           onSignOut={handleSignOut}
           user={{
-            name: currentUser?.name || currentUser?.full_name,
-            email: currentUser?.email,
+            name: user?.full_name,
+            email: user?.email,
           }}
           onSearch={(query) => {
-            setFilters(prev => ({ ...prev, search: query }))
+            // Handle search
           }}
         />
 
         <div className="p-6 lg:p-8">
+          {/* Header */}
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold text-slate-900 mb-2">
+              Welcome back, {user?.full_name?.split(' ')[0]}
+            </h1>
+            <p className="text-slate-600">
+              Track your applications and manage your work pipeline
+            </p>
+          </div>
+          
           {/* Stats Bar */}
           <div className="mb-6">
             <StatsBar
               stats={[
                 {
-                  title: 'New Applications',
-                  value: dashboardMetrics?.newCustomers || 0,
-                  sparkline: dashboardMetrics?.sparklineData,
-                  icon: <TrendingUp className="w-5 h-5 text-slate-600" />,
-                },
-                {
-                  title: 'Success Rate',
-                  value: `${dashboardMetrics?.successRate || 0}%`,
-                  gauge: {
-                    value: dashboardMetrics?.successRate || 0,
-                    max: 100,
-                  },
+                  title: 'Active Applications',
+                  value: dashboardMetrics?.activeApplications || stats.activeApplications || 0,
                   icon: <Briefcase className="w-5 h-5 text-slate-600" />,
                 },
                 {
-                  title: 'Tasks in Progress',
-                  value: dashboardMetrics?.tasksInProgress || tasks.length,
-                  icon: <Zap className="w-5 h-5 text-slate-600" />,
+                  title: 'Accepted Jobs',
+                  value: dashboardMetrics?.acceptedJobs || stats.acceptedJobs || 0,
+                  icon: <CheckCircle className="w-5 h-5 text-slate-600" />,
                 },
                 {
-                  title: 'Shifts Balance',
-                  value: creditsBalance,
-                  icon: <Sparkles className="w-5 h-5 text-slate-600" />,
+                  title: 'Total Earnings',
+                  value: `₹${((dashboardMetrics?.totalEarnings || stats.totalEarnings || 0) / 1000).toFixed(1)}K`,
+                  icon: <IndianRupee className="w-5 h-5 text-slate-600" />,
+                },
+                {
+                  title: 'Completed Jobs',
+                  value: dashboardMetrics?.completedJobs || stats.completedJobs || 0,
+                  icon: <Award className="w-5 h-5 text-slate-600" />,
                 },
               ]}
             />
           </div>
 
-          {/* Hero Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-slate-900 mb-2">
-              High-Value IT Microtasks
-            </h1>
-            <p className="text-slate-600 max-w-2xl">
-              Browse premium microtasks from verified employers. Minimum ₹50 per task.
-            </p>
-          </div>
-
-          {/* Filters */}
-          <div className="mb-8">
-            <TaskFilters
-              filters={filters}
-              onFiltersChange={(newFilters) => setFilters(newFilters)}
-            />
-          </div>
-
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Tasks Content - Left Column */}
-            <div className="lg:col-span-2 space-y-6">
-              {tasksLoading ? (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {[...Array(6)].map((_, i) => (
-                    <div key={i} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-                      <Skeleton className="h-6 w-3/4 mb-4" />
-                      <Skeleton className="h-4 w-full mb-2" />
-                      <Skeleton className="h-4 w-5/6 mb-4" />
-                      <Skeleton className="h-10 w-full" />
-                    </div>
-                  ))}
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Main Content */}
+            <div className="lg:col-span-2 space-y-8">
+              {/* Recent Applications */}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-slate-900">Recent Applications</h2>
+                  <div className="flex items-center gap-2">
+                    <select
+                      value={filterStatus}
+                      onChange={(e) => setFilterStatus(e.target.value)}
+                      className="px-3 py-1.5 text-sm border border-slate-200 rounded-lg bg-white"
+                    >
+                      <option value="all">All Status</option>
+                      <option value="pending">Pending</option>
+                      <option value="accepted">Accepted</option>
+                      <option value="rejected">Rejected</option>
+                    </select>
+                  </div>
                 </div>
-              ) : tasksError ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="bg-white dark:bg-slate-900 rounded-2xl border border-red-200 dark:border-red-800 p-12 text-center shadow-md"
-                >
-                  <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
-                    Error loading tasks
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-400 mb-4 font-medium">
-                    {tasksError.message}
-                  </p>
-                  <button
-                    onClick={handleRetry}
-                    className="px-6 py-3 bg-[#1E40AF] !text-white rounded-lg hover:bg-[#1E3A8A] transition shadow-md hover:shadow-lg"
+                
+                {filteredApplications.length === 0 ? (
+                  <div className="bg-white border border-slate-200 rounded-xl p-12 text-center">
+                    <Briefcase className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                    <p className="text-slate-600 font-medium">No applications yet</p>
+                    <p className="text-sm text-slate-500 mt-1">Start applying to jobs to see them here</p>
+                    <Link
+                      href="/worker/discover"
+                      className="inline-flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium mt-4 hover:bg-slate-800 transition-all"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Find Jobs
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {filteredApplications.map((app) => (
+                      <Link
+                        key={app.id}
+                        href={`/jobs/${app.job_id || app.project_id}`}
+                        className="block bg-white border border-slate-200 rounded-xl p-5 hover:border-slate-300 hover:shadow-md transition-all group"
+                      >
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h3 className="font-medium text-slate-900 group-hover:text-sky-600 transition-colors">
+                                {app.job?.title || 'Job Application'}
+                              </h3>
+                              <span className={`px-2 py-0.5 text-xs font-medium rounded-full border ${getStatusColor(app.status)}`}>
+                                {app.status}
+                              </span>
+                            </div>
+                            {app.job?.description && (
+                              <p className="text-sm text-slate-600 line-clamp-1">
+                                {app.job.description}
+                              </p>
+                            )}
+                            {app.client && (
+                              <p className="text-xs text-slate-500 mt-1">
+                                Client: {app.client.full_name || app.client.email}
+                              </p>
+                            )}
+                          </div>
+                          <div className="text-right ml-4">
+                            {(app.job?.price_fixed || app.job?.budget || app.proposed_rate) && (
+                              <div className="text-lg font-semibold text-slate-900">
+                                ₹{(app.job?.price_fixed || app.job?.budget || app.proposed_rate).toLocaleString()}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center justify-between text-sm text-slate-500">
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-4 h-4" />
+                            Applied {new Date(app.created_at).toLocaleDateString()}
+                          </span>
+                          {app.proposed_rate && (
+                            <span className="font-medium text-slate-700">
+                              Proposed: ₹{app.proposed_rate}/hr
+                            </span>
+                          )}
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Available Jobs */}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-slate-900">Available Jobs</h2>
+                  <Link
+                    href="/worker/discover"
+                    className="text-sm text-sky-600 font-medium hover:text-sky-700"
                   >
-                    Retry
-                  </button>
-                </motion.div>
-              ) : tasks.length === 0 ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-12 text-center shadow-md"
-                >
-                  <Briefcase className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
-                    No tasks found
-                  </h3>
-                  <p className="text-slate-600 dark:text-slate-400 mb-6">
-                    Try adjusting your filters or check back later for new high-value tasks.
-                  </p>
-                  <button
-                    onClick={handleRetry}
-                    className="px-6 py-3 bg-[#1E40AF] !text-white rounded-lg hover:bg-[#1E3A8A] transition shadow-md hover:shadow-lg"
-                  >
-                    Refresh Tasks
-                  </button>
-                </motion.div>
-              ) : (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {tasks.map((task, index) => (
-                    <TaskCard
-                      key={task.id}
-                      task={task}
-                      onBidClick={handleBidClick}
-                      showBidButton={true}
-                      index={index}
-                    />
-                  ))}
+                    View all
+                  </Link>
                 </div>
-              )}
+                
+                <div className="bg-white border border-slate-200 rounded-xl p-5">
+                  <p className="text-sm text-slate-600 text-center py-8">
+                    Browse available jobs to find your next opportunity
+                  </p>
+                  <Link
+                    href="/worker/discover"
+                    className="block w-full text-center bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-all"
+                  >
+                    Explore Jobs
+                  </Link>
+                </div>
+              </div>
             </div>
 
             {/* Right Sidebar */}
@@ -439,80 +554,71 @@ export default function WorkerDashboard() {
                     timestamp: new Date(),
                     type: 'info',
                     title: 'Welcome to your dashboard',
-                    description: 'Start browsing tasks to see your activity here',
+                    description: 'Your recent activity will appear here',
                   },
                 ]}
                 maxItems={5}
               />
 
-              {/* Quick Stats */}
-              <div className="bg-white border border-slate-200 rounded-xl p-4">
-                <h3 className="text-sm font-semibold text-slate-900 mb-4">Quick Stats</h3>
+              {/* Profile Completion */}
+              <div className="bg-white border border-slate-200 rounded-xl p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-slate-900">Profile</h3>
+                  <Link
+                    href="/worker/profile/edit"
+                    className="text-xs text-sky-600 hover:text-sky-700"
+                  >
+                    Edit
+                  </Link>
+                </div>
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-slate-600">Available Tasks</span>
-                    <span className="text-sm font-semibold text-slate-900">{tasks.length}</span>
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs text-slate-600">Completion</span>
+                      <span className="text-xs font-medium text-slate-900">65%</span>
+                    </div>
+                    <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-slate-900 rounded-full transition-all"
+                        style={{ width: '65%' }}
+                      />
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-slate-600">Shifts Balance</span>
-                    <span className="text-sm font-semibold text-slate-900">{creditsBalance}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-slate-600">Total Value</span>
-                    <span className="text-sm font-semibold text-slate-900">
-                      ₹{tasks.reduce((sum, t) => sum + (t.price_fixed || (t as any).budget || 0), 0).toLocaleString()}
-                    </span>
-                  </div>
+                  <Link
+                    href="/worker/profile/verification"
+                    className="block w-full text-center text-sm text-slate-700 bg-slate-50 hover:bg-slate-100 px-3 py-2 rounded-lg transition-colors"
+                  >
+                    Complete Profile
+                  </Link>
+                </div>
+              </div>
+
+              {/* Quick Links */}
+              <div className="bg-white border border-slate-200 rounded-xl p-5">
+                <h3 className="font-semibold text-slate-900 mb-4">Quick Links</h3>
+                <div className="space-y-2">
+                  <Link href="/worker/discover" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                    <Briefcase className="w-5 h-5 text-slate-400" />
+                    <span className="text-sm text-slate-700">Browse Jobs</span>
+                  </Link>
+                  <Link href="/clients" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                    <Users className="w-5 h-5 text-slate-400" />
+                    <span className="text-sm text-slate-700">My Clients</span>
+                  </Link>
+                  <Link href="/messages" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                    <MessageSquare className="w-5 h-5 text-slate-400" />
+                    <span className="text-sm text-slate-700">Messages</span>
+                  </Link>
+                  <Link href="/worker/settings" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                    <Settings className="w-5 h-5 text-slate-400" />
+                    <span className="text-sm text-slate-700">Settings</span>
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Modals */}
-      {selectedTask && (
-        <BidModal
-          isOpen={showBidModal}
-          onClose={() => {
-            setShowBidModal(false)
-            setSelectedTask(null)
-          }}
-          task={selectedTask}
-          onSuccess={handleBidSuccess}
-        />
-      )}
-
-      <ShiftsModal
-        isOpen={showShiftsModal}
-        onClose={() => setShowShiftsModal(false)}
-        userId={currentUser?.id || ''}
-        userType="worker"
-        currentBalance={creditsBalance}
-        onPurchaseComplete={() => {
-          apiClient.getCreditsBalance().then(result => {
-            if (result.data) {
-              setCreditsBalance(result.data.balance || 0)
-            }
-          })
-        }}
-      />
-      
-      <BuyCreditsModalV1
-        isOpen={showBuyCreditsModal}
-        onClose={() => setShowBuyCreditsModal(false)}
-        userId={currentUser?.id || ''}
-        userType="worker"
-        currentBalance={creditsBalance}
-        onPurchaseComplete={() => {
-          setShowBuyCreditsModal(false)
-          apiClient.getCreditsBalance().then(result => {
-            if (result.data) {
-              setCreditsBalance(result.data.balance || 0)
-            }
-          })
-        }}
-      />
     </div>
   )
 }
