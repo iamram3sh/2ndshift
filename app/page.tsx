@@ -172,7 +172,7 @@ export default function HomePage() {
                   icon={<ArrowRight className="w-5 h-5" />}
                   iconPosition="right"
                   aria-label="I want to work — show worker signup"
-                  className="!bg-[#1E40AF] !text-white"
+                  className="!bg-[#1E40AF] !text-white hover:!bg-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
                 >
                   I want to work
                 </Button>
@@ -187,6 +187,7 @@ export default function HomePage() {
                   icon={<ArrowUpRight className="w-5 h-5" />}
                   iconPosition="right"
                   aria-label="I want to hire — show client signup"
+                  className="!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#1E40AF] hover:!text-white hover:border-[#1E40AF] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
                 >
                   I want to hire
                 </Button>
@@ -196,6 +197,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Visual Separator */}
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"></div>
 
       {/* Trust Strip */}
       <RoleSection role="both">
