@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase/client'
 import apiClient from '@/lib/apiClient'
 import { Mail, Lock, ArrowRight, Layers, Shield, CheckCircle, Eye, EyeOff } from 'lucide-react'
 import { RolePicker } from '@/components/auth/RolePicker'
@@ -67,70 +66,60 @@ export default function LoginPage() {
     
     setIsLoading(true)
     setMessage('')
+    setSuccessMessage('')
     
     try {
-      // Use v1 API for login
+      // Call login API
       const result = await apiClient.login(
         formData.email.trim().toLowerCase(),
         formData.password
       )
       
       if (result.error) {
-        // Show detailed error message if available
         const errorMessage = result.error.message || result.error.error || result.error.details || 'Login failed'
-        console.error('Login error:', result.error)
-        throw new Error(errorMessage)
+        setMessage(errorMessage)
+        setIsLoading(false)
+        return
       }
       
-      if (result.data?.user) {
-        const userRole = result.data.user.role
-        const routes: Record<string, string> = {
-          worker: '/worker', // Worker dashboard
-          client: '/client', // Client dashboard
-          admin: '/dashboard/admin',
-          superadmin: '/dashboard/admin'
-        }
-        
-        // Ensure worker role always goes to /worker dashboard, not /work landing page
-        const targetRoute = routes[userRole] || '/worker'
-        
-        // Debug log to verify redirect
-        console.log('Login redirect:', { userRole, targetRoute })
-        
-        trackEvent('login_success', { role: userRole })
-        if (userRole === 'worker' || userRole === 'client') {
-          trackRoleSelected(userRole, 'login')
-          setRole(userRole, 'login')
-        }
-        
-        // Store auth state to prevent immediate redirect
-        localStorage.setItem('auth_redirected', 'true')
-        
-        // Use replace; also fall back to hard navigation to avoid stuck UI
-        setTimeout(() => {
-          try {
-            router.replace(targetRoute)
-          } catch (_) {
-            window.location.href = targetRoute
-          }
-          // As an extra safeguard, hard redirect after a brief delay
-          setTimeout(() => {
-            if (typeof window !== 'undefined' && window.location.pathname !== targetRoute) {
-              window.location.href = targetRoute
-            }
-          }, 300)
-        }, 100)
+      // Check if we got user data and access token
+      if (!result.data?.user || !result.data?.access_token) {
+        setMessage('Login failed: Invalid response from server')
+        setIsLoading(false)
+        return
       }
+
+      const userRole = result.data.user.role
+      
+      // Track successful login
+      trackEvent('login_success', { role: userRole })
+      if (userRole === 'worker' || userRole === 'client') {
+        trackRoleSelected(userRole, 'login')
+        setRole(userRole, 'login')
+      }
+      
+      // Determine redirect route based on user role
+      const routes: Record<string, string> = {
+        worker: '/worker',
+        client: '/client',
+        admin: '/dashboard/admin',
+        superadmin: '/dashboard/admin'
+      }
+      
+      const targetRoute = routes[userRole] || '/worker'
+      
+      // Ensure token is stored before redirect
+      if (result.data.access_token) {
+        localStorage.setItem('access_token', result.data.access_token)
+      }
+      
+      // Immediate redirect - no delays or flags
+      window.location.href = targetRoute
+      
     } catch (error: any) {
       console.error('Login error:', error)
-      const errorMessage = error.message || error.details || 'Sign in failed. Please check your credentials.'
+      const errorMessage = error.message || 'Sign in failed. Please check your credentials.'
       setMessage(errorMessage)
-      
-      // Log to console for debugging
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Full error:', error)
-      }
-    } finally {
       setIsLoading(false)
     }
   }
@@ -202,6 +191,7 @@ export default function LoginPage() {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:border-slate-300 focus:ring-2 focus:ring-slate-100 transition-all outline-none text-sm"
                   placeholder="you@example.com"
+                  disabled={isLoading}
                 />
               </div>
               {errors.email && <p className="mt-1.5 text-sm text-red-600">{errors.email}</p>}
@@ -222,11 +212,13 @@ export default function LoginPage() {
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   className="w-full pl-10 pr-10 py-3 bg-white border border-slate-200 rounded-xl focus:border-slate-300 focus:ring-2 focus:ring-slate-100 transition-all outline-none text-sm"
                   placeholder="••••••••"
+                  disabled={isLoading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  disabled={isLoading}
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>

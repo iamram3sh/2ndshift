@@ -109,78 +109,54 @@ export default function ClientDashboard() {
   }, [])
 
   const checkAuth = async () => {
-    // Check if we just redirected from login
-    const justLoggedIn = localStorage.getItem('auth_redirected') === 'true'
-    if (justLoggedIn) {
-      localStorage.removeItem('auth_redirected')
-      // Give token time to be available
-      await new Promise(resolve => setTimeout(resolve, 200))
-    }
-    
-    // Check authentication using v1 API - use skipRedirect to prevent redirect loops
-    const result = await apiClient.getCurrentUser({ skipRedirect: true })
-    
-    if (result.error || !result.data?.user) {
-      // Only redirect if we didn't just log in and error is not 401 (might be network issue)
-      if (!justLoggedIn && result.error?.status !== 401) {
-        // Try refresh first
-        const refreshResult = await apiClient.refreshAccessToken()
-        if (refreshResult.error) {
-      router.push('/login')
-        } else {
-          // Retry getting user after refresh
-          const retryResult = await apiClient.getCurrentUser({ skipRedirect: true })
-          if (retryResult.error || !retryResult.data?.user) {
-            router.push('/login')
-          } else {
-            const currentUser = retryResult.data.user
-            if (currentUser.role !== 'client') {
-              const routes: Record<string, string> = {
-                worker: '/worker',
-                admin: '/dashboard/admin',
-                superadmin: '/dashboard/admin'
-              }
-              router.push(routes[currentUser.role] || '/login')
-              return
-            }
-            setUser({
-              id: currentUser.id,
-              email: currentUser.email,
-              full_name: currentUser.name || '',
-              user_type: 'client',
-            } as UserType)
-          }
+    try {
+      // Simple, direct auth check
+      const result = await apiClient.getCurrentUser({ skipRedirect: true })
+      
+      if (result.error || !result.data?.user) {
+        // Not authenticated - redirect to login
+        router.replace('/login?next=/client')
+        return
+      }
+
+      const currentUser = result.data.user
+      
+      // Check if user is a client
+      if (currentUser.role !== 'client') {
+        // Redirect to appropriate dashboard
+        const routes: Record<string, string> = {
+          worker: '/worker',
+          admin: '/dashboard/admin',
+          superadmin: '/dashboard/admin'
         }
+        router.replace(routes[currentUser.role] || '/login')
+        return
       }
-      return
+
+      // Set user data
+      setUser({
+        id: currentUser.id,
+        email: currentUser.email,
+        full_name: currentUser.name || '',
+        user_type: 'client',
+      } as UserType)
+
+      // Fetch dashboard data
+      await fetchClientData(currentUser.id)
+      
+    } catch (err) {
+      console.error('Auth check error:', err)
+      router.replace('/login?next=/client')
+    } finally {
+      setIsLoading(false)
     }
+  }
 
-    const currentUser = result.data.user
-    
-    // Check if user is a client
-    if (currentUser.role !== 'client') {
-      const routes: Record<string, string> = {
-        worker: '/worker',
-        admin: '/dashboard/admin',
-        superadmin: '/dashboard/admin'
-      }
-      router.push(routes[currentUser.role] || '/login')
-      return
-    }
-
-    // Set user data
-    setUser({
-      id: currentUser.id,
-      email: currentUser.email,
-      full_name: currentUser.name || '',
-      user_type: 'client',
-    } as UserType)
-
-    // Fetch dashboard data
+  const fetchClientData = async (userId: string) => {
     await Promise.all([
-      fetchProjects(currentUser.id),
-      fetchApplications(currentUser.id),
-      fetchContracts(currentUser.id),
+      fetchProjects(userId),
+      fetchApplications(userId),
+      fetchContracts(userId),
       fetchShiftsBalance(),
       fetchPlatformConfig()
     ])
@@ -201,9 +177,9 @@ export default function ClientDashboard() {
     }
 
     // Fetch kanban data
-    if (currentUser?.id) {
+    if (userId) {
       try {
-        const kanbanResponse = await fetch(`/api/clients/${currentUser.id}/kanban`, {
+        const kanbanResponse = await fetch(`/api/clients/${userId}/kanban`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
           },
@@ -216,8 +192,6 @@ export default function ClientDashboard() {
         console.error('Error fetching kanban:', err)
       }
     }
-    
-    setIsLoading(false)
   }
 
   const fetchProjects = async (userId: string) => {

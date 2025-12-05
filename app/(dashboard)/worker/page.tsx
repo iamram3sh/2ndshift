@@ -83,78 +83,47 @@ export default function WorkerDashboard() {
   const [activities, setActivities] = useState<ActivityItem[]>([])
 
   const checkAuth = async () => {
-    // Check if we just redirected from login
-    const justLoggedIn = localStorage.getItem('auth_redirected') === 'true'
-    if (justLoggedIn) {
-      localStorage.removeItem('auth_redirected')
-      // Give token time to be available
-      await new Promise(resolve => setTimeout(resolve, 200))
-    }
-    
-    // Check authentication using v1 API - use skipRedirect to prevent redirect loops
-    const result = await apiClient.getCurrentUser({ skipRedirect: true })
-    
-    if (result.error || !result.data?.user) {
-      // Only redirect if we didn't just log in and error is not 401 (might be network issue)
-      if (!justLoggedIn && result.error?.status !== 401) {
-        // Try refresh first
-        const refreshResult = await apiClient.refreshAccessToken()
-        if (refreshResult.error) {
-          router.push('/login?next=/worker')
-        } else {
-          // Retry getting user after refresh
-          const retryResult = await apiClient.getCurrentUser({ skipRedirect: true })
-          if (retryResult.error || !retryResult.data?.user) {
-            router.push('/login?next=/worker')
-          } else {
-            const currentUser = retryResult.data.user
-            if (currentUser.role !== 'worker') {
-              const routes: Record<string, string> = {
-                client: '/client',
-                admin: '/dashboard/admin',
-                superadmin: '/dashboard/admin'
-              }
-              router.push(routes[currentUser.role] || '/login')
-              return
-            }
-            setUser({
-              id: currentUser.id,
-              email: currentUser.email,
-              full_name: currentUser.name || '',
-              user_type: 'worker',
-            } as UserType)
-            await fetchWorkerData(currentUser.id)
-          }
+    try {
+      // Simple, direct auth check
+      const result = await apiClient.getCurrentUser({ skipRedirect: true })
+      
+      if (result.error || !result.data?.user) {
+        // Not authenticated - redirect to login
+        router.replace('/login?next=/worker')
+        return
+      }
+
+      const currentUser = result.data.user
+      
+      // Check if user is a worker
+      if (currentUser.role !== 'worker') {
+        // Redirect to appropriate dashboard
+        const routes: Record<string, string> = {
+          client: '/client',
+          admin: '/dashboard/admin',
+          superadmin: '/dashboard/admin'
         }
+        router.replace(routes[currentUser.role] || '/login')
+        return
       }
-      return
+
+      // Set user data
+      setUser({
+        id: currentUser.id,
+        email: currentUser.email,
+        full_name: currentUser.name || '',
+        user_type: 'worker',
+      } as UserType)
+
+      // Fetch dashboard data
+      await fetchWorkerData(currentUser.id)
+      
+    } catch (err) {
+      console.error('Auth check error:', err)
+      router.replace('/login?next=/worker')
+    } finally {
+      setIsLoading(false)
     }
-
-    const currentUser = result.data.user
-    
-    // Check if user is a worker
-    if (currentUser.role !== 'worker') {
-      const routes: Record<string, string> = {
-        client: '/client',
-        admin: '/dashboard/admin',
-        superadmin: '/dashboard/admin'
-      }
-      router.push(routes[currentUser.role] || '/login')
-      return
-    }
-
-    // Set user data
-    setUser({
-      id: currentUser.id,
-      email: currentUser.email,
-      full_name: currentUser.name || '',
-      user_type: 'worker',
-    } as UserType)
-
-    // Fetch dashboard data
-    await fetchWorkerData(currentUser.id)
-    
-    setIsLoading(false)
   }
 
   const fetchWorkerData = async (userId: string) => {
@@ -162,7 +131,6 @@ export default function WorkerDashboard() {
       fetchApplications(userId),
       fetchJobs(userId),
       fetchShiftsBalance(),
-      fetchPlatformConfig()
     ])
 
     // Fetch dashboard metrics
@@ -181,9 +149,9 @@ export default function WorkerDashboard() {
     }
 
     // Build activity feed
-    buildActivityFeed(userId)
-    
-    setIsLoading(false)
+    if (applications.length > 0) {
+      buildActivityFeed(userId)
+    }
   }
 
   const fetchApplications = async (userId: string) => {
@@ -211,6 +179,9 @@ export default function WorkerDashboard() {
           activeApplications: accepted,
           acceptedJobs: accepted
         }))
+
+        // Build activity feed after applications are loaded
+        buildActivityFeed(userId)
       }
     } catch (err) {
       console.error('Error fetching applications:', err)
@@ -280,18 +251,9 @@ export default function WorkerDashboard() {
     }
   }, [])
 
-  const fetchPlatformConfig = useCallback(async () => {
-    try {
-      const result = await apiClient.getPlatformConfig()
-      if (result.data) {
-        // Handle platform config if needed
-      }
-    } catch (err) {
-      console.error('Error fetching platform config:', err)
-    }
-  }, [])
-
   const buildActivityFeed = async (userId: string) => {
+    if (applications.length === 0) return
+
     const activityItems: ActivityItem[] = []
 
     // Get recent applications
@@ -331,7 +293,7 @@ export default function WorkerDashboard() {
   }, [])
 
   useEffect(() => {
-    if (user && applications.length > 0) {
+    if (applications.length > 0 && user) {
       buildActivityFeed(user.id)
     }
   }, [applications, user])
