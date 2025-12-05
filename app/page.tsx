@@ -163,7 +163,7 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-12 justify-center mb-8">
                 <Button
                   href="/work?role=worker"
-                  variant="primary"
+                  variant="outline"
                   size="lg"
                   onClick={() => {
                     handleCTAClick('I want to work', 'worker')
@@ -172,7 +172,7 @@ export default function HomePage() {
                   icon={<ArrowRight className="w-5 h-5" />}
                   iconPosition="right"
                   aria-label="I want to work — show worker signup"
-                  className="!bg-[#1E40AF] !text-white hover:!bg-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
+                  className="!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
                 >
                   I want to work
                 </Button>
