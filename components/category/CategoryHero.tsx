@@ -49,11 +49,11 @@ export function CategoryHero({ slug }: CategoryHeroProps) {
 
         <Button
           href={config.heroCtaHref}
-          variant="secondary"
+          variant="outline"
           size="lg"
           icon={<ArrowRight className="w-5 h-5" />}
           iconPosition="right"
-          className="relative z-20 !bg-white !text-slate-900 hover:!bg-slate-50 border-white/20"
+          className="relative z-20 !bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
         >
           {config.heroCtaLabel}
         </Button>

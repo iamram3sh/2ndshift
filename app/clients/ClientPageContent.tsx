@@ -172,10 +172,11 @@ export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'w
                 <Button
                   href={withRoleParam("/register?type=client", 'client')}
                   onClick={() => handleCTAClick('Hire a Worker', 'client')}
-                  variant="primary"
+                  variant="outline"
                   size="lg"
                   icon={<ArrowRight className="w-5 h-5" />}
                   iconPosition="right"
+                  className="!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#1E40AF] hover:!text-white hover:border-[#1E40AF] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
                 >
                   Hire a Worker
                 </Button>
@@ -186,6 +187,7 @@ export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'w
                   size="lg"
                   icon={<ArrowRight className="w-5 h-5" />}
                   iconPosition="right"
+                  className="!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#1E40AF] hover:!text-white hover:border-[#1E40AF] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
                 >
                   Browse Talent
                 </Button>
@@ -376,20 +378,22 @@ export function ClientPageContent({ initialRole }: { initialRole?: 'client' | 'w
             <Button
               href={withRoleParam("/register?type=client", 'client')}
               onClick={() => handleCTAClick('Get Started Free', 'client')}
-              variant="secondary"
+              variant="outline"
               size="lg"
               icon={<ArrowRight className="w-4 h-4" />}
               iconPosition="right"
+              className="!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#1E40AF] hover:!text-white hover:border-[#1E40AF] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
             >
               Get Started Free
             </Button>
             <Button
               href={withRoleParam("/workers", 'client')}
               onClick={() => handleCTAClick('Browse Talent', 'client')}
-              variant="primary"
+              variant="outline"
               size="lg"
               icon={<ArrowRight className="w-4 h-4" />}
               iconPosition="right"
+              className="!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#1E40AF] hover:!text-white hover:border-[#1E40AF] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
             >
               Browse Talent
             </Button>

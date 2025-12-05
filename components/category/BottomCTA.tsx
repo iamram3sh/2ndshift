@@ -30,10 +30,11 @@ export function BottomCTA({ categoryName, role = 'both' }: BottomCTAProps) {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               href={withRoleParam("/register?type=worker", 'worker')}
-              variant="secondary"
+              variant="outline"
               size="lg"
               icon={<ArrowRight className="w-4 h-4" />}
               iconPosition="right"
+              className="!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
             >
               Get Started Free
             </Button>
@@ -41,9 +42,9 @@ export function BottomCTA({ categoryName, role = 'both' }: BottomCTAProps) {
               href={withRoleParam("/worker/discover", 'worker')}
               variant="outline"
               size="lg"
-              className="border-white/30 text-white hover:bg-white/10 hover:text-white"
               icon={<ArrowRight className="w-4 h-4" />}
               iconPosition="right"
+              className="!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
             >
               Browse Jobs
             </Button>
@@ -66,10 +67,11 @@ export function BottomCTA({ categoryName, role = 'both' }: BottomCTAProps) {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               href={withRoleParam("/register?type=client", 'client')}
-              variant="secondary"
+              variant="outline"
               size="lg"
               icon={<ArrowRight className="w-4 h-4" />}
               iconPosition="right"
+              className="!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#1E40AF] hover:!text-white hover:border-[#1E40AF] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
             >
               Get Started Free
             </Button>
@@ -77,9 +79,9 @@ export function BottomCTA({ categoryName, role = 'both' }: BottomCTAProps) {
               href={withRoleParam("/workers", 'client')}
               variant="outline"
               size="lg"
-              className="border-white/30 text-white hover:bg-white/10 hover:text-white"
               icon={<ArrowRight className="w-4 h-4" />}
               iconPosition="right"
+              className="!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#1E40AF] hover:!text-white hover:border-[#1E40AF] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
             >
               Browse Talent
             </Button>
