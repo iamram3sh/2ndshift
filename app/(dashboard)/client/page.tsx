@@ -674,8 +674,8 @@ export default function ClientDashboard() {
             </div>
           </div>
 
-            {/* Right Sidebar */}
-            <div className="lg:col-span-1 space-y-6">
+          {/* Right Sidebar */}
+          <div className="lg:col-span-1 space-y-6">
               {/* Activity Feed */}
               <ActivityFeed
                 activities={activities.length > 0 ? activities : [
