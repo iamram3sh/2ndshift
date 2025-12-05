@@ -84,7 +84,6 @@ export default function LoginPage() {
       
       if (result.data?.user) {
         const userRole = result.data.user.role
-        const accessToken = result.data.access_token
         const routes: Record<string, string> = {
           worker: '/worker', // Worker dashboard
           client: '/client', // Client dashboard
@@ -102,13 +101,6 @@ export default function LoginPage() {
         if (userRole === 'worker' || userRole === 'client') {
           trackRoleSelected(userRole, 'login')
           setRole(userRole, 'login')
-        }
-
-        // Set access token cookie client-side immediately to avoid middleware loop
-        if (accessToken && typeof document !== 'undefined') {
-          const isSecure = window.location.protocol === 'https:'
-          const expires = new Date(Date.now() + 15 * 60 * 1000).toUTCString() // 15 minutes
-          document.cookie = `access_token=${accessToken}; Path=/; SameSite=Lax; Expires=${expires}${isSecure ? '; Secure' : ''}`
         }
         
         // Store auth state to prevent immediate redirect

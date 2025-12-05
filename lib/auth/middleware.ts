@@ -23,7 +23,12 @@ export async function requireAuth(
 ): Promise<NextResponse> {
   try {
     const authHeader = request.headers.get('authorization');
-    const token = extractTokenFromHeader(authHeader);
+    let token = extractTokenFromHeader(authHeader);
+
+    // Fallback to cookie token if header missing
+    if (!token) {
+      token = request.cookies.get('access_token')?.value || null;
+    }
 
     if (!token) {
       return NextResponse.json(

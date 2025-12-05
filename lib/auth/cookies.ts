@@ -9,15 +9,14 @@ const ACCESS_TOKEN_COOKIE = 'access_token';
 const COOKIE_MAX_AGE = 60 * 15; // 15 minutes (matches access token expiry)
 
 /**
- * Set access token in cookie (for SSR support)
- * Also readable by client for API calls
+ * Set access token in cookie (httpOnly for SSR + security)
  */
 export async function setAccessTokenCookie(token: string) {
   const cookieStore = await cookies();
   const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
   
   cookieStore.set(ACCESS_TOKEN_COOKIE, token, {
-    httpOnly: false, // Client needs to read it for API calls
+    httpOnly: true, // prevent JS access
     secure: isProduction, // HTTPS only in production
     sameSite: 'lax',
     maxAge: COOKIE_MAX_AGE,
