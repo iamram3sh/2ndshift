@@ -317,72 +317,71 @@ export default function WorkerDashboard() {
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Tasks Content - Left Column */}
-            <div className="lg:col-span-2">
-        {tasksLoading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-                <Skeleton className="h-6 w-3/4 mb-4" />
-                <Skeleton className="h-4 w-full mb-2" />
-                <Skeleton className="h-4 w-5/6 mb-4" />
-                <Skeleton className="h-10 w-full" />
-              </div>
-            ))}
-          </div>
-        ) : tasksError ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white dark:bg-slate-900 rounded-2xl border border-red-200 dark:border-red-800 p-12 text-center shadow-md"
-          >
-            <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
-              Error loading tasks
-            </h3>
-            <p className="text-slate-600 dark:text-slate-400 mb-4 font-medium">
-              {tasksError.message}
-            </p>
-            <button
-              onClick={handleRetry}
-              className="px-6 py-3 bg-[#1E40AF] !text-white rounded-lg hover:bg-[#1E3A8A] transition shadow-md hover:shadow-lg"
-            >
-              Retry
-            </button>
-          </motion.div>
-        ) : tasks.length === 0 ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-12 text-center shadow-md"
-          >
-            <Briefcase className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
-              No tasks found
-            </h3>
-            <p className="text-slate-600 dark:text-slate-400 mb-6">
-              Try adjusting your filters or check back later for new high-value tasks.
-            </p>
-            <button
-              onClick={handleRetry}
-              className="px-6 py-3 bg-[#1E40AF] !text-white rounded-lg hover:bg-[#1E3A8A] transition shadow-md hover:shadow-lg"
-            >
-              Refresh Tasks
-            </button>
-          </motion.div>
-        ) : (
-          <>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {tasks.map((task, index) => (
-                <TaskCard
-                  key={task.id}
-                  task={task}
-                  onBidClick={handleBidClick}
-                  showBidButton={true}
-                  index={index}
-                />
-              ))}
-            </div>
-
+            <div className="lg:col-span-2 space-y-6">
+              {tasksLoading ? (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+                      <Skeleton className="h-6 w-3/4 mb-4" />
+                      <Skeleton className="h-4 w-full mb-2" />
+                      <Skeleton className="h-4 w-5/6 mb-4" />
+                      <Skeleton className="h-10 w-full" />
+                    </div>
+                  ))}
+                </div>
+              ) : tasksError ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-white dark:bg-slate-900 rounded-2xl border border-red-200 dark:border-red-800 p-12 text-center shadow-md"
+                >
+                  <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
+                    Error loading tasks
+                  </h3>
+                  <p className="text-slate-600 dark:text-slate-400 mb-4 font-medium">
+                    {tasksError.message}
+                  </p>
+                  <button
+                    onClick={handleRetry}
+                    className="px-6 py-3 bg-[#1E40AF] !text-white rounded-lg hover:bg-[#1E3A8A] transition shadow-md hover:shadow-lg"
+                  >
+                    Retry
+                  </button>
+                </motion.div>
+              ) : tasks.length === 0 ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-12 text-center shadow-md"
+                >
+                  <Briefcase className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">
+                    No tasks found
+                  </h3>
+                  <p className="text-slate-600 dark:text-slate-400 mb-6">
+                    Try adjusting your filters or check back later for new high-value tasks.
+                  </p>
+                  <button
+                    onClick={handleRetry}
+                    className="px-6 py-3 bg-[#1E40AF] !text-white rounded-lg hover:bg-[#1E3A8A] transition shadow-md hover:shadow-lg"
+                  >
+                    Refresh Tasks
+                  </button>
+                </motion.div>
+              ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {tasks.map((task, index) => (
+                    <TaskCard
+                      key={task.id}
+                      task={task}
+                      onBidClick={handleBidClick}
+                      showBidButton={true}
+                      index={index}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Right Sidebar */}
