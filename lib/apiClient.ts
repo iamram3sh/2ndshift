@@ -36,7 +36,7 @@ class ApiClient {
     const cookies = document.cookie.split(';');
     for (const cookie of cookies) {
       const [name, value] = cookie.trim().split('=');
-      if (name === 'access_token') {
+      if (name === 'access_token' || name === 'access_token_client') {
         return decodeURIComponent(value);
       }
     }

@@ -6,6 +6,7 @@
 import { cookies } from 'next/headers';
 
 const ACCESS_TOKEN_COOKIE = 'access_token';
+const ACCESS_TOKEN_CLIENT_COOKIE = 'access_token_client';
 const COOKIE_MAX_AGE = 60 * 15; // 15 minutes (matches access token expiry)
 
 /**
@@ -22,6 +23,15 @@ export async function setAccessTokenCookie(token: string) {
     maxAge: COOKIE_MAX_AGE,
     path: '/',
   });
+
+  // Also set a short-lived non-httpOnly mirror to help client-side code (e.g., during SPA nav)
+  cookieStore.set(ACCESS_TOKEN_CLIENT_COOKIE, token, {
+    httpOnly: false,
+    secure: isProduction,
+    sameSite: 'lax',
+    maxAge: COOKIE_MAX_AGE,
+    path: '/',
+  });
 }
 
 /**
@@ -29,7 +39,11 @@ export async function setAccessTokenCookie(token: string) {
  */
 export async function getAccessTokenCookie(): Promise<string | null> {
   const cookieStore = await cookies();
-  return cookieStore.get(ACCESS_TOKEN_COOKIE)?.value || null;
+  return (
+    cookieStore.get(ACCESS_TOKEN_COOKIE)?.value ||
+    cookieStore.get(ACCESS_TOKEN_CLIENT_COOKIE)?.value ||
+    null
+  );
 }
 
 /**
@@ -38,6 +52,7 @@ export async function getAccessTokenCookie(): Promise<string | null> {
 export async function clearAccessTokenCookie() {
   const cookieStore = await cookies();
   cookieStore.delete(ACCESS_TOKEN_COOKIE);
+  cookieStore.delete(ACCESS_TOKEN_CLIENT_COOKIE);
 }
 
 /**
