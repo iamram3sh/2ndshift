@@ -43,3 +43,6 @@ next-env.d.ts
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# removed proxy.ts - functionality moved to middleware.ts
+proxy.ts
