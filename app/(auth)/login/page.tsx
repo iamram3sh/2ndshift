@@ -106,10 +106,19 @@ export default function LoginPage() {
         // Store auth state to prevent immediate redirect
         localStorage.setItem('auth_redirected', 'true')
         
-        // Use replace instead of push to avoid back button issues
-        // Add a small delay to ensure token is stored
+        // Use replace; also fall back to hard navigation to avoid stuck UI
         setTimeout(() => {
-          router.replace(targetRoute)
+          try {
+            router.replace(targetRoute)
+          } catch (_) {
+            window.location.href = targetRoute
+          }
+          // As an extra safeguard, hard redirect after a brief delay
+          setTimeout(() => {
+            if (typeof window !== 'undefined' && window.location.pathname !== targetRoute) {
+              window.location.href = targetRoute
+            }
+          }, 300)
         }, 100)
       }
     } catch (error: any) {

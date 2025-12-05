@@ -119,11 +119,8 @@ class ApiClient {
             return { data: retryData, error: null };
           }
         }
-        // Refresh failed, redirect to login (unless skipRedirectOn401 is true)
-        if (!skipRedirectOn401 && typeof window !== 'undefined') {
-          window.location.href = '/login';
-        }
-        return { data: null, error: { message: 'Unauthorized' } };
+        // Refresh failed – surface 401 to caller instead of forcing redirect
+        return { data: null, error: { message: 'Unauthorized', status: 401 } };
       }
 
       let data;
