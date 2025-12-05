@@ -14,8 +14,33 @@ interface RequestOptions extends RequestInit {
 class ApiClient {
   private getAuthToken(): string | null {
     if (typeof window === 'undefined') return null;
-    // Try to get token from localStorage or cookie
-    return localStorage.getItem('access_token');
+    
+    // Try localStorage first (for backward compatibility)
+    const localToken = localStorage.getItem('access_token');
+    if (localToken) return localToken;
+    
+    // Try cookie (for SSR support)
+    const cookieToken = this.getAccessTokenFromCookie();
+    if (cookieToken) {
+      // Sync to localStorage for consistency
+      localStorage.setItem('access_token', cookieToken);
+      return cookieToken;
+    }
+    
+    return null;
+  }
+
+  private getAccessTokenFromCookie(): string | null {
+    if (typeof document === 'undefined') return null;
+    
+    const cookies = document.cookie.split(';');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'access_token') {
+        return decodeURIComponent(value);
+      }
+    }
+    return null;
   }
 
   private async refreshToken(): Promise<string | null> {
@@ -28,7 +53,9 @@ class ApiClient {
       if (response.ok) {
         const data = await response.json();
         if (data.access_token) {
+          // Store in both localStorage and sync cookie
           localStorage.setItem('access_token', data.access_token);
+          // Cookie is set by server, but ensure client has it
           return data.access_token;
         }
       }
@@ -172,6 +199,11 @@ class ApiClient {
       method: 'POST',
     });
     localStorage.removeItem('access_token');
+    // Clear cookie by setting it to expire
+    if (typeof document !== 'undefined') {
+      document.cookie = 'access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      document.cookie = 'refresh_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    }
     return result;
   }
 

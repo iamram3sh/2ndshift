@@ -48,9 +48,41 @@ export default function WorkerJobDiscoveryPage() {
 
   const checkAuth = async () => {
     try {
-      const result = await apiClient.getCurrentUser()
+      const result = await apiClient.getCurrentUser({ skipRedirect: true })
       
       if (result.error || !result.data?.user) {
+        // Try refresh first
+        if (result.error?.status === 401) {
+          const refreshResult = await apiClient.refreshAccessToken()
+          if (refreshResult.data?.access_token) {
+            const retryResult = await apiClient.getCurrentUser({ skipRedirect: true })
+            if (retryResult.error || !retryResult.data?.user) {
+              router.push('/login')
+              setIsLoading(false)
+              return
+            } else {
+              const currentUser = retryResult.data.user
+              if (currentUser.role !== 'worker') {
+                const routes: Record<string, string> = {
+                  client: '/client',
+                  admin: '/dashboard/admin',
+                  superadmin: '/dashboard/admin'
+                }
+                router.push(routes[currentUser.role] || '/login')
+                setIsLoading(false)
+                return
+              }
+              setUser({
+                id: currentUser.id,
+                email: currentUser.email,
+                full_name: currentUser.name || '',
+                user_type: 'worker',
+              } as UserType)
+              setIsLoading(false)
+              return
+            }
+          }
+        }
         router.push('/login')
         setIsLoading(false)
         return

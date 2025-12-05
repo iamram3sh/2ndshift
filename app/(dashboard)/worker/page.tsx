@@ -58,12 +58,24 @@ export default function WorkerDashboard() {
           await new Promise(resolve => setTimeout(resolve, 200))
         }
         
-        // Get current user
-        const userResult = await apiClient.getCurrentUser()
+        // Get current user - use skipRedirect to prevent redirect loops
+        const userResult = await apiClient.getCurrentUser({ skipRedirect: true })
         if (userResult.error || !userResult.data?.user) {
-          // Only redirect if we didn't just log in
-          if (!justLoggedIn) {
-            router.push('/login')
+          // Only redirect if we didn't just log in and error is not 401 (might be network issue)
+          if (!justLoggedIn && userResult.error?.status !== 401) {
+            // Try refresh first
+            const refreshResult = await apiClient.refreshAccessToken()
+            if (refreshResult.error) {
+              router.push('/login')
+            } else {
+              // Retry getting user after refresh
+              const retryResult = await apiClient.getCurrentUser({ skipRedirect: true })
+              if (retryResult.error || !retryResult.data?.user) {
+                router.push('/login')
+              } else {
+                setCurrentUser(retryResult.data.user)
+              }
+            }
           }
           return
         }
@@ -125,9 +137,31 @@ export default function WorkerDashboard() {
         const result = await apiClient.listJobs(params)
 
         if (result.error) {
-          const errorMsg = result.error.message || result.error.error || 'Failed to fetch tasks'
-          setTasksError(new Error(errorMsg))
-          setTasks([])
+          // Don't show error for 401 - let refresh handle it
+          if (result.error.status === 401) {
+            // Try refresh
+            const refreshResult = await apiClient.refreshAccessToken()
+            if (refreshResult.data?.access_token) {
+              // Retry the request
+              const retryResult = await apiClient.listJobs(params)
+              if (retryResult.error) {
+                const errorMsg = retryResult.error.message || retryResult.error.error || 'Failed to fetch tasks'
+                setTasksError(new Error(errorMsg))
+                setTasks([])
+              } else {
+                const jobs = retryResult.data?.jobs || []
+                setTasks(jobs)
+              }
+            } else {
+              const errorMsg = result.error.message || result.error.error || 'Failed to fetch tasks'
+              setTasksError(new Error(errorMsg))
+              setTasks([])
+            }
+          } else {
+            const errorMsg = result.error.message || result.error.error || 'Failed to fetch tasks'
+            setTasksError(new Error(errorMsg))
+            setTasks([])
+          }
           return
         }
 

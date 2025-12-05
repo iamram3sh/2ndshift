@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getRefreshTokenCookie, verifyRefreshToken, generateAccessToken, generateRefreshToken, setRefreshTokenCookie, JWTPayload } from '@/lib/auth/jwt';
+import { setAccessTokenCookie } from '@/lib/auth/cookies';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { withRateLimit } from '@/lib/api-middleware';
 import { logger } from '@/lib/logger';
@@ -57,6 +58,9 @@ export async function POST(request: NextRequest) {
 
     // Set new refresh token cookie (rotate)
     await setRefreshTokenCookie(newRefreshToken);
+    
+    // Set new access token cookie
+    await setAccessTokenCookie(newAccessToken);
 
     return NextResponse.json({
       access_token: newAccessToken,

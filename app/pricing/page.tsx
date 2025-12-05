@@ -215,8 +215,8 @@ export default function PricingPage() {
 
   const handleGetShifts = () => {
     if (!currentUser) {
-      // Redirect to login with return URL
-      router.push(`/login?redirect=${encodeURIComponent('/pricing')}`)
+      // Don't redirect - pricing page is public, user can still view it
+      // Only redirect if they try to access protected features
       return
     }
 

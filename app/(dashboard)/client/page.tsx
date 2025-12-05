@@ -117,13 +117,40 @@ export default function ClientDashboard() {
       await new Promise(resolve => setTimeout(resolve, 200))
     }
     
-    // Check authentication using v1 API
-    const result = await apiClient.getCurrentUser()
+    // Check authentication using v1 API - use skipRedirect to prevent redirect loops
+    const result = await apiClient.getCurrentUser({ skipRedirect: true })
     
     if (result.error || !result.data?.user) {
-      // Only redirect if we didn't just log in
-      if (!justLoggedIn) {
-        router.push('/login')
+      // Only redirect if we didn't just log in and error is not 401 (might be network issue)
+      if (!justLoggedIn && result.error?.status !== 401) {
+        // Try refresh first
+        const refreshResult = await apiClient.refreshAccessToken()
+        if (refreshResult.error) {
+          router.push('/login')
+        } else {
+          // Retry getting user after refresh
+          const retryResult = await apiClient.getCurrentUser({ skipRedirect: true })
+          if (retryResult.error || !retryResult.data?.user) {
+            router.push('/login')
+          } else {
+            const currentUser = retryResult.data.user
+            if (currentUser.role !== 'client') {
+              const routes: Record<string, string> = {
+                worker: '/worker',
+                admin: '/dashboard/admin',
+                superadmin: '/dashboard/admin'
+              }
+              router.push(routes[currentUser.role] || '/login')
+              return
+            }
+            setUser({
+              id: currentUser.id,
+              email: currentUser.email,
+              full_name: currentUser.name || '',
+              user_type: 'client',
+            } as UserType)
+          }
+        }
       }
       return
     }

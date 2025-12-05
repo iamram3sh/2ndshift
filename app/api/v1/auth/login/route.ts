@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyPassword } from '@/lib/auth/password';
 import { generateAccessToken, generateRefreshToken, setRefreshTokenCookie, JWTPayload } from '@/lib/auth/jwt';
+import { setAccessTokenCookie } from '@/lib/auth/cookies';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { z } from 'zod';
 import { withRateLimit } from '@/lib/api-middleware';
@@ -105,10 +106,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Set refresh token cookie
+    // Set refresh token cookie (httpOnly)
     await setRefreshTokenCookie(refreshToken);
+    
+    // Set access token cookie (non-httpOnly for client access, but also available to server)
+    await setAccessTokenCookie(accessToken);
 
-    return NextResponse.json({
+    // Create response with JSON body
+    const response = NextResponse.json({
       access_token: accessToken,
       user: {
         id: user.id,
@@ -117,6 +122,8 @@ export async function POST(request: NextRequest) {
         role: user.user_type, // Map user_type to role for frontend
       },
     });
+
+    return response;
   } catch (error: any) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
