@@ -22,6 +22,11 @@ import {
   Layers, XCircle, Timer, MapPin, Filter, ArrowUpRight,
   UserPlus, Send, Gift, Settings, HelpCircle, Info
 } from 'lucide-react'
+import { Sidebar } from '@/components/ui/Sidebar'
+import { Topbar } from '@/components/ui/Topbar'
+import { StatsBar } from '@/components/ui/StatsBar'
+import { KanbanBoard, type KanbanColumn } from '@/components/ui/KanbanBoard'
+import { ActivityFeed } from '@/components/ui/ActivityFeed'
 import type { User as UserType, Project, Contract } from '@/types/database.types'
 
 interface Application {
@@ -73,6 +78,9 @@ export default function ClientDashboard() {
   const [showBuyCreditsModal, setShowBuyCreditsModal] = useState(false)
   const [shiftsBalance, setShiftsBalance] = useState(0)
   const [platformConfig, setPlatformConfig] = useState<any>(null)
+  const [dashboardMetrics, setDashboardMetrics] = useState<any>(null)
+  const [kanbanColumns, setKanbanColumns] = useState<KanbanColumn[]>([])
+  const [activities, setActivities] = useState<any[]>([])
 
   // Fetch Shifts balance (credits)
   const fetchShiftsBalance = useCallback(async () => {
@@ -138,6 +146,38 @@ export default function ClientDashboard() {
       fetchShiftsBalance(),
       fetchPlatformConfig()
     ])
+
+    // Fetch dashboard metrics
+    try {
+      const metricsResponse = await fetch('/api/dashboard/metrics?role=client', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      })
+      if (metricsResponse.ok) {
+        const metrics = await metricsResponse.json()
+        setDashboardMetrics(metrics)
+      }
+    } catch (err) {
+      console.error('Error fetching metrics:', err)
+    }
+
+    // Fetch kanban data
+    if (currentUser?.id) {
+      try {
+        const kanbanResponse = await fetch(`/api/clients/${currentUser.id}/kanban`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+          },
+        })
+        if (kanbanResponse.ok) {
+          const kanban = await kanbanResponse.json()
+          setKanbanColumns(kanban.columns || [])
+        }
+      } catch (err) {
+        console.error('Error fetching kanban:', err)
+      }
+    }
     
     setIsLoading(false)
   }
@@ -292,11 +332,67 @@ export default function ClientDashboard() {
     )
   }
 
+  const handleKanbanMove = async (cardId: string, fromColumnId: string, toColumnId: string) => {
+    if (!user?.id) return
+
+    try {
+      const response = await fetch(`/api/clients/${user.id}/kanban/move`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+        },
+        body: JSON.stringify({
+          proposalId: cardId,
+          fromColumnId,
+          toColumnId,
+        }),
+      })
+
+      if (response.ok) {
+        // Refresh kanban data
+        const kanbanResponse = await fetch(`/api/clients/${user.id}/kanban`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+          },
+        })
+        if (kanbanResponse.ok) {
+          const kanban = await kanbanResponse.json()
+          setKanbanColumns(kanban.columns || [])
+        }
+      }
+    } catch (err) {
+      console.error('Error moving kanban card:', err)
+    }
+  }
+
+  const handleQuickAction = () => {
+    router.push('/projects/create')
+  }
+
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Navigation */}
-      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 flex">
+      {/* Sidebar */}
+      <Sidebar role="client" />
+
+      {/* Main Content */}
+      <div className="flex-1 lg:ml-64">
+        {/* Topbar */}
+        <Topbar
+          role="client"
+          onQuickAction={handleQuickAction}
+          quickActionLabel="Post Project"
+          onSignOut={handleSignOut}
+          user={{
+            name: user?.full_name,
+            email: user?.email,
+          }}
+          onSearch={(query) => {
+            // Handle search
+          }}
+        />
+
+        <div className="p-6 lg:p-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-8">
               <Link href="/" className="flex items-center gap-2">
@@ -492,57 +588,125 @@ export default function ClientDashboard() {
           </div>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white p-5 rounded-xl border border-slate-200">
-            <div className="flex items-center justify-between mb-3">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <IndianRupee className="w-5 h-5 text-emerald-600" />
-              </div>
-            </div>
-            <div className="text-2xl font-semibold text-slate-900">
-              ₹{stats.totalSpent.toLocaleString()}
-            </div>
-            <div className="text-sm text-slate-500 mt-1">Total Invested</div>
+          {/* Stats Bar */}
+          <div className="mb-6">
+            <StatsBar
+              stats={[
+                {
+                  title: 'New Projects',
+                  value: dashboardMetrics?.newCustomers || stats.totalProjects || 0,
+                  sparkline: dashboardMetrics?.sparklineData,
+                  icon: <TrendingUp className="w-5 h-5 text-slate-600" />,
+                },
+                {
+                  title: 'Success Rate',
+                  value: `${dashboardMetrics?.successRate || 0}%`,
+                  gauge: {
+                    value: dashboardMetrics?.successRate || 0,
+                    max: 100,
+                  },
+                  icon: <Briefcase className="w-5 h-5 text-slate-600" />,
+                },
+                {
+                  title: 'Tasks in Progress',
+                  value: dashboardMetrics?.tasksInProgress || stats.activeProjects || 0,
+                  icon: <Zap className="w-5 h-5 text-slate-600" />,
+                },
+                {
+                  title: 'Prepayments',
+                  value: `₹${(dashboardMetrics?.prepayments || 0).toLocaleString()}`,
+                  icon: <IndianRupee className="w-5 h-5 text-slate-600" />,
+                },
+              ]}
+            />
           </div>
-          
-          <div className="bg-white p-5 rounded-xl border border-slate-200">
-            <div className="flex items-center justify-between mb-3">
-              <div className="p-2 bg-sky-100 rounded-lg">
-                <Briefcase className="w-5 h-5 text-sky-600" />
+
+          {/* Kanban Board */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-slate-900">Proposal Pipeline</h2>
+            </div>
+            {kanbanColumns.length > 0 ? (
+              <KanbanBoard
+                columns={kanbanColumns.map(col => ({
+                  ...col,
+                  cards: col.cards.map((card: any) => ({
+                    id: card.id || card.proposalId,
+                    title: card.title,
+                    description: card.worker?.full_name ? `From ${card.worker.full_name}` : undefined,
+                    budget: card.budget,
+                    date: card.createdAt ? new Date(card.createdAt).toLocaleDateString() : undefined,
+                    avatars: card.worker ? [] : [],
+                    tags: [card.status],
+                    meta: card,
+                  })),
+                }))}
+                onCardMove={handleKanbanMove}
+                onCardClick={(card) => {
+                  router.push(`/projects/${card.meta?.job?.id || ''}`)
+                }}
+              />
+            ) : (
+              <div className="bg-white border border-slate-200 rounded-xl p-12 text-center">
+                <Briefcase className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                <p className="text-slate-600 font-medium">No proposals yet</p>
+                <p className="text-sm text-slate-500 mt-1">Proposals will appear here when workers apply to your projects</p>
               </div>
-              <span className="text-xs font-medium text-sky-600 bg-sky-50 px-2 py-1 rounded-full">
-                {stats.activeProjects} active
-              </span>
-            </div>
-            <div className="text-2xl font-semibold text-slate-900">
-              {stats.totalProjects}
-            </div>
-            <div className="text-sm text-slate-500 mt-1">Total Projects</div>
+            )}
           </div>
-          
-          <div className="bg-white p-5 rounded-xl border border-slate-200">
-            <div className="flex items-center justify-between mb-3">
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <Users className="w-5 h-5 text-purple-600" />
+
+          {/* Legacy Stats Grid (fallback if no metrics) */}
+          {!dashboardMetrics && (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+              <div className="bg-white p-5 rounded-xl border border-slate-200">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="p-2 bg-emerald-100 rounded-lg">
+                    <IndianRupee className="w-5 h-5 text-emerald-600" />
+                  </div>
+                </div>
+                <div className="text-2xl font-semibold text-slate-900">
+                  ₹{stats.totalSpent.toLocaleString()}
+                </div>
+                <div className="text-sm text-slate-500 mt-1">Total Invested</div>
               </div>
-            </div>
-            <div className="text-2xl font-semibold text-slate-900">
-              {stats.totalWorkers}
-            </div>
-            <div className="text-sm text-slate-500 mt-1">Hired Professionals</div>
-          </div>
-          
-          <div className="bg-white p-5 rounded-xl border border-slate-200">
-            <div className="flex items-center justify-between mb-3">
-              <div className="p-2 bg-amber-100 rounded-lg">
-                <FileText className="w-5 h-5 text-amber-600" />
+              
+              <div className="bg-white p-5 rounded-xl border border-slate-200">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="p-2 bg-sky-100 rounded-lg">
+                    <Briefcase className="w-5 h-5 text-sky-600" />
+                  </div>
+                  <span className="text-xs font-medium text-sky-600 bg-sky-50 px-2 py-1 rounded-full">
+                    {stats.activeProjects} active
+                  </span>
+                </div>
+                <div className="text-2xl font-semibold text-slate-900">
+                  {stats.totalProjects}
+                </div>
+                <div className="text-sm text-slate-500 mt-1">Total Projects</div>
               </div>
-              {stats.pendingApplications > 0 && (
-                <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
-                  {stats.pendingApplications} new
-                </span>
-              )}
+              
+              <div className="bg-white p-5 rounded-xl border border-slate-200">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="p-2 bg-purple-100 rounded-lg">
+                    <Users className="w-5 h-5 text-purple-600" />
+                  </div>
+                </div>
+                <div className="text-2xl font-semibold text-slate-900">
+                  {stats.totalWorkers}
+                </div>
+                <div className="text-sm text-slate-500 mt-1">Hired Professionals</div>
+              </div>
+              
+              <div className="bg-white p-5 rounded-xl border border-slate-200">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="p-2 bg-amber-100 rounded-lg">
+                    <FileText className="w-5 h-5 text-amber-600" />
+                  </div>
+                  {stats.pendingApplications > 0 && (
+                    <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
+                      {stats.pendingApplications} new
+                    </span>
+                  )}
             </div>
             <div className="text-2xl font-semibold text-slate-900">
               {applications.length}
@@ -551,9 +715,9 @@ export default function ClientDashboard() {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Main Content */}
+            <div className="lg:col-span-2 space-y-8">
             {/* Shifts Promo Card */}
             <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 shifts-promo-card">
               <div className="flex items-start justify-between">
@@ -755,9 +919,23 @@ export default function ClientDashboard() {
             </div>
           </div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Active Contracts */}
+            {/* Right Sidebar */}
+            <div className="lg:col-span-1 space-y-6">
+              {/* Activity Feed */}
+              <ActivityFeed
+                activities={activities.length > 0 ? activities : [
+                  {
+                    id: '1',
+                    timestamp: new Date(),
+                    type: 'info',
+                    title: 'Welcome to your dashboard',
+                    description: 'Your recent activity will appear here',
+                  },
+                ]}
+                maxItems={5}
+              />
+
+              {/* Active Contracts */}
             <div className="bg-white border border-slate-200 rounded-xl p-5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-slate-900">Active Contracts</h3>

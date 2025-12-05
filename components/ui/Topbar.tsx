@@ -10,6 +10,7 @@ interface TopbarProps {
   onSearch?: (query: string) => void
   onQuickAction?: () => void
   quickActionLabel?: string
+  onSignOut?: () => void
   user?: {
     name?: string
     email?: string
@@ -24,6 +25,7 @@ export function Topbar({
   onSearch,
   onQuickAction,
   quickActionLabel,
+  onSignOut,
   user,
   notificationCount = 0,
   className,
@@ -115,13 +117,31 @@ export function Topbar({
                     <p className="text-xs text-slate-500 truncate">{user?.email || ''}</p>
                   </div>
                   <div className="p-1">
-                    <button className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 rounded">
+                    <button 
+                      onClick={() => {
+                        setShowUserMenu(false)
+                        window.location.href = '/profile'
+                      }}
+                      className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 rounded"
+                    >
                       Profile
                     </button>
-                    <button className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 rounded">
+                    <button 
+                      onClick={() => {
+                        setShowUserMenu(false)
+                        window.location.href = '/settings'
+                      }}
+                      className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 rounded"
+                    >
                       Settings
                     </button>
-                    <button className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded">
+                    <button 
+                      onClick={() => {
+                        setShowUserMenu(false)
+                        onSignOut?.()
+                      }}
+                      className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded"
+                    >
                       Sign out
                     </button>
                   </div>

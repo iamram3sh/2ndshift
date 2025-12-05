@@ -9,10 +9,14 @@ import { TaskFilters } from '@/components/tasks/TaskFilters'
 import { BidModal } from '@/components/tasks/BidModal'
 import { ShiftsModal } from '@/components/shifts/ShiftsModal'
 import { BuyCreditsModalV1 } from '@/components/revenue/BuyCreditsModalV1'
+import { Sidebar } from '@/components/ui/Sidebar'
+import { Topbar } from '@/components/ui/Topbar'
+import { StatsBar } from '@/components/ui/StatsBar'
+import { ActivityFeed } from '@/components/ui/ActivityFeed'
 import apiClient from '@/lib/apiClient'
 import { 
   Layers, LogOut, Zap, Loader2, AlertCircle, Briefcase,
-  Shield, IndianRupee, Search, Sparkles, TrendingUp
+  Shield, IndianRupee, Search, Sparkles, TrendingUp, Users, DollarSign
 } from 'lucide-react'
 import type { Job, JobFilters } from '@/types/jobs'
 import { Skeleton } from '@/components/ui/Skeleton'
@@ -31,6 +35,8 @@ export default function WorkerDashboard() {
   const [tasksLoading, setTasksLoading] = useState(false)
   const [tasksError, setTasksError] = useState<Error | null>(null)
   const [creditsBalance, setCreditsBalance] = useState(0)
+  const [dashboardMetrics, setDashboardMetrics] = useState<any>(null)
+  const [activities, setActivities] = useState<any[]>([])
   
   const [filters, setFilters] = useState<JobFilters>({
     status: 'open',
@@ -63,6 +69,21 @@ export default function WorkerDashboard() {
         const creditsResult = await apiClient.getCreditsBalance()
         if (creditsResult.data) {
           setCreditsBalance(creditsResult.data.balance || 0)
+        }
+
+        // Fetch dashboard metrics
+        try {
+          const metricsResponse = await fetch('/api/dashboard/metrics?role=worker', {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+            },
+          })
+          if (metricsResponse.ok) {
+            const metrics = await metricsResponse.json()
+            setDashboardMetrics(metrics)
+          }
+        } catch (err) {
+          console.error('Error fetching metrics:', err)
         }
       } catch (err) {
         console.error('Error loading user data:', err)
@@ -169,14 +190,9 @@ export default function WorkerDashboard() {
   }
 
   const handleSignOut = async () => {
-    try {
-      await fetch('/api/v1/auth/logout', { method: 'POST' })
-      localStorage.removeItem('access_token')
-      router.push('/')
-    } catch (err) {
-      console.error('Logout error:', err)
-      router.push('/')
-    }
+    await apiClient.logout()
+    localStorage.removeItem('access_token')
+    router.push('/')
   }
 
   const handleRetry = () => {
@@ -220,94 +236,88 @@ export default function WorkerDashboard() {
     return null
   }
 
+  const handleQuickAction = () => {
+    router.push('/worker/discover')
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      {/* Premium Navigation */}
-      <nav className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/worker" className="flex items-center gap-2 group">
-              <motion.div
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
-                className="w-8 h-8 bg-gradient-to-br from-primary-600 to-primary-800 rounded-lg flex items-center justify-center shadow-md"
-              >
-                <Layers className="w-4 h-4 text-white" />
-              </motion.div>
-              <span className="text-lg font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
-                2ndShift
-              </span>
-            </Link>
-            
-            <div className="hidden lg:flex items-center gap-1">
-              <Link href="/worker" className="px-3 py-2 text-sm font-medium text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800 rounded-lg">
-                Dashboard
-              </Link>
-              <Link href="/worker/discover" className="px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
-                Discover
-              </Link>
-              <Link href="/messages" className="px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
-                Messages
-              </Link>
-            </div>
+    <div className="min-h-screen bg-slate-50 flex">
+      {/* Sidebar */}
+      <Sidebar role="worker" />
 
-            <div className="flex items-center gap-3">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setShowShiftsModal(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg text-sm font-semibold hover:from-amber-600 hover:to-orange-600 transition-all shadow-md hover:shadow-lg"
-              >
-                <Zap className="w-4 h-4" />
-                {creditsBalance} Shifts
-              </motion.button>
-              <button
-                onClick={handleSignOut}
-                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
-              >
-                <LogOut className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-              </button>
-            </div>
+      {/* Main Content */}
+      <div className="flex-1 lg:ml-64">
+        {/* Topbar */}
+        <Topbar
+          role="worker"
+          onQuickAction={handleQuickAction}
+          quickActionLabel="Find Work"
+          onSignOut={handleSignOut}
+          user={{
+            name: currentUser?.name || currentUser?.full_name,
+            email: currentUser?.email,
+          }}
+          onSearch={(query) => {
+            setFilters(prev => ({ ...prev, search: query }))
+          }}
+        />
+
+        <div className="p-6 lg:p-8">
+          {/* Stats Bar */}
+          <div className="mb-6">
+            <StatsBar
+              stats={[
+                {
+                  title: 'New Applications',
+                  value: dashboardMetrics?.newCustomers || 0,
+                  sparkline: dashboardMetrics?.sparklineData,
+                  icon: <TrendingUp className="w-5 h-5 text-slate-600" />,
+                },
+                {
+                  title: 'Success Rate',
+                  value: `${dashboardMetrics?.successRate || 0}%`,
+                  gauge: {
+                    value: dashboardMetrics?.successRate || 0,
+                    max: 100,
+                  },
+                  icon: <Briefcase className="w-5 h-5 text-slate-600" />,
+                },
+                {
+                  title: 'Tasks in Progress',
+                  value: dashboardMetrics?.tasksInProgress || tasks.length,
+                  icon: <Zap className="w-5 h-5 text-slate-600" />,
+                },
+                {
+                  title: 'Shifts Balance',
+                  value: creditsBalance,
+                  icon: <Sparkles className="w-5 h-5 text-slate-600" />,
+                },
+              ]}
+            />
           </div>
-        </div>
-      </nav>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Hero Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-12"
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-              <Sparkles className="w-5 h-5 text-[#1E40AF] dark:text-blue-400" />
-            </div>
-            <h1 className="text-4xl font-bold text-slate-900 dark:text-white">
+          {/* Hero Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-slate-900 mb-2">
               High-Value IT Microtasks
             </h1>
+            <p className="text-slate-600 max-w-2xl">
+              Browse premium microtasks from verified employers. Minimum ₹50 per task.
+            </p>
           </div>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl">
-            Browse premium microtasks from verified employers. Minimum ₹50 per task. 
-            <span className="font-semibold text-[#1E40AF] dark:text-blue-400"> Fast bidding. Trusted clients. Escrow-protected payments.</span>
-          </p>
-        </motion.div>
 
-        {/* Filters */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="mb-8"
-        >
-          <TaskFilters
-            filters={filters}
-            onFiltersChange={(newFilters) => setFilters(newFilters)}
-          />
-        </motion.div>
+          {/* Filters */}
+          <div className="mb-8">
+            <TaskFilters
+              filters={filters}
+              onFiltersChange={(newFilters) => setFilters(newFilters)}
+            />
+          </div>
 
-        {/* Tasks Content */}
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Tasks Content - Left Column */}
+            <div className="lg:col-span-2">
         {tasksLoading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
@@ -373,67 +383,47 @@ export default function WorkerDashboard() {
               ))}
             </div>
 
-            {/* Stats Summary */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="grid grid-cols-1 md:grid-cols-4 gap-4"
-            >
-              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-md">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                    <Briefcase className="w-5 h-5 text-[#1E40AF] dark:text-blue-400" />
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-slate-900 dark:text-white">{tasks.length}</div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400">Available Tasks</div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-md">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
-                    <Zap className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-slate-900 dark:text-white">{creditsBalance}</div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400">Shifts Balance</div>
-                  </div>
-                </div>
-              </div>
+            </div>
 
-              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-md">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
-                    <IndianRupee className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+            {/* Right Sidebar */}
+            <div className="lg:col-span-1 space-y-6">
+              {/* Activity Feed */}
+              <ActivityFeed
+                activities={activities.length > 0 ? activities : [
+                  {
+                    id: '1',
+                    timestamp: new Date(),
+                    type: 'info',
+                    title: 'Welcome to your dashboard',
+                    description: 'Start browsing tasks to see your activity here',
+                  },
+                ]}
+                maxItems={5}
+              />
+
+              {/* Quick Stats */}
+              <div className="bg-white border border-slate-200 rounded-xl p-4">
+                <h3 className="text-sm font-semibold text-slate-900 mb-4">Quick Stats</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-slate-600">Available Tasks</span>
+                    <span className="text-sm font-semibold text-slate-900">{tasks.length}</span>
                   </div>
-                  <div>
-                    <div className="text-2xl font-bold text-slate-900 dark:text-white">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-slate-600">Shifts Balance</span>
+                    <span className="text-sm font-semibold text-slate-900">{creditsBalance}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-slate-600">Total Value</span>
+                    <span className="text-sm font-semibold text-slate-900">
                       ₹{tasks.reduce((sum, t) => sum + (t.price_fixed || (t as any).budget || 0), 0).toLocaleString()}
-                    </div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400">Total Value</div>
+                    </span>
                   </div>
                 </div>
               </div>
-
-              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-md">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                    <Shield className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-slate-900 dark:text-white">
-                      {tasks.filter(t => t.client?.trust_score && t.client.trust_score > 80).length}
-                    </div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400">Verified Employers</div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </>
-        )}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Modals */}
