@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
 
     // Set refresh token cookie (httpOnly)
     await setRefreshTokenCookie(refreshToken);
-    
+
     // Set access token cookie (non-httpOnly for client access, but also available to server)
     await setAccessTokenCookie(accessToken);
 

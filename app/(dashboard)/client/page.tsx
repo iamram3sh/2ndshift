@@ -126,7 +126,7 @@ export default function ClientDashboard() {
         // Try refresh first
         const refreshResult = await apiClient.refreshAccessToken()
         if (refreshResult.error) {
-          router.push('/login')
+      router.push('/login')
         } else {
           // Retry getting user after refresh
           const retryResult = await apiClient.getCurrentUser({ skipRedirect: true })
@@ -431,7 +431,7 @@ export default function ClientDashboard() {
         />
 
         <div className="p-6 lg:p-8">
-          {/* Header */}
+        {/* Header */}
           <div className="mb-6">
             <h1 className="text-3xl font-bold text-slate-900 mb-2">
               Welcome back, {user?.full_name?.split(' ')[0]}
@@ -440,7 +440,7 @@ export default function ClientDashboard() {
               Manage your projects and find the best talent
             </p>
           </div>
-
+          
           {/* Stats Bar */}
           <div className="mb-6">
             <StatsBar
@@ -472,13 +472,13 @@ export default function ClientDashboard() {
                 },
               ]}
             />
-          </div>
+        </div>
 
           {/* Kanban Board */}
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-slate-900">Proposal Pipeline</h2>
-            </div>
+              </div>
             {kanbanColumns.length > 0 ? (
               <KanbanBoard
                 columns={kanbanColumns.map(col => ({
@@ -504,13 +504,13 @@ export default function ClientDashboard() {
                 <Briefcase className="w-12 h-12 text-slate-300 mx-auto mb-3" />
                 <p className="text-slate-600 font-medium">No proposals yet</p>
                 <p className="text-sm text-slate-500 mt-1">Proposals will appear here when workers apply to your projects</p>
-              </div>
+            </div>
             )}
-          </div>
+        </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Main Content */}
-            <div className="lg:col-span-2 space-y-8">
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-8">
             {/* Shifts Promo Card */}
             <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 shifts-promo-card">
               <div className="flex items-start justify-between">
@@ -728,8 +728,8 @@ export default function ClientDashboard() {
                 maxItems={5}
               />
 
-              {/* Active Contracts */}
-              <div className="bg-white border border-slate-200 rounded-xl p-5">
+            {/* Active Contracts */}
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-slate-900">Active Contracts</h3>
                 <span className="text-xs text-slate-500">{contracts.filter(c => c.status === 'active').length} active</span>
@@ -756,95 +756,95 @@ export default function ClientDashboard() {
                   ))}
                 </div>
               )}
+            </div>
+
+            {/* Subscription Upsell */}
+            <SubscriptionUpsellSection userId={user?.id} userType="client" />
+
+            {/* Client Subscription Upsell */}
+            <SubscriptionUpsell
+              userType="client"
+              onSubscribe={() => router.push('/pricing')}
+            />
+
+            {/* Featured Job Promo */}
+            <div className="bg-gradient-to-br from-sky-500 to-[#0b63ff] rounded-xl p-5 text-white">
+              <div className="flex items-center gap-2 mb-3">
+                <Crown className="w-5 h-5" />
+                <span className="font-semibold">Feature Your Job</span>
               </div>
+              <p className="text-sky-100 text-sm mb-4">
+                Get 10x more applications. Your job appears at the top for 7 days.
+              </p>
+              <button
+                onClick={() => setShowBuyCreditsModal(true)}
+                className="w-full bg-white text-sky-600 py-2 rounded-lg text-sm font-semibold hover:bg-sky-50 transition-colors"
+              >
+                Feature for 3 Credits
+              </button>
+            </div>
 
-              {/* Subscription Upsell */}
-              <SubscriptionUpsellSection userId={user?.id} userType="client" />
-
-              {/* Client Subscription Upsell */}
-              <SubscriptionUpsell
-                userType="client"
-                onSubscribe={() => router.push('/pricing')}
-              />
-
-              {/* Featured Job Promo */}
-              <div className="bg-gradient-to-br from-sky-500 to-[#0b63ff] rounded-xl p-5 text-white">
-                <div className="flex items-center gap-2 mb-3">
-                  <Crown className="w-5 h-5" />
-                  <span className="font-semibold">Feature Your Job</span>
-                </div>
-                <p className="text-sky-100 text-sm mb-4">
-                  Get 10x more applications. Your job appears at the top for 7 days.
-                </p>
-                <button
-                  onClick={() => setShowBuyCreditsModal(true)}
-                  className="w-full bg-white text-sky-600 py-2 rounded-lg text-sm font-semibold hover:bg-sky-50 transition-colors"
-                >
-                  Feature for 3 Credits
-                </button>
+            {/* Recommended Professionals */}
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-slate-900">Recommended</h3>
+                <Link href="/workers" className="text-xs text-sky-600 font-medium hover:text-sky-700">
+                  View all
+                </Link>
               </div>
-
-              {/* Recommended Professionals */}
-              <div className="bg-white border border-slate-200 rounded-xl p-5">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-slate-900">Recommended</h3>
-                  <Link href="/workers" className="text-xs text-sky-600 font-medium hover:text-sky-700">
-                    View all
-                  </Link>
-                </div>
-                
-                <div className="space-y-3">
-                  {[
-                    { name: 'Rahul S.', skill: 'React Developer', rating: 4.9, rate: '₹1,200/hr' },
-                    { name: 'Priya M.', skill: 'Cloud Architect', rating: 4.8, rate: '₹2,000/hr' },
-                    { name: 'Amit K.', skill: 'Backend Dev', rating: 4.9, rate: '₹1,400/hr' },
-                  ].map((pro, i) => (
-                    <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                      <div className="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-sm font-medium text-slate-600">
-                        {pro.name.charAt(0)}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-1">
-                          <span className="text-sm font-medium text-slate-900">{pro.name}</span>
-                          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                          <span className="text-xs text-slate-500">{pro.rating}</span>
-                        </div>
-                        <div className="text-xs text-slate-500">{pro.skill}</div>
-                      </div>
-                      <span className="text-xs font-medium text-slate-600">{pro.rate}</span>
+              
+              <div className="space-y-3">
+                {[
+                  { name: 'Rahul S.', skill: 'React Developer', rating: 4.9, rate: '₹1,200/hr' },
+                  { name: 'Priya M.', skill: 'Cloud Architect', rating: 4.8, rate: '₹2,000/hr' },
+                  { name: 'Amit K.', skill: 'Backend Dev', rating: 4.9, rate: '₹1,400/hr' },
+                ].map((pro, i) => (
+                  <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                    <div className="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-sm font-medium text-slate-600">
+                      {pro.name.charAt(0)}
                     </div>
-                  ))}
-                </div>
-                
-                <button
-                  onClick={() => setShowShiftsModal(true)}
-                  className="w-full mt-4 flex items-center justify-center gap-2 text-sm text-amber-600 font-medium hover:text-amber-700"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  Get AI Recommendations (5 Shifts)
-                </button>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1">
+                        <span className="text-sm font-medium text-slate-900">{pro.name}</span>
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <span className="text-xs text-slate-500">{pro.rating}</span>
+                      </div>
+                      <div className="text-xs text-slate-500">{pro.skill}</div>
+                    </div>
+                    <span className="text-xs font-medium text-slate-600">{pro.rate}</span>
+                  </div>
+                ))}
               </div>
+              
+              <button
+                onClick={() => setShowShiftsModal(true)}
+                className="w-full mt-4 flex items-center justify-center gap-2 text-sm text-amber-600 font-medium hover:text-amber-700"
+              >
+                <Sparkles className="w-4 h-4" />
+                Get AI Recommendations (5 Shifts)
+              </button>
+            </div>
 
-              {/* Quick Links */}
-              <div className="bg-white border border-slate-200 rounded-xl p-5">
-                <h3 className="font-semibold text-slate-900 mb-4">Quick Links</h3>
-                <div className="space-y-2">
-                  <Link href="/projects/create" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                    <Plus className="w-5 h-5 text-slate-400" />
-                    <span className="text-sm text-slate-700">Post New Project</span>
-                  </Link>
-                  <Link href="/workers" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                    <Users className="w-5 h-5 text-slate-400" />
-                    <span className="text-sm text-slate-700">Browse Talent</span>
-                  </Link>
-                  <Link href="/messages" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                    <MessageSquare className="w-5 h-5 text-slate-400" />
-                    <span className="text-sm text-slate-700">Messages</span>
-                  </Link>
-                  <Link href="/settings" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                    <Settings className="w-5 h-5 text-slate-400" />
-                    <span className="text-sm text-slate-700">Settings</span>
-                  </Link>
+            {/* Quick Links */}
+            <div className="bg-white border border-slate-200 rounded-xl p-5">
+              <h3 className="font-semibold text-slate-900 mb-4">Quick Links</h3>
+              <div className="space-y-2">
+                <Link href="/projects/create" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                  <Plus className="w-5 h-5 text-slate-400" />
+                  <span className="text-sm text-slate-700">Post New Project</span>
+                </Link>
+                <Link href="/workers" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                  <Users className="w-5 h-5 text-slate-400" />
+                  <span className="text-sm text-slate-700">Browse Talent</span>
+                </Link>
+                <Link href="/messages" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                  <MessageSquare className="w-5 h-5 text-slate-400" />
+                  <span className="text-sm text-slate-700">Messages</span>
+                </Link>
+                <Link href="/settings" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                  <Settings className="w-5 h-5 text-slate-400" />
+                  <span className="text-sm text-slate-700">Settings</span>
+                </Link>
                 </div>
               </div>
             </div>
