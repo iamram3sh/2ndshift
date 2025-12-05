@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
-import { Sparkles, TrendingUp, Clock, DollarSign, Calendar, Bookmark, ExternalLink } from 'lucide-react'
+import { Sparkles, TrendingUp, Clock, IndianRupee, Calendar, Bookmark, ExternalLink } from 'lucide-react'
 import type { Project } from '@/types/database.types'
 
 interface RecommendedProject {

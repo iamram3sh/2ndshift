@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { 
   ArrowRight, Shield, Clock, Users, Building2, CheckCircle, X,
   Zap, Star, Lock, FileText, CreditCard, Headphones, Target,
-  TrendingUp, Award, BadgeCheck, DollarSign, Calculator, Gift,
+  TrendingUp, Award, BadgeCheck, IndianRupee, Calculator, Gift,
   Sparkles, ChevronDown, ChevronUp, Layers, Briefcase, UserCheck,
   Receipt, BarChart3, MessageSquare, Calendar, Search, Send,
   ThumbsUp, AlertCircle, RefreshCw, Wallet, IndianRupee, Crown
@@ -417,7 +417,7 @@ export default function FeaturesPage() {
                     highlight: 'Mutual accountability',
                   },
                   {
-                    icon: DollarSign,
+                    icon: IndianRupee,
                     title: 'Flexible Engagement',
                     description: 'Hire for 2 hours or 2 years. Fixed price or hourly. Scale up during busy periods, scale down when quiet.',
                     highlight: 'Pay for what you need',

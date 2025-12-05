@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase/client'
 import apiClient from '@/lib/apiClient'
-import { Users, Briefcase, DollarSign, Shield, LogOut, TrendingUp } from 'lucide-react'
+import { Users, Briefcase, IndianRupee, Shield, LogOut, TrendingUp } from 'lucide-react'
 import type { User as UserType } from '@/types/database.types'
 
 export default function AdminDashboard() {
@@ -203,7 +203,7 @@ export default function AdminDashboard() {
                   From platform fees
                 </p>
               </div>
-              <DollarSign className="w-12 h-12 text-orange-600 opacity-20" />
+              <IndianRupee className="w-12 h-12 text-orange-600 opacity-20" />
             </div>
           </div>
         </div>
@@ -233,7 +233,7 @@ export default function AdminDashboard() {
               </button>
               <button className="w-full text-left px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition flex items-center justify-between">
                 <span>View Payments</span>
-                <DollarSign className="w-4 h-4 text-gray-400" />
+                <IndianRupee className="w-4 h-4 text-gray-400" />
               </button>
             </div>
           </div>

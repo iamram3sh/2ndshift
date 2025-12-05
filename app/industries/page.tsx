@@ -6,7 +6,7 @@ import {
   Monitor, Building2, Heart, ShoppingBag, Radio, Sparkles,
   ArrowRight, CheckCircle, Shield, Clock, Users, Zap, MessageSquare,
   Menu, X, Briefcase, TrendingUp, Code, Database, Cloud, Lock,
-  Server, Network, Brain, BarChart, FileCode, Settings, Globe, DollarSign
+  Server, Network, Brain, BarChart, FileCode, Settings, Globe, IndianRupee
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Footer } from '@/components/layout/Footer'
@@ -103,7 +103,7 @@ const BENEFITS = [
     description: 'All professionals are vetted and verified before joining'
   },
   {
-    icon: DollarSign,
+    icon: IndianRupee,
     title: 'Transparent pricing, zero overhead',
     description: 'No hidden fees, no markups. Pay only for the work delivered'
   },

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Briefcase, MapPin, Clock, DollarSign, TrendingUp, Users, Heart, Zap, Award } from 'lucide-react'
+import { Briefcase, MapPin, Clock, IndianRupee, TrendingUp, Users, Heart, Zap, Award } from 'lucide-react'
 
 export default function CareersPage() {
   const openings = [
@@ -111,7 +111,7 @@ export default function CareersPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                icon: DollarSign,
+                icon: IndianRupee,
                 title: 'Competitive Salary',
                 description: 'Market-leading compensation with ESOPs for early team members',
                 color: 'from-green-500 to-emerald-500'
@@ -189,7 +189,7 @@ export default function CareersPage() {
                         {job.type}
                       </span>
                       <span className="flex items-center gap-2">
-                        <DollarSign className="w-4 h-4" />
+                        <IndianRupee className="w-4 h-4" />
                         {job.salary}
                       </span>
                     </div>

@@ -8,7 +8,7 @@ import {
   TrendingUp, 
   Users, 
   Briefcase, 
-  DollarSign, 
+  IndianRupee, 
   ArrowLeft,
   Calendar,
   Download
@@ -305,7 +305,7 @@ export default function AdminAnalyticsPage() {
           <div className="bg-white rounded-xl shadow-sm p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                <DollarSign className="w-6 h-6 text-green-600" />
+                <IndianRupee className="w-6 h-6 text-green-600" />
               </div>
               <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full">
                 +₹{analytics.monthlyGrowth.revenue.toLocaleString()}

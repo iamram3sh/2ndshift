@@ -8,7 +8,7 @@ import {
   Search, Filter, MapPin, Star, Clock, CheckCircle, BadgeCheck, 
   Briefcase, Users, ChevronDown, ArrowRight, Zap, Shield, Award,
   Code, Palette, Database, Cloud, Smartphone, TestTube, Lock,
-  TrendingUp, DollarSign, X, Layers, Menu, Play, MessageSquare,
+  TrendingUp, IndianRupee, X, Layers, Menu, Play, MessageSquare,
   Building2, Monitor, Heart, Calculator, Wrench, Radio
 } from 'lucide-react'
 import type { Industry } from '@/types/categories'

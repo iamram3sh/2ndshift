@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Clock, DollarSign, Shield, BadgeCheck, ArrowRight, Sparkles } from 'lucide-react'
+import { Clock, IndianRupee, Shield, BadgeCheck, ArrowRight, Sparkles } from 'lucide-react'
 import type { Job } from '@/types/jobs'
 import { formatDistanceToNow } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
@@ -94,7 +94,7 @@ export function TaskCard({ task, onBidClick, showBidButton = true, index = 0 }: 
                 whileHover={{ scale: 1.05 }}
                 className="flex items-center gap-1.5 px-4 py-2.5 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl shadow-md"
               >
-                <DollarSign className="w-4 h-4 text-white" />
+                <IndianRupee className="w-4 h-4 text-white" />
                 <span className="text-lg font-bold text-white">{priceFormatted}</span>
               </motion.div>
             </div>

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { 
   ArrowRight, Shield, Clock, Users, CheckCircle, BadgeCheck, 
-  Zap, TrendingUp, FileText, DollarSign, Star, Building2,
+  Zap, TrendingUp, FileText, IndianRupee, Star, Building2,
   Award, Target, Briefcase, Lock, CreditCard, Wallet, 
   Calendar, ChevronDown, ChevronUp, Layers, Receipt,
   Calculator, MessageSquare, Send, Globe, Gift, Crown,

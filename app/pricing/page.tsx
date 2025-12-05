@@ -292,12 +292,12 @@ export default function PricingPage() {
               onClick={() => setUserType('client')}
               className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 ${
                 userType === 'client'
-                  ? '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
-                  : '!bg-slate-800 !text-white border-2 border-slate-700 hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
+                  ? '!bg-white !text-[#111] !border-[#111] border-2 hover:!bg-[#2563EB] hover:!text-white hover:!border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
+                  : '!bg-slate-800 !text-white !border-slate-700 border-2 hover:!bg-[#2563EB] hover:!text-white hover:!border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
               }`}
             >
-              <span className="flex items-center gap-2">
-                <Building2 className="w-4 h-4" />
+              <span className={`flex items-center gap-2 ${userType === 'client' ? '!text-[#111]' : '!text-white'}`}>
+                <Building2 className={`w-4 h-4 ${userType === 'client' ? '!text-[#111]' : '!text-white'}`} />
                 For Employers
               </span>
             </button>
@@ -305,12 +305,12 @@ export default function PricingPage() {
               onClick={() => setUserType('worker')}
               className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 ${
                 userType === 'worker'
-                  ? '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
-                  : '!bg-slate-800 !text-white border-2 border-slate-700 hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
+                  ? '!bg-white !text-[#111] !border-[#111] border-2 hover:!bg-[#2563EB] hover:!text-white hover:!border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
+                  : '!bg-slate-800 !text-white !border-slate-700 border-2 hover:!bg-[#2563EB] hover:!text-white hover:!border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
               }`}
             >
-              <span className="flex items-center gap-2">
-                <Users className="w-4 h-4" />
+              <span className={`flex items-center gap-2 ${userType === 'worker' ? '!text-[#111]' : '!text-white'}`}>
+                <Users className={`w-4 h-4 ${userType === 'worker' ? '!text-[#111]' : '!text-white'}`} />
                 For Professionals
               </span>
             </button>
@@ -333,7 +333,7 @@ export default function PricingPage() {
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                    <span className="bg-slate-900 text-white px-4 py-1 rounded-full text-sm font-medium">
+                    <span className="bg-slate-900 !text-white px-4 py-1 rounded-full text-sm font-medium shadow-lg">
                       Most Popular
                     </span>
                   </div>

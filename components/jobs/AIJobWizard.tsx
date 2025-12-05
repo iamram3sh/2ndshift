@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Sparkles, Loader2, CheckCircle, Users, DollarSign, Calendar } from 'lucide-react'
+import { Sparkles, Loader2, CheckCircle, Users, IndianRupee, Calendar } from 'lucide-react'
 import apiClient from '@/lib/apiClient'
 import { useTranslation } from '@/lib/i18n'
 import { formatCurrency } from '@/lib/utils/formatCurrency'
@@ -144,7 +144,7 @@ export function AIJobWizard({ onJobCreated, onCancel }: AIJobWizardProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm text-slate-600 flex items-center gap-1">
-                    <DollarSign className="w-3 h-3" />
+                    <IndianRupee className="w-3 h-3" />
                     Estimated Price
                   </label>
                   <p className="font-medium text-slate-900">

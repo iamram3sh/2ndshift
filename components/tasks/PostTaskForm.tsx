@@ -95,7 +95,7 @@ export function PostTaskForm({ isOpen, onClose, onSuccess }: PostTaskFormProps) 
             </DialogTitle>
           </div>
           <DialogDescription>
-            Create a new high-value IT microtask ($50–$500+) for verified professionals.
+            Create a new high-value IT microtask (₹50–₹500+) for verified professionals.
           </DialogDescription>
         </DialogHeader>
 

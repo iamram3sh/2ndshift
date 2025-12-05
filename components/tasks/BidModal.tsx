@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { DollarSign, Clock, AlertCircle, Loader2, Sparkles } from 'lucide-react'
+import { IndianRupee, Clock, AlertCircle, Loader2, Sparkles } from 'lucide-react'
 import type { Job } from '@/types/jobs'
 import { usePlaceBid, useCreditsBalance } from '@/lib/queries'
 import {
@@ -206,7 +206,7 @@ export function BidModal({ isOpen, onClose, task, onSuccess }: BidModalProps) {
               </span>
             </Label>
             <div className="relative">
-              <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+              <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
               <Input
                 id="proposed_price"
                 type="number"

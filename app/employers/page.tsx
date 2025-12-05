@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { 
   ArrowRight, Shield, Clock, Users, CheckCircle, BadgeCheck, 
-  Zap, TrendingUp, FileText, DollarSign, Building2, Star,
+  Zap, TrendingUp, FileText, IndianRupee, Building2, Star,
   Play, ChevronRight, Layers, Menu, X, Award, Target,
   Briefcase, Lock, CreditCard, Headphones, BarChart3, Globe,
   Calculator, AlertCircle, ChevronDown, ChevronUp, UserPlus,
@@ -95,7 +95,7 @@ const COMPARISON_POINTS = [
   },
   {
     factor: 'Cost Structure',
-    icon: DollarSign,
+    icon: IndianRupee,
     traditional: { value: 'Salary + 40% overhead (PF, insurance, office)', status: 'bad' },
     agency: { value: '25-40% markup on billing', status: 'neutral' },
     '2ndshift': { value: '10% platform fee only', status: 'good' },
@@ -325,7 +325,7 @@ export default function EmployersPage() {
                 
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-sky-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <DollarSign className="w-5 h-5 text-sky-600" />
+                    <IndianRupee className="w-5 h-5 text-sky-600" />
                   </div>
                   <div>
                     <div className="font-semibold text-[#111]">50-70% Cost Savings</div>

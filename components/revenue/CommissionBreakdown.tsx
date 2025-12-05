@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Info, DollarSign, TrendingDown, TrendingUp } from 'lucide-react'
+import { Info, IndianRupee, TrendingDown, TrendingUp } from 'lucide-react'
 import apiClient from '@/lib/apiClient'
 import { getPlatformFee } from '@/lib/config/pricing'
 
@@ -64,7 +64,7 @@ export function CommissionBreakdown({
   return (
     <div className="space-y-3 p-4 bg-slate-50 rounded-lg border border-slate-200">
       <div className="flex items-center gap-2 mb-3">
-        <DollarSign className="w-4 h-4 text-slate-600" />
+        <IndianRupee className="w-4 h-4 text-slate-600" />
         <h4 className="font-semibold text-slate-900">Price Breakdown</h4>
       </div>
 

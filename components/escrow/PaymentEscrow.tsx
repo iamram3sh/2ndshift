@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { 
   Lock, Unlock, CheckCircle, Clock, AlertCircle, ArrowRight, 
-  Shield, DollarSign, Star, Send, RefreshCw, AlertTriangle,
+  Shield, Star, Send, RefreshCw, AlertTriangle,
   ChevronDown, ChevronUp, Loader2, IndianRupee
 } from 'lucide-react'
 import { AutoReleaseTimer } from './AutoReleaseTimer'
@@ -116,7 +116,7 @@ const STATUS_CONFIG: Record<EscrowStatus, {
     label: 'Refunded',
     color: 'text-slate-600',
     bgColor: 'bg-slate-50 border-slate-200',
-    icon: DollarSign,
+    icon: IndianRupee,
     description: 'Payment has been refunded to client',
   },
   cancelled: {

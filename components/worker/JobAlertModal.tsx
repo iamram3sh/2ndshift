@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { X, Plus, Trash2, Bell, DollarSign, Clock, Tag } from 'lucide-react'
+import { X, Plus, Trash2, Bell, IndianRupee, Clock, Tag } from 'lucide-react'
 import { supabase } from '@/lib/supabase/client'
 
 interface JobAlert {
@@ -236,7 +236,7 @@ export default function JobAlertModal({ isOpen, onClose, onSave, userId }: JobAl
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
-                <DollarSign className="w-4 h-4" />
+                <IndianRupee className="w-4 h-4" />
                 Min Budget (₹)
               </label>
               <input

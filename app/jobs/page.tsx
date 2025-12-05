@@ -6,7 +6,7 @@ import {
   Search, Filter, MapPin, Clock, Users, ChevronDown, ArrowRight, 
   Zap, Lock, Bell, CheckCircle, X, Timer, Code, TestTube, Cloud, 
   Shield, Database, Smartphone, Mail, ArrowUpRight, Building2, 
-  BadgeCheck, Briefcase, Layers, Menu, TrendingUp, DollarSign
+  BadgeCheck, Briefcase, Layers, Menu, TrendingUp, IndianRupee
 } from 'lucide-react'
 
 const SAMPLE_JOBS = [
@@ -240,7 +240,7 @@ export default function JobsPage() {
               <span><strong className="text-white">23</strong> new today</span>
             </div>
             <div className="hidden sm:flex items-center gap-2 text-slate-300">
-              <DollarSign className="w-4 h-4 text-emerald-400" />
+              <IndianRupee className="w-4 h-4 text-emerald-400" />
               <span><strong className="text-white">₹12.5L</strong> paid this week</span>
             </div>
             <div className="hidden md:flex items-center gap-2 text-slate-300">
@@ -393,11 +393,11 @@ export default function JobsPage() {
                       </div>
                       
                       <div>
-                        <h3 className="font-semibold text-[#111] group-hover:text-sky-600 transition-colors">
+                        <h3 className="font-semibold !text-[#111] group-hover:text-sky-600 transition-colors">
                           {job.title}
                         </h3>
-                        <div className="flex items-center gap-2 mt-1 text-sm text-[#333]">
-                          <Building2 className="w-4 h-4" />
+                        <div className="flex items-center gap-2 mt-1 text-sm !text-[#333]">
+                          <Building2 className="w-4 h-4 !text-[#333]" />
                           <span>Company visible after signup</span>
                           {job.verified && (
                             <span className="flex items-center gap-1 text-emerald-600 ml-2">
@@ -415,7 +415,7 @@ export default function JobsPage() {
                           Urgent
                         </span>
                       )}
-                      <span className="text-xs text-[#333]">
+                      <span className="text-xs !text-[#333]">
                         {formatTimeAgo(job.postedDate)}
                       </span>
                     </div>
@@ -426,7 +426,7 @@ export default function JobsPage() {
                     {job.skills.map((skill) => (
                       <span 
                         key={skill}
-                        className="px-2.5 py-1 text-xs font-medium text-[#333] bg-slate-100 rounded-md"
+                        className="px-2.5 py-1 text-xs font-medium !text-[#333] bg-slate-100 rounded-md"
                       >
                         {skill}
                       </span>
@@ -434,21 +434,21 @@ export default function JobsPage() {
                   </div>
                   
                   {/* Meta */}
-                  <div className="flex flex-wrap gap-4 text-sm text-[#333] mb-4">
+                  <div className="flex flex-wrap gap-4 text-sm !text-[#333] mb-4">
                     <span className="flex items-center gap-1.5">
-                      <MapPin className="w-4 h-4" />
+                      <MapPin className="w-4 h-4 !text-[#333]" />
                       {job.location}
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <Timer className="w-4 h-4" />
+                      <Timer className="w-4 h-4 !text-[#333]" />
                       {job.duration}
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <Briefcase className="w-4 h-4" />
+                      <Briefcase className="w-4 h-4 !text-[#333]" />
                       {job.type}
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <Users className="w-4 h-4" />
+                      <Users className="w-4 h-4 !text-[#333]" />
                       {job.applicants} applied
                     </span>
                   </div>
@@ -456,10 +456,10 @@ export default function JobsPage() {
                   {/* Footer */}
                   <div className="flex items-center justify-between pt-4 border-t border-slate-100">
                     <div>
-                      <span className="text-xl font-semibold text-[#111]">
+                      <span className="text-xl font-semibold !text-[#111]">
                         ₹{job.rate.min.toLocaleString()} - {job.rate.max.toLocaleString()}
                       </span>
-                      <span className="text-[#333] text-sm">/hr</span>
+                      <span className="!text-[#333] text-sm">/hr</span>
                     </div>
                     
                     <Link 

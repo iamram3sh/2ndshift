@@ -14,7 +14,7 @@ import { SubscriptionUpsellSection } from '@/components/revenue/SubscriptionUpse
 import { AIJobWizard } from '@/components/jobs/AIJobWizard'
 import MicroJobPacks from '@/components/jobs/MicroJobPacks'
 import { 
-  Briefcase, DollarSign, User, LogOut, Plus, Clock,
+  Briefcase, IndianRupee, User, LogOut, Plus, Clock,
   Users, CheckCircle, TrendingUp, Eye, MessageSquare,
   Bell, Search, Calendar, Award, BarChart3, FileText, 
   Zap, Target, Activity, Star, ChevronRight, Rocket, 
@@ -497,7 +497,7 @@ export default function ClientDashboard() {
           <div className="bg-white p-5 rounded-xl border border-slate-200">
             <div className="flex items-center justify-between mb-3">
               <div className="p-2 bg-emerald-100 rounded-lg">
-                <DollarSign className="w-5 h-5 text-emerald-600" />
+                <IndianRupee className="w-5 h-5 text-emerald-600" />
               </div>
             </div>
             <div className="text-2xl font-semibold text-slate-900">

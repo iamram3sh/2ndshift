@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import {
   CheckCircle, Clock, AlertCircle, Upload, MessageSquare,
-  Lock, ArrowRight, DollarSign, Shield, Flag, Loader2
+  Lock, ArrowRight, IndianRupee, Shield, Flag, Loader2
 } from 'lucide-react'
 import type { Milestone, EscrowAccount, MilestoneStatus } from '@/types/features'
 

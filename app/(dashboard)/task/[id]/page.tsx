@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { 
-  ArrowLeft, Clock, DollarSign, Shield, BadgeCheck, CheckCircle,
+  ArrowLeft, Clock, IndianRupee, Shield, BadgeCheck, CheckCircle,
   User, Calendar, FileText, Loader2, AlertCircle, Layers, Sparkles, ArrowRight
 } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
@@ -162,7 +162,7 @@ export default function TaskDetailPage() {
                 whileHover={{ scale: 1.05 }}
                 className="flex items-center gap-2 px-6 py-4 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl shadow-md"
               >
-                <DollarSign className="w-5 h-5 text-white" />
+                <IndianRupee className="w-5 h-5 text-white" />
                 <span className="text-2xl font-bold text-white">{priceFormatted}</span>
               </motion.div>
             </div>

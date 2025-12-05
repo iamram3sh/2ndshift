@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { 
   ArrowRight, CheckCircle, Shield, Clock, Users, Building2, 
   Briefcase, FileText, CreditCard, BadgeCheck, Star, Zap,
-  Layers, UserPlus, Search, Send, Handshake, DollarSign,
+  Layers, UserPlus, Search, Send, Handshake, IndianRupee,
   Play, ChevronRight, Target, Award, Lock
 } from 'lucide-react'
 
@@ -66,7 +66,7 @@ const WORKER_STEPS = [
     step: 5,
     title: 'Get Paid Weekly',
     description: 'Receive payments directly to your bank account every week. All taxes handled automatically - you get full Form 16A.',
-    icon: DollarSign,
+    icon: IndianRupee,
     details: [
       'Weekly direct bank transfers',
       'Automatic TDS deduction',
