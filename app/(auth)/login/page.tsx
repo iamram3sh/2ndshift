@@ -21,6 +21,7 @@ export default function LoginPage() {
   const [successMessage, setSuccessMessage] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [selectedRole, setSelectedRole] = useState<'worker' | 'client' | null>(null)
+  const [debugInfo, setDebugInfo] = useState<string>('')
 
   useEffect(() => {
     const roleParam = searchParams?.get('role')
@@ -62,40 +63,92 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!validateForm()) return
+    
+    console.log('[LOGIN] Form submitted')
+    setDebugInfo('Form submitted...')
+    
+    if (!validateForm()) {
+      console.log('[LOGIN] Form validation failed')
+      setDebugInfo('Form validation failed')
+      return
+    }
     
     setIsLoading(true)
     setMessage('')
     setSuccessMessage('')
+    setDebugInfo('Starting login process...')
     
     try {
+      console.log('[LOGIN] Calling apiClient.login with:', {
+        email: formData.email.trim().toLowerCase(),
+        passwordLength: formData.password.length
+      })
+      
       // Call login API
       const result = await apiClient.login(
         formData.email.trim().toLowerCase(),
         formData.password
       )
       
+      console.log('[LOGIN] API Response received:', {
+        hasError: !!result.error,
+        hasData: !!result.data,
+        errorDetails: result.error,
+        dataKeys: result.data ? Object.keys(result.data) : []
+      })
+      
+      setDebugInfo(`API Response: ${result.error ? 'ERROR' : 'SUCCESS'}`)
+      
       if (result.error) {
         const errorMessage = result.error.message || result.error.error || result.error.details || 'Login failed'
+        console.error('[LOGIN] Login error:', result.error)
         setMessage(errorMessage)
+        setDebugInfo(`Error: ${errorMessage}`)
         setIsLoading(false)
         return
       }
       
       // Check if we got user data and access token
-      if (!result.data?.user || !result.data?.access_token) {
-        setMessage('Login failed: Invalid response from server')
+      if (!result.data) {
+        const errorMsg = 'Login failed: No data received from server'
+        console.error('[LOGIN]', errorMsg)
+        setMessage(errorMsg)
+        setDebugInfo(errorMsg)
+        setIsLoading(false)
+        return
+      }
+
+      if (!result.data.user) {
+        const errorMsg = 'Login failed: No user data in response'
+        console.error('[LOGIN]', errorMsg, result.data)
+        setMessage(errorMsg)
+        setDebugInfo(errorMsg)
+        setIsLoading(false)
+        return
+      }
+
+      if (!result.data.access_token) {
+        const errorMsg = 'Login failed: No access token in response'
+        console.error('[LOGIN]', errorMsg, result.data)
+        setMessage(errorMsg)
+        setDebugInfo(errorMsg)
         setIsLoading(false)
         return
       }
 
       const userRole = result.data.user.role
+      console.log('[LOGIN] User role determined:', userRole)
+      setDebugInfo(`User authenticated as: ${userRole}`)
       
       // Track successful login
-      trackEvent('login_success', { role: userRole })
-      if (userRole === 'worker' || userRole === 'client') {
-        trackRoleSelected(userRole, 'login')
-        setRole(userRole, 'login')
+      try {
+        trackEvent('login_success', { role: userRole })
+        if (userRole === 'worker' || userRole === 'client') {
+          trackRoleSelected(userRole, 'login')
+          setRole(userRole, 'login')
+        }
+      } catch (trackError) {
+        console.warn('[LOGIN] Tracking error (non-critical):', trackError)
       }
       
       // Determine redirect route based on user role
@@ -107,19 +160,35 @@ export default function LoginPage() {
       }
       
       const targetRoute = routes[userRole] || '/worker'
+      console.log('[LOGIN] Redirecting to:', targetRoute)
+      setDebugInfo(`Redirecting to: ${targetRoute}`)
       
       // Ensure token is stored before redirect
       if (result.data.access_token) {
         localStorage.setItem('access_token', result.data.access_token)
+        console.log('[LOGIN] Token stored in localStorage')
       }
       
-      // Immediate redirect - no delays or flags
+      // Wait a moment for token to be stored, then redirect
+      await new Promise(resolve => setTimeout(resolve, 100))
+      
+      // Immediate redirect - use window.location for reliability
+      console.log('[LOGIN] Performing redirect now...')
       window.location.href = targetRoute
       
+      // Fallback: If redirect doesn't happen, try router
+      setTimeout(() => {
+        if (window.location.pathname === '/login') {
+          console.warn('[LOGIN] Redirect failed, trying router...')
+          router.replace(targetRoute)
+        }
+      }, 500)
+      
     } catch (error: any) {
-      console.error('Login error:', error)
+      console.error('[LOGIN] Exception caught:', error)
       const errorMessage = error.message || 'Sign in failed. Please check your credentials.'
       setMessage(errorMessage)
+      setDebugInfo(`Exception: ${errorMessage}`)
       setIsLoading(false)
     }
   }
@@ -173,7 +242,16 @@ export default function LoginPage() {
 
           {message && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
-              {message}
+              <div className="font-medium mb-1">Error</div>
+              <div>{message}</div>
+            </div>
+          )}
+
+          {/* Debug Info (Development only) */}
+          {process.env.NODE_ENV === 'development' && debugInfo && (
+            <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-700 font-mono">
+              <div className="font-medium mb-1">Debug Info:</div>
+              <div>{debugInfo}</div>
             </div>
           )}
 
@@ -192,6 +270,7 @@ export default function LoginPage() {
                   className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:border-slate-300 focus:ring-2 focus:ring-slate-100 transition-all outline-none text-sm"
                   placeholder="you@example.com"
                   disabled={isLoading}
+                  autoComplete="email"
                 />
               </div>
               {errors.email && <p className="mt-1.5 text-sm text-red-600">{errors.email}</p>}
@@ -213,6 +292,7 @@ export default function LoginPage() {
                   className="w-full pl-10 pr-10 py-3 bg-white border border-slate-200 rounded-xl focus:border-slate-300 focus:ring-2 focus:ring-slate-100 transition-all outline-none text-sm"
                   placeholder="••••••••"
                   disabled={isLoading}
+                  autoComplete="current-password"
                 />
                 <button
                   type="button"
