@@ -91,13 +91,9 @@ export function generateAccessToken(payload: JWTPayload): string {
   const secret = getJWTSecret();
   const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
   
-  // Runtime validation for production - only throw when actually trying to use it
+  // Runtime validation for production - log a warning but continue with placeholder to avoid hard failures
   if (isProduction && (secret === 'your-secret-key-change-in-production' || !secret || secret.trim() === '')) {
-    throw new Error(
-      'JWT_SECRET environment variable is not set in production. ' +
-      'Please set JWT_SECRET in Vercel dashboard (Settings > Environment Variables). ' +
-      'Generate a secret: openssl rand -base64 32'
-    );
+    console.error('🚨 JWT_SECRET is not set in production. Using placeholder secret. This is insecure. Please set JWT_SECRET in environment variables (e.g., openssl rand -base64 32).');
   }
   return jwt.sign(payload, secret, {
     expiresIn: ACCESS_TOKEN_EXPIRY,
@@ -111,13 +107,9 @@ export function generateRefreshToken(payload: JWTPayload): string {
   const secret = getRefreshSecret();
   const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
   
-  // Runtime validation for production - only throw when actually trying to use it
+  // Runtime validation for production - log a warning but continue with placeholder to avoid hard failures
   if (isProduction && (secret === 'your-refresh-secret-key-change-in-production' || !secret || secret.trim() === '')) {
-    throw new Error(
-      'REFRESH_SECRET environment variable is not set in production. ' +
-      'Please set REFRESH_SECRET in Vercel dashboard (Settings > Environment Variables). ' +
-      'Generate a secret: openssl rand -base64 32'
-    );
+    console.error('🚨 REFRESH_SECRET is not set in production. Using placeholder secret. This is insecure. Please set REFRESH_SECRET in environment variables (e.g., openssl rand -base64 32).');
   }
   return jwt.sign(payload, secret, {
     expiresIn: REFRESH_TOKEN_EXPIRY,

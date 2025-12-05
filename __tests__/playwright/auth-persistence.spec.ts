@@ -37,6 +37,7 @@ test.describe('Authentication Persistence', () => {
     // 5. Click on "Tasks" in sidebar
     await page.click('a[href="/worker/discover"]');
     await page.waitForURL('/worker/discover', { timeout: 5000 });
+    await expect(page).not.toHaveURL(/\/login|^\/$/);
     
     // 6. Verify still logged in (check for user menu or sign out button)
     const topbar = page.locator('header').first();
@@ -45,6 +46,7 @@ test.describe('Authentication Persistence', () => {
     // 7. Click on "Activity" in sidebar
     await page.click('a[href="/worker/activity"]');
     await page.waitForURL('/worker/activity', { timeout: 5000 });
+    await expect(page).not.toHaveURL(/\/login|^\/$/);
     
     // 8. Verify still logged in
     await expect(page.locator('text=Activity')).toBeVisible();
@@ -105,6 +107,7 @@ test.describe('Authentication Persistence', () => {
     // 5. Click on "Tasks" in sidebar
     await page.click('a[href="/client/tasks"]');
     await page.waitForURL('/client/tasks', { timeout: 5000 });
+    await expect(page).not.toHaveURL(/\/login|^\/$/);
     
     // 6. Verify still logged in
     const topbar = page.locator('header').first();
@@ -113,6 +116,7 @@ test.describe('Authentication Persistence', () => {
     // 7. Click on "Activity" in sidebar
     await page.click('a[href="/client/activity"]');
     await page.waitForURL('/client/activity', { timeout: 5000 });
+    await expect(page).not.toHaveURL(/\/login|^\/$/);
     
     // 8. Verify still logged in
     await expect(page.locator('text=Activity')).toBeVisible();
@@ -128,6 +132,31 @@ test.describe('Authentication Persistence', () => {
     // 11. Verify user menu is still visible
     const userMenu = page.locator('button[aria-label="User menu"]').first();
     await expect(userMenu).toBeVisible();
+  });
+
+  test('Client: Session persists after page reload', async ({ page }) => {
+    // 1. Login
+    await page.goto('/login?role=client');
+    await page.fill('input[type="email"]', CLIENT_EMAIL);
+    await page.fill('input[type="password"]', CLIENT_PASSWORD);
+    await page.click('button[type="submit"]');
+    await page.waitForURL('/client', { timeout: 10000 });
+
+    // 2. Verify logged in
+    await expect(page.locator('text=Welcome')).toBeVisible({ timeout: 5000 });
+
+    // 3. Reload page
+    await page.reload();
+
+    // 4. Verify still logged in (not redirected)
+    await expect(page).not.toHaveURL(/\/login|^\/$/);
+    await expect(page.locator('text=Welcome')).toBeVisible({ timeout: 5000 });
+
+    // 5. Cookies still present
+    const cookies = await page.context().cookies();
+    const hasAccessToken = cookies.some(c => c.name === 'access_token');
+    const hasRefreshToken = cookies.some(c => c.name === 'refresh_token');
+    expect(hasAccessToken || hasRefreshToken).toBeTruthy();
   });
 
   test('Worker: No logout when clicking job cards or actions', async ({ page }) => {
