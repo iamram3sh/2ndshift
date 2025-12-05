@@ -293,12 +293,11 @@ export default function PricingPage() {
               className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 ${
                 userType === 'client'
                   ? '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
-                  : 'text-white hover:bg-white/10'
+                  : '!bg-slate-800 !text-white border-2 border-slate-700 hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
               }`}
-              style={userType !== 'client' ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : {}}
             >
               <span className="flex items-center gap-2">
-                <Building2 className="w-4 h-4" style={userType !== 'client' ? { filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))' } : {}} />
+                <Building2 className="w-4 h-4" />
                 For Employers
               </span>
             </button>
@@ -307,12 +306,11 @@ export default function PricingPage() {
               className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ease-out transform hover:scale-105 active:scale-100 ${
                 userType === 'worker'
                   ? '!bg-white !text-[#111] border-2 border-[#111] hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
-                  : 'text-white hover:bg-white/10'
+                  : '!bg-slate-800 !text-white border-2 border-slate-700 hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50'
               }`}
-              style={userType !== 'worker' ? { textShadow: '0 1px 3px rgba(0,0,0,0.5)' } : {}}
             >
               <span className="flex items-center gap-2">
-                <Users className="w-4 h-4" style={userType !== 'worker' ? { filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))' } : {}} />
+                <Users className="w-4 h-4" />
                 For Professionals
               </span>
             </button>
