@@ -44,7 +44,25 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/api/v1') ||
     pathname.match(/\.(ico|png|jpg|jpeg|svg|css|js)$/)
   ) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    // Add security headers even for skipped routes
+    addSecurityHeaders(response);
+    return response;
+  }
+
+  // Get access token from cookie or Authorization header
+  let accessToken: string | null = null;
+  
+  // Try cookie first (for SSR)
+  const cookieToken = request.cookies.get('access_token')?.value;
+  if (cookieToken) {
+    accessToken = cookieToken;
+  }
+  
+  // Try Authorization header (for API calls)
+  if (!accessToken) {
+    const authHeader = request.headers.get('authorization');
+    accessToken = extractTokenFromHeader(authHeader);
   }
 
   // Check if route is public
@@ -66,6 +84,7 @@ export async function middleware(request: NextRequest) {
   // But still pass through user info if authenticated
   if (isPublicRoute && !isProtectedRoute) {
     const response = NextResponse.next();
+    addSecurityHeaders(response);
     // If user is authenticated, add headers for potential use
     if (accessToken) {
       const payload = verifyAccessToken(accessToken);
@@ -76,21 +95,6 @@ export async function middleware(request: NextRequest) {
       }
     }
     return response;
-  }
-
-  // Get access token from cookie or Authorization header
-  let accessToken: string | null = null;
-  
-  // Try cookie first (for SSR)
-  const cookieToken = request.cookies.get('access_token')?.value;
-  if (cookieToken) {
-    accessToken = cookieToken;
-  }
-  
-  // Try Authorization header (for API calls)
-  if (!accessToken) {
-    const authHeader = request.headers.get('authorization');
-    accessToken = extractTokenFromHeader(authHeader);
   }
 
   // Verify token
@@ -129,6 +133,7 @@ export async function middleware(request: NextRequest) {
 
     // Add user info to headers for downstream use
     const response = NextResponse.next();
+    addSecurityHeaders(response);
     if (accessToken) {
       const payload = verifyAccessToken(accessToken);
       if (payload) {
@@ -144,20 +149,48 @@ export async function middleware(request: NextRequest) {
   if (isAuthRoute && isAuthenticated) {
     // Redirect to appropriate dashboard
     const dashboardUrl = userRole === 'client' ? '/client' : '/worker';
-    return NextResponse.redirect(new URL(dashboardUrl, request.url));
+    const redirectResponse = NextResponse.redirect(new URL(dashboardUrl, request.url));
+    addSecurityHeaders(redirectResponse);
+    return redirectResponse;
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+  addSecurityHeaders(response);
+  return response;
+}
+
+/**
+ * Add security headers to response
+ */
+function addSecurityHeaders(response: NextResponse) {
+  // Add security headers to all responses
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('X-Frame-Options', 'SAMEORIGIN');
+  response.headers.set('X-XSS-Protection', '1; mode=block');
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  
+  // HSTS header (only in production with HTTPS)
+  if (process.env.NODE_ENV === 'production') {
+    response.headers.set(
+      'Strict-Transport-Security',
+      'max-age=31536000; includeSubDomains'
+    );
+  }
+
+  // Add request ID for tracking
+  const requestId = crypto.randomUUID();
+  response.headers.set('X-Request-ID', requestId);
 }
 
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for the ones starting with:
+     * Match all request paths except:
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
+     * - public folder
      */
-    '/((?!_next/static|_next/image|favicon.ico).*)',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
