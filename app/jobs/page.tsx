@@ -464,7 +464,7 @@ export default function JobsPage() {
                     
                     <Link 
                       href="/register?type=worker"
-                      className="inline-flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-colors"
+                      className="inline-flex items-center gap-2 !bg-white !text-[#111] border-2 border-[#111] px-4 py-2 rounded-lg text-sm font-medium hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
                     >
                       Apply
                       <Lock className="w-3.5 h-3.5" />

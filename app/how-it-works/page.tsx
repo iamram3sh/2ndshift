@@ -272,7 +272,7 @@ export default function HowItWorksPage() {
                 <div className="flex gap-6">
                   {/* Step Number */}
                   <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center text-white font-semibold">
+                    <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center !text-white font-semibold">
                       {step.step}
                     </div>
                   </div>
@@ -374,14 +374,14 @@ export default function HowItWorksPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/register?type=worker"
-              className="inline-flex items-center justify-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-xl font-medium hover:bg-slate-800 transition-all"
+              className="inline-flex items-center justify-center gap-2 !bg-white !text-[#111] border-2 border-[#111] px-6 py-3 rounded-xl font-medium hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
             >
               <Briefcase className="w-4 h-4" />
               Find Work
             </Link>
             <Link
               href="/register?type=client"
-              className="inline-flex items-center justify-center gap-2 bg-white text-[#111] px-6 py-3 rounded-xl font-medium border border-slate-200 hover:bg-slate-50 transition-all"
+              className="inline-flex items-center justify-center gap-2 !bg-white !text-[#111] border-2 border-[#111] px-6 py-3 rounded-xl font-medium hover:!bg-[#2563EB] hover:!text-white hover:border-[#2563EB] hover:shadow-xl hover:shadow-blue-500/50 transition-all duration-300 ease-out transform hover:scale-105 active:scale-100"
             >
               <Building2 className="w-4 h-4" />
               Hire Talent

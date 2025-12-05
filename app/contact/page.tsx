@@ -57,10 +57,10 @@ export default function ContactPage() {
       {/* Hero */}
       <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-slate-50">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl sm:text-6xl font-bold text-[#111] mb-6">
+          <h1 className="text-5xl sm:text-6xl font-bold !text-[#111] mb-6">
             Get in Touch
           </h1>
-          <p className="text-xl text-[#333] leading-relaxed">
+          <p className="text-xl !text-[#333] leading-relaxed">
             Have questions? We&apos;re here to help. Reach out to our team.
           </p>
         </div>
@@ -94,8 +94,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <div className="font-semibold text-[#111] mb-1">Call Us</div>
-                    <a href="tel:+918071234567" className="text-[#0b63ff] hover:text-[#0a56e6]">
-                      +91 80712 34567
+                    <a href="tel:+919391669646" className="text-[#0b63ff] hover:text-[#0a56e6]">
+                      +91 9391669646
                     </a>
                     <p className="text-sm text-slate-500 mt-1">Mon-Sat, 9 AM - 6 PM IST</p>
                   </div>

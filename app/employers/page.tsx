@@ -255,7 +255,7 @@ export default function EmployersPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/20 text-emerald-400 rounded-full text-sm font-medium mb-6" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/20 text-white rounded-full text-sm font-medium mb-6" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>
                 <Zap className="w-4 h-4" />
                 Hire in 48 Hours, Not 48 Days
               </div>
@@ -292,16 +292,16 @@ export default function EmployersPage() {
               </div>
 
               {/* Trust Badges */}
-              <div className="flex flex-wrap gap-6 text-sm text-white">
-                <span className="flex items-center gap-2">
+              <div className="flex flex-wrap gap-6 text-sm">
+                <span className="flex items-center gap-2 text-white" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
                   <CheckCircle className="w-4 h-4 text-emerald-400" />
                   100% Tax Compliant
                 </span>
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-2 text-white" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
                   <CheckCircle className="w-4 h-4 text-emerald-400" />
                   Escrow Protection
                 </span>
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-2 text-white" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
                   <CheckCircle className="w-4 h-4 text-emerald-400" />
                   Verified Professionals
                 </span>
@@ -526,7 +526,7 @@ export default function EmployersPage() {
           <div className="bg-white rounded-2xl p-8 employers-calculator-card">
             <div className="grid md:grid-cols-2 gap-8 mb-8">
               <div>
-                <label className="block text-sm mb-2 employers-calculator-label">
+                <label className="block text-sm mb-2 !text-[#111] font-semibold">
                   Project Budget (₹)
                 </label>
                 <input
@@ -543,14 +543,14 @@ export default function EmployersPage() {
                   aria-valuenow={projectCost}
                 />
                 <div className="flex justify-between mt-2">
-                  <span className="text-sm text-slate-600">₹10,000</span>
-                  <span className="text-xl font-bold employers-calculator-value">₹{projectCost.toLocaleString()}</span>
-                  <span className="text-sm text-slate-600">₹5,00,000</span>
+                  <span className="text-sm !text-[#333]">₹10,000</span>
+                  <span className="text-xl font-bold !text-[#111]">₹{projectCost.toLocaleString()}</span>
+                  <span className="text-sm !text-[#333]">₹5,00,000</span>
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm mb-2 employers-calculator-label">
+                <label className="block text-sm mb-2 !text-[#111] font-semibold">
                   Project Duration (months)
                 </label>
                 <input
@@ -566,9 +566,9 @@ export default function EmployersPage() {
                   aria-valuenow={projectDuration}
                 />
                 <div className="flex justify-between mt-2">
-                  <span className="text-sm text-slate-600">1 month</span>
-                  <span className="text-xl font-bold employers-calculator-value">{projectDuration} month{projectDuration > 1 ? 's' : ''}</span>
-                  <span className="text-sm text-slate-600">12 months</span>
+                  <span className="text-sm !text-[#333]">1 month</span>
+                  <span className="text-xl font-bold !text-[#111]">{projectDuration} month{projectDuration > 1 ? 's' : ''}</span>
+                  <span className="text-sm !text-[#333]">12 months</span>
                 </div>
               </div>
             </div>
